@@ -1,0 +1,51 @@
+\ifdefined\booklet
+\else
+\documentclass{article} % scrartcl for bernhard font for headings in main document  
+\include{header}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\pagenumbering{gobble}
+\begin{document}
+\large
+\fi
+\section*{\centering\LARGE CONTRACT}
+\section*{Team Name}
+Wackum Inn
+\section*{Team Members}
+Valentin Popescu\\
+Robert Popescu\\
+Tom Stark\\
+Calum West\\
+Omar Suleiman\\
+Daniel Weaver
+\section*{Team Roles}
+\setlist[description]{noitemsep}
+\begin{description}
+    \item[Team Manager] Valentin Popescu
+    \item[Lead Programmer] Robert Popescu
+    \item[Lead Designer] Tom Stark
+\end{description}
+\section*{Pledge}
+The team members pledge to meet at least twice a week to discuss progress made and what progress they would like to make before the next meeting. They will also talk about any issues they are having with their work and divide future tasks up between team members. They also pledge to commit 400 hours worth of work each to the project, to ensure a good final result is produced.
+
+They must work together in a professional manner throughout the duration of the project, both when resolving problems and discussing ideas. They must also use the agreed upon tools to work on the project, ensuring easier collaboration.
+\vspace{\fill}
+\section*{Signed}
+\begin{center}
+\footnotesize
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cccccc}
+    \includegraphics[scale=0.4]{Signatures/1.png}&%\columnbreak
+    \includegraphics[scale=0.2]{Signatures/2.png}&%\columnbreak
+    \includegraphics[scale=0.2]{Signatures/3.png}&%\columnbreak
+    \includegraphics[scale=0.4]{Signatures/4.png}&%\columnbreak
+    \includegraphics[scale=0.9]{Signatures/5.png}&%\columnbreak
+    \includegraphics[scale=0.4]{Signatures/6.png}\\
+    Calum West&Omar Suleiman&Tom Stark&Valentin Popescu&Robert Popescu&Dan Weaver\\
+    15.12.20&15.12.20&15.12.20&15.12.20&15.12.20&15.12.20
+\end{tabular}
+\end{center}
+\ifdefined\booklet
+\else
+\end{document}
+\fi
