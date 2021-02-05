@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float gravity = -9.8f;
     private float speed = 12f;
-    private float jumpHeight = 3f;
+    private float jumpHeight = 2.5f;
 
     private Vector3 velocity;
     private float groundDistance = 0.4f;
