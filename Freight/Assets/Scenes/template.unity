@@ -258,7 +258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5748d432af45f8648977d298d0676ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 100
   playerBody: {fileID: 0}
 --- !u!81 &1321626862
 AudioListener:
@@ -476,6 +475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2065880902}
   - component: {fileID: 2065880901}
+  - component: {fileID: 2065880903}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -517,3 +517,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2065880903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065880900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9df6ad756fd8ae47b00a5d8d9706034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 2065880901}
