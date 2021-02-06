@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
-public class NewBehaviourScript : MonoBehaviour
+public class GuardAI : MonoBehaviour
 {
     public NavMeshAgent guard;
     public Transform player;
