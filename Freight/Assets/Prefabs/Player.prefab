@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7980832975168636562}
   - component: {fileID: 7980832975168636563}
   - component: {fileID: 7980832975168636560}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 7980832975526901892}
   - component: {fileID: 7980832975526901894}
   - component: {fileID: 7980832975526901895}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 7980832976051256635}
   - component: {fileID: 7980832976051256632}
   - component: {fileID: 7980832976051256634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ MonoBehaviour:
   groundCheck: {fileID: 7980832976756422583}
   groundMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 65536
 --- !u!1 &7980832976756422580
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7980832976756422583}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
