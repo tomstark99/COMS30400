@@ -7,7 +7,7 @@ using UnityEngine;
 public class MouseLook : NetworkBehaviour
 {
 
-    private float mouseSensitivity = 100f;
+    private float mouseSensitivity = 150f;
 
     [Header("Camera")]
     [SerializeField] private Transform playerBody;
