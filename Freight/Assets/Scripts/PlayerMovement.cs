@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public CharacterController controller;
     public Transform groundCheck;
@@ -15,15 +16,13 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
     private float groundDistance = 0.4f;
     private bool isGrounded;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
+    [Client]
     void Update()
     {
+        if (!hasAuthority) return;
+
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
