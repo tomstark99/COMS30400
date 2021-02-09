@@ -9,6 +9,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+/Assets/TextMesh Pro/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -16,6 +17,8 @@
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
+
+/Assets/TextMesh Pro.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
@@ -26,6 +29,8 @@
 # Visual Studio cache directory
 .vs/
 .vscode/
+
+.idea/
 
 # Gradle cache directory
 .gradle/
