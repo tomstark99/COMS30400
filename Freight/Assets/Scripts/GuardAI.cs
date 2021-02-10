@@ -47,7 +47,8 @@ public class GuardAI : MonoBehaviour
 
     void ChasePlayer()
     {
-        guard.SetDestination(player.position);
+        transform.LookAt(player.transform);
+        guard.SetDestination(player.position- new Vector3(proximityRange,0,0));
     }
 
     bool PlayerSpotted()
