@@ -1,0 +1,11 @@
+mergeInto(LibraryManager.library, {
+
+  StringReturnValueFunction: function () {
+    var returnStr = getPoseAsString();
+    var bufferSize = lengthBytesUTF8(returnStr) + 1;
+    var buffer = _malloc(bufferSize);
+    stringToUTF8(returnStr, buffer, bufferSize);
+    return buffer;
+  }
+
+});
