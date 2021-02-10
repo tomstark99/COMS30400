@@ -17,21 +17,12 @@ public class showText : MonoBehaviour
     void Start()
     {
         txtMy = GameObject.Find("Canvas/Text").GetComponent<Text>();
-        txtMy.text = "This text";
+        txtMy.text = string.Join(",", PoseParser.GETPoseArray());
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetButtonDown("Jump"))
-        {
-            
-            string pose = StringReturnValueFunction();
-
-            txtMy.text = pose;
-
-            // GetComponent(TextMesh).text = pose;
-        }
+        txtMy.text = string.Join(",", PoseParser.GETPoseArray());
     }
 }

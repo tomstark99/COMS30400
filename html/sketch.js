@@ -49,10 +49,11 @@ function getPoseAsString() {
     for (let i = 0; i < pose.keypoints.length; i++) {
       let x = pose.keypoints[i].position.x;
       let y = pose.keypoints[i].position.y;
-      poseString = poseString.concat(x, ",", y, ",");
+      let confidence = pose.keypoints[i].score;
+      poseString = poseString.concat(x, ",", y, ",", confidence, ",");
     }
   }
-  return poseString;
+  return poseString.slice(0, -1);
 }
 
 function draw() {
