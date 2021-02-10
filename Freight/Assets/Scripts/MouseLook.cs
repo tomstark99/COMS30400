@@ -1,32 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
+using Mirror;
 using UnityEngine;
 
-public class MouseLook : MonoBehaviour
+public class MouseLook : NetworkBehaviour
 {
 
-    private float mouseSensitivity = 100f;
+    private float mouseSensitivity = 150f;
 
-    public Transform playerBody;
+    [Header("Camera")]
+    [SerializeField] private Transform playerBody;
+    [SerializeField] private Camera virtualCamera;
 
     float xRotation = 0f;
 
-    // Start is called before the first frame update
-    void Start()
+    private Transform cameraTransform;
+
+    public override void OnStartAuthority()
     {
+        virtualCamera.gameObject.SetActive(true);
+
+        cameraTransform = virtualCamera.GetComponent<Transform>();
+
+        enabled = true;
+    }
+
+    public override void OnStartClient()
+    {
+        if (!hasAuthority) return;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
+    [Client]
     void Update()
     {
+        if (!hasAuthority) return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
         playerBody.Rotate(Vector3.up * mouseX);
     }
