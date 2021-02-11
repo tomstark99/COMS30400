@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using Mirror;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
-public class GuardAI : NetworkBehaviour
+public class GuardAI : MonoBehaviour
 {
     public NavMeshAgent guard;
     //public List<Transform> players = new List<Transform>();
@@ -24,16 +24,21 @@ public class GuardAI : NetworkBehaviour
     public float guardAngle;
     public Color spotlightColour;
 
-    public override void OnStartServer()
+    //public override void OnStartServer()
+    //{
+    //    guard = GetComponent<NavMeshAgent>();
+    //}
+
+    //// Start is called before the first frame update
+    //public override void OnStartClient()
+    //{
+    //    players = GetPlayers();
+    //    Debug.Log("FALOOOOOOOOOOOOOOO");
+    //}
+
+    private void Start()
     {
         guard = GetComponent<NavMeshAgent>();
-    }
-
-    // Start is called before the first frame update
-    public override void OnStartClient()
-    {
-        players = GetPlayers();
-        Debug.Log("FALOOOOOOOOOOOOOOO");
     }
 
     List<Transform> GetPlayers()
@@ -116,6 +121,9 @@ public class GuardAI : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        // very inefficient don't want to get player on each frame update!!!!!!!
+        players = GetPlayers();
+
         // Check if player is in guard's sight
         //playerSpotted = Physics.CheckSphere(transform.position, sightRange, playerMask);
         playerSpotted = PlayerSpotted();
