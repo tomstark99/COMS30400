@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Mirror;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
-public class GuardAI : MonoBehaviour
+public class GuardAI : NetworkBehaviour
 {
     public NavMeshAgent guard;
-    public Transform player;
+    //public List<Transform> players = new List<Transform>();
+    //public Transform player;
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
+    public List<Transform> players = new List<Transform>();
 
     // Counter to increment points in path
     private int destPoint = 0;
@@ -18,16 +21,30 @@ public class GuardAI : MonoBehaviour
     public float sightRange;
     public float proximityRange;
     public bool playerSpotted;
-    float guardAngle;
-    Color spotlightColour;
+    public float guardAngle;
+    public Color spotlightColour;
+
+    public override void OnStartServer()
+    {
+        guard = GetComponent<NavMeshAgent>();
+    }
 
     // Start is called before the first frame update
-    void Start()
+    public override void OnStartClient()
     {
-        player = GameObject.Find("Player").transform;
-        guard = GetComponent<NavMeshAgent>();
-        spotlightColour = spotlight.color;
-        guardAngle = spotlight.spotAngle;
+        players = GetPlayers();
+        Debug.Log("FALOOOOOOOOOOOOOOO");
+    }
+
+    List<Transform> GetPlayers()
+    {
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Player");
+        List<Transform> temp_players = new List<Transform>();
+        foreach (GameObject t in temp)
+        {
+            temp_players.Add(t.transform);
+        }
+        return temp_players;
     }
 
     void GotoNextPoint()
@@ -47,8 +64,23 @@ public class GuardAI : MonoBehaviour
 
     void ChasePlayer()
     {
-        transform.LookAt(player.transform);
-        guard.SetDestination(player.position- new Vector3(proximityRange,0,0));
+        Transform closestPlayer = null;
+
+        float lastDistance = float.MaxValue;
+
+        foreach (Transform player in players)
+        {
+            float eDistance = Vector3.Distance(player.transform.position, transform.position);
+
+            if (closestPlayer == null || eDistance < lastDistance)
+            {
+                closestPlayer = player.transform;
+                lastDistance = eDistance;
+            }
+        }
+
+        transform.LookAt(closestPlayer.transform);
+        guard.SetDestination(closestPlayer.position- new Vector3(proximityRange,0,0));
     }
 
     bool PlayerSpotted()
@@ -59,21 +91,24 @@ public class GuardAI : MonoBehaviour
             return true;
         }
 
-        // checks if player is in guard's view range 
-        if (Vector3.Distance(transform.position, player.position) < sightRange)
+        foreach (Transform player in players)
         {
-            // vector from guard to player
-            Vector3 dirToPlayer = (player.position - transform.position).normalized;
-            float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
-            if (guardPlayerAngle < guardAngle / 2f)
+            // checks if player is in guard's view range 
+            if (Vector3.Distance(transform.position, player.position) < sightRange)
             {
-                // checks if guard line of sight is blocked by an obstacle
-                if (!Physics.Linecast(transform.position, player.position, obstacleMask))
+                // vector from guard to player
+                Vector3 dirToPlayer = (player.position - transform.position).normalized;
+                float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
+                if (guardPlayerAngle < guardAngle / 2f)
                 {
-                    return true;
+                    // checks if guard line of sight is blocked by an obstacle
+                    if (!Physics.Linecast(transform.position, player.position, obstacleMask))
+                    {
+                        return true;
+                    }
                 }
+
             }
-            
         }
         return false;
     }
