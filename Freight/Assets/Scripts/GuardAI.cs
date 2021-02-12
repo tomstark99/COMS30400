@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using Mirror;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
-public class GuardAI : MonoBehaviour
+public class GuardAI : NetworkBehaviour
 {
     public NavMeshAgent guard;
     //public List<Transform> players = new List<Transform>();
@@ -53,6 +53,7 @@ public class GuardAI : MonoBehaviour
 
         // Get new point, modulo so you cycle back to 0
         destPoint = (destPoint + 1) % points.Length;
+        spotlight.color = spotlightColour;
     }
 
     void ChasePlayer()
@@ -74,6 +75,7 @@ public class GuardAI : MonoBehaviour
 
         transform.LookAt(closestPlayer.transform);
         guard.SetDestination(closestPlayer.position- new Vector3(proximityRange,0,0));
+        spotlight.color = Color.red;
     }
 
     bool PlayerSpotted()
@@ -109,6 +111,10 @@ public class GuardAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isServer == false)
+        {
+            return;
+        }
         // very inefficient don't want to get player on each frame update!!!!!!!
         players = GetPlayers();
 
