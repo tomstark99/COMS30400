@@ -24,18 +24,6 @@ public class GuardAI : MonoBehaviour
     public float guardAngle;
     public Color spotlightColour;
 
-    //public override void OnStartServer()
-    //{
-    //    guard = GetComponent<NavMeshAgent>();
-    //}
-
-    //// Start is called before the first frame update
-    //public override void OnStartClient()
-    //{
-    //    players = GetPlayers();
-    //    Debug.Log("FALOOOOOOOOOOOOOOO");
-    //}
-
     private void Start()
     {
         guard = GetComponent<NavMeshAgent>();
