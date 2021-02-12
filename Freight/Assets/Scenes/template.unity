@@ -307,6 +307,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &822328266 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1949988932190070927, guid: 75b3416f67836f946ac46f70af325f1e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1267076883}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &822328269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822328266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  localPositionSensitivity: 0.01
+  localRotationSensitivity: 0.01
+  localScaleSensitivity: 0.01
+--- !u!114 &822328270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822328266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 2976531380
+  serverOnly: 0
+  m_AssetId: 75b3416f67836f946ac46f70af325f1e
+  hasSpawned: 0
 --- !u!1001 &885397183
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -332,13 +372,19 @@ PrefabInstance:
     - target: {fileID: 2457679014587935740, guid: e433cedb2183acb4d97fd9c69dfd9322,
         type: 3}
       propertyPath: offlineScene
-      value: Assets/Scenes/template.unity
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2457679014587935740, guid: e433cedb2183acb4d97fd9c69dfd9322,
         type: 3}
       propertyPath: spawnPrefabs.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2457679014587935740, guid: e433cedb2183acb4d97fd9c69dfd9322,
+        type: 3}
+      propertyPath: spawnPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 2634091774638216683, guid: 75b3416f67836f946ac46f70af325f1e,
+        type: 3}
     - target: {fileID: 2457679014587935741, guid: e433cedb2183acb4d97fd9c69dfd9322,
         type: 3}
       propertyPath: m_RootOrder

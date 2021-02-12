@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 350683341932205344}
   m_Layer: 0
   m_Name: Spot Light
-  m_TagString: Untagged
+  m_TagString: Light
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -178,6 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb5ac499bee5494e8c9f288e3831f5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   guard: {fileID: 1267076886}
   groundMask:
     serializedVersion: 2
