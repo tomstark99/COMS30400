@@ -7,9 +7,12 @@ using Mirror;
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
 public class GuardAI : NetworkBehaviour
 {
+    enum State
+    {
+        Chasing,
+        Patroling
+    }
     public NavMeshAgent guard;
-    //public List<Transform> players = new List<Transform>();
-    //public Transform player;
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
@@ -53,7 +56,6 @@ public class GuardAI : NetworkBehaviour
 
         // Get new point, modulo so you cycle back to 0
         destPoint = (destPoint + 1) % points.Length;
-        spotlight.color = spotlightColour;
     }
 
     void ChasePlayer()
@@ -75,7 +77,6 @@ public class GuardAI : NetworkBehaviour
 
         transform.LookAt(closestPlayer.transform);
         guard.SetDestination(closestPlayer.position- new Vector3(proximityRange,0,0));
-        spotlight.color = Color.red;
     }
 
     bool PlayerSpotted()
@@ -108,6 +109,19 @@ public class GuardAI : NetworkBehaviour
         return false;
     }
 
+    [ClientRpc]
+    void changeToYellow()
+    {
+        spotlight.color = spotlightColour;
+    }
+
+    [ClientRpc]
+    void changeToRed()
+    {
+        spotlight.color = Color.red;
+    }
+
+    [Server]
     // Update is called once per frame
     void Update()
     {
@@ -119,19 +133,18 @@ public class GuardAI : NetworkBehaviour
         players = GetPlayers();
 
         // Check if player is in guard's sight
-        //playerSpotted = Physics.CheckSphere(transform.position, sightRange, playerMask);
         playerSpotted = PlayerSpotted();
 
         // If the player is not spotted and the guard has reached their destination, go to new point
         if (!playerSpotted && guard.remainingDistance < 0.5f)
         {
             GotoNextPoint();
-            spotlight.color = spotlightColour;
+            changeToYellow();
         }
         if (playerSpotted)
         {
             ChasePlayer();
-            spotlight.color = Color.red;
+            changeToRed();
         }
 
     }
