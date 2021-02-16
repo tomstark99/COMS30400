@@ -11,7 +11,7 @@ public class GuardAI : NetworkBehaviour
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
-    private MyNetworkManager room;
+    private NetworkManagerMain room;
     private List<Player> players;
 
 
@@ -24,12 +24,12 @@ public class GuardAI : NetworkBehaviour
     public float guardAngle;
     public Color spotlightColour;
 
-    private MyNetworkManager Room
+    private NetworkManagerMain Room
     {
         get
         {
             if (room != null) { return room; }
-            return room = NetworkManager.singleton as MyNetworkManager;
+            return room = NetworkManager.singleton as NetworkManagerMain;
         }
     }
 

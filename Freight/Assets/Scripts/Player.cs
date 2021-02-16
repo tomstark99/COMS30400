@@ -5,13 +5,13 @@ using Mirror;
 
 public class Player : NetworkBehaviour
 {
-    private MyNetworkManager room;
-    private MyNetworkManager Room
+    private NetworkManagerMain room;
+    private NetworkManagerMain Room
     {
         get
         {
             if (room != null) { return room; }
-            return room = NetworkManager.singleton as MyNetworkManager;
+            return room = NetworkManager.singleton as NetworkManagerMain;
         }
     }
 

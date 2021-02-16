@@ -5,7 +5,7 @@ using System.Linq;
 using Mirror;
 using UnityEngine;
 
-public class MyNetworkManager : NetworkManager
+public class NetworkManagerMain : NetworkManager
 {
     [Scene] [SerializeField] private string menuScene = string.Empty;
 
