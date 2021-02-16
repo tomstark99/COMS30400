@@ -16,7 +16,6 @@ public class GuardAI : NetworkBehaviour
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
-    //public List<Transform> players = new List<Transform>();
     private MyNetworkManager room;
     private List<Player> players;
 
@@ -45,16 +44,6 @@ public class GuardAI : NetworkBehaviour
         players = Room.GamePlayers;
     }
 
-    //List<Transform> GetPlayers()
-    //{
-    //    GameObject[] temp = GameObject.FindGameObjectsWithTag("Player");
-    //    List<Transform> temp_players = new List<Transform>();
-    //    foreach (GameObject t in temp)
-    //    {
-    //        temp_players.Add(t.transform);
-    //    }
-    //    return temp_players;
-    //}
 
     void GotoNextPoint()
     {
@@ -142,8 +131,6 @@ public class GuardAI : NetworkBehaviour
         {
             return;
         }
-        // very inefficient don't want to get player on each frame update!!!!!!!
-        //players = GetPlayers();
 
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
