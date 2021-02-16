@@ -7,11 +7,6 @@ using Mirror;
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
 public class GuardAI : NetworkBehaviour
 {
-    enum State
-    {
-        Chasing,
-        Patroling
-    }
     public NavMeshAgent guard;
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
