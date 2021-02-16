@@ -1,25 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 using Mirror;
+using UnityEngine;
 
 public class MyNetworkManager : NetworkManager
 {
-    public List<Transform> players = new List<Transform>();
+    [Scene] [SerializeField] private string menuScene = string.Empty;
 
-    List<Transform> GetPlayers()
+    public override void OnStartServer() => spawnPrefabs = Resources.LoadAll<GameObject>("Prefabs").ToList();
+
+    public List<Player> GamePlayers { get; } = new List<Player>();
+
+    public override void OnStartClient()
     {
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Player");
-        List<Transform> temp_players = new List<Transform>();
-        foreach (GameObject t in temp)
+        var spawnablePrefabs = Resources.LoadAll<GameObject>("Prefabs");
+
+        foreach (var prefab in spawnablePrefabs)
         {
-            temp_players.Add(t.transform);
+            ClientScene.RegisterPrefab(prefab);
         }
-        return temp_players;
     }
 
-    public override void OnClientConnect(NetworkConnection conn)
+    private void Update()
     {
-        players = GetPlayers();
+        Debug.Log(GamePlayers.Count);
     }
 }
