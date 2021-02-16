@@ -16,7 +16,10 @@ public class GuardAI : NetworkBehaviour
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
-    public List<Transform> players = new List<Transform>();
+    //public List<Transform> players = new List<Transform>();
+    private MyNetworkManager room;
+    private List<Player> players;
+
 
     // Counter to increment points in path
     private int destPoint = 0;
@@ -27,21 +30,31 @@ public class GuardAI : NetworkBehaviour
     public float guardAngle;
     public Color spotlightColour;
 
+    private MyNetworkManager Room
+    {
+        get
+        {
+            if (room != null) { return room; }
+            return room = NetworkManager.singleton as MyNetworkManager;
+        }
+    }
+
     private void Start()
     {
         guard = GetComponent<NavMeshAgent>();
+        players = Room.GamePlayers;
     }
 
-    List<Transform> GetPlayers()
-    {
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Player");
-        List<Transform> temp_players = new List<Transform>();
-        foreach (GameObject t in temp)
-        {
-            temp_players.Add(t.transform);
-        }
-        return temp_players;
-    }
+    //List<Transform> GetPlayers()
+    //{
+    //    GameObject[] temp = GameObject.FindGameObjectsWithTag("Player");
+    //    List<Transform> temp_players = new List<Transform>();
+    //    foreach (GameObject t in temp)
+    //    {
+    //        temp_players.Add(t.transform);
+    //    }
+    //    return temp_players;
+    //}
 
     void GotoNextPoint()
     {
@@ -64,7 +77,7 @@ public class GuardAI : NetworkBehaviour
 
         float lastDistance = float.MaxValue;
 
-        foreach (Transform player in players)
+        foreach (Player player in players)
         {
             float eDistance = Vector3.Distance(player.transform.position, transform.position);
 
@@ -87,18 +100,18 @@ public class GuardAI : NetworkBehaviour
             return true;
         }
 
-        foreach (Transform player in players)
+        foreach (Player player in players)
         {
             // checks if player is in guard's view range 
-            if (Vector3.Distance(transform.position, player.position) < sightRange)
+            if (Vector3.Distance(transform.position, player.transform.position) < sightRange)
             {
                 // vector from guard to player
-                Vector3 dirToPlayer = (player.position - transform.position).normalized;
+                Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
                 float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
                 if (guardPlayerAngle < guardAngle / 2f)
                 {
                     // checks if guard line of sight is blocked by an obstacle
-                    if (!Physics.Linecast(transform.position, player.position, obstacleMask))
+                    if (!Physics.Linecast(transform.position, player.transform.position, obstacleMask))
                     {
                         return true;
                     }
@@ -130,7 +143,7 @@ public class GuardAI : NetworkBehaviour
             return;
         }
         // very inefficient don't want to get player on each frame update!!!!!!!
-        players = GetPlayers();
+        //players = GetPlayers();
 
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
