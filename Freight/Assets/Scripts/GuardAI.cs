@@ -7,12 +7,22 @@ using Mirror;
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
 public class GuardAI : NetworkBehaviour
 {
+    public enum State
+    {
+        Chasing,
+        Patroling,
+        Alerted
+    }
+
     public NavMeshAgent guard;
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
     private NetworkManagerMain room;
     private List<Player> players;
+    public State guardState;
+    public float timeAlerted;
+    public Vector3 alertPosition;
 
 
     // Counter to increment points in path
@@ -23,6 +33,7 @@ public class GuardAI : NetworkBehaviour
     public bool playerSpotted;
     public float guardAngle;
     public Color spotlightColour;
+    public Color alertColour;
 
     private NetworkManagerMain Room
     {
@@ -37,6 +48,7 @@ public class GuardAI : NetworkBehaviour
     {
         guard = GetComponent<NavMeshAgent>();
         players = Room.GamePlayers;
+        guardState = State.Patroling;
     }
 
 
@@ -107,15 +119,40 @@ public class GuardAI : NetworkBehaviour
     }
 
     [ClientRpc]
-    void changeToYellow()
+    void ChangeToYellow()
     {
         spotlight.color = spotlightColour;
     }
 
     [ClientRpc]
-    void changeToRed()
+    void ChangeToRed()
     {
         spotlight.color = Color.red;
+    }
+
+    [ClientRpc]
+    void SetGuardsToAlerted()
+    {
+        Transform parent = transform.parent;
+        foreach (Transform child in parent)
+        {
+            GuardAI temp = child.gameObject.GetComponent<GuardAI>();
+            temp.guardState = State.Alerted;
+            temp.timeAlerted = 0f;
+            temp.alertPosition = transform.position;
+        }
+
+    }
+
+    [ClientRpc]
+    void ChangeToOrange()
+    {
+        spotlight.color = alertColour;
+    }
+
+    void GoToSighting()
+    {
+        guard.SetDestination(alertPosition);
     }
 
     [Server]
@@ -131,15 +168,35 @@ public class GuardAI : NetworkBehaviour
         playerSpotted = PlayerSpotted();
 
         // If the player is not spotted and the guard has reached their destination, go to new point
-        if (!playerSpotted && guard.remainingDistance < 0.5f)
+        if (!playerSpotted && guardState == State.Alerted)
         {
-            GotoNextPoint();
-            changeToYellow();
+            // increase time and once it hits limit, go back to patroling
+            timeAlerted += Time.deltaTime;
+            Debug.Log(timeAlerted);
+            if (timeAlerted > 5f)
+            {
+                guardState = State.Patroling;
+                GotoNextPoint();
+                ChangeToYellow();
+            }
+            else
+            {
+                GoToSighting();
+                ChangeToOrange();
+            }
         }
-        if (playerSpotted)
+        else if (!playerSpotted && guard.remainingDistance < 0.5f)
         {
+            guardState = State.Patroling;
+            GotoNextPoint();
+            ChangeToYellow();
+        }
+        else if (playerSpotted)
+        {
+            SetGuardsToAlerted();
+            guardState = State.Chasing;
             ChasePlayer();
-            changeToRed();
+            ChangeToRed();
         }
 
     }
