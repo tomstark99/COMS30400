@@ -11,7 +11,7 @@ public class InstantiateTrees : MonoBehaviour
     {
         for (int i = 0; i < 25; i++)
         {
-            Vector3 position = new Vector3(Random.Range(250.0f, 270.0f), 5, Random.Range(200.0f, 400.0f));
+            Vector3 position = new Vector3(Random.Range(250.0f, 270.0f), 5, Random.Range(200.0f, 420.0f));
             Instantiate(tree, position, Quaternion.identity);
         }
 
