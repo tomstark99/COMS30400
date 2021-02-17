@@ -30,6 +30,7 @@ public class MouseLook : NetworkBehaviour
     {
         if (!hasAuthority) return;
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     [Client]
