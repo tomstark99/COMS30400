@@ -67,7 +67,7 @@ public class GuardAI : NetworkBehaviour
         destPoint = (destPoint + 1) % points.Length;
     }
 
-    void ChasePlayer()
+    Transform FindClosestPlayer()
     {
         Transform closestPlayer = null;
 
@@ -83,6 +83,13 @@ public class GuardAI : NetworkBehaviour
                 lastDistance = eDistance;
             }
         }
+
+        return closestPlayer;
+    }
+
+    void ChasePlayer()
+    {
+        Transform closestPlayer = FindClosestPlayer();
 
         transform.LookAt(closestPlayer.transform);
         guard.SetDestination(closestPlayer.position- new Vector3(proximityRange,0,0));
@@ -134,12 +141,13 @@ public class GuardAI : NetworkBehaviour
     void SetGuardsToAlerted()
     {
         Transform parent = transform.parent;
+        Transform closestPlayer = FindClosestPlayer();
         foreach (Transform child in parent)
         {
             GuardAI temp = child.gameObject.GetComponent<GuardAI>();
             temp.guardState = State.Alerted;
             temp.timeAlerted = 0f;
-            temp.alertPosition = transform.position;
+            temp.alertPosition = closestPlayer.position;
         }
 
     }
@@ -167,7 +175,7 @@ public class GuardAI : NetworkBehaviour
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
 
-        // If the player is not spotted and the guard has reached their destination, go to new point
+        // If the player is not spotted but the guard is in the alerted state
         if (!playerSpotted && guardState == State.Alerted)
         {
             // increase time and once it hits limit, go back to patroling
@@ -178,6 +186,7 @@ public class GuardAI : NetworkBehaviour
                 guardState = State.Patroling;
                 GotoNextPoint();
                 ChangeToYellow();
+                timeAlerted = 0f;
             }
             else
             {
@@ -185,12 +194,14 @@ public class GuardAI : NetworkBehaviour
                 ChangeToOrange();
             }
         }
+        // If the player is not spotted and the guard has reached their destination, go to new point
         else if (!playerSpotted && guard.remainingDistance < 0.5f)
         {
             guardState = State.Patroling;
             GotoNextPoint();
             ChangeToYellow();
         }
+        // If player is spotted, guard will chase player and set guards in the same group as him to spotted
         else if (playerSpotted)
         {
             SetGuardsToAlerted();

@@ -32,5 +32,7 @@ public class InstantiateTrees : MonoBehaviour
             Vector3 position = new Vector3(Random.Range(275.0f, 450.0f), 5, Random.Range(445.0f, 465.0f));
             Instantiate(tree, position, Quaternion.identity);
         }
+
+        Debug.Log("Trees");
     }
 }

@@ -32,5 +32,6 @@ public class InstantiateFences : MonoBehaviour
             Vector3 position = new Vector3((272.5f + i * 5.0f), 6.5f, 440.5f);
             Instantiate(fence, position, Quaternion.Euler(0f, 0f, 0f));
         }
+        Debug.Log("Fences");
     }
 }
