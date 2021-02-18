@@ -22,6 +22,7 @@ public class GuardAI : NetworkBehaviour
     private List<Player> players;
     public State guardState;
     public float timeAlerted;
+    public float timeChasing;
     public Vector3 alertPosition;
 
 
@@ -181,7 +182,7 @@ public class GuardAI : NetworkBehaviour
             // increase time and once it hits limit, go back to patroling
             timeAlerted += Time.deltaTime;
             Debug.Log(timeAlerted);
-            if (timeAlerted > 5f)
+            if (timeAlerted > 8f)
             {
                 guardState = State.Patroling;
                 GotoNextPoint();
@@ -198,13 +199,18 @@ public class GuardAI : NetworkBehaviour
         else if (!playerSpotted && guard.remainingDistance < 0.5f)
         {
             guardState = State.Patroling;
+            timeChasing = 0f;
             GotoNextPoint();
             ChangeToYellow();
         }
         // If player is spotted, guard will chase player and set guards in the same group as him to spotted
         else if (playerSpotted)
         {
-            SetGuardsToAlerted();
+            timeChasing += Time.deltaTime;
+            if (timeChasing > 2f)
+            {
+                SetGuardsToAlerted();
+            }
             guardState = State.Chasing;
             ChasePlayer();
             ChangeToRed();
