@@ -9,10 +9,10 @@ using UnityEngine.AI;
 public class NetworkManagerMain : NetworkManager
 {
     [Scene] [SerializeField] private string menuScene = string.Empty;
-    [SerializeField] public NavMeshSurface surface;
+    public NavMeshSurface surface;
     public GameObject tree;
     public GameObject train;
-    long seed;
+    int seed;
 
     // variables for spawning trains
     const float gap = 7.075f;
@@ -20,9 +20,10 @@ public class NetworkManagerMain : NetworkManager
     private Vector3 position = new Vector3(325.0f, 5.1f, 260.0f);
     private const int instantiations = 12;
 
+    [Server]
     void SpawnTrees()
     {
-        UnityEngine.Random.InitState((int)seed);
+        UnityEngine.Random.InitState(seed);
         for (int i = 0; i < 25; i++)
         {
             Vector3 position = new Vector3(UnityEngine.Random.Range(250.0f, 270.0f), 5, UnityEngine.Random.Range(200.0f, 420.0f));
@@ -53,10 +54,11 @@ public class NetworkManagerMain : NetworkManager
 
         Debug.Log("Trees");
     }
-
+    
+    [Server]
     void SpawnTrains()
     {
-        UnityEngine.Random.InitState((int)seed);
+        UnityEngine.Random.InitState(seed);
         int clearTrack = UnityEngine.Random.Range(0, 5);
         Debug.Log("skipped track: " + clearTrack);
         for (int j = 0; j < 5; j++)
@@ -102,7 +104,8 @@ public class NetworkManagerMain : NetworkManager
     public override void OnStartServer()
     {
         spawnPrefabs = Resources.LoadAll<GameObject>("Prefabs/ModelPrefabs").ToList();
-        seed = DateTime.Now.Ticks;
+        seed = (int)DateTime.Now.Ticks;
+        UnityEngine.Random.InitState(seed);
         SpawnTrees();
         SpawnTrains();
         surface.BuildNavMesh();
@@ -113,6 +116,7 @@ public class NetworkManagerMain : NetworkManager
     public override void OnStartClient()
     {
         var spawnablePrefabs = Resources.LoadAll<GameObject>("Prefabs/ModelPrefabs");
+        UnityEngine.Random.InitState(seed);
         SpawnTrees();
         SpawnTrains();
         foreach (var prefab in spawnablePrefabs)
