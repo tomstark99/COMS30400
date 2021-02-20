@@ -1909,7 +1909,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 222727708}
-  - component: {fileID: 222727709}
   m_Layer: 0
   m_Name: Trains
   m_TagString: Untagged
@@ -1931,19 +1930,6 @@ Transform:
   m_Father: {fileID: 1593850908}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &222727709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 222727707}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea26645312149cc42bbd9d584d82ede7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  train: {fileID: 5283402586538149640, guid: 79d89f0f9958db2429332bfee0c3a424, type: 3}
 --- !u!1001 &223028854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9025,7 +9011,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1593850908}
-  - component: {fileID: 1593850909}
   m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
@@ -9059,18 +9044,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1593850909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1593850907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e727d6d5bb5befe4786cebf71daa0cb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1594702573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9917,7 +9890,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1838306384}
-  - component: {fileID: 1838306383}
   m_Layer: 15
   m_Name: Trees
   m_TagString: Untagged
@@ -9925,21 +9897,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1838306383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1838306382}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d046bd375db1c5a42bce005dbca44ed8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  tree: {fileID: 1948757798113483429, guid: dd3e983fd184775429dd64a27bd326f5, type: 3}
 --- !u!4 &1838306384
 Transform:
   m_ObjectHideFlags: 0
