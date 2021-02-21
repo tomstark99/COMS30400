@@ -25,6 +25,6 @@ public class NetworkManagerMain : NetworkManager
 
     private void Update()
     {
-        Debug.Log(GamePlayers.Count);
+       // Debug.Log(GamePlayers.Count);
     }
 }
