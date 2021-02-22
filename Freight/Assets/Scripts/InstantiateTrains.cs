@@ -16,9 +16,9 @@ public class InstantiateTrains : MonoBehaviour
     {
         long seed = System.DateTime.Now.Ticks;
         Random.seed = (int)seed/(Random.Range(1,50000));
-        int clearTrack = 0;//Random.Range(0,5);
+        int clearTrack = Random.Range(0,5);
         GameObject freight_train_coal_loc = GameObject.FindWithTag("locomotive");
-        GameObject track = GameObject.FindWithTag("0");
+        GameObject track = GameObject.FindWithTag(clearTrack.ToString());
         freight_train_coal_loc.GetComponent<SplineWalker>().spline = track.GetComponent<BezierSpline>();
         Debug.Log("skipped track: " + clearTrack);
         for(int j = 0; j < 5; j++) {
@@ -44,13 +44,13 @@ public class InstantiateTrains : MonoBehaviour
                     }
                     position.z += 8.15f;
                 }
-            } else {
-                for (int i = 0; i < instantiations; i++){
-                    Instantiate(trainMoving, position, Quaternion.Euler(0f,0f,0f));
-                    position.z += 8.2f;
-                }
-            }
-
+            } 
+            // else {
+            //     for (int i = 0; i < instantiations; i++){
+            //         Instantiate(trainMoving, position, Quaternion.Euler(0f,0f,0f));
+            //         position.z += 8.2f;
+            //     }
+            // }
         }
     }
     
