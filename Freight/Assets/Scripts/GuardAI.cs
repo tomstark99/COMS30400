@@ -45,10 +45,16 @@ public class GuardAI : NetworkBehaviour
         }
     }
 
-    private void Start()
+    void Start()
     {
-        guard = GetComponent<NavMeshAgent>();
         players = Room.GamePlayers;
+    }
+
+    public override void OnStartServer()
+    {
+        Debug.Log("this ran");
+        players = Room.GamePlayers;
+        guard = GetComponent<NavMeshAgent>();
         guardState = State.Patroling;
     }
 
@@ -172,6 +178,8 @@ public class GuardAI : NetworkBehaviour
         {
             return;
         }
+
+        players = Room.GamePlayers;
 
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
