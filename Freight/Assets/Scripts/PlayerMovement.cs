@@ -17,8 +17,8 @@ public class PlayerMovement : NetworkBehaviour
     private float groundDistance = 0.4f;
     private bool isGrounded;
 
+    [ClientCallback]
     // Update is called once per frame
-    [Client]
     void Update()
     {
         if (!hasAuthority) return;
