@@ -6,6 +6,7 @@ public class InstantiateTrains : MonoBehaviour
 {
     public GameObject train;
     public GameObject trainMoving;
+    public GameObject trainLadder;
     const float gap = 7.075f;
     private Vector3 positionStart = new Vector3(325.0f, 5.1f, 255.0f);
     private Vector3 position = new Vector3(325.0f, 5.1f, 255.0f);
@@ -42,9 +43,19 @@ public class InstantiateTrains : MonoBehaviour
                     position.z += 8.15f;
                 }
             } else {
+                bool ladderPlaced = false;
                 for (int i = 0; i < instantiations; i++){
-                    Instantiate(trainMoving, position, Quaternion.Euler(0f,0f,0f));
-                    position.z += 8.2f;
+                    if (Random.Range(1,5) == 3 && ladderPlaced == false)
+                    {
+                        Instantiate(trainLadder, position, Quaternion.Euler(0f, 0f, 0f));
+                        position.z += 8.2f;
+                        ladderPlaced = true;
+                    }
+                    else
+                    {
+                        Instantiate(trainMoving, position, Quaternion.Euler(0f, 0f, 0f));
+                        position.z += 8.2f;
+                    }
                 }
             }
 
