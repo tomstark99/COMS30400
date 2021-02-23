@@ -3,63 +3,101 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public enum EquippedWeapon : int
+public enum EquippedItem : int
 {
     nothing,
-    ak47
+    rock
 }
 public class ItemPickUp : NetworkBehaviour
 {
+    //right hand of the player -- item gonna be a child of the hand
+    private GameObject rightHand;
 
-    //public GameObject bulletPrefab;
-    private float bulletSpeed;
-    private GameObject bulletSpawnPosition;
-    private GameObject weaponParent;
+
     public GameObject equippedWeaponPrefab;
-    private GameObject equippedWeaponGo;//Go = gameobject
-    [SyncVar(hook = nameof(OnChangeWeapon))]
-    private EquippedWeapon equippedWeapon = EquippedWeapon.nothing;
+    SphereCollider sphere;
+    private GameObject equippedWeaponGo;
+    [SyncVar(hook = nameof(onChangeItem))]
+    private EquippedItem equippedItem = EquippedItem.nothing;
     void Start()
     {
-        weaponParent = transform.Find("RightHand").gameObject;
-        bulletSpeed = 15;
+        rightHand = transform.Find("RightHand").gameObject;
     }
     void Update()
     {
-        if (weaponParent.transform.childCount == 0)
+        if (!isLocalPlayer)
+            return;
+
+        if (rightHand.transform.childCount == 0)
         {
             return;
         }
 
-        /*if (this.isLocalPlayer && Input.GetMouseButtonDown(0))
+       
+        if (Input.GetMouseButtonDown(0))
         {
-            this.CmdBulletShoot();
-        }*/
-    }
-    private void OnChangeWeapon(EquippedWeapon oldEquippedWeapon, EquippedWeapon newEquippedWeapon)
-    {
-        if (newEquippedWeapon == EquippedWeapon.ak47)
-        {
-            equippedWeaponGo = Instantiate(equippedWeaponPrefab, weaponParent.transform.position, weaponParent.transform.rotation);
-            equippedWeaponGo.transform.parent = weaponParent.transform;
-            //bulletSpawnPosition = equippedWeaponGo.transform.GetChild(1).gameObject;
+            this.ThrowItem();
         }
     }
-    /*[Command]
-    void CmdBulletShoot()
+    private void onChangeItem(EquippedItem oldEquippedItem, EquippedItem newEquippedItem)
     {
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPosition.transform.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody2D>().velocity = bulletSpawnPosition.transform.right * bulletSpeed;
-        NetworkServer.Spawn(bullet);
-        Destroy(bullet, 1.0f);
+        
+         StartCoroutine(ChangeEquipment(newEquippedItem));
 
-    }*/
+    }
+
+    IEnumerator ChangeEquipment(EquippedItem newEquippedItem)
+    {
+        while (rightHand.transform.childCount > 0)
+        {
+            Destroy(rightHand.transform.GetChild(0).gameObject);
+            yield return null;
+        }
+
+        switch (newEquippedItem)
+        {
+            case EquippedItem.rock:
+                Instantiate(equippedWeaponPrefab, rightHand.transform);
+                break;
+          
+        }
+    }
     [Command]
-    public void PickUpWeapon(EquippedWeapon equipped)
+    void ThrowItem()
+    {
+        Debug.Log("hand child " + rightHand.transform.GetChild(0));
+
+        GameObject parent = rightHand.transform.parent.gameObject;
+        Debug.Log(parent);
+
+        GameObject cube = parent.transform.Find("Cube").gameObject;
+        Debug.Log(cube);
+
+        GameObject camera = cube.transform.Find("Camera").gameObject;
+        Debug.Log(camera);
+
+        GameObject rockToBeDestroyed = rightHand.transform.GetChild(0).gameObject;
+
+        Destroy(rockToBeDestroyed.gameObject);
+        equippedItem = EquippedItem.nothing;
+       // Debug.Log(GameObject.Find("RockWithNetworkIdentity"));
+        GameObject rockGo = Instantiate(equippedWeaponPrefab, rightHand.transform.position, rightHand.transform.rotation);
+        //Rigidbody gameObjectsRigidBody = rockGo.AddComponent<Rigidbody>(); // Add the rigidbody.
+        rockGo.GetComponent<Rigidbody>().isKinematic = false;
+        
+
+        rockGo.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000 );
+        NetworkServer.Spawn(rockGo);
+        
+
+    }
+    
+    [Command]
+    public void PickUpItem(EquippedItem equipped)
     {
         Debug.Log("PickUp_weapon = " + equipped);
-        equippedWeapon = equipped;
-        Debug.Log("PickUp_weapon = " + equippedWeapon);
+        equippedItem = equipped;
+        Debug.Log("PickUp_weapon = " + equippedItem);
 
     }
 
