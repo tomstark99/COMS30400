@@ -6,32 +6,33 @@ public class Item : NetworkBehaviour
 {
     public GameObject weaponPrefab;
     private GameObject childrenWeapon;
-
-    void Start()
+    private GameObject thePlayers;
+    void Start()  
     {
-        childrenWeapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
-        childrenWeapon.transform.parent = transform;
+   
     }
-    private void OnTriggerEnter(Collider collision)
+
+    void Update()
     {
-        if (collision.tag == "Player" || collision.tag == "Player(Clone)")
- 
+        NetworkManagerMain thePlayer = GameObject.FindObjectOfType<NetworkManagerMain>();
+        Debug.Log(thePlayer);
+        List<Player> GPlayers = thePlayer.GamePlayers;
+        
+        foreach (Player player in GPlayers)
         {
-           
-            Debug.Log("Triggered with: " + collision);
-            Component[] components = collision.GetComponents(typeof(Component));
-            foreach (Component component in components)
+            float dist = Vector3.Distance(gameObject.transform.position, player.transform.position);
+            if (Input.GetKeyDown(KeyCode.E) && dist <= 2.5f)
             {
-                Debug.Log(component.ToString());
+                Debug.Log("PickUp");
+                ItemPickUp script = player.GetComponent<ItemPickUp>();
+                script.PickUpItem(EquippedItem.rock);
+                Destroy(transform.gameObject);
+                Debug.Log(player.GetComponent<NetworkObjectDestroyer>());
+                player.GetComponent<NetworkObjectDestroyer>().TellServerToDestroyObject(transform.gameObject);
+
             }
-            Debug.Log(collision.GetComponent<ItemPickUp>());
-           
-            ItemPickUp script = collision.GetComponent<ItemPickUp>();
-            Debug.Log(script);
-            script.PickUpWeapon(EquippedWeapon.ak47);
-            Destroy(transform.gameObject);
         }
+        Debug.Log(GPlayers.Count);
     }
-
-
+   
 }

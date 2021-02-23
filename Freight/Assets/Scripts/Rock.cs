@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Rock : MonoBehaviour
 {
-    private const EquippedWeapon EQUIPPEDWEAPON = EquippedWeapon.ak47;
+    private const EquippedItem EQUIPPEDITEM = EquippedItem.rock;
 
 }
