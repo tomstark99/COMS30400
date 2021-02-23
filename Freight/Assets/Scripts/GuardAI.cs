@@ -45,19 +45,21 @@ public class GuardAI : NetworkBehaviour
         }
     }
 
+    [ServerCallback]
     void Start()
     {
-        players = Room.GamePlayers;
-    }
-
-    public override void OnStartServer()
-    {
-        Debug.Log("this ran");
         players = Room.GamePlayers;
         guard = GetComponent<NavMeshAgent>();
         guardState = State.Patroling;
     }
 
+    //public override void OnStartServer()
+    //{
+    //    Debug.Log("this ran");
+    //    players = Room.GamePlayers;
+    //    guard = GetComponent<NavMeshAgent>();
+    //    guardState = State.Patroling;
+    //}
 
     void GotoNextPoint()
     {
@@ -144,7 +146,6 @@ public class GuardAI : NetworkBehaviour
         spotlight.color = Color.red;
     }
 
-    [ClientRpc]
     void SetGuardsToAlerted()
     {
         Transform parent = transform.parent;
@@ -170,7 +171,7 @@ public class GuardAI : NetworkBehaviour
         guard.SetDestination(alertPosition);
     }
 
-    [Server]
+    [ServerCallback]
     // Update is called once per frame
     void Update()
     {

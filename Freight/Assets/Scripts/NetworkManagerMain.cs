@@ -126,6 +126,12 @@ public class NetworkManagerMain : NetworkManager
         }
     }
 
+    public override void OnClientDisconnect(NetworkConnection conn)
+    {
+        //GamePlayers.Remove();
+        base.OnClientDisconnect(conn);
+    }
+
     private void Update()
     {
         //Debug.Log(GamePlayers.Count);
