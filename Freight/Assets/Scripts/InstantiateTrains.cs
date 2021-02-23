@@ -47,7 +47,7 @@ public class InstantiateTrains : MonoBehaviour
                     }
                     position.z += 8.15f;
                 }
-            } else {
+            } /*else {
                 bool ladderPlaced = false;
                 for (int i = 0; i < instantiations; i++){
                     if (Random.Range(1,5) == 3 && ladderPlaced == false)
@@ -62,7 +62,7 @@ public class InstantiateTrains : MonoBehaviour
                         position.z += 8.2f;
                     }
                 }
-            }
+            }*/
 
         }
     }
