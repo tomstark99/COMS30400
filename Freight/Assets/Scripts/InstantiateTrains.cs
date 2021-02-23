@@ -65,6 +65,7 @@ public class InstantiateTrains : MonoBehaviour
             }*/
 
         }
+        Debug.Log("Trains");
     }
     
     bool inSkip(int i, int[] positions, int gaps) {
