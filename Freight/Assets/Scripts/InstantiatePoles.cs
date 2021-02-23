@@ -39,6 +39,6 @@ public class InstantiatePoles : MonoBehaviour
             }
             Instantiate(poles, position, Quaternion.Euler(0f, -45f, 0f));
         }
-        
+        Debug.Log("Poles");
     }
 }
