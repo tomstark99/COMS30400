@@ -14,25 +14,30 @@ public class Item : NetworkBehaviour
 
     void Update()
     {
+
+        //get a list of players
         NetworkManagerMain thePlayer = GameObject.FindObjectOfType<NetworkManagerMain>();
         Debug.Log(thePlayer);
         List<Player> GPlayers = thePlayer.GamePlayers;
         
+        //check the distance from the item to each player
         foreach (Player player in GPlayers)
         {
             float dist = Vector3.Distance(gameObject.transform.position, player.transform.position);
+
+            //if the key E is pressed and the item is near the player
             if (Input.GetKeyDown(KeyCode.E) && dist <= 2.5f)
             {
-                Debug.Log("PickUp");
+                //pick up item
                 ItemPickUp script = player.GetComponent<ItemPickUp>();
                 script.PickUpItem(EquippedItem.rock);
+
+                //destroy the item
                 Destroy(transform.gameObject);
-                Debug.Log(player.GetComponent<NetworkObjectDestroyer>());
                 player.GetComponent<NetworkObjectDestroyer>().TellServerToDestroyObject(transform.gameObject);
 
             }
         }
-        Debug.Log(GPlayers.Count);
     }
    
 }
