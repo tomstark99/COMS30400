@@ -9,7 +9,6 @@ public class GuardAI : NetworkBehaviour
 {
     public enum State
     {
-        Chasing,
         Patroling,
         Alerted
     }
@@ -220,7 +219,7 @@ public class GuardAI : NetworkBehaviour
             {
                 SetGuardsToAlerted();
             }
-            guardState = State.Chasing;
+            //guardState = State.Chasing;
             ChasePlayer();
             ChangeToRed();
         }
