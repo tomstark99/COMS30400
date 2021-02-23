@@ -16,13 +16,13 @@ public class showText : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        txtMy = GameObject.Find("Canvas/Text").GetComponent<Text>();
+        txtMy = GameObject.Find("UI/Text").GetComponent<Text>();
         txtMy.text = string.Join(",", PoseParser.GETPoseArray());
     }
 
     // Update is called once per frame
     void Update()
     {
-        txtMy.text = string.Join(",", PoseParser.GETPoseArray());
+        txtMy.text = PoseParser.GETGestureAsString() + string.Join(",", PoseParser.GETPoseArray());
     }
 }

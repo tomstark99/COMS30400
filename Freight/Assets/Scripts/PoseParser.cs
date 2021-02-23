@@ -9,6 +9,9 @@ public class PoseParser : MonoBehaviour
     
     [DllImport("__Internal")]
     private static extern string StringReturnValueFunction();
+    
+    [DllImport("__Internal")]
+    private static extern string GetGestureAsString();
 
     private static float[] poseArray;
     private static string returnString;
@@ -32,6 +35,15 @@ public class PoseParser : MonoBehaviour
         #endif
         poseArray = Array.ConvertAll(splitString, s => float.Parse(s));
         return poseArray;
+    }
+
+    public static string GETGestureAsString()
+    {
+        #if UNITY_EDITOR
+        return "E";
+        #elif UNITY_WEBGL
+        return GetGestureAsString();
+        #endif
     }
     
 }
