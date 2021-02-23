@@ -28,7 +28,7 @@ public class HeadMovement : MonoBehaviour
         noseOffset = currentNosePos - origionalNosePos;
         noseOffset.Scale(new Vector3(1.0f/240.0f, -1.0f/240.0f, 1.0f/240.0f));
 
-        Debug.Log(noseOffset.ToString());
+        //Debug.Log(noseOffset.ToString());
 
         transform.localPosition = origionalTranfromPos + noseOffset;
 
