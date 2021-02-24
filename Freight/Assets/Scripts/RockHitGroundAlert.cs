@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class RockHitGroundAlert : MonoBehaviour
+public class RockHitGroundAlert : NetworkBehaviour
 {
     public Transform groundCheck;
     private GameObject guards;
@@ -10,7 +11,9 @@ public class RockHitGroundAlert : MonoBehaviour
     public LayerMask groundMask;
     private bool isGrounded ;
     private bool lastFrameValueOfIsGrounded;
+    [SyncVar] public bool rockHitGround;
 
+    [ServerCallback]
     // Start is called before the first frame update
     void Start()
     {
@@ -27,12 +30,21 @@ public class RockHitGroundAlert : MonoBehaviour
         }
     }
 
+    [ServerCallback]
     // Update is called once per frame
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (isGrounded == true && lastFrameValueOfIsGrounded == false)
+        {
             Debug.Log("Rock hit the ground alie");
+            rockHitGround = true;
+        }
+        else
+        {
+            rockHitGround = false;
+        }
+
         lastFrameValueOfIsGrounded = isGrounded;
     }
    
