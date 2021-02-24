@@ -194,7 +194,7 @@ public class GuardAI : NetworkBehaviour
             if (tempRock.rockHitGround)
             {
                 Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
-                if (Vector3.Distance(transform.position, tempRock.transform.position) < 20)
+                if (Vector3.Distance(transform.position, tempRock.transform.position) < 100)
                 {
                     return tempRock.transform.position;
                 }
