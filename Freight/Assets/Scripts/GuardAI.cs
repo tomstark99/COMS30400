@@ -160,6 +160,19 @@ public class GuardAI : NetworkBehaviour
 
     }
 
+    void SetGuardsToAlertedItem(Vector3 position)
+    {
+        Transform parent = transform.parent;
+        foreach (Transform child in parent)
+        {
+            GuardAI temp = child.gameObject.GetComponent<GuardAI>();
+            temp.guardState = State.Alerted;
+            temp.timeAlerted = 0f;
+            temp.alertPosition = position;
+        }
+
+    }
+
     [ClientRpc]
     void ChangeToOrange()
     {
@@ -169,6 +182,25 @@ public class GuardAI : NetworkBehaviour
     void GoToSighting()
     {
         guard.SetDestination(alertPosition);
+    }
+
+    Vector3 CheckForRock()
+    {
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+            RockHitGroundAlert tempRock = rock.transform.GetChild(0).gameObject.GetComponent<RockHitGroundAlert>();
+            if (tempRock.rockHitGround)
+            {
+                Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
+                if (Vector3.Distance(transform.position, tempRock.transform.position) < 20)
+                {
+                    return tempRock.transform.position;
+                }
+            }
+        }
+        return new Vector3 (0f,0f,0f);
     }
 
     [ServerCallback]
@@ -184,6 +216,8 @@ public class GuardAI : NetworkBehaviour
 
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
+
+        Vector3 rockPos = CheckForRock();
 
         // If the player is not spotted but the guard is in the alerted state
         if (!playerSpotted && guardState == State.Alerted)
@@ -203,6 +237,10 @@ public class GuardAI : NetworkBehaviour
                 GoToSighting();
                 ChangeToOrange();
             }
+        }
+        else if (rockPos != new Vector3 (0f,0f,0f))
+        {
+            SetGuardsToAlertedItem(rockPos);
         }
         // If the player is not spotted and the guard has reached their destination, go to new point
         else if (!playerSpotted && guard.remainingDistance < 0.5f)

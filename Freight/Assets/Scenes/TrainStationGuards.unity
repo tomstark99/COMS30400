@@ -1335,25 +1335,6 @@ Transform:
   m_Father: {fileID: 743479717}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &129707278 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6773835149859380236, guid: d2f192c371f0f7f408ef6d3471aa68ca,
-    type: 3}
-  m_PrefabInstance: {fileID: 225549522}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &129707284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129707278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69b804d6f0d021840a9bd9f2afcc9fba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  guards: {fileID: 0}
 --- !u!1001 &129847391
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2029,11 +2010,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -7884153911332609957, guid: d2f192c371f0f7f408ef6d3471aa68ca,
-        type: 3}
-      propertyPath: syncInterval
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 117232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
       propertyPath: m_Name
       value: Rock
@@ -2086,6 +2062,11 @@ PrefabInstance:
         type: 3}
       propertyPath: sceneId
       value: 897994193
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616967700140086585, guid: d2f192c371f0f7f408ef6d3471aa68ca,
+        type: 3}
+      propertyPath: m_AssetId
+      value: d2f192c371f0f7f408ef6d3471aa68ca
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
