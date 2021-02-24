@@ -2003,6 +2003,73 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f6a0c50e48ac5e40a72055fa4c71a5a, type: 3}
+--- !u!1001 &225549522
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 117232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_Name
+      value: Rock
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 266.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 245.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99767023
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.06424781
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0014743649
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.022894626
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 417232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616967700140086585, guid: d2f192c371f0f7f408ef6d3471aa68ca,
+        type: 3}
+      propertyPath: sceneId
+      value: 897994193
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616967700140086585, guid: d2f192c371f0f7f408ef6d3471aa68ca,
+        type: 3}
+      propertyPath: m_AssetId
+      value: d2f192c371f0f7f408ef6d3471aa68ca
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
 --- !u!1001 &230106690
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7461,7 +7528,7 @@ GameObject:
   - component: {fileID: 1273165556}
   m_Layer: 16
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: terain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -8545,6 +8612,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1385975412}
     - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 7442339453046594729, guid: 0f3a33f809f391e418c4740666c8571f,
+        type: 3}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
       propertyPath: spawnPrefabs.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -8563,6 +8635,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8637624439491761572, guid: 506d16c45a8598b4aa538ed1713d69ad,
         type: 3}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 117232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
     - target: {fileID: 3761340792670689, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
       propertyPath: sslEnabled
       value: 0
@@ -11061,6 +11137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fence: {fileID: 8637624439491761572, guid: 506d16c45a8598b4aa538ed1713d69ad, type: 3}
+  bottomFence: {fileID: 0}
+  fenceBrokenPartial: {fileID: 0}
 --- !u!1001 &2027575779
 PrefabInstance:
   m_ObjectHideFlags: 0
