@@ -17,7 +17,6 @@ public class Item : NetworkBehaviour
 
         //get a list of players
         NetworkManagerMain thePlayer = GameObject.FindObjectOfType<NetworkManagerMain>();
-        Debug.Log(thePlayer);
         List<Player> GPlayers = thePlayer.GamePlayers;
         
         //check the distance from the item to each player
