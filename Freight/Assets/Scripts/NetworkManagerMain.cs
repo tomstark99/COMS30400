@@ -15,7 +15,7 @@ public class NetworkManagerMain : NetworkManager
         //spawnPrefabs = Resources.LoadAll<GameObject>("Prefabs/ModelPrefabs").ToList();
     }
 
-    public List<Player> GamePlayers { get; } = new List<Player>();
+    public readonly List<Player> GamePlayers = new List<Player>();
 
     public override void OnStartClient()
     {
@@ -29,6 +29,33 @@ public class NetworkManagerMain : NetworkManager
 
     private void Update()
     {
-
+    
     }
+
+    public override void OnServerDisconnect(NetworkConnection conn)
+    {
+        foreach(Player playerObject in GamePlayers)
+        {
+            if (conn.clientOwnedObjects.Contains(playerObject.netIdentity))
+            {
+                GamePlayers.Remove(playerObject);
+                break; //should have only one such Player object
+            }
+        }
+        base.OnServerDisconnect(conn);
+    }
+
+    public override void OnServerAddPlayer(NetworkConnection conn)
+    {
+        base.OnServerAddPlayer(conn);
+        foreach (NetworkIdentity netId in conn.clientOwnedObjects)
+        {
+            if (netId.gameObject.GetComponent<Player>() != null)
+            {
+                GamePlayers.Add(netId.gameObject.GetComponent<Player>());
+                break;
+            }
+        }
+    }
+
 }
