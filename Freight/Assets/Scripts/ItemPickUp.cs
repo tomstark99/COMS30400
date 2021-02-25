@@ -54,7 +54,6 @@ public class ItemPickUp : NetworkBehaviour
         }
     }
 
-    [ClientCallback]
     void Update()
     {
         if (!isLocalPlayer)  return;
@@ -71,11 +70,13 @@ public class ItemPickUp : NetworkBehaviour
     void ThrowItem()
     {
         //get the camera game object
-        GameObject parent = rightHand.transform.parent.gameObject;
+        GameObject parent = rightHand.transform.parent.transform.parent.gameObject;
 
         GameObject cube = parent.transform.Find("Cube").gameObject;
 
         GameObject camera = cube.transform.Find("Camera").gameObject;
+
+        Debug.Log(camera);
 
         //create a new rock
         GameObject newSceneObject = Instantiate(sceneObjectPrefab, rightHand.transform.position, rightHand.transform.rotation);
