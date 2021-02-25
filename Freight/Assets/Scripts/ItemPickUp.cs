@@ -48,7 +48,9 @@ public class ItemPickUp : NetworkBehaviour
         {
             case EquippedItem.rock:
                 
-                Instantiate(rockPrefab, rightHand.transform);
+                GameObject newRock = Instantiate(rockPrefab, rightHand.transform);
+                newRock.transform.parent = rightHand.transform;
+                newRock.GetComponent<Rigidbody>().isKinematic = true;
                 break;
           
         }
@@ -88,6 +90,7 @@ public class ItemPickUp : NetworkBehaviour
 
         sceneObject.equippedItem = equippedItem;
 
+        Debug.Log("when i dropped the object" + equippedItem);
         equippedItem = EquippedItem.nothing;
 
 
