@@ -36,7 +36,13 @@ public class PlayerMovement : NetworkBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * x + transform.forward * z;
+        Vector3 move;
+
+        if(climbing) {
+            move = transform.right * x + transform.up * z;
+        } else {
+            move = transform.right * x + transform.forward * z;
+        }
 
         controller.Move(move * speed * Time.deltaTime);
 
@@ -50,10 +56,10 @@ public class PlayerMovement : NetworkBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
-        if (climbing) {
-            Vector3 climb = transform.up * 1f;
-            controller.Move(climb * 10f * Time.deltaTime);
-        }
+        // if (climbing) {
+        //     Vector3 climb = transform.up * Input.GetAxis("Vertical");
+        //     controller.Move(climb * 10f * Time.deltaTime);
+        // }
     }
     
     void OnTriggerEnter(Collider other) {
