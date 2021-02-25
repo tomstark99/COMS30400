@@ -61,22 +61,20 @@ public class ItemPickUp : NetworkBehaviour
         //if click throw the item
         if (Input.GetKeyDown(KeyCode.X) && equippedItem != EquippedItem.nothing)
         {
-            ThrowItem();
+            GameObject parent = rightHand.transform.parent.transform.parent.gameObject;
+
+            GameObject cube = parent.transform.GetChild(2).gameObject;
+
+            GameObject camera = cube.transform.GetChild(0).gameObject;
+
+            ThrowItem(camera.transform.forward);
         }
     }
 
     
     [Command]
-    void ThrowItem()
+    void ThrowItem(Vector3 cameraVector)
     {
-        //get the camera game object
-        GameObject parent = rightHand.transform.parent.transform.parent.gameObject;
-
-        GameObject cube = parent.transform.Find("Cube").gameObject;
-
-        GameObject camera = cube.transform.Find("Camera").gameObject;
-
-        Debug.Log(camera);
 
         //create a new rock
         GameObject newSceneObject = Instantiate(sceneObjectPrefab, rightHand.transform.position, rightHand.transform.rotation);
@@ -95,11 +93,12 @@ public class ItemPickUp : NetworkBehaviour
 
 
         //add force to the rock so it shooots
-        newSceneObject.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000 );
+        newSceneObject.GetComponent<Rigidbody>().AddForce(cameraVector * 1000);
 
         //spawn the rock on the server and on the clients respectively
         NetworkServer.Spawn(newSceneObject);
-        
+        //newSceneObject.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
+
 
     }
     
