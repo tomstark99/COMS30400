@@ -12,11 +12,6 @@ public class SceneObject : NetworkBehaviour
     //rock prefab
     public GameObject rockPrefab;
     
-    void Start()
-    {
-        rockPrefab.GetComponent<Rigidbody>().isKinematic = false;
-
-    }
     void onChangeItem(EquippedItem oldEquippedItem, EquippedItem newEquippedItem)
     {
 
@@ -52,10 +47,8 @@ public class SceneObject : NetworkBehaviour
         }
     }
 
-    [ClientCallback]
     void Update()
     {
-        
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log(gameObject);
