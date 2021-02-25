@@ -181,8 +181,12 @@ public class GuardAI : NetworkBehaviour
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
 
+        if (timeChasing > 5f)
+        {
+            Room.EndGame();
+        }
         // If the player is not spotted but the guard is in the alerted state
-        if (!playerSpotted && guardState == State.Alerted)
+        else if (!playerSpotted && guardState == State.Alerted)
         {
             // increase time and once it hits limit, go back to patroling
             timeAlerted += Time.deltaTime;
