@@ -48,9 +48,7 @@ public class ItemPickUp : NetworkBehaviour
         {
             case EquippedItem.rock:
                 
-                GameObject newRock = Instantiate(rockPrefab, rightHand.transform);
-                newRock.transform.parent = rightHand.transform;
-                newRock.GetComponent<Rigidbody>().isKinematic = true;
+                Instantiate(rockPrefab, rightHand.transform);
                 break;
           
         }
