@@ -56,6 +56,7 @@ public class ItemPickUp : NetworkBehaviour
         }
     }
 
+    [ClientCallback]
     void Update()
     {
         if (!isLocalPlayer)  return;
