@@ -10,7 +10,7 @@ public class InstantiateTrains : MonoBehaviour
     const float gap = 7.075f;
     private Vector3 positionStart = new Vector3(325.0f, 5.1f, 255.0f);
     private Vector3 position = new Vector3(325.0f, 5.1f, 255.0f);
-    private const int instantiations = 12;
+    private const int instantiations = 11;
 
     // Start is called before the first frame update
     void Start()
