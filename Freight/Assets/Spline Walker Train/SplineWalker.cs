@@ -13,7 +13,7 @@ public class SplineWalker : MonoBehaviour {
 	private float progress;
 	private bool goingForward = true;
     // private bool leaveStation = false;
-    private float timeToLeave = 30.0f;
+    private float timeToLeave = 120.0f;
 
     private void Start () {
         if (goingForward) {
