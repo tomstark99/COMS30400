@@ -44,6 +44,8 @@ public class SplineWalker : MonoBehaviour {
             if (lookForward) {
                 transform.LookAt(position + spline.GetDirection(progress));
             }
+
+            Debug.Log(spline);
     }
 
     // void timer_Tick(object sender, EventArgs e) {
