@@ -93,11 +93,11 @@ public class ItemPickUp : NetworkBehaviour
 
 
         //add force to the rock so it shooots
-        newSceneObject.GetComponent<Rigidbody>().AddForce(cameraVector * 1000);
+        //newSceneObject.GetComponent<Rigidbody>().AddForce(cameraVector * 1000);
 
         //spawn the rock on the server and on the clients respectively
         NetworkServer.Spawn(newSceneObject);
-        //newSceneObject.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
+        newSceneObject.GetComponent<Rigidbody>().AddForce(cameraVector * 1000);
 
 
     }
