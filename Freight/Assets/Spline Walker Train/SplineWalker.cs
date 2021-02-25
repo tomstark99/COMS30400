@@ -13,7 +13,7 @@ public class SplineWalker : MonoBehaviour {
 	private float progress;
 	private bool goingForward = true;
     // private bool leaveStation = false;
-    private float timeToLeave = 5.0f;
+    private float timeToLeave = 120.0f;
 
     private void Start () {
         if (goingForward) {
@@ -44,6 +44,8 @@ public class SplineWalker : MonoBehaviour {
             if (lookForward) {
                 transform.LookAt(position + spline.GetDirection(progress));
             }
+
+            Debug.Log(spline);
     }
 
     // void timer_Tick(object sender, EventArgs e) {
