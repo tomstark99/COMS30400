@@ -52,6 +52,7 @@ public class SceneObject : NetworkBehaviour
         }
     }
 
+    [ClientCallback]
     void Update()
     {
         
