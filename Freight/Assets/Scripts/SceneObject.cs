@@ -70,16 +70,14 @@ public class SceneObject : NetworkBehaviour
     }
 
     [TargetRpc]
-    void SetPressEToActive(NetworkConnection conn, Player player)
+    void SetPressEToActive(NetworkConnection conn)
     {
-        //player.SetPressE();
         text.SetActive(true);
     }
 
     [TargetRpc]
-    void SetPressEToNotActive(NetworkConnection conn, Player player)
+    void SetPressEToNotActive(NetworkConnection conn)
     {
-        //player.UnsetPressE();
         text.SetActive(false);
     }
 
@@ -92,18 +90,11 @@ public class SceneObject : NetworkBehaviour
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
             if (tempDist <= 2.5f)
             {
-                SetPressEToActive(player.connectionToClient, player);
-                //player.displaying = true;
-                //entered = true;
-                //text.SetActive(true);
+                SetPressEToActive(player.connectionToClient);
             }
             else if (tempDist > 2.5f)
             {
-                Debug.Log("falo");
-                SetPressEToNotActive(player.connectionToClient, player);
-                //player.displaying = false;
-                //entered = false;
-                //text.SetActive(false);
+                SetPressEToNotActive(player.connectionToClient);
             }
         }
 
