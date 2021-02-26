@@ -59,7 +59,7 @@ public class ItemPickUp : NetworkBehaviour
         if (!isLocalPlayer)  return;
 
         //if click throw the item
-        if (Input.GetKeyDown(KeyCode.X) && equippedItem != EquippedItem.nothing)
+        if (Input.GetMouseButtonDown(0) && equippedItem != EquippedItem.nothing)
         {
             GameObject parent = rightHand.transform.parent.transform.parent.gameObject;
 

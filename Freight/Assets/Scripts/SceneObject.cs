@@ -51,12 +51,15 @@ public class SceneObject : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log(gameObject);
-            equippedItem = EquippedItem.rock;
-            Debug.Log("onKeyDown");
-            Debug.Log(NetworkClient.connection.identity);
-            NetworkClient.connection.identity.GetComponent<ItemPickUp>().CmdPickupItem(gameObject);
-
+            float dist = Vector3.Distance(NetworkClient.connection.identity.transform.position, transform.position);
+            if(dist <= 2.5f)
+            {
+                Debug.Log(gameObject);
+                equippedItem = EquippedItem.rock;
+                Debug.Log("onKeyDown");
+                Debug.Log(NetworkClient.connection.identity);
+                NetworkClient.connection.identity.GetComponent<ItemPickUp>().CmdPickupItem(gameObject);
+            }
         }
     }
     void OnMouseDown()
