@@ -213,12 +213,12 @@ public class GuardAI : NetworkBehaviour
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
 
+        Vector3 rockPos = CheckForRock();
+
         if (timeChasing > 5f)
         {
             Room.EndGame();
         }
-        Vector3 rockPos = CheckForRock();
-
         // If the player is not spotted but the guard is in the alerted state
         else if (!playerSpotted && guardState == State.Alerted)
         {
@@ -242,7 +242,8 @@ public class GuardAI : NetworkBehaviour
             timeAlerted = 0;
             timeChasing = 0;
             guardState = State.Alerted;
-        else if (rockPos != new Vector3 (0f,0f,0f))
+        }
+        else if (rockPos != new Vector3(0f, 0f, 0f))
         {
             SetGuardsToAlertedItem(rockPos);
         }
