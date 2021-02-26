@@ -9,6 +9,9 @@ using UnityEngine.AI;
 public class NetworkManagerMain : NetworkManager
 {
     [Scene] [SerializeField] private string menuScene = string.Empty;
+    public GameObject gameOverScreen;
+
+    public static event Action<NetworkConnection> OnServerReadied;
 
     public override void OnStartServer()
     {
@@ -27,9 +30,32 @@ public class NetworkManagerMain : NetworkManager
         //}
     }
 
-    private void Update()
+    public void EndGame()
     {
-    
+        Debug.Log("game over");
+        ServerChangeScene("Assets/Scenes/TrainStationGuards.unity");
+    }
+
+    public override void ServerChangeScene(string newSceneName)
+    {
+        //if (newSceneName == "Assets/Scenes/TrainStationGuards.unity")
+        //{
+        //    for (int i = GamePlayers.Count - 1; i >= 0; i--)
+        //    {
+        //        var conn = GamePlayers[i].connectionToClient;
+        //        var gameplayerInstance = Instantiate(playerPrefab);
+
+        //        GamePlayers.Remove(GamePlayers[i]);
+
+        //        NetworkServer.Destroy(conn.identity.gameObject);
+
+        //        NetworkServer.ReplacePlayerForConnection(conn, gameplayerInstance, true);
+        //    }
+        //}
+
+        GamePlayers.Clear();
+
+        base.ServerChangeScene(newSceneName);
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
@@ -56,6 +82,13 @@ public class NetworkManagerMain : NetworkManager
                 break;
             }
         }
+    }
+
+    public override void OnServerReady(NetworkConnection conn)
+    {
+        base.OnServerReady(conn);
+
+        OnServerReadied?.Invoke(conn);
     }
 
 }
