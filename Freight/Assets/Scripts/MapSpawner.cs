@@ -143,7 +143,8 @@ public class MapSpawner : NetworkBehaviour
                 {
                     if (!inSkip(i, positions, gaps))
                     {
-                        Instantiate(train, position, Quaternion.Euler(0f, 0f, 0f));
+                        GameObject trainGo = Instantiate(train, position, Quaternion.Euler(0f, 0f, 0f));
+                        NetworkServer.Spawn(trainGo);
                     }
                     position.z += 8.15f;
                 }
