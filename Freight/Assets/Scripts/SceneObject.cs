@@ -7,6 +7,7 @@ public class SceneObject : NetworkBehaviour
 {
     private List<Player> players;
     private NetworkManagerMain room;
+    private bool entered;
 
     //sync the item on the server to all clients
     [SyncVar(hook = nameof(onChangeItem))]
@@ -29,6 +30,7 @@ public class SceneObject : NetworkBehaviour
     void Start()
     {
         players = Room.GamePlayers;
+        entered = false;
     }
 
     void onChangeItem(EquippedItem oldEquippedItem, EquippedItem newEquippedItem)
@@ -85,13 +87,18 @@ public class SceneObject : NetworkBehaviour
         foreach (Player player in players)
         {
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
-            if (tempDist <= 2.5f)
+            if (tempDist <= 2.5f && player.displaying == false)
             {
                 SetPressEToActive(player.connectionToClient, player);
+                player.displaying = true;
+                entered = true;
             }
-            else
+            else if (tempDist > 2.5f && player.displaying == true && entered == true)
             {
+                Debug.Log("falo");
                 SetPressEToNotActive(player.connectionToClient, player);
+                player.displaying = false;
+                entered = false;
             }
         }
 

@@ -6,6 +6,7 @@ using Mirror;
 public class Player : NetworkBehaviour
 {
     public GameObject playerUI;
+    public bool displaying;
     private GameObject uiRef;
 
     private NetworkManagerMain room;
@@ -21,7 +22,7 @@ public class Player : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         uiRef = Instantiate(playerUI);
-        Debug.Log(uiRef);
+        displaying = false;
         base.OnStartLocalPlayer();
     }
 
