@@ -8,6 +8,7 @@ public class SceneObject : NetworkBehaviour
     private List<Player> players;
     private NetworkManagerMain room;
     private bool entered;
+    public GameObject text;
 
     //sync the item on the server to all clients
     [SyncVar(hook = nameof(onChangeItem))]
@@ -71,13 +72,15 @@ public class SceneObject : NetworkBehaviour
     [TargetRpc]
     void SetPressEToActive(NetworkConnection conn, Player player)
     {
-        player.SetPressE();
+        //player.SetPressE();
+        text.SetActive(true);
     }
 
     [TargetRpc]
     void SetPressEToNotActive(NetworkConnection conn, Player player)
     {
-        player.UnsetPressE();
+        //player.UnsetPressE();
+        text.SetActive(false);
     }
 
     void Update()
@@ -87,18 +90,20 @@ public class SceneObject : NetworkBehaviour
         foreach (Player player in players)
         {
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
-            if (tempDist <= 2.5f && player.displaying == false)
+            if (tempDist <= 2.5f)
             {
                 SetPressEToActive(player.connectionToClient, player);
-                player.displaying = true;
-                entered = true;
+                //player.displaying = true;
+                //entered = true;
+                //text.SetActive(true);
             }
-            else if (tempDist > 2.5f && player.displaying == true && entered == true)
+            else if (tempDist > 2.5f)
             {
                 Debug.Log("falo");
                 SetPressEToNotActive(player.connectionToClient, player);
-                player.displaying = false;
-                entered = false;
+                //player.displaying = false;
+                //entered = false;
+                //text.SetActive(false);
             }
         }
 
