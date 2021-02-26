@@ -11,6 +11,8 @@ public class MapSpawner : NetworkBehaviour
     public NavMeshSurface surface;
     public GameObject tree;
     public GameObject train;
+    public GameObject trainMoving;
+    public GameObject trainLadder;
     int seed;
 
     // variables for spawning trains
@@ -80,7 +82,7 @@ public class MapSpawner : NetworkBehaviour
     [Server]
     void SpawnTrains()
     {
-        UnityEngine.Random.InitState(seed);
+        /*UnityEngine.Random.InitState(seed);
         int clearTrack = UnityEngine.Random.Range(0, 5);
         Debug.Log("skipped track: " + clearTrack);
         for (int j = 0; j < 5; j++)
@@ -110,7 +112,61 @@ public class MapSpawner : NetworkBehaviour
                 }
             }
 
+        }*/
+
+        int clearTrack = UnityEngine.Random.Range(0, 5);
+        Debug.Log("skipped track: " + clearTrack);
+        GameObject freight_train_coal_loc = GameObject.FindWithTag("locomotive");
+        Debug.Log("loca" + freight_train_coal_loc);
+        GameObject track = GameObject.FindWithTag(clearTrack.ToString());
+        Debug.Log("track" + track);
+        freight_train_coal_loc.GetComponent<SplineWalker>().spline = track.GetComponent<BezierSpline>();
+        for (int j = 0; j < 5; j++)
+        {
+
+            position = positionStart;
+            position.x += (j * gap);
+            position.z -= (j * gap);
+
+            if (!(clearTrack == j))
+            {
+                
+
+                int gaps = UnityEngine.Random.Range(0, 6);
+                int[] positions = new int[gaps];
+                for (int i = 0; i < gaps; i++)
+                {
+                    
+                    positions[i] = UnityEngine.Random.Range(0, instantiations);
+                }
+                for (int i = 0; i < instantiations; i++)
+                {
+                    if (!inSkip(i, positions, gaps))
+                    {
+                        GameObject trainGo = Instantiate(train, position, Quaternion.Euler(0f, 0f, 0f));
+                        NetworkServer.Spawn(trainGo);
+                    }
+                    position.z += 8.15f;
+                }
+            } /*else {
+                bool ladderPlaced = false;
+                for (int i = 0; i < instantiations; i++){
+                    if (Random.Range(1,5) == 3 && ladderPlaced == false)
+                    {
+                        Instantiate(trainLadder, position, Quaternion.Euler(0f, 0f, 0f));
+                        position.z += 8.2f;
+                        ladderPlaced = true;
+                    }
+                    else
+                    {
+                        Instantiate(trainMoving, position, Quaternion.Euler(0f, 0f, 0f));
+                        position.z += 8.2f;
+                    }
+                }
+            }*/
+
         }
+
         Debug.Log("Trains");
     }
     bool inSkip(int i, int[] positions, int gaps)

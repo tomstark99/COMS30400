@@ -12,12 +12,8 @@ GameObject:
   - component: {fileID: 3317232}
   - component: {fileID: 2317232}
   - component: {fileID: 9517232}
-  - component: {fileID: 4616967700140086585}
-  - component: {fileID: -8879898716512308218}
   - component: {fileID: 7058571151941166893}
   - component: {fileID: 6555593975630590045}
-  - component: {fileID: -4119978389283950716}
-  - component: {fileID: -7884153911332609957}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Rock
@@ -107,37 +103,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4616967700140086585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 117232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  m_AssetId: 
-  hasSpawned: 0
---- !u!114 &-8879898716512308218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 117232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 765ac0b50250df74ca69ed07724f87cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  weaponPrefab: {fileID: 117232}
 --- !u!114 &7058571151941166893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,40 +128,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 12.217052
   m_Center: {x: 2.2684705, y: -0.41045624, z: -0.015044697}
---- !u!54 &-4119978389283950716
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 117232}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 10
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &-7884153911332609957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 117232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 0
-  localPositionSensitivity: 0.01
-  localRotationSensitivity: 0.01
-  localScaleSensitivity: 0.01
 --- !u!1 &3275477293862053276
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,4 +290,5 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 98304
+  isGrounded: 0
   rockHitGround: 0
