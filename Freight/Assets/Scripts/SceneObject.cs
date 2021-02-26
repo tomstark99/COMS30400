@@ -49,6 +49,7 @@ public class SceneObject : NetworkBehaviour
 
     void Update()
     {
+        Debug.Log(NetworkClient.connection.identity);
         if (Input.GetKeyDown(KeyCode.E))
         {
             float dist = Vector3.Distance(NetworkClient.connection.identity.transform.position, transform.position);
