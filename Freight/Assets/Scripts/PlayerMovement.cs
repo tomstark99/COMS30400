@@ -16,6 +16,7 @@ public class PlayerMovement : NetworkBehaviour
     private Vector3 velocity;
     private float groundDistance = 0.4f;
     private bool isGrounded;
+    private bool climbing;
 
     [ClientCallback]
     // Update is called once per frame
@@ -35,7 +36,13 @@ public class PlayerMovement : NetworkBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * x + transform.forward * z;
+        Vector3 move;
+
+        if(climbing) {
+            move = transform.right * x + transform.up * z;
+        } else {
+            move = transform.right * x + transform.forward * z;
+        }
 
         controller.Move(move * speed * Time.deltaTime);
 
@@ -48,5 +55,24 @@ public class PlayerMovement : NetworkBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+
+        // if (climbing) {
+        //     Vector3 climb = transform.up * Input.GetAxis("Vertical");
+        //     controller.Move(climb * 10f * Time.deltaTime);
+        // }
+    }
+    
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.tag == "locomotive") {
+            Debug.Log("PLAYER ENTERED LADDER");
+            climbing = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other) {
+        if (climbing && other.gameObject.tag == "locomotive") {
+            Debug.Log("player stopped climbing");
+            climbing = false;
+        }
     }
 }
