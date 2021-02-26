@@ -9,9 +9,9 @@ public class GuardAI : NetworkBehaviour
 {
     public enum State
     {
-        Chasing,
         Patroling,
-        Alerted
+        Alerted,
+        Chasing
     }
 
     public NavMeshAgent guard;
@@ -52,14 +52,6 @@ public class GuardAI : NetworkBehaviour
         guard = GetComponent<NavMeshAgent>();
         guardState = State.Patroling;
     }
-
-    //public override void OnStartServer()
-    //{
-    //    Debug.Log("this ran");
-    //    players = Room.GamePlayers;
-    //    guard = GetComponent<NavMeshAgent>();
-    //    guardState = State.Patroling;
-    //}
 
     void GotoNextPoint()
     {
@@ -102,6 +94,7 @@ public class GuardAI : NetworkBehaviour
 
         transform.LookAt(closestPlayer.transform);
         guard.SetDestination(closestPlayer.position- new Vector3(proximityRange,0,0));
+        guard.gameObject.GetComponent<GuardAI>().alertPosition = closestPlayer.position;
     }
 
     bool PlayerSpotted()
@@ -153,7 +146,10 @@ public class GuardAI : NetworkBehaviour
         foreach (Transform child in parent)
         {
             GuardAI temp = child.gameObject.GetComponent<GuardAI>();
-            temp.guardState = State.Alerted;
+            if (temp.guardState != State.Chasing)
+            {
+                temp.guardState = State.Alerted;
+            }
             temp.timeAlerted = 0f;
             temp.alertPosition = closestPlayer.position;
         }
@@ -219,12 +215,15 @@ public class GuardAI : NetworkBehaviour
 
         Vector3 rockPos = CheckForRock();
 
+        if (timeChasing > 5f)
+        {
+            Room.EndGame();
+        }
         // If the player is not spotted but the guard is in the alerted state
-        if (!playerSpotted && guardState == State.Alerted)
+        else if (!playerSpotted && guardState == State.Alerted)
         {
             // increase time and once it hits limit, go back to patroling
             timeAlerted += Time.deltaTime;
-            Debug.Log(timeAlerted);
             if (timeAlerted > 8f)
             {
                 guardState = State.Patroling;
@@ -238,7 +237,13 @@ public class GuardAI : NetworkBehaviour
                 ChangeToOrange();
             }
         }
-        else if (rockPos != new Vector3 (0f,0f,0f))
+        else if (!playerSpotted && guardState == State.Chasing)
+        {
+            timeAlerted = 0;
+            timeChasing = 0;
+            guardState = State.Alerted;
+        }
+        else if (rockPos != new Vector3(0f, 0f, 0f))
         {
             SetGuardsToAlertedItem(rockPos);
         }
