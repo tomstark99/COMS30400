@@ -148,7 +148,10 @@ public class MapSpawner : NetworkBehaviour
                     }
                     position.z += 8.15f;
                 }
-            } /*else {
+            } else {
+                freight_train_coal_loc.transform.localPosition = track.GetComponent<BezierSpline>().GetPoint(0.0f);
+            }
+            /*else {
                 bool ladderPlaced = false;
                 for (int i = 0; i < instantiations; i++){
                     if (Random.Range(1,5) == 3 && ladderPlaced == false)
