@@ -1,17 +1,39 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 using Mirror;
 
 public class SceneObject : NetworkBehaviour
 {
+    private List<Player> players;
+    private NetworkManagerMain room;
+    private bool entered;
+    public GameObject text;
+
     //sync the item on the server to all clients
     [SyncVar(hook = nameof(onChangeItem))]
     public EquippedItem equippedItem;
 
+    private NetworkManagerMain Room
+    {
+        get
+        {
+            if (room != null) { return room; }
+            return room = NetworkManager.singleton as NetworkManagerMain;
+        }
+    }
+
 
     //rock prefab
     public GameObject rockPrefab;
-    
+
+    [ServerCallback]
+    void Start()
+    {
+        players = Room.GamePlayers;
+        entered = false;
+    }
+
     void onChangeItem(EquippedItem oldEquippedItem, EquippedItem newEquippedItem)
     {
 
@@ -47,9 +69,35 @@ public class SceneObject : NetworkBehaviour
         }
     }
 
+    [TargetRpc]
+    void SetPressEToActive(NetworkConnection conn)
+    {
+        text.SetActive(true);
+    }
+
+    [TargetRpc]
+    void SetPressEToNotActive(NetworkConnection conn)
+    {
+        text.SetActive(false);
+    }
+
     void Update()
     {
-        Debug.Log(NetworkClient.connection.identity);
+        players = Room.GamePlayers;
+
+        foreach (Player player in players)
+        {
+            float tempDist = Vector3.Distance(player.transform.position, transform.position);
+            if (tempDist <= 2.5f)
+            {
+                SetPressEToActive(player.connectionToClient);
+            }
+            else if (tempDist > 2.5f)
+            {
+                SetPressEToNotActive(player.connectionToClient);
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             float dist = Vector3.Distance(NetworkClient.connection.identity.transform.position, transform.position);
