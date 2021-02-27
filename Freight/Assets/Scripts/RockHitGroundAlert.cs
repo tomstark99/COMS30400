@@ -7,7 +7,7 @@ public class RockHitGroundAlert : NetworkBehaviour
 {
     public Transform groundCheck;
     private GameObject guards;
-    private float groundDistance = 1f;
+    private float groundDistance = 0.5f;
     public LayerMask groundMask;
     public bool isGrounded ;
     private bool lastFrameValueOfIsGrounded;
