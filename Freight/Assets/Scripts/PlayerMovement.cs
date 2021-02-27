@@ -10,7 +10,7 @@ public class PlayerMovement : NetworkBehaviour
     public LayerMask groundMask;
 
     private float gravity = -17f;
-    private float speed = 6f;
+    private float speed = 12f;
     private float jumpHeight = 3.5f;
 
     private Vector3 velocity;
