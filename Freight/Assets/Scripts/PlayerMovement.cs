@@ -48,8 +48,11 @@ public class PlayerMovement : NetworkBehaviour
 
         if (onTrain)
         {
-            move += Vector3.MoveTowards(gameObject.transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) - GameObject.FindGameObjectWithTag("locomotive").transform.position;
-            move.y = 0f;
+            Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) - GameObject.FindGameObjectWithTag("locomotive").transform.position;
+            trainMove.x = -trainMove.x;
+            trainMove.y = 0f;
+            trainMove.z = -trainMove.z;
+            move += trainMove;
         }
 
         controller.Move(move * speed * Time.deltaTime);
