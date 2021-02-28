@@ -33,7 +33,7 @@ public class NetworkManagerMain : NetworkManager
     public void EndGame()
     {
         Debug.Log("game over");
-        ServerChangeScene("Assets/Scenes/TrainStationGuards.unity");
+        ServerChangeScene("Assets/Scenes/TrainStation.unity");
     }
 
     public override void ServerChangeScene(string newSceneName)

@@ -37,7 +37,7 @@ public class HeadMovement : NetworkBehaviour
         currentNosePos = new Vector3(poseArr[0], poseArr[1], 0);
 
         noseOffset = currentNosePos - origionalNosePos;
-        noseOffset.Scale(new Vector3(1.0f / 240.0f, -1.0f / 240.0f, 1.0f / 240.0f));
+        noseOffset.Scale(new Vector3(-1.0f / 240.0f, -1.0f / 240.0f, 1.0f / 240.0f));
 
         //Debug.Log(noseOffset.ToString());
 

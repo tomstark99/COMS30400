@@ -7,6 +7,8 @@ public class Player : NetworkBehaviour
 {
     public GameObject playerUI;
     private GameObject uiRef;
+    [SyncVar]
+    public string gesture;
 
     private NetworkManagerMain room;
     private NetworkManagerMain Room
@@ -21,6 +23,7 @@ public class Player : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         uiRef = Instantiate(playerUI);
+        gesture = PoseParser.GETGestureAsString();
         base.OnStartLocalPlayer();
     }
 
@@ -39,6 +42,26 @@ public class Player : NetworkBehaviour
             uiRef.transform.GetChild(1).gameObject.SetActive(false);
         }
         
+    }
+
+    [Command]
+    public void getGesture(string temp)
+    {
+        gesture = temp;
+    }
+
+    [ClientCallback]
+    void Update()
+    {
+        if (!hasAuthority)
+        {
+            return;
+        }
+        string tempGesture = PoseParser.GETGestureAsString();
+        if (tempGesture != gesture)
+        {
+            getGesture(tempGesture);
+        }
     }
 
     //public override void OnStopClient()
