@@ -4,13 +4,14 @@ using System;
 using UnityEngine;
 using Mirror;
 using UnityEngine.AI;
-
+using TMPro;
 public class MapSpawner : NetworkBehaviour
 {
     // variables for scene creation
     public NavMeshSurface surface;
     public GameObject tree;
     public GameObject train;
+    public GameObject trainWithTag;
     public GameObject trainMoving;
     public GameObject trainLadder;
     public GameObject fence;
@@ -125,8 +126,10 @@ public class MapSpawner : NetworkBehaviour
         GameObject track = GameObject.FindWithTag(clearTrack.ToString());
         Debug.Log("track" + track);
         freight_train_coal_loc.GetComponent<SplineWalker>().spline = track.GetComponent<BezierSpline>();
+
         for (int j = 0; j < 5; j++)
         {
+            bool instantiatedTrainWithTag = false;
 
             position = positionStart;
             position.x += (j * gap);
@@ -147,7 +150,31 @@ public class MapSpawner : NetworkBehaviour
                 {
                     if (!inSkip(i, positions, gaps))
                     {
-                        GameObject trainGo = Instantiate(train, position, Quaternion.Euler(0f, 0f, 0f));
+                        GameObject trainGo;
+                        if (instantiatedTrainWithTag == false)
+                        {
+                            trainGo = Instantiate(trainWithTag, position, Quaternion.Euler(0f, 0f, 0f));
+                            //Debug.Log(trainGo.transform.Find("TrainNumber").gameObject.transform.GetChild(0));
+                            //trainGo.transform.Find("trainNumber").gameObject.transform.GetChild(0);
+                            instantiatedTrainWithTag = true;
+                            //Debug.Log(trainGo.transform.Find("TrainNumber").gameObject.transform.GetChild(0));
+                            if(j == 4)
+                            {
+                                trainGo.transform.Find("TrainNumber").gameObject.transform.GetChild(0).transform.GetComponent<TextMeshPro>().text = ("Train number " + "5");
+
+                            }
+                            else
+                            {
+                                trainGo.transform.Find("TrainNumber").gameObject.transform.GetChild(0).transform.GetComponent<TextMeshPro>().text = ("Train number " + j.ToString());
+
+                            }
+                            Debug.Log("burst train");
+                        }
+                        else
+                        {
+                            Debug.Log("got to the normal train");
+                            trainGo = Instantiate(train, position, Quaternion.Euler(0f, 0f, 0f));
+                        }
                         NetworkServer.Spawn(trainGo);
                     }
                     position.z += 8.15f;
