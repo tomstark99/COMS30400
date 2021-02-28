@@ -40,6 +40,7 @@ public class BreakFence : NetworkBehaviour
     void Update()
     {
         players = Room.GamePlayers;
+        bool pullApart = false;
 
         foreach (Player player in players)
         {
@@ -54,7 +55,17 @@ public class BreakFence : NetworkBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        foreach (Player player in players)
+        {
+            float tempDist = Vector3.Distance(player.transform.position, transform.position);
+            if (player.gesture == "P" && tempDist < 2.5f)
+            {
+                pullApart = true;
+                break;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q) || pullApart)
         {
             float dist = Vector3.Distance(NetworkClient.connection.identity.transform.position, transform.position);
             if (dist <= 2.5f)
