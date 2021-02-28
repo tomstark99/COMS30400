@@ -193,7 +193,7 @@ public class GuardAI : NetworkBehaviour
             if (tempRock.rockHitGround)
             {
                 Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
-                if (Vector3.Distance(transform.position, tempRock.transform.position) < 20)
+                if (Vector3.Distance(transform.position, tempRock.transform.position) < 30)
                 {
                     return tempRock.transform.position;
                 }
@@ -218,7 +218,7 @@ public class GuardAI : NetworkBehaviour
 
         Vector3 rockPos = CheckForRock();
 
-        if (timeChasing > 5f)
+        if (timeChasing > 8f)
         {
             Room.EndGame();
         }
