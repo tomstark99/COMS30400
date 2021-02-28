@@ -52754,6 +52754,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd8432e81047a24a93a2b4767450806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   text: {fileID: 0}
   duration: 0
 --- !u!1001 &748194434
@@ -110318,54 +110320,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: onlineScene
-      value: Assets/Scenes/TrainStation.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 3511192020149717325, guid: e9ea0a0432a09cf4e98b1fb93c01b377,
-        type: 3}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 6885627484852554700, guid: 4ae2d6d4120aa5e41a2dc9a6c6df717e,
-        type: 3}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.data[2]
-      value: 
-      objectReference: {fileID: 8370851738976127234, guid: 01a04c4d88157ea4f92c026ec230f69e,
-        type: 3}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.data[3]
-      value: 
-      objectReference: {fileID: 3223739848542632048, guid: a926cb60c1aa3ee48ae15b9e1eabc61e,
-        type: 3}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.data[4]
-      value: 
-      objectReference: {fileID: 8637624439491761572, guid: 506d16c45a8598b4aa538ed1713d69ad,
-        type: 3}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.data[5]
-      value: 
-      objectReference: {fileID: 1948757798113483429, guid: dd3e983fd184775429dd64a27bd326f5,
-        type: 3}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.data[6]
-      value: 
-      objectReference: {fileID: 5283402586538149640, guid: 79d89f0f9958db2429332bfee0c3a424,
-        type: 3}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.data[7]
-      value: 
-      objectReference: {fileID: 5385272616317404168, guid: 215bd915458152c459e99e13cc96db15,
-        type: 3}
     - target: {fileID: 3761340792670691, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -110413,6 +110367,10 @@ PrefabInstance:
     - target: {fileID: 3761340792670695, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
       propertyPath: m_Name
       value: MyNetworkManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761340792670695, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
