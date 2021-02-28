@@ -46,6 +46,7 @@ public class PoseParser : MonoBehaviour
         #if !UNITY_WEBGL || UNITY_EDITOR
         return "E";
         #else
+        Debug.Log(GetGestureAsString());
         return GetGestureAsString();
         #endif
     }
