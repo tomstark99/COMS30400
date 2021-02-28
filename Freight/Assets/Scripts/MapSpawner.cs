@@ -13,6 +13,9 @@ public class MapSpawner : NetworkBehaviour
     public GameObject train;
     public GameObject trainMoving;
     public GameObject trainLadder;
+    public GameObject fence;
+    public GameObject bottomFence;
+    public GameObject fenceBrokenPartial;
     int seed;
 
     // variables for spawning trains
@@ -33,6 +36,7 @@ public class MapSpawner : NetworkBehaviour
         UnityEngine.Random.InitState(seed);
         SpawnTrees();
         SpawnTrains();
+        SpawnFences();
         BuildNavMesh();
     }
 
@@ -179,5 +183,79 @@ public class MapSpawner : NetworkBehaviour
             if (i == positions[j]) return true;
         }
         return false;
+    }
+
+    void SpawnFences()
+    {
+        //Random.seed = (int)System.DateTime.Now.Ticks/(Random.Range(1,50000));
+        //int brokenPartPos = Random.Range(10,30);
+        for (int i = 0; i < 50; i++)
+        {
+            Vector3 position = new Vector3(270.0f, 6.5f, (193.0f + i * 5.0f));
+            if (i == 10)
+            {
+                GameObject fenceGo = Instantiate(fenceBrokenPartial, position, Quaternion.Euler(0f, 90f, 0f));
+                NetworkServer.Spawn(fenceGo);
+            }
+            else
+            {
+                GameObject fenceGo = Instantiate(fence, position, Quaternion.Euler(0f, 90f, 0f));
+                NetworkServer.Spawn(fenceGo);
+            }
+        }
+
+        for (int i = 0; i < 50; i++)
+        {
+            Vector3 position = new Vector3(500.0f, 6.5f, (193.0f + i * 5.0f));
+            if (i > 4 || i < 2)
+            {
+                GameObject fenceGo = Instantiate(fence, position, Quaternion.Euler(0f, 90f, 0f));
+                NetworkServer.Spawn(fenceGo);
+            }
+        }
+
+        for (int i = 0; i < 46; i++)
+        {
+            Vector3 position = new Vector3((272.5f + i * 5.0f), 6.5f, 190.5f);
+            if (i > 36 && i < 42)
+            {
+                GameObject fenceGo = Instantiate(fence, position, Quaternion.Euler(0f, 0f, 0f));
+                NetworkServer.Spawn(fenceGo);
+                position.y -= 3;
+                GameObject fenceGo2 = Instantiate(bottomFence, position, Quaternion.Euler(0f, 0f, 0f));
+                NetworkServer.Spawn(fenceGo2);
+                position.y -= 3;
+                GameObject fenceGo3 = Instantiate(bottomFence, position, Quaternion.Euler(0f, 0f, 0f));
+                NetworkServer.Spawn(fenceGo3);
+            }
+            else
+            {
+                GameObject fenceGo = Instantiate(fence, position, Quaternion.Euler(0f, 0f, 0f));
+                NetworkServer.Spawn(fenceGo);
+            }
+
+        }
+
+        for (int i = 0; i < 46; i++)
+        {
+            Vector3 position = new Vector3((272.5f + i * 5.0f), 6.5f, 440.5f);
+            if (i > 27 && i < 34)
+            {
+                GameObject fenceGo = Instantiate(fence, position, Quaternion.Euler(0f, 0f, 0f));
+                NetworkServer.Spawn(fenceGo);
+                position.y -= 3;
+                GameObject fenceGo2 = Instantiate(bottomFence, position, Quaternion.Euler(0f, 0f, 0f));
+                NetworkServer.Spawn(fenceGo2);
+                position.y -= 3;
+                GameObject fenceGo3 = Instantiate(bottomFence, position, Quaternion.Euler(0f, 0f, 0f));
+                NetworkServer.Spawn(fenceGo3);
+            }
+            else
+            {
+                GameObject fenceGo = Instantiate(fence, position, Quaternion.Euler(0f, 0f, 0f));
+                NetworkServer.Spawn(fenceGo);
+            }
+        }
+        Debug.Log("Fences");
     }
 }

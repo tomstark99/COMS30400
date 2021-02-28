@@ -65800,22 +65800,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: autoCreatePlayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: spawnPrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 117232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
-    - target: {fileID: 3761340792670691, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
-      propertyPath: m_RootOrder
-      value: 18
-      objectReference: {fileID: 0}
     - target: {fileID: 3732709154657101559, guid: 913ce418eb2ca5b4fb1e8e7a60ca5c18,
         type: 3}
       propertyPath: 
@@ -65885,6 +65869,22 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: autoCreatePlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 117232, guid: d2f192c371f0f7f408ef6d3471aa68ca, type: 3}
+    - target: {fileID: 3761340792670691, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: m_RootOrder
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 913ce418eb2ca5b4fb1e8e7a60ca5c18, type: 3}
@@ -107098,7 +107098,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1994603054}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39d6acab16a981b42b71571425c310bb, type: 3}
   m_Name: 
@@ -110558,10 +110558,39 @@ PrefabInstance:
       value: Assets/Scenes/TrainStation.unity
       objectReference: {fileID: 0}
     - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
       propertyPath: spawnPrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 3511192020149717325, guid: e9ea0a0432a09cf4e98b1fb93c01b377,
         type: 3}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 6885627484852554700, guid: 4ae2d6d4120aa5e41a2dc9a6c6df717e,
+        type: 3}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.data[5]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761340792670688, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
+      propertyPath: spawnPrefabs.Array.data[6]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3761340792670691, guid: 4994d22ec0c6fe141b9acafa82f540f9, type: 3}
       propertyPath: m_RootOrder
       value: 1
