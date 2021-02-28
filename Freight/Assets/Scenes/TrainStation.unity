@@ -52754,7 +52754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd8432e81047a24a93a2b4767450806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 746745178}
+  text: {fileID: 0}
   duration: 0
 --- !u!1001 &748194434
 PrefabInstance:
@@ -52781,7 +52781,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3fcc9e7a47b3b354d86e86429c1e45f2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 195.74945
+      value: 197.932
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fcc9e7a47b3b354d86e86429c1e45f2,
         type: 3}
@@ -52822,6 +52822,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: basic_watch
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3fcc9e7a47b3b354d86e86429c1e45f2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fcc9e7a47b3b354d86e86429c1e45f2, type: 3}
@@ -90654,6 +90659,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2436602798240984446, guid: e9ea0a0432a09cf4e98b1fb93c01b377,
+        type: 3}
+      propertyPath: m_text
+      value: 'Press F
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 3511192020149717325, guid: e9ea0a0432a09cf4e98b1fb93c01b377,
         type: 3}
       propertyPath: m_Name
@@ -105413,7 +105425,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 2, z: 4.3}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.020000458, y: 2, z: -4.3999634}
+  m_ConnectedAnchor: {x: 19, y: 2, z: 869.01}
   m_UseSpring: 0
   m_Spring:
     spring: 500
