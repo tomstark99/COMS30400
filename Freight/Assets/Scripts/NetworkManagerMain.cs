@@ -5,6 +5,7 @@ using System.Linq;
 using Mirror;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class NetworkManagerMain : NetworkManager
 {
@@ -60,7 +61,7 @@ public class NetworkManagerMain : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        foreach(Player playerObject in GamePlayers)
+        foreach (Player playerObject in GamePlayers)
         {
             if (conn.clientOwnedObjects.Contains(playerObject.netIdentity))
             {
@@ -89,6 +90,15 @@ public class NetworkManagerMain : NetworkManager
         base.OnServerReady(conn);
 
         OnServerReadied?.Invoke(conn);
+    }
+
+    void Update()
+    {
+        Debug.Log(numPlayers);
+        if (numPlayers >= 2 && "Assets/Scenes/" + SceneManager.GetActiveScene().name + ".unity" == "Assets/Scenes/Offline.unity")
+        {
+            ServerChangeScene("Assets/Scenes/TrainStation.unity");
+        }
     }
 
 }
