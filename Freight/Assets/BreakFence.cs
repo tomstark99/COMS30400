@@ -37,10 +37,10 @@ public class BreakFence : NetworkBehaviour
         text.SetActive(false);
     }
 
+    [ServerCallback]
     void Update()
     {
         players = Room.GamePlayers;
-        bool pullApart = false;
 
         foreach (Player player in players)
         {
@@ -58,14 +58,19 @@ public class BreakFence : NetworkBehaviour
         foreach (Player player in players)
         {
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
-            if (player.gesture == "P" && tempDist < 2.5f)
+            string gesture = player.gesture;
+            Debug.Log(gesture);
+            if (gesture.CompareTo("P") == 0 && tempDist <= 2.5f)
             {
-                pullApart = true;
+                Vector3 spawnPosition = transform.position;
+                Destroy(transform.gameObject);
+                GameObject brokenFence = Instantiate(brokenFencePrefab, spawnPosition, Quaternion.Euler(0f, 90f, 0f));
+                NetworkServer.Spawn(brokenFence);
                 break;
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) || pullApart)
+        if (Input.GetKeyDown(KeyCode.P))
         {
             float dist = Vector3.Distance(NetworkClient.connection.identity.transform.position, transform.position);
             if (dist <= 2.5f)

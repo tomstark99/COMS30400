@@ -7,6 +7,7 @@ public class Player : NetworkBehaviour
 {
     public GameObject playerUI;
     private GameObject uiRef;
+    [SyncVar]
     public string gesture;
 
     private NetworkManagerMain room;
@@ -43,10 +44,16 @@ public class Player : NetworkBehaviour
         
     }
 
-    [ClientCallback]
-    public void Update()
+    [Command]
+    public void getGesture(string temp)
     {
-        gesture = PoseParser.GETGestureAsString();
+        gesture = temp;
+    }
+
+    [ClientCallback]
+    void Update()
+    {
+        getGesture(PoseParser.GETGestureAsString());
     }
 
     //public override void OnStopClient()
