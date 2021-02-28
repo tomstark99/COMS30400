@@ -6,7 +6,9 @@ using Mirror;
 public enum EquippedItem : int
 {
     nothing,
-    rock
+    rock,
+    map,
+    watch
 }
 public class ItemPickUp : NetworkBehaviour
 {
@@ -59,7 +61,7 @@ public class ItemPickUp : NetworkBehaviour
         if (!isLocalPlayer)  return;
 
         //if click throw the item
-        if (Input.GetMouseButtonDown(0) && equippedItem != EquippedItem.nothing)
+        if (Input.GetMouseButtonDown(0) && equippedItem != EquippedItem.nothing && equippedItem == EquippedItem.rock)
         {
             GameObject parent = rightHand.transform.parent.transform.parent.gameObject;
 
