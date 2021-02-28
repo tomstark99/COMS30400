@@ -53,7 +53,15 @@ public class Player : NetworkBehaviour
     [ClientCallback]
     void Update()
     {
-        getGesture(PoseParser.GETGestureAsString());
+        if (!hasAuthority)
+        {
+            return;
+        }
+        string tempGesture = PoseParser.GETGestureAsString();
+        if (tempGesture != gesture)
+        {
+            getGesture(tempGesture);
+        }
     }
 
     //public override void OnStopClient()

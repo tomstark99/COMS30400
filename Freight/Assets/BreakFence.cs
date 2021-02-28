@@ -59,7 +59,7 @@ public class BreakFence : NetworkBehaviour
         {
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
             string gesture = player.gesture;
-            Debug.Log(gesture);
+            //Debug.Log(gesture);
             if (gesture.CompareTo("P") == 0 && tempDist <= 2.5f)
             {
                 Vector3 spawnPosition = transform.position;
