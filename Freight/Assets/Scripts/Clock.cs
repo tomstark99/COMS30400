@@ -4,17 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using Mirror;
 
-public class Clock : MonoBehaviour
+public class Clock : NetworkBehaviour
 {
-    public TextMeshPro text;
+    public TextMeshProUGUI text;
+    //public GameObject text;
     public float duration;
     string hour;
     string minute;
     string second;
     DateTime startTime;
     DateTime currentTime;
-    DateTime gameTime;
+    [SyncVar] DateTime gameTime;
 
 
     // Start is called before the first frame update
