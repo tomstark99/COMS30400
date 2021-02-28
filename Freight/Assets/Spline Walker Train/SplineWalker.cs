@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using Mirror;
 
-public class SplineWalker : MonoBehaviour {
+public class SplineWalker : NetworkBehaviour {
 
 	public BezierSpline spline;
 
@@ -13,8 +14,12 @@ public class SplineWalker : MonoBehaviour {
 	private float progress;
 	private bool goingForward = true;
     // private bool leaveStation = false;
-    private float timeToLeave = 120.0f;
+    private float timeToLeave = 10.0f;
 
+    public Vector3 trainPos;
+    public Vector3 prevPos;
+
+    [ServerCallback]
     private void Start () {
         if (goingForward) {
                 progress += (Time.deltaTime / duration);
@@ -40,6 +45,8 @@ public class SplineWalker : MonoBehaviour {
             }
 
             Vector3 position = spline.GetPoint(progress);
+            prevPos = position;
+            trainPos = position;
             transform.localPosition = position;
             if (lookForward) {
                 transform.LookAt(position + spline.GetDirection(progress));
@@ -52,6 +59,7 @@ public class SplineWalker : MonoBehaviour {
     //     leaveStation = true;
     // }
 
+    [ServerCallback]
 	private void Update () {
         timeToLeave -= Time.deltaTime;
         if(timeToLeave < 0) {
@@ -79,6 +87,8 @@ public class SplineWalker : MonoBehaviour {
             }
 
             Vector3 position = spline.GetPoint(progress);
+            prevPos = trainPos;
+            trainPos = position;
             transform.localPosition = position;
             if (lookForward) {
                 transform.LookAt(position + spline.GetDirection(progress));

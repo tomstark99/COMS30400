@@ -120,7 +120,7 @@ public class MapSpawner : NetworkBehaviour
 
         int clearTrack = UnityEngine.Random.Range(0, 5);
         Debug.Log("skipped track: " + clearTrack);
-        GameObject freight_train_coal_loc = GameObject.FindWithTag("locomotive");
+        GameObject freight_train_coal_loc = Instantiate(trainLadder, new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f));
         Debug.Log("loca" + freight_train_coal_loc);
         GameObject track = GameObject.FindWithTag(clearTrack.ToString());
         Debug.Log("track" + track);
@@ -154,6 +154,7 @@ public class MapSpawner : NetworkBehaviour
                 }
             } else {
                 freight_train_coal_loc.transform.localPosition = track.GetComponent<BezierSpline>().GetPoint(0.0f);
+                NetworkServer.Spawn(freight_train_coal_loc);
             }
             /*else {
                 bool ladderPlaced = false;
