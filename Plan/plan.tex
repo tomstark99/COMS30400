@@ -1,0 +1,93 @@
+\ifdefined\booklet
+\else
+\documentclass[a4paper]{article} % scrartcl for bernhard font for headings in main document  
+\include{header}
+\usepackage{helvet}
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{5pt}{5pt}
+\titlespacing*{\subsection}{0pt}{5pt}{5pt}
+\renewcommand{\familydefault}{\sfdefault}
+\pagenumbering{gobble}
+\begin{document}
+\setlist{leftmargin=*,noitemsep}
+\normalsize\sloppy
+\fi
+\section*{Idea 1: Freight\hspace{\fill}\normalsize\text{COMS30400: Wackumm Inn}}
+You are Dave and Ben, drug mules on the run from the Swedish police. You have a friend who can help you cross the Strait of Gibraltar thousands of miles away to start a new life in Africa. The only way to make your way across Europe, is to travel by freight train, avoiding detection by station workers, police and the general public.
+\subsection*{Brief Synopsis}
+Travel across Europe, hopping from freight train to freight train, avoiding workers, the law and staying alive.
+\subsection*{Flagship Techs}
+\begin{multicols}{2}
+    Pose Recognition (using webcam)
+    \begin{itemize}
+        \item Use your head to duck out of view of workers/police
+        \item Use your head to peek out of carriages to look for workers
+        \item Use your hands to communicate with your friend when workers are nearby and you cannot speak
+        \item Use your hands to surrender to police if they catch you
+    \end{itemize}\columnbreak
+    Co-op with proximity sound (using microphone)
+    \begin{itemize}
+        \item Speak to your friend with proximity microphone chat
+        \item Work with each other to climb onto trains, open doors
+        \item Alert each other of approaching workers using gesture\vspace{\fill}
+    \end{itemize}
+\end{multicols}
+\subsection*{Gameplay loop}
+\begin{itemize}
+    \item Start around train station in Stockholm
+    \item Whilst staying undetected, scope out for trains about to leave and find a suitable hiding spot on the train
+    \item Help each other climb into/onto the train before it leaves
+    \item Stay hidden from workers/police at stations and checkpoints
+    \item Trains will have to be changed at some stations
+    Check the schedule you’ve found to make sure you get on the correct train
+    \item Reach Gibraltar where you can meet your friend outside the train station and complete the game
+    \item If you get caught by workers/police you can try to escape, but if they get too close, game is over
+\end{itemize}
+\subsection*{Difficulties}
+\begin{itemize}
+    \item Different levels of difficulty can be selected for the game
+    \item Changes number of workers/police
+    \item Easy can highlight trains to take from the schedule
+\end{itemize}
+\section*{Idea 2: Children of God}
+You are a ‘Child of God’. A member of the religious cult, ‘The Children of God’, who believe that when the Earth’s resources have been depleted, humanity must die along with our planet. Despite this belief, the majority of humanity has escaped to a new world. You have sneaked onto the final ship destined for the new world, with a goal of taking command, killing the crew and finishing off humanity yourself once you reach the planet.
+
+\subsection*{Brief Synopsis}
+Navigate your way around an ever-adapting ship that fights back against you. Kill all those who are aboard by sabotaging rooms, murdering them or by turning the ship against them.
+\subsection*{Flagship Techs}
+\begin{multicols}{2}
+    Procedurally generated in a non euclidean manner
+    \begin{itemize}
+        \item Ship repairs itself when damaged
+        \item Ship fights back against you by trying to trap you
+        \item Doors get locked
+        \item Room layouts get changed after entering/exiting them
+        \item Non-euclidean geometry
+        \item Makes it harder to navigate the ship
+        \item Certain rooms can only be accessed via non euclidean quirks (going back through doors, walking in loops etc.)
+    \end{itemize}\columnbreak
+    Co-op with proximity sound (using microphone)
+    \begin{itemize}
+        \item Find passwords and say them into the microphone to unlock doors.
+        \item Can control your player by using microphone commands (‘use potions’ etc.)\vspace{\fill}
+    \end{itemize}
+\end{multicols}
+\subsection*{Gameplay Loop}
+\begin{itemize}
+    \item Ship is procedurally generated in a non euclidean manner
+    \item You start with a basic weapon
+    \item Loot can be picked up around the ship, you have a limited inventory, health, energy
+    \item Global chests are available to leave loot for later-self
+    \item Ship can be sabotaged by taking out specific rooms
+    \item Ship reacts to everything happening in it, repairing damage, trying to trap you when you enter rooms, changing layout of rooms
+    \item People on board also react to your playstyle, different crew members have different abilities, detriments etc.
+    \item Certain rooms can only be accessed using non euclidian quirks
+    \item Passwords to enter restricted areas have to be discovered and spoken into microphone to unlock some doors
+    \item Win by killing all people onboard
+    \item Lose by running out of time and the ship reaching the new planet, or all members of the cult onboard the ship dying
+    
+\end{itemize}
+\ifdefined\booklet
+\else
+\end{document}
+\fi
