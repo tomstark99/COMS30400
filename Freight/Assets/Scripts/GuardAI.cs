@@ -7,12 +7,23 @@ using Mirror;
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
 public class GuardAI : NetworkBehaviour
 {
+    public enum State
+    {
+        Patroling,
+        Alerted,
+        Chasing
+    }
+
     public NavMeshAgent guard;
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
     private NetworkManagerMain room;
     private List<Player> players;
+    public State guardState;
+    public float timeAlerted;
+    public float timeChasing;
+    public Vector3 alertPosition;
 
 
     // Counter to increment points in path
@@ -23,6 +34,7 @@ public class GuardAI : NetworkBehaviour
     public bool playerSpotted;
     public float guardAngle;
     public Color spotlightColour;
+    public Color alertColour;
 
     private NetworkManagerMain Room
     {
@@ -33,12 +45,13 @@ public class GuardAI : NetworkBehaviour
         }
     }
 
-    private void Start()
+    [ServerCallback]
+    void Start()
     {
-        guard = GetComponent<NavMeshAgent>();
         players = Room.GamePlayers;
+        guard = GetComponent<NavMeshAgent>();
+        guardState = State.Patroling;
     }
-
 
     void GotoNextPoint()
     {
@@ -55,7 +68,7 @@ public class GuardAI : NetworkBehaviour
         destPoint = (destPoint + 1) % points.Length;
     }
 
-    void ChasePlayer()
+    Transform FindClosestPlayer()
     {
         Transform closestPlayer = null;
 
@@ -72,8 +85,16 @@ public class GuardAI : NetworkBehaviour
             }
         }
 
+        return closestPlayer;
+    }
+
+    void ChasePlayer()
+    {
+        Transform closestPlayer = FindClosestPlayer();
+
         transform.LookAt(closestPlayer.transform);
         guard.SetDestination(closestPlayer.position- new Vector3(proximityRange,0,0));
+        guard.gameObject.GetComponent<GuardAI>().alertPosition = closestPlayer.position;
     }
 
     bool PlayerSpotted()
@@ -95,8 +116,11 @@ public class GuardAI : NetworkBehaviour
                 if (guardPlayerAngle < guardAngle / 2f)
                 {
                     // checks if guard line of sight is blocked by an obstacle
-                    if (!Physics.Linecast(transform.position, player.transform.position, obstacleMask))
+                    // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
+                    if (!Physics.Linecast(transform.position, player.transform.position, obstacleMask) || !Physics.Linecast(transform.position, player.transform.GetChild(2).transform.position, obstacleMask))
                     {
+                        Debug.Log(player.transform.position);
+                        Debug.Log(player.transform.GetChild(2).transform.position);
                         return true;
                     }
                 }
@@ -107,18 +131,78 @@ public class GuardAI : NetworkBehaviour
     }
 
     [ClientRpc]
-    void changeToYellow()
+    void ChangeToYellow()
     {
         spotlight.color = spotlightColour;
     }
 
     [ClientRpc]
-    void changeToRed()
+    void ChangeToRed()
     {
         spotlight.color = Color.red;
     }
 
-    [Server]
+    void SetGuardsToAlerted()
+    {
+        Transform parent = transform.parent;
+        Transform closestPlayer = FindClosestPlayer();
+        foreach (Transform child in parent)
+        {
+            GuardAI temp = child.gameObject.GetComponent<GuardAI>();
+            if (temp.guardState != State.Chasing)
+            {
+                temp.guardState = State.Alerted;
+            }
+            temp.timeAlerted = 0f;
+            temp.alertPosition = closestPlayer.position;
+        }
+
+    }
+
+    void SetGuardsToAlertedItem(Vector3 position)
+    {
+        Transform parent = transform.parent;
+        foreach (Transform child in parent)
+        {
+            GuardAI temp = child.gameObject.GetComponent<GuardAI>();
+            temp.guardState = State.Alerted;
+            temp.timeAlerted = 0f;
+            temp.alertPosition = position;
+        }
+
+    }
+
+    [ClientRpc]
+    void ChangeToOrange()
+    {
+        spotlight.color = alertColour;
+    }
+
+    void GoToSighting()
+    {
+        guard.SetDestination(alertPosition);
+    }
+
+    Vector3 CheckForRock()
+    {
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+            RockHitGroundAlert tempRock = rock.transform.GetChild(0).gameObject.GetComponent<RockHitGroundAlert>();
+            if (tempRock.rockHitGround)
+            {
+                Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
+                if (Vector3.Distance(transform.position, tempRock.transform.position) < 30)
+                {
+                    return tempRock.transform.position;
+                }
+            }
+        }
+        return new Vector3 (0f,0f,0f);
+    }
+
+    [ServerCallback]
     // Update is called once per frame
     void Update()
     {
@@ -127,19 +211,64 @@ public class GuardAI : NetworkBehaviour
             return;
         }
 
+        players = Room.GamePlayers;
+
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
 
-        // If the player is not spotted and the guard has reached their destination, go to new point
-        if (!playerSpotted && guard.remainingDistance < 0.5f)
+        Vector3 rockPos = CheckForRock();
+
+        if (timeChasing > 8f)
         {
-            GotoNextPoint();
-            changeToYellow();
+            Room.EndGame();
         }
-        if (playerSpotted)
+        // If the player is not spotted but the guard is in the alerted state
+        else if (!playerSpotted && guardState == State.Alerted)
         {
+            // increase time and once it hits limit, go back to patroling
+            timeAlerted += Time.deltaTime;
+            if (timeAlerted > 8f)
+            {
+                guardState = State.Patroling;
+                GotoNextPoint();
+                ChangeToYellow();
+                timeAlerted = 0f;
+            }
+            else
+            {
+                GoToSighting();
+                ChangeToOrange();
+            }
+        }
+        else if (!playerSpotted && guardState == State.Chasing)
+        {
+            timeAlerted = 0;
+            timeChasing = 0;
+            guardState = State.Alerted;
+        }
+        else if (rockPos != new Vector3(0f, 0f, 0f))
+        {
+            SetGuardsToAlertedItem(rockPos);
+        }
+        // If the player is not spotted and the guard has reached their destination, go to new point
+        else if (!playerSpotted && guard.remainingDistance < 0.5f)
+        {
+            guardState = State.Patroling;
+            timeChasing = 0f;
+            GotoNextPoint();
+            ChangeToYellow();
+        }
+        // If player is spotted, guard will chase player and set guards in the same group as him to spotted
+        else if (playerSpotted)
+        {
+            timeChasing += Time.deltaTime;
+            if (timeChasing > 2f)
+            {
+                SetGuardsToAlerted();
+            }
+            guardState = State.Chasing;
             ChasePlayer();
-            changeToRed();
+            ChangeToRed();
         }
 
     }
