@@ -1,0 +1,150 @@
+\usepackage[T1]{fontenc} 
+
+\usepackage[margin=2cm]{geometry} % [margin=1in]
+% \geometry{
+%     inner=4cm
+% }
+
+
+% uncomment for bernhard font
+%\usepackage{bookman}
+%\usepackage{cmbright}
+%\usepackage[default]{opensans}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{cancel}
+\usepackage{tikz}\usetikzlibrary{fit,arrows,shapes}
+\usepackage{fancyhdr}
+\usepackage[amsmath,hyperref]{ntheorem}
+\usepackage{framed}
+\usepackage{booktabs}
+\usepackage{needspace}
+\usepackage{diagbox}
+\usepackage{parskip}
+\usepackage{makecell}
+\usepackage{varwidth}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage[font=small,skip=5pt]{caption}
+\usepackage{pgfplots}
+\usepackage{xparse}
+\usepackage{enumitem}
+\usepackage{float}
+\pgfplotsset{compat=newest}
+
+%\setkomafont{title}{\LARGE\bfseries\rmfamily}
+%\setkomafont{author}{\Large\mdseries\rmfamily}
+%\setkomafont{section}{\Large\mdseries\rmfamily}
+%\setkomafont{sectioning}{\rmfamily}
+%\setkomafont{subsection}{\large\mdseries\rmfamily}
+%\setkomafont{descriptionlabel}{\rmfamily}
+
+\newenvironment{thinleftbar}{%
+  \def\FrameCommand{\vrule width 1pt \hspace{10pt}}%
+  \MakeFramed {\advance\hsize-\width \FrameRestore}}%
+ {\endMakeFramed}
+
+\newcommand{\thm}{
+    \theoremstyle{plain}
+    \theoremseparator{.}
+    \theorembodyfont{\upshape}
+    \theoremheaderfont{\bfseries}
+    \theoremprework{\begin{thinleftbar}}
+    \theorempostwork{\end{thinleftbar}}
+}
+\thm\newtheorem{definition}{Definition}[section]
+\thm\newtheorem{proposition}[definition]{Proposition}
+\thm\newtheorem{theorem}[definition]{Theorem}
+\thm\newtheorem{lemma}[definition]{Lemma}
+\thm\newtheorem{corollary}[definition]{Corollary}
+
+\newcommand{\Grp}{\mathbb G}
+
+\newcommand{\vv}[2]{
+\left[
+\begin{array}{c}
+#1 \\ #2
+\end{array}
+\right]
+}
+
+\newcommand{\vvv}[3]{
+\left[
+\begin{array}{c}
+#1 \\ #2 \\ #3
+\end{array}
+\right]
+}
+
+\newcommand{\vvvl}[3]{
+[#1, #2, #3]^T
+}
+
+\newcommand{\m}[1]{
+\left[\begin{array}{ccccc} #1 \end{array}\right]
+}
+
+\renewcommand{\vec}[1]{\overline{#1}}
+
+\newcommand{\Exp}[1]{\mathbb{E}\left[#1\right]}
+
+\renewcommand{\o}{\phantom{0}}
+
+\newcommand{\hi}[1]{\textbf{#1}}
+
+\setlength{\parskip}{6pt plus 2pt minus 2pt}
+\setlength{\parindent}{0pt}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newenvironment{diamondsec}{\noindent $\diamond$ \footnotesize}{}
+
+\excludecomment{exercise}
+%\newenvironment{exercise}{\begin{framed}\noindent\textbf{Exercise. }}{\end{framed}}
+
+\newenvironment{example}{\noindent\textbf{Example. }}{}
+\newenvironment{proof}{\noindent\textit{Proof. }}{\hfill$\square$}
+
+\newcommand{\setuplecture}[2]{
+    \lhead{\textsc{#1}}
+    \rhead{Coursework Report}
+    \title{\vspace{-2cm}\textsc{\textbf{#1}}\\\Large{\textbf{Coursework Report}}}
+    \author{#2}
+    \date{}
+}
+
+\newcommand{\titlestuff}{
+    \maketitle
+
+    % \thispagestyle{fancy}
+
+    %\usefont{T1}{fos}{l}{n}\selectfont
+}
+
+% \pagestyle{fancy}
+% \lhead{COMS20002 / CoCoNuT}
+\cfoot{\thepage}
+
+
+\tikzset{
+    >=stealth',
+    squig/.style={decorate,decoration={snake,post length=1mm}},
+    brace/.style={decorate,decoration={brace,amplitude=5pt}},
+    place/.style={draw,circle,inner sep=0.7em},
+    token/.style={draw,circle,inner sep=0.3em,fill=gray},
+    transition/.style 2 args={draw,rectangle,thick,minimum width=#1,minimum height=#2},
+    rec/.style 2 args={draw,rectangle,minimum width=#1,minimum height=#2},
+    cham/.style 2 args={draw,chamfered rectangle,minimum width=#1,minimum height=#2},
+    rrec/.style 2 args={draw,rectangle,minimum width=#1,minimum height=#2,rounded corners=0.5mm},
+    diam/.style 2 args={draw,diamond,minimum width=#1,minimum height=#2,aspect=1.5}
+}
+
+\hypersetup{
+    colorlinks=true,
+    bookmarksopen=true,
+    allcolors=red
+}
