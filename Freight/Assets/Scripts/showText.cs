@@ -3,26 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using UnityEngine.UI;
+using Mirror;
 
 
-public class showText : MonoBehaviour
+public class ShowText : NetworkBehaviour
 {
 
     [DllImport("__Internal")]
     private static extern string StringReturnValueFunction();
 
-    private Text txtMy;
+    public Text txtMy;
     
-    // Start is called before the first frame update
+    [ClientCallback]
     void Start()
     {
-        txtMy = GameObject.Find("Canvas/Text").GetComponent<Text>();
+        if (!hasAuthority)
+        {
+            return;
+        }
         txtMy.text = string.Join(",", PoseParser.GETPoseArray());
     }
 
-    // Update is called once per frame
+    [ClientCallback]
     void Update()
     {
-        txtMy.text = string.Join(",", PoseParser.GETPoseArray());
+        if (!hasAuthority)
+        {
+            return;
+        }
+        txtMy.text = PoseParser.GETGestureAsString() + string.Join(",", PoseParser.GETPoseArray());
     }
 }

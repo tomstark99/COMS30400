@@ -5,6 +5,11 @@ using Mirror;
 
 public class Player : NetworkBehaviour
 {
+    public GameObject playerUI;
+    private GameObject uiRef;
+    [SyncVar]
+    public string gesture;
+
     private NetworkManagerMain room;
     private NetworkManagerMain Room
     {
@@ -15,15 +20,65 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public override void OnStartClient()
+    public override void OnStartLocalPlayer()
     {
-        DontDestroyOnLoad(gameObject);
-
-        Room.GamePlayers.Add(this);
+        uiRef = Instantiate(playerUI);
+        gesture = PoseParser.GETGestureAsString();
+        base.OnStartLocalPlayer();
     }
 
-    public override void OnStopClient()
+    public void SetPressE()
     {
-        Room.GamePlayers.Remove(this);
+        if (isLocalPlayer)
+        {
+            uiRef.transform.GetChild(1).gameObject.SetActive(true);
+        }
     }
+
+    public void UnsetPressE()
+    {
+        if (isLocalPlayer)
+        {
+            uiRef.transform.GetChild(1).gameObject.SetActive(false);
+        }
+        
+    }
+
+    [Command]
+    public void getGesture(string temp)
+    {
+        gesture = temp;
+    }
+
+    [ClientCallback]
+    void Update()
+    {
+        if (!hasAuthority)
+        {
+            return;
+        }
+        string tempGesture = PoseParser.GETGestureAsString();
+        if (tempGesture != gesture)
+        {
+            getGesture(tempGesture);
+        }
+    }
+
+    //public override void OnStopClient()
+    //{
+    //    CmdRemovePlayer(this);
+    //}
+
+    //[Command]
+    //private void CmdAddPlayer(Player player)
+    //{
+
+    //    Room.GamePlayers.Add(player);
+    //}
+
+    //[Command]
+    //private void CmdRemovePlayer(Player player)
+    //{
+    //    Room.GamePlayers.Remove(this);
+    //}
 }
