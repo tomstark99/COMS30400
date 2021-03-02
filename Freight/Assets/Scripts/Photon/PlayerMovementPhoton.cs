@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMovementPhoton : MonoBehaviour
+public class PlayerMovementPhoton : MonoBehaviourPun
 {
     public CharacterController controller;
     public Transform groundCheck;
@@ -21,24 +21,28 @@ public class PlayerMovementPhoton : MonoBehaviour
     private Transform prev;
     private PhotonView PV;
 
-    private void Awake()
+   
+    void Start()
     {
+        if(photonView.IsMine)
+        {
+            transform.Find("Cube").GetChild(0).gameObject.SetActive(true);
+        }
         PV = GetComponent<PhotonView>();
-        if (!PV.IsMine && GetComponent<PlayerMovementPhoton>() != null)
+        if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
         {
             Debug.Log(" DISABLE CONTROLER ");
             Destroy(GetComponent<PlayerMovementPhoton>());
         }
     }
 
-    void Start()
-    {
-        //PV = GetComponent<PhotonView>();
-    }
-
     void Update()
     {
-        if (PV.IsMine)
+        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+        {
+            return;
+        }
+        if (photonView.IsMine)
             Movement();
 
         if (Input.GetKeyDown(KeyCode.Escape))
