@@ -20,6 +20,16 @@ public class PlayerMovementPhoton : MonoBehaviour
     private bool onTrain;
     private Transform prev;
     private PhotonView PV;
+
+    private void Awake()
+    {
+
+        if (!PV.IsMine && GetComponent<PlayerMovementPhoton>() != null)
+        {
+            Debug.Log(" DISABLE CONTROLER ");
+            Destroy(GetComponent<PlayerMovementPhoton>());
+        }
+    }
     void Start()
     {
         PV = GetComponent<PhotonView>();
