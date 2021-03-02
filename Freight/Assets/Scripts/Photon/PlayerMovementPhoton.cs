@@ -23,16 +23,17 @@ public class PlayerMovementPhoton : MonoBehaviour
 
     private void Awake()
     {
-
+        PV = GetComponent<PhotonView>();
         if (!PV.IsMine && GetComponent<PlayerMovementPhoton>() != null)
         {
             Debug.Log(" DISABLE CONTROLER ");
             Destroy(GetComponent<PlayerMovementPhoton>());
         }
     }
+
     void Start()
     {
-        PV = GetComponent<PhotonView>();
+        //PV = GetComponent<PhotonView>();
     }
 
     void Update()
