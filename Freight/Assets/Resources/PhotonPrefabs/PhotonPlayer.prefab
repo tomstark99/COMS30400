@@ -269,6 +269,8 @@ GameObject:
   - component: {fileID: -121466810418913343}
   - component: {fileID: 4492067779300841653}
   - component: {fileID: -1423305273305158639}
+  - component: {fileID: 7932285693827206381}
+  - component: {fileID: 1584224160647717026}
   m_Layer: 8
   m_Name: PhotonPlayer
   m_TagString: Player
@@ -401,6 +403,33 @@ MonoBehaviour:
   useLocalTransformOnly: 0
   maxPositionDifferenceForVelocitySyncing: 10
   receivedStatesCounter: 0
+--- !u!114 &7932285693827206381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980832976051256633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6cb9eb0332609b49b09935dd396da10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 3470005061625440771}
+--- !u!114 &1584224160647717026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980832976051256633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 393f8decc95e7a445882235c9a150138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBody: {fileID: 7980832976051256635}
+  virtualCamera: {fileID: 7980832975168636562}
 --- !u!1 &7980832976756422580
 GameObject:
   m_ObjectHideFlags: 0
