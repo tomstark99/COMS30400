@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using UnityEngine.UI;
 
 public class LobbyController : MonoBehaviourPunCallbacks
 {
@@ -50,7 +52,7 @@ public class LobbyController : MonoBehaviourPunCallbacks
     {
         Debug.Log("Creating room now");
         int randomRoomNumber = Random.Range(0, 10000);
-        RoomOptions roomOps = new RoomOptions()
+        Photon.Realtime.RoomOptions roomOps = new Photon.Realtime.RoomOptions()
         {
             IsVisible = true,
             IsOpen = true,
