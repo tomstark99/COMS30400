@@ -205,12 +205,12 @@ public class GuardAIPhoton : MonoBehaviourPun
 
         Vector3 rockPos = CheckForRock();
 
-        if (timeChasing > 8f)
-        {
-            Debug.Log("You lose");
-        }
+        //if (timeChasing > 8f)
+        //{
+        //    Debug.Log("You lose");
+        //}
         // If the player is not spotted but the guard is in the alerted state
-        else if (!playerSpotted && guardState == State.Alerted)
+        if (!playerSpotted && guardState == State.Alerted)
         {
             // increase time and once it hits limit, go back to patroling
             timeAlerted += Time.deltaTime;
