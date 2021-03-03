@@ -7,8 +7,9 @@ public abstract class Character : MonoBehaviour
     public Transform pickUpDestination;
     public PickUpable currentHeldItem;
     
-    public void PickUp(PickUpable Item) {
-        currentHeldItem = item;
+    public void PickUp(PickUpable Item) 
+    {
+        currentHeldItem = Item;
 
         // An item can only be moved by a player if they are the owner.
         // Therefore, give ownership of the item to the local player before
@@ -25,16 +26,18 @@ public abstract class Character : MonoBehaviour
         item.transform.parent = pickupDestination;
     }
 
-    public void PutDown(PickUpable item) {
+
+    public void PutDown(PickUpable item) 
+    {
 
         currentHeldItem = null;
         item.ResetItemConditions(this);
 
         item.transform.parent = GameObject.Find("/Environment/Interactables").transform;
-  }
-
-   public virtual Vector3 Velocity() {
-       
-    return GetComponent<CharacterController>().velocity;
     }
+
+   public virtual Vector3 Velocity() 
+   {
+    return GetComponent<CharacterController>().velocity;
+   }
 }
