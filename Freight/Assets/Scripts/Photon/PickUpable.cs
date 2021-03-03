@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PickUpable : MonoBehaviour
+public class PickUpable : Interactable
 {
     private Transform pickupDestination;
     public bool isPickedUp = false;
 
-    public override void PrimaryInteraction(Character character)
+    public void PrimaryInteraction(Character character)
     {
         if (!isPickedUp)
         {
@@ -15,7 +16,7 @@ public class PickUpable : MonoBehaviour
         }
     }
 
-    public override void PrimaryInteractionOff(Character character)
+    public void PrimaryInteractionOff(Character character)
     {
         if (isPickedUp)
         {
@@ -25,7 +26,7 @@ public class PickUpable : MonoBehaviour
 
     /// <summary> Checks if the item is in a pickup destination, if so it is
     /// picked up.  </summary>
-    public override bool CanInteract(Character character)
+    public bool CanInteract(Character character)
     {
         return !isPickedUp && !character.HasItem();
     }
