@@ -14,7 +14,7 @@ public class SplineWalker : NetworkBehaviour {
 	private float progress;
 	private bool goingForward = true;
     // private bool leaveStation = false;
-    private float timeToLeave = 10.0f;
+    private float timeToLeave = 120.0f;
 
     public Vector3 trainPos;
     public Vector3 prevPos;
