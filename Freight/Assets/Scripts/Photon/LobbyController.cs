@@ -12,6 +12,7 @@ public class LobbyController : MonoBehaviourPunCallbacks
     private int roomSize;
     private bool connected;
     private bool starting;
+    public List<PhotonPlayer> players;
 
     // CallBack function for when first connection established
     public override void OnConnectedToMaster()
