@@ -61,6 +61,8 @@ public class ItemPickUpPhoton : MonoBehaviourPun
     {
         rock.transform.parent = rocks.transform;
         rock.GetComponent<Rigidbody>().isKinematic = false;
+        rock.transform.position = transform.GetChild(3).position;
+
         rock.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
     }
 
