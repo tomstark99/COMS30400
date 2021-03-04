@@ -23,6 +23,9 @@ public class SplineWalkerPhoton : MonoBehaviourPun
 
     private void Start()
     {
+        if(!PhotonNetwork.IsMasterClient)
+            return;
+
         if (goingForward)
         {
             progress += (Time.deltaTime / duration);
@@ -71,6 +74,9 @@ public class SplineWalkerPhoton : MonoBehaviourPun
 
     private void Update()
     {
+        if(!PhotonNetwork.IsMasterClient)
+            return;
+            
         timeToLeave -= Time.deltaTime;
         if (timeToLeave < 0)
         {
