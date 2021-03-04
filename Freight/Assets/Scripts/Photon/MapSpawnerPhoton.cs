@@ -20,7 +20,10 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
     void Start()
     {
-        SpawnPrefabs();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            SpawnPrefabs();
+        }
     }
 
     public void SpawnPrefabs()
