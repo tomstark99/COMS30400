@@ -47,7 +47,7 @@ public class ItemInteract : MonoBehaviourPun
 
                     // If we are pressing mouse down then do the interaction
                     Debug.Log("current interactable has a pick up script");
-                    if (Input.GetKeyDown(KeyCode.F)) 
+                    if (Input.GetKeyDown(KeyCode.E)) 
                     {
                         Debug.Log("F was pressed");
                         // Do whatever the primary interaction of this interactable is.
