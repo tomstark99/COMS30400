@@ -10,15 +10,6 @@ using System.IO;
 public class MapSpawnerPhoton : MonoBehaviourPun
 {
     // variables for scene creation
-    public NavMeshSurface surface;
-    public GameObject tree;
-    public GameObject train;
-    public GameObject trainWithTag;
-    public GameObject trainMoving;
-    public GameObject trainLadder;
-    public GameObject fence;
-    public GameObject bottomFence;
-    public GameObject fenceBrokenPartial;
     int seed;
 
     // variables for spawning trains
@@ -37,7 +28,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         seed = (int)DateTime.Now.Ticks;
         UnityEngine.Random.InitState(seed);
         SpawnTrees();
-        //SpawnTrains();
+        SpawnTrains();
         SpawnFences();
         BuildNavMesh();
     }
@@ -45,7 +36,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     void BuildNavMesh()
     {
         GameObject navGameObject = GameObject.FindGameObjectWithTag("TrainStationNavMesh");
-        surface = navGameObject.GetComponent<NavMeshSurface>();
+        NavMeshSurface surface = navGameObject.GetComponent<NavMeshSurface>();
         surface.BuildNavMesh();
     }
 
@@ -119,11 +110,11 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
         int clearTrack = UnityEngine.Random.Range(0, 5);
         Debug.Log("skipped track: " + clearTrack);
-        GameObject freight_train_coal_loc = Instantiate(trainLadder, new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f));
-        Debug.Log("loca" + freight_train_coal_loc);
-        GameObject track = GameObject.FindWithTag(clearTrack.ToString());
-        Debug.Log("track" + track);
-        freight_train_coal_loc.GetComponent<SplineWalker>().spline = track.GetComponent<BezierSpline>();
+        //GameObject freight_train_coal_loc = PhotonNetwork.Instantiate("PhotonPrefabs/freight_train_coal_ladder Variant 1", new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f));
+        //Debug.Log("loca" + freight_train_coal_loc);
+        //GameObject track = GameObject.FindWithTag(clearTrack.ToString());
+       // Debug.Log("track" + track);
+        //freight_train_coal_loc.GetComponent<SplineWalkerPhoton>().spline = track.GetComponent<BezierSpline>();
 
         for (int j = 0; j < 5; j++)
         {
@@ -148,7 +139,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                 {
                     if (!inSkip(i, positions, gaps))
                     {
-                        GameObject trainGo;
+                        //GameObject trainGo;
                         if (instantiatedTrainWithTag == false)
                         {
                             //trainGo = Instantiate(trainWithTag, position, Quaternion.Euler(0f, 0f, 0f));
@@ -183,7 +174,10 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             else
             {
                 //freight_train_coal_loc.transform.localPosition = track.GetComponent<BezierSpline>().GetPoint(0.0f);
-                PhotonNetwork.Instantiate("PhotonPrefabs/freight_train_coal_ladder Variant 1", track.GetComponent<BezierSpline>().GetPoint(0.0f), Quaternion.Euler(0f, 0f, 0f));
+                GameObject track = GameObject.FindWithTag(clearTrack.ToString());
+                GameObject freight_train_coal_loc = PhotonNetwork.Instantiate("PhotonPrefabs/freight_train_coal_ladder Variant 1", track.GetComponent<BezierSpline>().GetPoint(0.0f), Quaternion.Euler(0f, 0f, 0f));
+                
+                freight_train_coal_loc.GetComponent<SplineWalkerPhoton>().spline = track.GetComponent<BezierSpline>();
                 //NetworkServer.Spawn(freight_train_coal_loc);
             }
             /*else {
