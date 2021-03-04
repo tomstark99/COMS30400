@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 630615819}
   - component: {fileID: 3263423050777536025}
   - component: {fileID: 8443216872760158713}
+  - component: {fileID: -4876123136566138500}
   m_Layer: 0
   m_Name: PhotonRock
   m_TagString: Untagged
@@ -217,12 +218,25 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 2
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 3263423050777536025}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-4876123136566138500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3511192020149717325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f844f78e33472e64381ad14c64e4d8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPickedUp: 0
 --- !u!1 &5340867027899979452
 GameObject:
   m_ObjectHideFlags: 0
