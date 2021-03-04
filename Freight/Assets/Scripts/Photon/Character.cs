@@ -44,7 +44,7 @@ public class Character : MonoBehaviour
         currentHeldItem = null;
         Item.ResetItemConditions(this);
         Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
-        Item.transform.parent = GameObject.Find("/Environment/Interactables").transform;
+        Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
    public virtual Vector3 Velocity() 
