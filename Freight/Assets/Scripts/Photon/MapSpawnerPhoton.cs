@@ -30,12 +30,13 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
     {
         seed = (int)DateTime.Now.Ticks;
         UnityEngine.Random.InitState(seed);
-        SpawnTrees();
-        SpawnTrains();
-        SpawnFences();
-        BuildNavMesh();
+        photonView.RPC("SpawnTrees", RpcTarget.All);
+        photonView.RPC("SpawnTrains", RpcTarget.All);
+        photonView.RPC("SpawnFences", RpcTarget.All);
+        photonView.RPC("BuildNavMesh", RpcTarget.All);
     }
 
+    [PunRPC]
     void BuildNavMesh()
     {
         GameObject navGameObject = GameObject.FindGameObjectWithTag("TrainStationNavMesh");
@@ -43,6 +44,7 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
         surface.BuildNavMesh();
     }
 
+    [PunRPC]
     void SpawnTrees()
     {
         UnityEngine.Random.InitState(seed);
@@ -77,6 +79,7 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
         Debug.Log("Trees");
     }
 
+    [PunRPC]
     void SpawnTrains()
     {
         /*UnityEngine.Random.InitState(seed);
@@ -213,6 +216,7 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
         return false;
     }
 
+    [PunRPC]
     void SpawnFences()
     {
         //Random.seed = (int)System.DateTime.Now.Ticks/(Random.Range(1,50000));
