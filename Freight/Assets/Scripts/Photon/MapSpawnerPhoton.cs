@@ -7,7 +7,7 @@ using TMPro;
 using Photon.Pun;
 using System.IO;
 
-public class MapSpawnerPhoton : MonoBehaviourPun
+public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
 {
     // variables for scene creation
     int seed;
@@ -20,10 +20,8 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
     void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            SpawnPrefabs();
-        }
+        SpawnPrefabs();
+        
     }
 
     public void SpawnPrefabs()
