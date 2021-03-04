@@ -301,7 +301,8 @@ GameObject:
   - component: {fileID: -1423305273305158639}
   - component: {fileID: 7932285693827206381}
   - component: {fileID: 1584224160647717026}
-  - component: {fileID: 1236387912475343800}
+  - component: {fileID: -8041433480325962717}
+  - component: {fileID: 5704460574621402990}
   m_Layer: 8
   m_Name: PhotonPlayer
   m_TagString: Player
@@ -462,7 +463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBody: {fileID: 7980832976051256635}
   virtualCamera: {fileID: 7980832975168636562}
---- !u!114 &1236387912475343800
+--- !u!114 &-8041433480325962717
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -471,12 +472,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 7980832976051256633}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c3e3970fe23bed47bdb114d0d0015da, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d924f5899626bc49a1ebde605e7bac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocks: {fileID: 0}
-  rockPrefab: {fileID: 3511192020149717325, guid: 569c103861054444e8a110f729f7bc25,
-    type: 3}
+  maxInteractionDistance: 4
+  cameraTransform: {fileID: 7980832975168636561}
+--- !u!114 &5704460574621402990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980832976051256633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b988add17567cc04bafe863cdd011110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickUpDestination: {fileID: 6652596242434911368}
+  currentHeldItem: {fileID: 0}
 --- !u!1 &7980832976756422580
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PickUpable : Interactable
+public class PickUpable : MonoBehaviour
 {
     private Transform pickupDestination;
     public bool isPickedUp = false;
+    protected PhotonView view;
 
+    void Start() {
+        view = GetComponent<PhotonView>();
+    }
     public void PrimaryInteraction(Character character)
     {
         if (!isPickedUp)
@@ -37,7 +41,7 @@ public class PickUpable : Interactable
         isPickedUp = true;
         // Disable the box collider to prevent collisions whilst carrying item.
         // Also turn off gravity on item and freeze its Rigidbody.
-        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
     }
 
@@ -62,5 +66,10 @@ public class PickUpable : Interactable
 
         // Set velocity of box after it is putdown to the speed to the character moving it
         GetComponent<Rigidbody>().velocity = character.Velocity() / 2;
+    }
+
+    void Update() 
+    {
+
     }
 }

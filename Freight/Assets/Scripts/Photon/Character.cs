@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public abstract class Character : MonoBehaviour
+public class Character : MonoBehaviour
 {
     public Transform pickUpDestination;
     public PickUpable currentHeldItem;

@@ -16,7 +16,8 @@ public abstract class Interactable : MonoBehaviour
     protected PhotonView view;
     public virtual void PrimaryInteractionOff(Character character) {}
 
-
+    public virtual void PrimaryInteraction(Character character) {}
+    
     public virtual void Start() 
     {
         view = GetComponent<PhotonView>();
