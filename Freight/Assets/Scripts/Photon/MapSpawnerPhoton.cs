@@ -7,7 +7,7 @@ using TMPro;
 using Photon.Pun;
 using System.IO;
 
-public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
+public class MapSpawnerPhoton : MonoBehaviourPun
 {
     // variables for scene creation
     int seed;
@@ -30,13 +30,13 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
     {
         seed = (int)DateTime.Now.Ticks;
         UnityEngine.Random.InitState(seed);
-        photonView.RPC("SpawnTrees", RpcTarget.All);
-        photonView.RPC("SpawnTrains", RpcTarget.All);
-        photonView.RPC("SpawnFences", RpcTarget.All);
-        photonView.RPC("BuildNavMesh", RpcTarget.All);
+        SpawnTrees();
+        SpawnTrains();
+        SpawnFences();
+        BuildNavMesh();
+        
     }
 
-    [PunRPC]
     void BuildNavMesh()
     {
         GameObject navGameObject = GameObject.FindGameObjectWithTag("TrainStationNavMesh");
@@ -44,42 +44,40 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
         surface.BuildNavMesh();
     }
 
-    [PunRPC]
     void SpawnTrees()
     {
         UnityEngine.Random.InitState(seed);
         for (int i = 0; i < 25; i++)
         {
             Vector3 position = new Vector3(UnityEngine.Random.Range(250.0f, 270.0f), 5, UnityEngine.Random.Range(200.0f, 420.0f));
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs",
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
                 "tree_basic Variant 1"), position, Quaternion.identity);
         }
 
         for (int i = 0; i < 15; i++)
         {
             Vector3 position = new Vector3(UnityEngine.Random.Range(275.0f, 450.0f), 5, UnityEngine.Random.Range(185.0f, 165.0f));
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs",
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
                 "tree_basic Variant 1"), position, Quaternion.identity);
         }
 
         for (int i = 0; i < 25; i++)
         {
             Vector3 position = new Vector3(UnityEngine.Random.Range(510.0f, 530.0f), 5, UnityEngine.Random.Range(200.0f, 400.0f));
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs",
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
                 "tree_basic Variant 1"), position, Quaternion.identity);
         }
 
         for (int i = 0; i < 15; i++)
         {
             Vector3 position = new Vector3(UnityEngine.Random.Range(275.0f, 450.0f), 5, UnityEngine.Random.Range(445.0f, 465.0f));
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs",
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
                 "tree_basic Variant 1"), position, Quaternion.identity);
         }
 
         Debug.Log("Trees");
     }
 
-    [PunRPC]
     void SpawnTrains()
     {
         /*UnityEngine.Random.InitState(seed);
@@ -149,7 +147,7 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
                         if (instantiatedTrainWithTag == false)
                         {
                             //trainGo = Instantiate(trainWithTag, position, Quaternion.Euler(0f, 0f, 0f));
-                            PhotonNetwork.Instantiate("PhotonPrefabs/freight_train_stationary Variant with tag 1", position, Quaternion.Euler(0f, 0f, 0f));
+                            PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/freight_train_stationary Variant with tag 1", position, Quaternion.Euler(0f, 0f, 0f));
                             //Debug.Log(trainGo.transform.Find("TrainNumber").gameObject.transform.GetChild(0));
                             //trainGo.transform.Find("trainNumber").gameObject.transform.GetChild(0);
                             instantiatedTrainWithTag = true;
@@ -170,7 +168,7 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
                         {
                             Debug.Log("got to the normal train");
                             //trainGo = Instantiate(train, position, Quaternion.Euler(0f, 0f, 0f));
-                            PhotonNetwork.Instantiate("PhotonPrefabs/freight_train_stationary Varian 1", position, Quaternion.Euler(0f, 0f, 0f));
+                            PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/freight_train_stationary Varian 1", position, Quaternion.Euler(0f, 0f, 0f));
                         }
                         //NetworkServer.Spawn(trainGo);
                     }
@@ -181,7 +179,7 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
             {
                 //freight_train_coal_loc.transform.localPosition = track.GetComponent<BezierSpline>().GetPoint(0.0f);
                 GameObject track = GameObject.FindWithTag(clearTrack.ToString());
-                GameObject freight_train_coal_loc = PhotonNetwork.Instantiate("PhotonPrefabs/freight_train_coal_ladder Variant 1", track.GetComponent<BezierSpline>().GetPoint(0.0f), Quaternion.Euler(0f, 0f, 0f));
+                GameObject freight_train_coal_loc = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/freight_train_coal_ladder Variant 1", track.GetComponent<BezierSpline>().GetPoint(0.0f), Quaternion.Euler(0f, 0f, 0f));
                 
                 freight_train_coal_loc.GetComponent<SplineWalkerPhoton>().spline = track.GetComponent<BezierSpline>();
                 //NetworkServer.Spawn(freight_train_coal_loc);
@@ -216,7 +214,6 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
         return false;
     }
 
-    [PunRPC]
     void SpawnFences()
     {
         //Random.seed = (int)System.DateTime.Now.Ticks/(Random.Range(1,50000));
@@ -226,11 +223,11 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
             Vector3 position = new Vector3(270.0f, 6.5f, (193.0f + i * 5.0f));
             if (i == 10)
             {
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_closed Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_broken_closed Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
             }
             else
             {
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
                 
             }
         }
@@ -240,7 +237,7 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
             Vector3 position = new Vector3(500.0f, 6.5f, (193.0f + i * 5.0f));
             if (i > 4 || i < 2)
             {
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
             }
         }
 
@@ -249,15 +246,15 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
             Vector3 position = new Vector3((272.5f + i * 5.0f), 6.5f, 190.5f);
             if (i > 36 && i < 42)
             {
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
                 position.y -= 3;
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
                 position.y -= 3;
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
             else
             {
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
 
         }
@@ -267,15 +264,15 @@ public class MapSpawnerPhoton : MonoBehaviourPunCallbacks
             Vector3 position = new Vector3((272.5f + i * 5.0f), 6.5f, 440.5f);
             if (i > 27 && i < 34)
             {
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
                 position.y -= 3;
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
                 position.y -= 3;
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
             else
             {
-                PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
         }
         Debug.Log("Fences");
