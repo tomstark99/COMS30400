@@ -33,12 +33,17 @@ public class Character : MonoBehaviour
     }
 
 
-    public void PutDown(PickUpable Item) 
+    public void Throw(PickUpable Item) 
     {
+        GameObject parent = pickUpDestination.transform.parent.gameObject;
+
+        GameObject cube = parent.transform.GetChild(2).gameObject;
+
+        GameObject camera = cube.transform.GetChild(0).gameObject;
 
         currentHeldItem = null;
         Item.ResetItemConditions(this);
-
+        Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
         Item.transform.parent = GameObject.Find("/Environment/Interactables").transform;
     }
 

@@ -62,7 +62,7 @@ public class ItemInteract : MonoBehaviourPun
             // Then turn off the glow of that thing
         
         // And if bring the mouse button up
-            if (Input.GetKeyDown(KeyCode.G)) 
+            if (Input.GetMouseButtonDown(0)) 
             {
 
               // Some item have a primary interaction off method, eg drop the

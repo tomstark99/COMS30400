@@ -24,7 +24,7 @@ public class PickUpable : MonoBehaviour
     {
         if (isPickedUp)
         {
-            character.PutDown(this);
+            character.Throw(this);
         }
     }
 
