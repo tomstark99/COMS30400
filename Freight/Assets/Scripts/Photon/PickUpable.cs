@@ -55,7 +55,7 @@ public class PickUpable : MonoBehaviour
     public void ResetItemConditionsRPC()
     {
         isPickedUp = false;
-        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<SphereCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
     }
 
