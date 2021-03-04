@@ -23,6 +23,7 @@ public class GuardAIPhoton : MonoBehaviourPun
     public float timeAlerted;
     public float timeChasing;
     public Vector3 alertPosition;
+    public GameObject[] players;
 
 
     // Counter to increment points in path
@@ -37,6 +38,7 @@ public class GuardAIPhoton : MonoBehaviourPun
 
     void Start()
     {
+        players = GameObject.FindGameObjectsWithTag("Player");
         guard = GetComponent<NavMeshAgent>();
         guardState = State.Patroling;
     }
@@ -62,18 +64,15 @@ public class GuardAIPhoton : MonoBehaviourPun
 
         float lastDistance = float.MaxValue;
 
-        foreach (var player in PhotonNetwork.PhotonViewCollection)
+        foreach (var player in players)
         {
-            if (player.Owner != null)
-            {
-                Debug.Log(player);
-                float eDistance = Vector3.Distance(player.transform.position, transform.position);
+            Debug.Log(player);
+            float eDistance = Vector3.Distance(player.transform.position, transform.position);
 
-                if (closestPlayer == null || eDistance < lastDistance)
-                {
-                    closestPlayer = player.transform;
-                    lastDistance = eDistance;
-                }
+            if (closestPlayer == null || eDistance < lastDistance)
+            {
+                closestPlayer = player.transform;
+                lastDistance = eDistance;
             }
         }
 
@@ -97,29 +96,26 @@ public class GuardAIPhoton : MonoBehaviourPun
             return true;
         }
 
-        foreach (var player in PhotonNetwork.PhotonViewCollection)
+        foreach (var player in players)
         {
-            if (player.Owner != null)
+            Debug.Log(player);
+            if (Vector3.Distance(transform.position, player.transform.position) < sightRange)
             {
-                Debug.Log(player);
-                if (Vector3.Distance(transform.position, player.transform.position) < sightRange)
+                // vector from guard to player
+                Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
+                float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
+                if (guardPlayerAngle < guardAngle / 2f)
                 {
-                    // vector from guard to player
-                    Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
-                    float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
-                    if (guardPlayerAngle < guardAngle / 2f)
+                    // checks if guard line of sight is blocked by an obstacle
+                    // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
+                    if (!Physics.Linecast(transform.position, player.transform.position, obstacleMask) || !Physics.Linecast(transform.position, player.transform.GetChild(2).transform.position, obstacleMask))
                     {
-                        // checks if guard line of sight is blocked by an obstacle
-                        // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
-                        if (!Physics.Linecast(transform.position, player.transform.position, obstacleMask) || !Physics.Linecast(transform.position, player.transform.GetChild(2).transform.position, obstacleMask))
-                        {
-                            Debug.Log(player.transform.position);
-                            Debug.Log(player.transform.GetChild(2).transform.position);
-                            return true;
-                        }
+                        Debug.Log(player.transform.position);
+                        Debug.Log(player.transform.GetChild(2).transform.position);
+                        return true;
                     }
-
                 }
+
             }
             
             // checks if player is in guard's view range 
@@ -199,7 +195,7 @@ public class GuardAIPhoton : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-
+        players = GameObject.FindGameObjectsWithTag("Player");
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
 
