@@ -26,6 +26,7 @@ public class RoomController : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            PhotonNetwork.AutomaticallySyncScene = true;
             Debug.Log("Starting Game");
             PhotonNetwork.LoadLevel(multiplayerSceneIndex);
         }

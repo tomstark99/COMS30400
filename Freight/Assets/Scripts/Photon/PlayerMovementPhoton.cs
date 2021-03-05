@@ -11,7 +11,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     private float gravity = -17f;
     private float speed = 8f;
-    private float jumpHeight = 1f;
+    private float jumpHeight = 3.5f;
 
     private Vector3 velocity;
     private float groundDistance = 0.4f;
