@@ -98,7 +98,7 @@ public class GuardAIPhoton : MonoBehaviourPun
 
         foreach (var player in players)
         {
-            Debug.Log(player);
+            //Debug.Log(player);
             if (Vector3.Distance(transform.position, player.transform.position) < sightRange)
             {
                 // vector from guard to player
