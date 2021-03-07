@@ -40,16 +40,16 @@ public class ItemInteract : MonoBehaviourPun
                 the other interaction (turn off its glow).*/
 
                 currentInteractable = newInteractable;
-                Debug.Log("current interactable is " + currentInteractable);
+                //Debug.Log("current interactable is " + currentInteractable);
             if (currentInteractable != null) 
             {
-                    // If we are able to interact with the new interactable then turn on its glow
+                // If we are able to interact with the new interactable then turn on its glow
 
-                    // If we are pressing mouse down then do the interaction
-                    Debug.Log("current interactable has a pick up script");
-                    if (Input.GetKeyDown(KeyCode.E)) 
+                // If we are pressing mouse down then do the interaction
+                //Debug.Log("current interactable has a pick up script");
+                if (Input.GetKeyDown(KeyCode.E)) 
                     {
-                        Debug.Log("F was pressed");
+                        //Debug.Log("F was pressed");
                         // Do whatever the primary interaction of this interactable is.
                         currentInteractable.PrimaryInteraction(character);
                     }
@@ -75,21 +75,21 @@ public class ItemInteract : MonoBehaviourPun
 
         private void FixedUpdate() 
         {
-                Debug.Log("Does this even work");
+                //Debug.Log("Does this even work");
                 Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
-                Debug.Log(Physics.Raycast(ray, out raycastFocus, maxInteractionDistance));
+                //Debug.Log(Physics.Raycast(ray, out raycastFocus, maxInteractionDistance));
                 if(Physics.Raycast(ray, out raycastFocus, maxInteractionDistance))
                     {
-                        Debug.Log(raycastFocus.collider.transform);
-                        Debug.Log(raycastFocus.collider.transform.GetComponent<PickUpable>());
+                        //Debug.Log(raycastFocus.collider.transform);
+                        //Debug.Log(raycastFocus.collider.transform.GetComponent<PickUpable>());
                         foreach(var component in raycastFocus.collider.transform.GetComponents<Component>())
                             {
-                                Debug.Log(component);
+                                //Debug.Log(component);
                             }
                         if(raycastFocus.collider.transform.GetComponent<PickUpable>() != null)
                         {
-                            Debug.Log(raycastFocus.collider.gameObject.GetInstanceID());
-                            Debug.Log(gameObject.GetInstanceID());
+                            //Debug.Log(raycastFocus.collider.gameObject.GetInstanceID());
+                            //Debug.Log(gameObject.GetInstanceID());
                         }
                     }
                 // Is interactable object in fron the player
@@ -105,12 +105,12 @@ public class ItemInteract : MonoBehaviourPun
             ) 
 
             {
-                Debug.Log("interactable is on");
+                //Debug.Log("interactable is on");
                 interactableInRange = true;
             }
             else 
             {
-                Debug.Log("interactable is off");
+                //Debug.Log("interactable is off");
 
                 interactableInRange = false;
             }
