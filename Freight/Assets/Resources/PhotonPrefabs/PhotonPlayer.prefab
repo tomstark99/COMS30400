@@ -299,6 +299,7 @@ GameObject:
   - component: {fileID: -121466810418913343}
   - component: {fileID: 4492067779300841653}
   - component: {fileID: -1423305273305158639}
+  - component: {fileID: 1542616783984723933}
   - component: {fileID: 7932285693827206381}
   - component: {fileID: 1584224160647717026}
   - component: {fileID: -8041433480325962717}
@@ -436,6 +437,21 @@ MonoBehaviour:
   useLocalTransformOnly: 0
   maxPositionDifferenceForVelocitySyncing: 10
   receivedStatesCounter: 0
+--- !u!114 &1542616783984723933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980832976051256633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9b84d8b5ea26084987c3e3d51fcd504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUI: {fileID: 6182315992054742256, guid: a43a74f54fdb28e49b47571e0133cdcc,
+    type: 3}
+  gesture: 
 --- !u!114 &7932285693827206381
 MonoBehaviour:
   m_ObjectHideFlags: 0
