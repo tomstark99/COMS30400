@@ -38,8 +38,9 @@ public class BreakFencePhoton : MonoBehaviourPun
         {
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
             string gesture = player.GetComponent<PhotonPlayer>().gesture;
+            bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
             //Debug.Log(gesture);
-            if (gesture.CompareTo("P") == 0 && tempDist <= 2.5f)
+            if ((gesture.CompareTo("P") == 0 || pPressed) && tempDist <= 2.5f)
             {
                 Vector3 spawnPosition = transform.position;
                 //gameObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.MasterClient);

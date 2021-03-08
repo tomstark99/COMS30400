@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class ToggleUiPhoton : MonoBehaviourPun
+public class ToggleUiPhoton : MonoBehaviour
 {
     public GameObject timetable;
     public GameObject map;

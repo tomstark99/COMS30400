@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PhotonPlayer : MonoBehaviourPun
+public class PhotonPlayer : MonoBehaviourPunCallbacks
 {
     public GameObject playerUI;
     private GameObject uiRef;
@@ -13,8 +13,8 @@ public class PhotonPlayer : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(playerUI);
-        uiRef.transform.parent = gameObject.transform;
+        //uiRef = Instantiate(playerUI);
+        //uiRef.transform.parent = gameObject.transform;
         gesture = PoseParser.GETGestureAsString();
     }
 
@@ -31,5 +31,14 @@ public class PhotonPlayer : MonoBehaviourPun
             gesture = tempGesture;
         }
         Debug.Log(gesture);
+    }
+
+    public bool IsPressingP()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            return true;
+        }
+        return false;
     }
 }
