@@ -13,6 +13,18 @@ public class BreakFencePhoton : MonoBehaviourPun
         
     }
 
+    [PunRPC]
+    void SetPressPToActive()
+    {
+        text.SetActive(true);
+    }
+
+    [PunRPC]
+    void SetPressPToNotActive()
+    {
+        text.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -26,11 +38,11 @@ public class BreakFencePhoton : MonoBehaviourPun
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
             if (tempDist <= 2.5f)
             {
-                text.SetActive(true);
+                photonView.RPC("SetPressPToActive", player.GetComponent<PhotonView>().Owner);
             }
             else if (tempDist > 2.5f)
             {
-                text.SetActive(false);
+                photonView.RPC("SetPressPToNotActive", player.GetComponent<PhotonView>().Owner);
             }
         }
 
