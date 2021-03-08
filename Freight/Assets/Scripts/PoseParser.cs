@@ -44,7 +44,7 @@ public class PoseParser : MonoBehaviour
     public static string GETGestureAsString()
     {
         #if !UNITY_WEBGL || UNITY_EDITOR
-        return "E";
+        return "P";
         #else
         return GetGestureAsString().ToUpper();
         #endif
