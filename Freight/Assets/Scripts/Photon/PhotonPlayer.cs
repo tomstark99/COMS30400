@@ -13,11 +13,7 @@ public class PhotonPlayer : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        if (photonView.IsMine)
-        {
-            return;
-        }
-        uiRef = Instantiate(playerUI);
+        Instantiate(playerUI);
         uiRef.transform.parent = gameObject.transform;
         gesture = PoseParser.GETGestureAsString();
     }
