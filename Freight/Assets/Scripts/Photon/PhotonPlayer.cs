@@ -16,6 +16,15 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
         //uiRef = Instantiate(playerUI);
         //uiRef.transform.parent = gameObject.transform;
         gesture = PoseParser.GETGestureAsString();
+        if (photonView.IsMine)
+        {
+            transform.Find("UI 1").gameObject.SetActive(true);
+        }
+        if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
+        {
+            Debug.Log(" DISABLE CONTROLER ");
+            transform.Find("UI 1").gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame

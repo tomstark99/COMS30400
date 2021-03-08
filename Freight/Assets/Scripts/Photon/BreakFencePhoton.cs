@@ -21,18 +21,18 @@ public class BreakFencePhoton : MonoBehaviourPun
             return;
         }
         players = GameObject.FindGameObjectsWithTag("Player");
-        //foreach (var player in players)
-        //{
-        //    float tempDist = Vector3.Distance(player.transform.position, transform.position);
-        //    if (tempDist <= 2.5f)
-        //    {
-        //        SetPressQToActive(player.connectionToClient);
-        //    }
-        //    else if (tempDist > 2.5f)
-        //    {
-        //        SetPressQToNotActive(player.connectionToClient);
-        //    }
-        //}
+        foreach (var player in players)
+        {
+            float tempDist = Vector3.Distance(player.transform.position, transform.position);
+            if (tempDist <= 2.5f)
+            {
+                text.SetActive(true);
+            }
+            else if (tempDist > 2.5f)
+            {
+                text.SetActive(false);
+            }
+        }
 
         foreach (var player in players)
         {
