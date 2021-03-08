@@ -38,6 +38,7 @@ public class BreakFencePhoton : MonoBehaviourPun
             if (gesture.CompareTo("P") == 0 && tempDist <= 2.5f)
             {
                 Vector3 spawnPosition = transform.position;
+                gameObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.MasterClient);
                 PhotonNetwork.Destroy(transform.gameObject);
                 PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
                 //NetworkServer.Spawn(brokenFence);
