@@ -9,14 +9,18 @@ public class CurrentRoomCanvas : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI roomText;
-
-    public string roomName;
+    [SerializeField]
+    private PlayerListingMenu playerListingMenu;
+    [SerializeField]
+    private LeaveRoomMenu leaveRoomMenu;
 
     private RoomsCanvases roomsCanvases;
 
     public void Initialise(RoomsCanvases canvases)
     {
         roomsCanvases = canvases;
+        playerListingMenu.Initalise(canvases);
+        leaveRoomMenu.Initalise(canvases);
     }
 
     public void Show()
@@ -27,10 +31,9 @@ public class CurrentRoomCanvas : MonoBehaviour
     public void SetRoomName(string name)
     {
         roomText.text = "Room: " + name;
-        roomName = name;
     }
 
-    private void Hide()
+    public void Hide()
     {
         gameObject.SetActive(false);
     }
@@ -39,7 +42,7 @@ public class CurrentRoomCanvas : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.AutomaticallySyncScene = true;
+            
             Debug.Log("Starting Game");
             PhotonNetwork.LoadLevel(1);
         }

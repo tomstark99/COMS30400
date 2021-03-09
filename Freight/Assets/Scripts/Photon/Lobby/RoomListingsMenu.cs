@@ -23,7 +23,7 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
     {
         roomsCanvases.CurrentRoomCanvas.Show();
         roomsCanvases.CreateOrJoinRoomCanvas.Hide();
-        roomsCanvases.CurrentRoomCanvas.SetRoomName(roomsCanvases.CurrentRoomCanvas.roomName);
+        listings.Clear();
         content.DestroyChildren();
     }
 
@@ -43,12 +43,16 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
             } 
             else
             {
-                // creates listing and adds to list of rooms
-                RoomListing listing = Instantiate(roomListing, content);
-                if (listing != null)
+                int index = listings.FindIndex(x => x.RoomInfo.Name == info.Name);
+                if (index == -1)
                 {
-                    listing.SetRoomInfo(info);
-                    listings.Add(listing);
+                    // creates listing and adds to list of rooms
+                    RoomListing listing = Instantiate(roomListing, content);
+                    if (listing != null)
+                    {
+                        listing.SetRoomInfo(info);
+                        listings.Add(listing);
+                    }
                 }
             }
             

@@ -8,6 +8,8 @@ public class NetworkController : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.LocalPlayer.NickName = GetRandomName();
+        PhotonNetwork.AutomaticallySyncScene = true;
         Debug.Log(PhotonNetwork.PhotonServerSettings);
     }
 
@@ -22,7 +24,9 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("We are connected to the " + PhotonNetwork.CloudRegion + " server");
-        PhotonNetwork.LocalPlayer.NickName = GetRandomName();
-        PhotonNetwork.JoinLobby();
+        if (!PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
     }
 }
