@@ -53,7 +53,7 @@ public class MapSpawner : NetworkBehaviour
     void SpawnTrees()
     {
         UnityEngine.Random.InitState(seed);
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 50; i++)
         {
             Vector3 pos;
             pos.x = UnityEngine.Random.Range(200.0f, 270.0f);
@@ -65,7 +65,7 @@ public class MapSpawner : NetworkBehaviour
             NetworkServer.Spawn(treeGo);
         }
 
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 50; i++)
         {
             Vector3 pos;
             pos.x = UnityEngine.Random.Range(270.0f, 600.0f);
@@ -77,7 +77,7 @@ public class MapSpawner : NetworkBehaviour
             NetworkServer.Spawn(treeGo);
         }
 
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 50; i++)
         {
             Vector3 pos;
             pos.x = UnityEngine.Random.Range(510.0f, 600.0f);
@@ -89,7 +89,7 @@ public class MapSpawner : NetworkBehaviour
             NetworkServer.Spawn(treeGo);
         }
 
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 50; i++)
         {
             Vector3 pos;
             pos.x = UnityEngine.Random.Range(275.0f, 510.0f);
