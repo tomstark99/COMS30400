@@ -8,6 +8,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
+        Debug.Log(PhotonNetwork.PhotonServerSettings);
     }
 
     private string GetRandomName()
