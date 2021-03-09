@@ -33,6 +33,11 @@ public class BreakFencePhoton : MonoBehaviourPun
     }
 
     // Update is called once per frame
+    [PunRPC]
+    void DestroyFence()
+    {
+        PhotonNetwork.Destroy(transform.gameObject);
+    }
     void Update()
     {
         if (isBroken) return;
