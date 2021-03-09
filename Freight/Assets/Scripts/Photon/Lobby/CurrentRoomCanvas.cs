@@ -24,11 +24,21 @@ public class CurrentRoomCanvas : MonoBehaviour
 
     public void SetRoomName(string name)
     {
-        roomText.text = name;
+        roomText.text = "Room: " + name;
     }
 
     private void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    public void StartGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.AutomaticallySyncScene = true;
+            Debug.Log("Starting Game");
+            PhotonNetwork.LoadLevel(1);
+        }
     }
 }
