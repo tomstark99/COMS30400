@@ -175,7 +175,7 @@ public class GuardAIPhoton : MonoBehaviourPun
 
     Vector3 CheckForRock()
     {
-        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+        /*GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
 
         foreach (GameObject rock in rocks)
         {
@@ -188,7 +188,7 @@ public class GuardAIPhoton : MonoBehaviourPun
                     return tempRock.transform.position;
                 }
             }
-        }
+        }*/
         return new Vector3(0f, 0f, 0f);
     }
 

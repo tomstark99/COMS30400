@@ -39,15 +39,16 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
         {
             gesture = tempGesture;
         }
-        Debug.Log(gesture);
+        //Debug.Log(gesture);
     }
 
     public bool IsPressingP()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            return true;
-        }
-        return false;
+         return Input.GetKeyDown(KeyCode.P);
+    }
+
+    public bool IsPressingE()
+    {
+         return Input.GetKeyDown(KeyCode.E);
     }
 }
