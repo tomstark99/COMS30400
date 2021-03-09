@@ -7,10 +7,11 @@ public class BreakFencePhoton : MonoBehaviourPun
 {
     public GameObject text;
     private GameObject[] players;
+    private bool isBroken;
     // Start is called before the first frame update
     void Start()
     {
-        
+        isBroken = false;
     }
 
     [PunRPC]
@@ -26,12 +27,15 @@ public class BreakFencePhoton : MonoBehaviourPun
     }
 
     // Update is called once per frame
+    [PunRPC]
+    void DestroyFence()
+    {
+        PhotonNetwork.Destroy(transform.gameObject);
+    }
     void Update()
     {
-        if (!PhotonNetwork.IsMasterClient)
-        {
+        if(isBroken == true)
             return;
-        }
         players = GameObject.FindGameObjectsWithTag("Player");
         foreach (var player in players)
         {
@@ -51,15 +55,26 @@ public class BreakFencePhoton : MonoBehaviourPun
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
             string gesture = player.GetComponent<PhotonPlayer>().gesture;
             bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
-            //Debug.Log(gesture);
             if ((gesture.CompareTo("P") == 0 || pPressed) && tempDist <= 2.5f)
             {
                 Vector3 spawnPosition = transform.position;
-                //gameObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.MasterClient);
-                PhotonNetwork.Destroy(transform.gameObject);
+              
+        
+                //gameObject.GetComponent<PhotonView>().TransferOwnership(player.GetComponent<PhotonView>().Owner);
+               // Debug.Log(gameObject.GetComponent<PhotonView>().Owner);
+                /*if (gameObject.GetComponent<PhotonView>().Owner == player.GetComponent<PhotonView>().Owner)
+                {
+                    PhotonNetwork.Destroy(transform.gameObject);
+                    PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
+                    isBroken = true;
+                    break;
+
+                }*/
+                photonView.RPC("DestroyFence", RpcTarget.MasterClient);
                 PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
-                //NetworkServer.Spawn(brokenFence);
+                isBroken = true;
                 break;
+                //NetworkServer.Spawn(brokenFence);
             }
         }
 
