@@ -10,6 +10,8 @@ public class CurrentRoomCanvas : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI roomText;
 
+    public string roomName;
+
     private RoomsCanvases roomsCanvases;
 
     public void Initialise(RoomsCanvases canvases)
@@ -25,6 +27,7 @@ public class CurrentRoomCanvas : MonoBehaviour
     public void SetRoomName(string name)
     {
         roomText.text = "Room: " + name;
+        roomName = name;
     }
 
     private void Hide()
