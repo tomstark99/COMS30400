@@ -53,31 +53,51 @@ public class MapSpawner : NetworkBehaviour
     void SpawnTrees()
     {
         UnityEngine.Random.InitState(seed);
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 40; i++)
         {
-            Vector3 position = new Vector3(UnityEngine.Random.Range(250.0f, 270.0f), 5, UnityEngine.Random.Range(200.0f, 420.0f));
-            GameObject treeGo = Instantiate(tree, position, Quaternion.identity);
+            Vector3 pos;
+            pos.x = UnityEngine.Random.Range(200.0f, 270.0f);
+            pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
+            pos.y = 0.0f;
+            pos.y = Terrain.activeTerrain.SampleHeight(pos);
+            pos.y += UnityEngine.Random.Range(0.1f, 1.2f);
+            GameObject treeGo = Instantiate(tree, pos, Quaternion.identity);
             NetworkServer.Spawn(treeGo);
         }
 
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 40; i++)
         {
-            Vector3 position = new Vector3(UnityEngine.Random.Range(275.0f, 450.0f), 5, UnityEngine.Random.Range(185.0f, 165.0f));
-            GameObject treeGo = Instantiate(tree, position, Quaternion.identity);
+            Vector3 pos;
+            pos.x = UnityEngine.Random.Range(270.0f, 600.0f);
+            pos.z = UnityEngine.Random.Range(100.0f, 185.0f);
+            pos.y = 0.0f;
+            pos.y = Terrain.activeTerrain.SampleHeight(pos);
+            pos.y += UnityEngine.Random.Range(0.1f, 1.2f);
+            GameObject treeGo = Instantiate(tree, pos, Quaternion.identity);
             NetworkServer.Spawn(treeGo);
         }
 
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 40; i++)
         {
-            Vector3 position = new Vector3(UnityEngine.Random.Range(510.0f, 530.0f), 5, UnityEngine.Random.Range(200.0f, 400.0f));
-            GameObject treeGo = Instantiate(tree, position, Quaternion.identity);
+            Vector3 pos;
+            pos.x = UnityEngine.Random.Range(510.0f, 600.0f);
+            pos.z = UnityEngine.Random.Range(185.0f, 500.0f);
+            pos.y = 0.0f;
+            pos.y = Terrain.activeTerrain.SampleHeight(pos);
+            pos.y += UnityEngine.Random.Range(0.1f, 1.2f);
+            GameObject treeGo = Instantiate(tree, pos, Quaternion.identity);
             NetworkServer.Spawn(treeGo);
         }
 
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 40; i++)
         {
-            Vector3 position = new Vector3(UnityEngine.Random.Range(275.0f, 450.0f), 5, UnityEngine.Random.Range(445.0f, 465.0f));
-            GameObject treeGo = Instantiate(tree, position, Quaternion.identity);
+            Vector3 pos;
+            pos.x = UnityEngine.Random.Range(275.0f, 510.0f);
+            pos.z = UnityEngine.Random.Range(445.0f, 500.0f);
+            pos.y = 0.0f;
+            pos.y = Terrain.activeTerrain.SampleHeight(pos);
+            pos.y += UnityEngine.Random.Range(0.1f, 1.2f);
+            GameObject treeGo = Instantiate(tree, pos, Quaternion.identity);
             NetworkServer.Spawn(treeGo);
         }
 
