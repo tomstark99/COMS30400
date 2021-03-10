@@ -16,9 +16,14 @@ public class NetworkController : MonoBehaviourPunCallbacks
     private string GetRandomName()
     {
         string name = "stefan";
-        int random = Random.Range(1000, 9999);
-        name += random.ToString();
-        return name;
+        string name2 = "omar";
+        int random = Random.Range(1,10);
+        int random2 = Random.Range(1000, 9999);
+
+        if(random > 5)
+            return name + random2.ToString();
+        else
+            return name2 + random2.ToString();
     }
 
     public override void OnConnectedToMaster()
