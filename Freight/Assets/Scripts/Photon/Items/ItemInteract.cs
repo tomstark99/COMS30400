@@ -93,31 +93,38 @@ public class ItemInteract : MonoBehaviourPun
     private void FixedUpdate() 
     {
 
-            interactables = GameObject.Find("Environment/Interactables");
-            //rocks = rocks.transform.GetChild(0).gameObject;
-            float minimumDistanceToObject = float.MaxValue;
-            foreach(Transform interactable in interactables.transform) 
+        interactables = GameObject.Find("Environment/Interactables");
+        
+        //rocks = rocks.transform.GetChild(0).gameObject;
+        float minimumDistanceToObject = float.MaxValue;
+        bool found = false;
+        foreach(Transform interactable in interactables.transform) 
+        {
+            Debug.Log(interactable);
+            foreach (Transform interact in interactable.transform)
             {
-                foreach (Transform interact in interactable.transform)
+                Debug.Log(interact);
+                float tempDist = Vector3.Distance(interact.transform.position, transform.position);
+                Debug.Log(tempDist);
+                if (tempDist <= 2.5f)
                 {
-                    float tempDist = Vector3.Distance(interact.transform.position, transform.position);
-                    if (tempDist <= 2.5f)
-                    {
-                        photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
-                        interactableInRange = true;
+                    photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
+                    interactableInRange = true;
 
-                        if(tempDist < minimumDistanceToObject) {
-                            interactableRock = interact.gameObject;
-                            minimumDistanceToObject = tempDist;
-                        }
+                    if(tempDist < minimumDistanceToObject) {
+                        interactableRock = interact.gameObject;
+                        minimumDistanceToObject = tempDist;
                     }
-                    else if (tempDist > 2.5f)
-                    {
-                        photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
-                        interactableInRange = false;
-                    }
+                    found = true;
+
+                }
+                else if (tempDist > 2.5f && found == false)
+                {
+                    photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
+                    interactableInRange = false;
                 }
             }
+        }
             
             
            
