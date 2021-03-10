@@ -14,6 +14,7 @@ public class PlayerListingMenu : MonoBehaviourPunCallbacks
 
     private List<PlayerListing> listings = new List<PlayerListing>();
 
+    // gets all players in room an awake
     private void Awake()
     {
         GetCurrentRoomPlayers();
@@ -24,12 +25,14 @@ public class PlayerListingMenu : MonoBehaviourPunCallbacks
         roomsCanvases = canvases;
     }
 
+    // when player leaves, destroys the player transform and its children
     public override void OnLeftRoom()
     {
         base.OnLeftRoom();
         content.DestroyChildren();
     }
 
+    // loops through the player key value pairs and adds them to List of player listings
     private void GetCurrentRoomPlayers()
     {
         foreach (KeyValuePair<int, Photon.Realtime.Player> playerInfo in PhotonNetwork.CurrentRoom.Players)
@@ -39,6 +42,7 @@ public class PlayerListingMenu : MonoBehaviourPunCallbacks
         
     }
 
+    // populates list of players and sets their info
     private void AddPlayerListing(Photon.Realtime.Player player)
     {
         // creates listing and adds to list of rooms
@@ -50,11 +54,13 @@ public class PlayerListingMenu : MonoBehaviourPunCallbacks
         }
     }
 
+    // when player enters room, add him to the List
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         AddPlayerListing(newPlayer);
     }
 
+    // when player leaves the room, destroy player object and delete from list
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         int index = listings.FindIndex(x => x.Player == otherPlayer);

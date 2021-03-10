@@ -17,6 +17,7 @@ public class RoomsCanvases : MonoBehaviour
         FirstInitalise();
     }
     
+    // initalises the canvases so you can have direct reference to them later
     private void FirstInitalise()
     {
         CreateOrJoinRoomCanvas.Initialise(this);

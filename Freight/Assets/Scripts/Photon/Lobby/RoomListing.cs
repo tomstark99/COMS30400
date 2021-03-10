@@ -19,6 +19,7 @@ public class RoomListing : MonoBehaviour
         text.text = roomInfo.MaxPlayers + ", " + roomInfo.Name;
     }
 
+    // when click on room, join the room
     public void OnClick_Button()
     {
         // join room by name when clicked
