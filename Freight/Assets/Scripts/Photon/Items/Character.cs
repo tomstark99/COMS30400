@@ -62,9 +62,16 @@ public class Character : MonoBehaviourPun
 
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(1).position, pickUpDestination.transform.GetChild(0).rotation);
 
-        bullet.transform.LookAt(hitInfo.point);
+        if (hitInfo.point != new Vector3(0f, 0f, 0f))
+        {
+            bullet.transform.LookAt(hitInfo.point);
 
-        bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 5000);
+            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 5000);
+        }
+        else
+        {
+            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 5000);
+        }
         bullet.GetComponent<Rigidbody>().isKinematic = false;
     }
 
