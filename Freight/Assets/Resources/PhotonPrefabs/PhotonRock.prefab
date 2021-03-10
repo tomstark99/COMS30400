@@ -111,8 +111,8 @@ GameObject:
   - component: {fileID: 630615819}
   - component: {fileID: 3263423050777536025}
   - component: {fileID: 8443216872760158713}
-  - component: {fileID: -4876123136566138500}
   - component: {fileID: 1151653885651363975}
+  - component: {fileID: -6891907066436117806}
   m_Layer: 0
   m_Name: PhotonRock
   m_TagString: Rock
@@ -225,19 +225,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-4876123136566138500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3511192020149717325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f844f78e33472e64381ad14c64e4d8c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPickedUp: 0
 --- !u!135 &1151653885651363975
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -251,6 +238,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.6
   m_Center: {x: 0.59, y: 0.53, z: 0.39}
+--- !u!114 &-6891907066436117806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3511192020149717325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae77f1ba55f463942bb7facb24cb78f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPickedUp: 0
 --- !u!1 &5340867027899979452
 GameObject:
   m_ObjectHideFlags: 0
