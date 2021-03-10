@@ -100,12 +100,9 @@ public class ItemInteract : MonoBehaviourPun
         bool found = false;
         foreach(Transform interactable in interactables.transform) 
         {
-            Debug.Log(interactable);
             foreach (Transform interact in interactable.transform)
             {
-                Debug.Log(interact);
                 float tempDist = Vector3.Distance(interact.transform.position, transform.position);
-                Debug.Log(tempDist);
                 if (tempDist <= 2.5f)
                 {
                     photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
