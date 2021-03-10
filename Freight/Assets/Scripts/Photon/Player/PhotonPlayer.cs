@@ -6,20 +6,20 @@ using Photon.Pun;
 public class PhotonPlayer : MonoBehaviourPunCallbacks
 {
     public GameObject playerUI;
-    private GameObject uiRef;
     public string gesture;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        //uiRef = Instantiate(playerUI);
-        //uiRef.transform.parent = gameObject.transform;
+        // gets the gesture from PoseParser 
         gesture = PoseParser.GETGestureAsString();
+        // if photon view is player's, sets their local UI to active
         if (photonView.IsMine)
         {
             transform.Find("UI 1").gameObject.SetActive(true);
         }
+        // if UI is not the player's, disable it
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
         {
             Debug.Log(" DISABLE CONTROLER ");
@@ -34,6 +34,7 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
         {
             return;
         }
+        // update gesture
         string tempGesture = PoseParser.GETGestureAsString();
         if (tempGesture != gesture)
         {
@@ -42,13 +43,10 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
         //Debug.Log(gesture);
     }
 
+    // checks if the player is pressing P
     public bool IsPressingP()
     {
          return Input.GetKeyDown(KeyCode.P);
     }
 
-    public bool IsPressingE()
-    {
-         return Input.GetKeyDown(KeyCode.E);
-    }
 }
