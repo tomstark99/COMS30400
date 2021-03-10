@@ -40,6 +40,7 @@ public class PickUpable : Interactable
         // Also turn off gravity on item and freeze its Rigidbody.
        // GetComponent<SphereCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
+        gameObject.transform.rotation = gameObject.transform.parent.rotation;
     }
 
     public void SetItemPickupConditions()

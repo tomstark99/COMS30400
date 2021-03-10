@@ -23,7 +23,7 @@ public class Character : MonoBehaviourPun
         // moving it.
         PhotonView view = Item.GetComponent<PhotonView>();
         view.TransferOwnership(PhotonNetwork.LocalPlayer);
-        Item.SetItemPickupConditions();
+        //Item.SetItemPickupConditions();
 
         // Move to players pickup destination.
         Item.transform.position = pickUpDestination.position;
@@ -31,6 +31,8 @@ public class Character : MonoBehaviourPun
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
         Item.transform.parent = pickUpDestination;
+
+        Item.SetItemPickupConditions();
     }
 
 
@@ -58,12 +60,9 @@ public class Character : MonoBehaviourPun
     [PunRPC]
     void CreateBullet()
     {
-        GameObject parent = pickUpDestination.transform.parent.gameObject;
+        GameObject camera = pickUpDestination.transform.parent.gameObject;
 
-        GameObject cube = parent.transform.GetChild(2).gameObject;
-
-        GameObject camera = cube.transform.GetChild(0).gameObject;
-        GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.position, pickUpDestination.rotation);
+        GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(1).position, pickUpDestination.rotation);
         bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 10000);
         bullet.GetComponent<Rigidbody>().isKinematic = false;
     }
