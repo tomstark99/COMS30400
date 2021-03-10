@@ -10,7 +10,7 @@ namespace FrostweepGames.WebGLPUNVoice
     {
         private GameObject _selfObject;
 
-        private AudioSource _source;
+        public AudioSource _source;
 
         private AudioClip _workingClip;
 

@@ -13,9 +13,10 @@ public class ProximityVoice : MonoBehaviourPun
     public AudioListener audioListener;
 
     private Dictionary<int, AudioSource> _sources;
+    private GameObject[] _players;
 
-    private readonly float minDistance = 1f;
-    private readonly float maxDistance = 10f;
+    public float minDistance = 1f;
+    public float maxDistance = 25f;
     private readonly float maxVolume = 1f;
     private readonly float minVolume = 0.01f;
 
@@ -36,6 +37,8 @@ public class ProximityVoice : MonoBehaviourPun
         recorder.StartRecord();
 
         _sources = new Dictionary<int, AudioSource>();
+        _players = GameObject.FindGameObjectsWithTag("Player");
+
         listener.SpeakersUpdatedEvent += OnSpeakerUpdate;
 
         b = (minVolume - maxVolume) / (1 / Mathf.Sqrt(maxDistance) - 1 / Mathf.Sqrt(minDistance));
@@ -56,9 +59,7 @@ public class ProximityVoice : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        var players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach (GameObject player in players)
+        foreach (GameObject player in _players)
         {
             int Id = player.GetPhotonView().Owner.ActorNumber;
             //both for the player object of this owner and because order of calling functions it's a black box
@@ -71,12 +72,12 @@ public class ProximityVoice : MonoBehaviourPun
 
     private void OnSpeakerUpdate()
     {
+        _players = GameObject.FindGameObjectsWithTag("Player");
+
         _sources = new Dictionary<int, AudioSource>();
         foreach(int id in listener.Speakers.Keys)
         {
-            GameObject speaker = GameObject.Find(listener.Speakers[id].Name);
-            AudioSource audiosource = speaker.GetComponent<AudioSource>();
-            _sources.Add(id, audiosource);
+            _sources.Add(id, listener.Speakers[id]._source);
         }
     }
 }

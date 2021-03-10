@@ -39,7 +39,7 @@ namespace FrostweepGames.WebGLPUNVoice
 		/// <summary>
 		/// Microphone audio clip
 		/// </summary>
-		private AudioClip _workingClip;
+		public AudioClip _workingClip;
 
 		/// <summary>
 		/// Current selected microphone device in usage
