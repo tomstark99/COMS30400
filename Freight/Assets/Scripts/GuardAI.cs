@@ -186,10 +186,12 @@ public class GuardAI : NetworkBehaviour
     Vector3 CheckForRock()
     {
         GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
-
+        Debug.Log(rocks);
         foreach (GameObject rock in rocks)
         {
-            RockHitGroundAlert tempRock = rock.transform.GetChild(0).gameObject.GetComponent<RockHitGroundAlert>();
+            
+            RockHitGroundAlert tempRock = rock.transform.Find("Rock Outline").gameObject.GetComponent<RockHitGroundAlert>();
+            Debug.Log("It finds rocks");
             if (tempRock.rockHitGround)
             {
                 Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));

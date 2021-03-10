@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
-public class RockHitGroundAlert : NetworkBehaviour
+public class RockHitGroundAlert : MonoBehaviour
 {
     public Transform groundCheck;
     private GameObject guards;
@@ -11,15 +10,14 @@ public class RockHitGroundAlert : NetworkBehaviour
     public LayerMask groundMask;
     public bool isGrounded ;
     private bool lastFrameValueOfIsGrounded;
-    [SyncVar] public bool rockHitGround;
+    public bool rockHitGround;
 
-    [ServerCallback]
     // Start is called before the first frame update
     void Start()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         lastFrameValueOfIsGrounded = isGrounded;
-        guards = GameObject.Find("Guards1");
+        guards = GameObject.Find("Guards");
         Debug.Log(guards);
         foreach (Transform child in guards.transform)
         {
@@ -30,7 +28,6 @@ public class RockHitGroundAlert : NetworkBehaviour
         }
     }
 
-    [ServerCallback]
     // Update is called once per frame
     void Update()
     {

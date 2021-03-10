@@ -175,11 +175,14 @@ public class GuardAIPhoton : MonoBehaviourPun
 
     Vector3 CheckForRock()
     {
-        /*GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
-
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+        
         foreach (GameObject rock in rocks)
         {
-            RockHitGroundAlert tempRock = rock.transform.GetChild(0).gameObject.GetComponent<RockHitGroundAlert>();
+            Debug.Log(rock);
+            Debug.Log("It finds rocks");
+
+            RockHitGroundAlert tempRock = rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>();
             if (tempRock.rockHitGround)
             {
                 Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
@@ -188,7 +191,7 @@ public class GuardAIPhoton : MonoBehaviourPun
                     return tempRock.transform.position;
                 }
             }
-        }*/
+        }
         return new Vector3(0f, 0f, 0f);
     }
 
