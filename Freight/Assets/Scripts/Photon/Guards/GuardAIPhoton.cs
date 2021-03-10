@@ -38,11 +38,13 @@ public class GuardAIPhoton : MonoBehaviourPun
 
     void Start()
     {
+        // find players, set the guard to its own navmeshagent and set the guard state to patroling
         players = GameObject.FindGameObjectsWithTag("Player");
         guard = GetComponent<NavMeshAgent>();
         guardState = State.Patroling;
     }
 
+    
     void GotoNextPoint()
     {
         // If no points in array, just return
@@ -57,18 +59,21 @@ public class GuardAIPhoton : MonoBehaviourPun
         // Get new point, modulo so you cycle back to 0
         destPoint = (destPoint + 1) % points.Length;
     }
-
+    
+    // finds closest player to the guard so they chase that player
     Transform FindClosestPlayer()
     {
         Transform closestPlayer = null;
 
         float lastDistance = float.MaxValue;
-
+        // loops through players
         foreach (var player in players)
         {
             Debug.Log(player);
+            // finds distance between player and guard
             float eDistance = Vector3.Distance(player.transform.position, transform.position);
 
+            // changes current closestPlayer if none set or if old distance further than new distance
             if (closestPlayer == null || eDistance < lastDistance)
             {
                 closestPlayer = player.transform;
@@ -79,12 +84,16 @@ public class GuardAIPhoton : MonoBehaviourPun
         return closestPlayer;
     }
 
+    // guard chases player
     void ChasePlayer()
     {
+        // gets closest player
         Transform closestPlayer = FindClosestPlayer();
 
+        // sets the guard destination to player's position
         transform.LookAt(closestPlayer.transform);
         guard.SetDestination(closestPlayer.position - new Vector3(proximityRange, 0, 0));
+        // sets the guard's alert position to the player's current position (so when the player goes out of range, the guard will run to the last place they saw the player)
         guard.gameObject.GetComponent<GuardAIPhoton>().alertPosition = closestPlayer.position;
     }
 
@@ -133,6 +142,7 @@ public class GuardAIPhoton : MonoBehaviourPun
         spotlight.color = Color.red;
     }
 
+    // sets all guards in the same 'group' to be alerted to the player
     void SetGuardsToAlerted()
     {
         Transform parent = transform.parent;
@@ -140,16 +150,19 @@ public class GuardAIPhoton : MonoBehaviourPun
         foreach (Transform child in parent)
         {
             GuardAIPhoton temp = child.gameObject.GetComponent<GuardAIPhoton>();
+            // sets the guard to be alerted if they're not chasing
             if (temp.guardState != State.Chasing)
             {
                 temp.guardState = State.Alerted;
             }
+            // resets time alerted
             temp.timeAlerted = 0f;
+            // sets alerted position to be the closest player's position
             temp.alertPosition = closestPlayer.position;
         }
 
     }
-
+    // if item falls next to guard, alert all guards to go to where it fell
     void SetGuardsToAlertedItem(Vector3 position)
     {
         Transform parent = transform.parent;
@@ -172,7 +185,7 @@ public class GuardAIPhoton : MonoBehaviourPun
     {
         guard.SetDestination(alertPosition);
     }
-
+    // guard checks if a rock dropped next to them
     Vector3 CheckForRock()
     {
         GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
@@ -182,7 +195,10 @@ public class GuardAIPhoton : MonoBehaviourPun
             Debug.Log(rock);
             Debug.Log("It finds rocks");
 
+            // gets the rock alert component
             RockHitGroundAlert tempRock = rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>();
+
+            // if the rock has hit the ground check whether the distance is close enough for the guard to alert other guards
             if (tempRock.rockHitGround)
             {
                 Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
