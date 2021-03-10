@@ -24,6 +24,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
    
     void Start()
     {
+        // activates player's camera if its theirs and disables all others
         if(photonView.IsMine)
         {
             transform.Find("Cube").GetChild(0).gameObject.SetActive(true);
@@ -42,13 +43,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             return;
         }
+        // movement function
         if (photonView.IsMine)
             Movement();
 
+        // if escape is pressed, quit game
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
-
-   
         
     }
 
@@ -77,6 +78,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move = transform.right * x + transform.forward * z;
         }
 
+        // sticks the player onto the train
         if (onTrain)
         {
             Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) - GameObject.FindGameObjectWithTag("locomotive").transform.position;
@@ -101,7 +103,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     }
 
    
-
+    // trigger collider for the ladder and the train floor
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "locomotive")
