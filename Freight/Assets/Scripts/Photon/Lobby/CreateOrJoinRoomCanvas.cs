@@ -18,11 +18,13 @@ public class CreateOrJoinRoomCanvas : MonoBehaviour
         roomListingsMenu.Initalise(canvases);
     }
 
+    // sets the create or join room canvas to active
     public void Show()
     {
         gameObject.SetActive(true);
     }
 
+    // hides the create or join room canvas
     public void Hide()
     {
         gameObject.SetActive(false);

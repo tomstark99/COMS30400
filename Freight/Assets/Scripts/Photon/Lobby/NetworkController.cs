@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 public class NetworkController : MonoBehaviourPunCallbacks
 {
+    [SerializeField]
+    private TextMeshProUGUI text;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
+        text.text = "Connected to " + PhotonNetwork.CloudRegion;
         Debug.Log("We are connected to the " + PhotonNetwork.CloudRegion + " server");
         if (!PhotonNetwork.InLobby)
         {

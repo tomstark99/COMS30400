@@ -19,6 +19,7 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
         roomsCanvases = canvases;
     }
 
+    // when join room, show current room canvas, clear all the listings and destroy them so if you leave room, there aren't duplicates
     public override void OnJoinedRoom()
     {
         roomsCanvases.CurrentRoomCanvas.Show();
@@ -27,6 +28,8 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
         content.DestroyChildren();
     }
 
+    // when new listing is added, add it to the List of listings and set its info
+    // when listing is removed, destroy it and remove it from the List
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         foreach (RoomInfo info in roomList)

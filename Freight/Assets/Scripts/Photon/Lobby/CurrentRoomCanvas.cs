@@ -16,6 +16,7 @@ public class CurrentRoomCanvas : MonoBehaviour
 
     private RoomsCanvases roomsCanvases;
 
+    
     public void Initialise(RoomsCanvases canvases)
     {
         roomsCanvases = canvases;
@@ -23,21 +24,25 @@ public class CurrentRoomCanvas : MonoBehaviour
         leaveRoomMenu.Initalise(canvases);
     }
 
+    // shows current room canvas
     public void Show()
     {
         gameObject.SetActive(true);
     }
 
+    // displays the name of the room
     public void SetRoomName(string name)
     {
         roomText.text = "Room: " + name;
     }
 
+    // hides current room canvas
     public void Hide()
     {
         gameObject.SetActive(false);
     }
 
+    // if master client presses on start game, game is started
     public void StartGame()
     {
         if (PhotonNetwork.IsMasterClient)
