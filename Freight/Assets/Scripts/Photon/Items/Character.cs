@@ -53,5 +53,18 @@ public class Character : MonoBehaviour
         Item.ResetItemConditions(this);
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
+
+    public void Shoot(Shootable Item) 
+    {
+
+        GameObject parent = pickUpDestination.transform.parent.gameObject;
+
+        GameObject cube = parent.transform.GetChild(2).gameObject;
+
+        GameObject camera = cube.transform.GetChild(0).gameObject;
+        GameObject bullet = PhotonNetwork.Instantiate("PhotonPrefabs/BulletPrefab", pickUpDestination.position, pickUpDestination.rotation);
+        bullet.transform.position = pickUpDestination.position;
+        bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 100);
+    }
    
 }
