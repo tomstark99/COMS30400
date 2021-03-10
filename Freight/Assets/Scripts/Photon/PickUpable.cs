@@ -41,7 +41,7 @@ public class PickUpable : MonoBehaviour
         isPickedUp = true;
         // Disable the box collider to prevent collisions whilst carrying item.
         // Also turn off gravity on item and freeze its Rigidbody.
-        GetComponent<SphereCollider>().enabled = false;
+       // GetComponent<SphereCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
     }
 
@@ -55,7 +55,7 @@ public class PickUpable : MonoBehaviour
     public void ResetItemConditionsRPC()
     {
         isPickedUp = false;
-        GetComponent<SphereCollider>().enabled = true;
+       // GetComponent<SphereCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
     }
 
