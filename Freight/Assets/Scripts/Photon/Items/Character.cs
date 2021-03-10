@@ -38,11 +38,7 @@ public class Character : MonoBehaviourPun
 
     public void Throw(Throwable Item) 
     {
-        GameObject parent = pickUpDestination.transform.parent.gameObject;
-
-        GameObject cube = parent.transform.GetChild(2).gameObject;
-
-        GameObject camera = cube.transform.GetChild(0).gameObject;
+        GameObject camera = pickUpDestination.transform.parent.gameObject;
 
         currentHeldItem = null;
         Item.ResetItemConditions(this);
