@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PickUpable : MonoBehaviour
+public class PickUpable : Interactable
 {
     private Transform pickupDestination;
     public bool isPickedUp = false;
-    protected PhotonView view;
 
-    void Start() {
-        view = GetComponent<PhotonView>();
-    }
-    public void PrimaryInteraction(Character character)
+    
+    public override void PrimaryInteraction(Character character)
     {
         if (!isPickedUp)
         {
@@ -20,11 +17,11 @@ public class PickUpable : MonoBehaviour
         }
     }
 
-    public void PrimaryInteractionOff(Character character)
+    public override void PrimaryInteractionOff(Character character)
     {
         if (isPickedUp)
         {
-            character.Throw(this);
+            character.Drop(this);
         }
     }
 
@@ -63,9 +60,7 @@ public class PickUpable : MonoBehaviour
     {
         GetComponent<PhotonView>().RPC("ResetItemConditionsRPC", RpcTarget.All);
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-
-        // Set velocity of box after it is putdown to the speed to the character moving it
-        GetComponent<Rigidbody>().velocity = character.Velocity() / 2;
+      // Set velocity of box after it is putdown to the speed to the character moving it
     }
 
     void Update() 

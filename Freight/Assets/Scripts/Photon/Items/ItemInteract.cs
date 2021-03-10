@@ -9,7 +9,7 @@ public class ItemInteract : MonoBehaviourPun
     [SerializeField] private Transform cameraTransform;
     private Character character;
     private bool interactableInRange = false;
-    private PickUpable currentInteractable;
+    private Interactable currentInteractable;
 
     public GameObject text;
 
@@ -39,14 +39,14 @@ public class ItemInteract : MonoBehaviourPun
 
         if(canInteract) 
         {
-                PickUpable newInteractable = interactableRock.GetComponent<PickUpable>();
+                Interactable newInteractable = interactableRock.GetComponent<Interactable>();
 
                 /* If we are already interacting with something but we are now
                 trying to interact with something new, then we need to disable
                 the other interaction (turn off its glow).*/
 
                 currentInteractable = newInteractable;
-               // Debug.Log("current interactable is " + currentInteractable);
+
             if (currentInteractable != null) 
             {
                     // If we are able to interact with the new interactable then turn on its glow
@@ -93,28 +93,32 @@ public class ItemInteract : MonoBehaviourPun
     private void FixedUpdate() 
     {
 
-            rocks = GameObject.Find("Environment/Interactables");
-            interactables = rocks.transform.GetChild(0).gameObject;
+            interactables = GameObject.Find("Environment/Interactables");
+            //rocks = rocks.transform.GetChild(0).gameObject;
             float minimumDistanceToObject = float.MaxValue;
-            foreach (Transform rock in interactables.transform)
+            foreach(Transform interactable in interactables.transform) 
             {
-                float tempDist = Vector3.Distance(rock.transform.position, transform.position);
-                if (tempDist <= 2.5f)
+                foreach (Transform interact in interactable.transform)
                 {
-                    photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
-                    interactableInRange = true;
+                    float tempDist = Vector3.Distance(interact.transform.position, transform.position);
+                    if (tempDist <= 2.5f)
+                    {
+                        photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
+                        interactableInRange = true;
 
-                    if(tempDist < minimumDistanceToObject) {
-                        interactableRock = rock.gameObject;
-                        minimumDistanceToObject = tempDist;
+                        if(tempDist < minimumDistanceToObject) {
+                            interactableRock = interact.gameObject;
+                            minimumDistanceToObject = tempDist;
+                        }
+                    }
+                    else if (tempDist > 2.5f)
+                    {
+                        photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
+                        interactableInRange = false;
                     }
                 }
-                else if (tempDist > 2.5f)
-                {
-                    photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
-                    interactableInRange = false;
-                }
             }
+            
             
            
     }

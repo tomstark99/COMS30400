@@ -33,7 +33,7 @@ public class Character : MonoBehaviour
     }
 
 
-    public void Throw(PickUpable Item) 
+    public void Throw(Throwable Item) 
     {
         GameObject parent = pickUpDestination.transform.parent.gameObject;
 
@@ -47,8 +47,11 @@ public class Character : MonoBehaviour
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
-   public virtual Vector3 Velocity() 
-   {
-    return GetComponent<CharacterController>().velocity;
-   }
+    public void Drop(PickUpable Item) 
+    {
+        currentHeldItem = null;
+        Item.ResetItemConditions(this);
+        Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
+    }
+   
 }
