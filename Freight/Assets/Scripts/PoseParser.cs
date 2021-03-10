@@ -19,13 +19,13 @@ public class PoseParser : MonoBehaviour
     private static string[] splitString;
     private static System.Random rnd;
     
-    [ClientCallback]
+    //[ClientCallback]
     void Start()
     {
         GETPoseArray();
     }
 
-    [Client]
+    //[Client]
     public static float[] GETPoseArray()
     {
         //256.77772626077456,174.67349582248264,
@@ -40,7 +40,7 @@ public class PoseParser : MonoBehaviour
         return poseArray;
     }
     
-    [Client]
+    //[Client]
     public static string GETGestureAsString()
     {
         #if !UNITY_WEBGL || UNITY_EDITOR
