@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Throwable : PickUpable
+public class Shootable : PickUpable
 {
     public override void PrimaryInteractionOff(Character character)
     {
         if (isPickedUp)
         {
-            character.Throw(this);
+            character.Shoot(this);
         }
     }
 }
