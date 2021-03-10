@@ -14,6 +14,21 @@ public class Character : MonoBehaviourPun
         return currentHeldItem != null;
     }
 
+    [PunRPC]
+    void PickUpRPC(int ItemID)
+    {
+        PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
+        Debug.Log(Item);
+        // Move to players pickup destination.
+        Item.transform.position = pickUpDestination.position;
+
+        // Set the parent of the object to the pickupDestination so that it moves
+        // with the player.
+        Item.transform.parent = pickUpDestination;
+
+        Item.SetItemPickupConditions();
+    }
+
     public void PickUp(PickUpable Item) 
     {
         currentHeldItem = Item;
@@ -26,24 +41,46 @@ public class Character : MonoBehaviourPun
         //Item.SetItemPickupConditions();
 
         // Move to players pickup destination.
-        Item.transform.position = pickUpDestination.position;
+        //Item.transform.position = pickUpDestination.position;
 
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
-        Item.transform.parent = pickUpDestination;
+        //Item.transform.parent = pickUpDestination;
 
-        Item.SetItemPickupConditions();
+        //Item.SetItemPickupConditions();
+        photonView.RPC("PickUpRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
+    [PunRPC]
+    void ThrowRPC(int ItemID)
+    {
+        Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
+        Debug.Log(Item);
+        GameObject parent = pickUpDestination.transform.parent.gameObject;
+
+        GameObject cube = parent.transform.GetChild(2).gameObject;
+
+        GameObject camera = cube.transform.GetChild(0).gameObject;
+
+        Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
+        Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
+    }
 
     public void Throw(Throwable Item) 
     {
-        GameObject camera = pickUpDestination.transform.parent.gameObject;
+        //GameObject camera = pickUpDestination.transform.parent.gameObject;
+
+        //GameObject parent = pickUpDestination.transform.parent.gameObject;
+
+        //GameObject cube = parent.transform.GetChild(2).gameObject;
+
+        //GameObject camera = cube.transform.GetChild(0).gameObject;
 
         currentHeldItem = null;
         Item.ResetItemConditions(this);
-        Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
-        Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
+        //Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
+        //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
+        photonView.RPC("ThrowRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
     public void Drop(PickUpable Item) 
@@ -56,7 +93,13 @@ public class Character : MonoBehaviourPun
     [PunRPC]
     void CreateBullet()
     {
-        GameObject camera = pickUpDestination.transform.parent.gameObject;
+        //GameObject camera = pickUpDestination.transform.parent.gameObject;
+
+        GameObject parent = pickUpDestination.transform.parent.gameObject;
+
+        GameObject cube = parent.transform.GetChild(2).gameObject;
+
+        GameObject camera = cube.transform.GetChild(0).gameObject;
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
         Debug.Log(hitInfo.point);
 
