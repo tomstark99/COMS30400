@@ -150,7 +150,7 @@ Transform:
   m_Children:
   - {fileID: 1846707111}
   m_Father: {fileID: 0}
-  m_RootOrder: 23
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6574040
 PrefabInstance:
@@ -26503,6 +26503,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhotonRock
       objectReference: {fileID: 0}
+    - target: {fileID: 5537445409875652288, guid: 569c103861054444e8a110f729f7bc25,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 7703496404499913364, guid: 569c103861054444e8a110f729f7bc25,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -26513,7 +26518,8 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1151653885651363975, guid: 569c103861054444e8a110f729f7bc25, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 569c103861054444e8a110f729f7bc25, type: 3}
 --- !u!4 &530437225 stripped
 Transform:
@@ -26521,6 +26527,25 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 530437224}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &530437226 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5537445409875652288, guid: 569c103861054444e8a110f729f7bc25,
+    type: 3}
+  m_PrefabInstance: {fileID: 530437224}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &530437227
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530437226}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 13.287821
+  m_Center: {x: 2.2694428, y: 0.6603757, z: -0.016021734}
 --- !u!1001 &536730066
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47116,6 +47141,38 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 953431084}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &954188285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 954188286}
+  m_Layer: 0
+  m_Name: Guards
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &954188286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954188285}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 254.2367, y: 5.3686686, z: 195.74951}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2138733160}
+  - {fileID: 1193338204}
+  m_Father: {fileID: 0}
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &957103467
 GameObject:
   m_ObjectHideFlags: 0
@@ -60388,14 +60445,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1193338203}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 254.2367, y: 5.3686686, z: 195.74951}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 536730067}
   - {fileID: 1113345017}
-  m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_Father: {fileID: 954188286}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1193771986
 PrefabInstance:
@@ -109510,14 +109567,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2138733159}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 254.2367, y: 5.3686686, z: 195.74951}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1047460425}
   - {fileID: 162709093}
-  m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_Father: {fileID: 954188286}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2139037200
 PrefabInstance:
