@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviourPun
 {
     public Transform pickUpDestination;
     public PickUpable currentHeldItem;
+    public GameObject bulletPrefab;
     
     public bool HasItem()
     {
@@ -54,17 +55,32 @@ public class Character : MonoBehaviour
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
-    public void Shoot(Shootable Item) 
+    [PunRPC]
+    void CreateBullet()
     {
-
         GameObject parent = pickUpDestination.transform.parent.gameObject;
 
         GameObject cube = parent.transform.GetChild(2).gameObject;
 
         GameObject camera = cube.transform.GetChild(0).gameObject;
-        GameObject bullet = PhotonNetwork.Instantiate("PhotonPrefabs/BulletPrefab", pickUpDestination.position, pickUpDestination.rotation);
-        bullet.transform.position = pickUpDestination.position;
-        bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 100);
+        GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.position, pickUpDestination.rotation);
+        bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 10000);
+        bullet.GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    public void Shoot(Shootable Item) 
+    {
+
+        //GameObject parent = pickUpDestination.transform.parent.gameObject;
+
+        //GameObject cube = parent.transform.GetChild(2).gameObject;
+
+        //GameObject camera = cube.transform.GetChild(0).gameObject;
+        //GameObject bullet = PhotonNetwork.Instantiate("PhotonPrefabs/BulletPrefab", pickUpDestination.position, pickUpDestination.rotation);
+        //bullet.transform.position = pickUpDestination.position;
+        //bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
+
+        photonView.RPC("CreateBullet", RpcTarget.All);
     }
    
 }
