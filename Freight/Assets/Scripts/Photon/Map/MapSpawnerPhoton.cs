@@ -56,7 +56,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             pos.y = Terrain.activeTerrain.SampleHeight(pos);
 
             PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                "tree_basic Variant 1"), pos, Quaternion.identity);
+                "tree_basic Variant"), pos, Quaternion.identity);
         }
 
         for (int i = 0; i < 40; i++)
@@ -68,7 +68,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             pos.y = Terrain.activeTerrain.SampleHeight(pos);
 
             PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                "tree_basic Variant 1"), pos, Quaternion.identity);
+                "tree_basic Variant"), pos, Quaternion.identity);
         }
 
         for (int i = 0; i < 40; i++)
@@ -80,7 +80,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             pos.y = Terrain.activeTerrain.SampleHeight(pos);
 
             PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                "tree_basic Variant 1"), pos, Quaternion.identity);
+                "tree_basic Variant"), pos, Quaternion.identity);
         }
 
         for (int i = 0; i < 40; i++)
@@ -92,7 +92,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             pos.y = Terrain.activeTerrain.SampleHeight(pos);
 
             PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                "tree_basic Variant 1"), pos, Quaternion.identity);
+                "tree_basic Variant"), pos, Quaternion.identity);
         }
 
         Debug.Log("Trees");
