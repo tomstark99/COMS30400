@@ -13,7 +13,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     int seed;
 
     // variables for spawning trains
-    const float gap = 7.075f;
+    const float gap = 7.07f;
     private Vector3 positionStart = new Vector3(325.0f, 5.1f, 260.0f);
     private Vector3 position = new Vector3(325.0f, 5.1f, 260.0f);
     private const int instantiations = 11;
@@ -107,19 +107,46 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
     void SpawnTrackGroups()
     {
-        float dist = 7.5f;
 
         for (int i = 0; i < 5; i++)
         {
+            float int_gap = gap * i;
+            Vector3 pos = new Vector3((325.0f+int_gap), 5.1f, (260.0f-int_gap));
+
+            Vector3 angle_pos = pos;
+
+            angle_pos.x += 0.1935f;
+            angle_pos.z -= 15.4675f;
+
+            if (i == 0) {
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                    "Tracks/45_deg_fork_right_track_detail Variant"), angle_pos, Quaternion.Euler(0f, -45f, 0f));
+            } else {
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                    "Tracks/45_deg_fork_right_track_detail Variant"), angle_pos, Quaternion.Euler(0f, -45f, 0f));
+            }
+            
+
             for (int j = 0; j < 5; j++)
             {
-                Vector3 pos;
-                pos.x = 325.0f + gap * i;
-                pos.y = 5.1f;
-                pos.z = (260.0f - dist * i) + j * 20;
-
+                pos.z += (j == 0) ? 0.0f : 20.0f;
                 PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
                         "Tracks/long_straight_track_detail Variant"), pos, Quaternion.identity);
+            }
+
+            angle_pos = pos;
+
+            angle_pos.x -= 0.1935f;
+            angle_pos.z += 15.4675f;
+
+            // If 5th line, connector track needs to be left not right variant
+            if (i == 4) {
+                pos.z += 15.0f;
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs", 
+                    "Tracks/45_deg_fork_left_track_detail Variant"), pos, Quaternion.identity);
+            } else {
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs", 
+                    "Tracks/45_deg_fork_right_track_detail Variant"), angle_pos, Quaternion.Euler(0f, 135f, 0f));
             }
         }
 
