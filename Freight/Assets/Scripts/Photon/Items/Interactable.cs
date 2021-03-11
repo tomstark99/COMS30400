@@ -11,8 +11,6 @@ using Photon.Pun;
 [RequireComponent(typeof(PhotonView))]
 public abstract class Interactable : MonoBehaviour
 {
-    public bool singleUse;
-    
     protected PhotonView view;
     public virtual void PrimaryInteractionOff(Character character) {}
 
