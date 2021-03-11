@@ -85,11 +85,19 @@ public class Character : MonoBehaviourPun
         photonView.RPC("ThrowRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
+    [PunRPC]
+    void DropRPC(int ItemID)
+    {
+        Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
+        Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
+    }
+
     public void Drop(PickUpable Item) 
     {
         currentHeldItem = null;
         Item.ResetItemConditions(this);
-        Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
+        //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
+        photonView.RPC("DropRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
     [PunRPC]

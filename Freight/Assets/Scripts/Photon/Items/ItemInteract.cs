@@ -77,7 +77,7 @@ public class ItemInteract : MonoBehaviourPun
               //currentInteractable = null;
             }
 
-            if (Input.GetMouseButton(0) && currentInteractable.GetComponent<Shootable>() != null) 
+            if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Shootable>() != null) 
             {
                 Debug.Log("burst");
                 currentInteractable.GetComponent<Shootable>().ShootGun(character);
