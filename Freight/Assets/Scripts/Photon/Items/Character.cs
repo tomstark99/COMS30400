@@ -116,7 +116,7 @@ public class Character : MonoBehaviourPun
         PhotonNetwork.Destroy(killedGuard);
         // create a dead body that will be draggable
         GameObject deadGuard = PhotonNetwork.Instantiate("PhotonPrefabs/DeadGuard", guardPos, Quaternion.Euler(90, 0, 0));
-        deadGuard.transform.parent = GameObject.Find("/Environment/Interactables/DeadGuards").transform;
+        
     }
 
     [PunRPC]
