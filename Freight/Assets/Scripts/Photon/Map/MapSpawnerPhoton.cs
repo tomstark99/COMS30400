@@ -32,6 +32,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         UnityEngine.Random.InitState(seed);
         SpawnTrees();
         SpawnTrains();
+        SpawnTracks();
         SpawnFences();
         BuildNavMesh();
         
@@ -100,6 +101,27 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         }
 
         Debug.Log("Trees");
+    }
+
+    void SpawnTracks()
+    {
+        float dist = 7.5f;
+
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                Vector3 pos;
+                pos.x = 325.0f + gap * i;
+                pos.y = 5.1f;
+                pos.z = (260.0f - dist * i) + j * 20;
+
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "long_straight_track_detail Variant"), pos, Quaternion.identity);
+            }
+        }
+
+        Debug.Log("Tracks");
     }
 
     void SpawnTrains()
