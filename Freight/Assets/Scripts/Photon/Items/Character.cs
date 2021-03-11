@@ -6,6 +6,7 @@ using Photon.Pun;
 public class Character : MonoBehaviourPun
 {
     public Transform pickUpDestination;
+    public Transform pickUpDestinationLocal;
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
     
@@ -15,10 +16,27 @@ public class Character : MonoBehaviourPun
     }
 
     [PunRPC]
+    void PickUpRPCLocal(int ItemID)
+    {
+        PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
+        Debug.Log("LOCAL");
+        //PhotonView view = Item.GetComponent<PhotonView>();
+        //view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        // Move to players pickup destination.
+        Item.transform.position = pickUpDestinationLocal.position;
+
+        // Set the parent of the object to the pickupDestination so that it moves
+        // with the player.
+        Item.transform.parent = pickUpDestinationLocal;
+
+        Item.SetItemPickupConditions();
+    }
+
+    [PunRPC]
     void PickUpRPC(int ItemID)
     {
         PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
-        Debug.Log(Item);
+        Debug.Log("drill");
         //PhotonView view = Item.GetComponent<PhotonView>();
         //view.TransferOwnership(PhotonNetwork.LocalPlayer);
         // Move to players pickup destination.
@@ -50,7 +68,8 @@ public class Character : MonoBehaviourPun
         //Item.transform.parent = pickUpDestination;
 
         //Item.SetItemPickupConditions();
-        photonView.RPC("PickUpRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
     [PunRPC]
