@@ -9,6 +9,7 @@ public class ItemInteract : MonoBehaviourPun
     [SerializeField] private Transform cameraTransform;
     private Character character;
     private bool interactableInRange = false;
+    [SerializeField]
     private Interactable currentInteractable;
 
     public GameObject text;
@@ -41,19 +42,20 @@ public class ItemInteract : MonoBehaviourPun
         {
             Interactable newInteractable = interactableRock.GetComponent<Interactable>();
 
-            currentInteractable = newInteractable;
+            //currentInteractable = newInteractable;
 
-            if (currentInteractable != null) 
+            if (newInteractable != null) 
             {
 
-                    // If we are pressing mouse down then do the interaction
-                    //Debug.Log("current interactable has a pick up script");
-                    if (Input.GetKeyDown(KeyCode.E)) 
-                    {
-                       // Debug.Log("F was pressed");
-                        // Do whatever the primary interaction of this interactable is.
-                        currentInteractable.PrimaryInteraction(character);
-                    }
+                // If we are pressing mouse down then do the interaction
+                //Debug.Log("current interactable has a pick up script");
+                if (Input.GetKeyDown(KeyCode.E)) 
+                {
+                    currentInteractable = newInteractable;
+                    // Debug.Log("F was pressed");
+                    // Do whatever the primary interaction of this interactable is.
+                    currentInteractable.PrimaryInteraction(character);
+                }
             }
         }
         // Otherwise if we cant interact with anything but we were previously
