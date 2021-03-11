@@ -55,6 +55,7 @@ public class PickUpable : Interactable
         isPickedUp = false;
        // GetComponent<SphereCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
     }
 
     public void ResetItemConditions(Character character)
