@@ -92,7 +92,8 @@ public class GuardAIPhoton : MonoBehaviourPun
 
         // sets the guard destination to player's position
         transform.LookAt(closestPlayer.transform);
-        guard.SetDestination(closestPlayer.position - new Vector3(proximityRange, 0, 0));
+        // - new Vector3(proximityRange, 0, 0)
+        guard.SetDestination(closestPlayer.position);
         // sets the guard's alert position to the player's current position (so when the player goes out of range, the guard will run to the last place they saw the player)
         guard.gameObject.GetComponent<GuardAIPhoton>().alertPosition = closestPlayer.position;
     }
