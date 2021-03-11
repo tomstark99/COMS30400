@@ -18,7 +18,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -84,11 +85,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8205868063859500562, guid: 72ff83c5c0eeca24f8744eb4234d3561,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56813d522fa5128479e0e890be0b8263, type: 2}
+    - target: {fileID: -3088276820830763138, guid: 72ff83c5c0eeca24f8744eb4234d3561,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56813d522fa5128479e0e890be0b8263, type: 2}
     - target: {fileID: 919132149155446097, guid: 72ff83c5c0eeca24f8744eb4234d3561,
         type: 3}
       propertyPath: m_Name
       value: 90_deg_track_detail Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5631770971339947967, guid: 72ff83c5c0eeca24f8744eb4234d3561,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 28e03e3e7cb42e64f8163bafccadf4ab, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72ff83c5c0eeca24f8744eb4234d3561, type: 3}
 --- !u!1 &1500550144366314797 stripped

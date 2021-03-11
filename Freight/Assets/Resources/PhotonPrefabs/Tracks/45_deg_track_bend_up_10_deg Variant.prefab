@@ -18,7 +18,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -89,6 +90,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: 45_deg_track_bend_up_10_deg Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 2639332767969421819, guid: aa2de623cdba1604e895ea52570ffba2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 28e03e3e7cb42e64f8163bafccadf4ab, type: 2}
+    - target: {fileID: 4022746231852941286, guid: aa2de623cdba1604e895ea52570ffba2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56813d522fa5128479e0e890be0b8263, type: 2}
+    - target: {fileID: 8529263781003746838, guid: aa2de623cdba1604e895ea52570ffba2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56813d522fa5128479e0e890be0b8263, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa2de623cdba1604e895ea52570ffba2, type: 3}
 --- !u!1 &2319182599261621823 stripped
