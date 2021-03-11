@@ -160,6 +160,7 @@ public class Character : MonoBehaviourPun
         GameObject camera = cube.transform.GetChild(0).gameObject;
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
         Debug.Log(hitInfo.point);
+        
 
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(1).position, pickUpDestination.transform.GetChild(0).rotation);
 
