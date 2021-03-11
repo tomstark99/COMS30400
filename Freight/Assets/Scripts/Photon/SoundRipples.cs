@@ -27,7 +27,7 @@ public class SoundRipples : MonoBehaviourPun
 
     private void UpdateRipples()
     {
-        AudioClip audioClip = recorder._workingClip;
+        AudioClip audioClip = recorder.AudioClip;
 
         int currentPosition = CustomMicrophone.GetPosition(_microphoneDevice);
 
