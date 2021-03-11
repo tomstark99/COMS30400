@@ -19,6 +19,8 @@ public class Character : MonoBehaviourPun
     {
         PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
         Debug.Log(Item);
+        //PhotonView view = Item.GetComponent<PhotonView>();
+        //view.TransferOwnership(PhotonNetwork.LocalPlayer);
         // Move to players pickup destination.
         Item.transform.position = pickUpDestination.position;
 
@@ -41,7 +43,7 @@ public class Character : MonoBehaviourPun
         //Item.SetItemPickupConditions();
 
         // Move to players pickup destination.
-        //Item.transform.position = pickUpDestination.position;
+       // Item.transform.position = pickUpDestination.position;
 
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
