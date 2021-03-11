@@ -104,7 +104,6 @@ GameObject:
   - component: {fileID: 1267076888}
   - component: {fileID: 1267076886}
   - component: {fileID: 1568756235422134994}
-  - component: {fileID: 3463212125331609786}
   - component: {fileID: 8058914604855642864}
   - component: {fileID: 7113846530122952326}
   m_Layer: 9
@@ -194,24 +193,13 @@ MonoBehaviour:
   timeAlerted: 0
   timeChasing: 0
   alertPosition: {x: 0, y: 0, z: 0}
+  players: []
   sightRange: 30
   proximityRange: 5
   playerSpotted: 0
   guardAngle: 80
   spotlightColour: {r: 0.9137255, g: 0.9098039, b: 0.41960785, a: 1}
   alertColour: {r: 0.8862745, g: 0.6392157, b: 0.29803923, a: 1}
---- !u!114 &3463212125331609786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2634091774638216683}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9b84d8b5ea26084987c3e3d51fcd504, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8058914604855642864
 MonoBehaviour:
   m_ObjectHideFlags: 0
