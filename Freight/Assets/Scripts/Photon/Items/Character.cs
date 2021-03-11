@@ -90,7 +90,6 @@ public class Character : MonoBehaviourPun
     {
         Shootable Item = PhotonView.Find(ItemID).GetComponent<Shootable>();
         Item.transform.Rotate(50, 50, 0);
-        Debug.Log(Item.transform.rotation);
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
     }
 
