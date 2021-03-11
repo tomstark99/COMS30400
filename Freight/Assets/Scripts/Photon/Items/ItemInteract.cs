@@ -68,13 +68,19 @@ public class ItemInteract : MonoBehaviourPun
             // Then turn off the glow of that thing
         
         // And if bring the mouse button up
-            if (Input.GetMouseButtonDown(0)) 
+            if (Input.GetKeyDown(KeyCode.G)) 
             {
 
               // Some item have a primary interaction off method, eg drop the
               // item after pickup. Therefore run this on mouse up.
               currentInteractable.PrimaryInteractionOff(character);
               //currentInteractable = null;
+            }
+
+            if (Input.GetMouseButton(0) && currentInteractable.GetComponent<Shootable>() != null) 
+            {
+                Debug.Log("burst");
+                currentInteractable.GetComponent<Shootable>().ShootGun(character);
             }
         }
     }

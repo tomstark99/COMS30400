@@ -8,6 +8,14 @@ public class Shootable : PickUpable
     {
         if (isPickedUp)
         {
+            character.Drop(this);
+        }
+    }
+
+    public void ShootGun(Character character)
+    {
+        if (isPickedUp)
+        {
             character.Shoot(this);
         }
     }
