@@ -119,7 +119,12 @@ public class Character : MonoBehaviourPun
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
         photonView.RPC("DropRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
-
+    [PunRPC]
+    void KillGuard(int guardId)
+    {
+        PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>(); 
+        PhotonNetwork.Destroy(killedGuard);
+    }
     [PunRPC]
     void CreateBulletLocal()
     {
@@ -131,8 +136,11 @@ public class Character : MonoBehaviourPun
 
         GameObject camera = cube.transform.GetChild(0).gameObject;
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
-        Debug.Log(hitInfo.point);
-
+        if(hitInfo.collider != null)
+            if(hitInfo.collider.GetComponent<GuardAIPhoton>() != null) {
+                Debug.Log("Guard was hit acc");
+                photonView.RPC("KillGuard", RpcTarget.MasterClient, hitInfo.collider.GetComponent<PhotonView>().ViewID);
+            }
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestinationLocal.transform.GetChild(0).transform.GetChild(1).position, pickUpDestinationLocal.transform.GetChild(0).rotation);
 
         if (hitInfo.point != new Vector3(0f, 0f, 0f))
@@ -162,6 +170,7 @@ public class Character : MonoBehaviourPun
         Debug.Log(hitInfo.point);
         
 
+        Debug.Log(hitInfo.collider);
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(1).position, pickUpDestination.transform.GetChild(0).rotation);
 
         if (hitInfo.point != new Vector3(0f, 0f, 0f))
