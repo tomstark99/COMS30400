@@ -39,17 +39,12 @@ public class ItemInteract : MonoBehaviourPun
 
         if(canInteract) 
         {
-                Interactable newInteractable = interactableRock.GetComponent<Interactable>();
+            Interactable newInteractable = interactableRock.GetComponent<Interactable>();
 
-                /* If we are already interacting with something but we are now
-                trying to interact with something new, then we need to disable
-                the other interaction (turn off its glow).*/
-
-                currentInteractable = newInteractable;
+            currentInteractable = newInteractable;
 
             if (currentInteractable != null) 
             {
-                    // If we are able to interact with the new interactable then turn on its glow
 
                     // If we are pressing mouse down then do the interaction
                     //Debug.Log("current interactable has a pick up script");
@@ -61,25 +56,23 @@ public class ItemInteract : MonoBehaviourPun
                     }
             }
         }
-     // Otherwise if we cant interact with anything but we were previously
+        // Otherwise if we cant interact with anything but we were previously
         // interacting with something.
         else if (currentInteractable != null) 
         {
-            // Then turn off the glow of that thing
         
-        // And if bring the mouse button up
+            // And if bring the mouse button up
             if (Input.GetKeyDown(KeyCode.G)) 
             {
-
-              // Some item have a primary interaction off method, eg drop the
-              // item after pickup. Therefore run this on mouse up.
-              currentInteractable.PrimaryInteractionOff(character);
-              //currentInteractable = null;
+                // Some item have a primary interaction off method, eg drop the
+                // item after pickup. Therefore run this on mouse up.
+                currentInteractable.PrimaryInteractionOff(character);
+                currentInteractable = null;
             }
 
             if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Shootable>() != null) 
             {
-                Debug.Log("burst");
+                Debug.Log(currentInteractable);
                 currentInteractable.GetComponent<Shootable>().ShootGun(character);
             }
         }
