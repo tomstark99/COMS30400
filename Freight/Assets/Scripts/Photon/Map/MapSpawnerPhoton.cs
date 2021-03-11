@@ -59,11 +59,15 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                 "tree_basic Variant"), pos, Quaternion.identity);
         }
 
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 30; i++)
         {
             Vector3 pos;
             pos.x = UnityEngine.Random.Range(270.0f, 600.0f);
             pos.z = UnityEngine.Random.Range(100.0f, 180.0f);
+            if (pos.x > 310.0f && pos.x < 420.0f && pos.z < 180.0f && pos.z > 110.0f)
+            {
+                pos.x = UnityEngine.Random.Range(420.0f, 600.0f);
+            }
             pos.y = 0.0f;
             pos.y = Terrain.activeTerrain.SampleHeight(pos);
 
