@@ -122,8 +122,10 @@ public class Character : MonoBehaviourPun
     [PunRPC]
     void KillGuard(int guardId)
     {
-        PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>(); 
+        PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>();
+        Vector3 guardPos = killedGuard.transform.position;
         PhotonNetwork.Destroy(killedGuard);
+        PhotonNetwork.Instantiate("PhotonPrefabs/DeadGuard", guardPos, Quaternion.Euler(90, 0, 0));
     }
     [PunRPC]
     void CreateBulletLocal()
