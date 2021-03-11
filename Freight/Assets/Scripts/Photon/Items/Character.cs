@@ -176,7 +176,7 @@ public class Character : MonoBehaviourPun
 
         // instantiate the bullet locally
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(1).position, pickUpDestination.transform.GetChild(0).rotation);
-        pickUpDestination.transform.GetChild(0).GetComponent<Gun>().GunShot();
+        //pickUpDestination.transform.GetChild(0).GetComponent<Gun>().GunShot();
 
         // if it hits something, have the bullet point at that thing and add a force based on bullet forward facing transform
         // this is so the bullet goes towards crosshair
