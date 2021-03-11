@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8058914604855642864}
   - component: {fileID: 7113846530122952326}
   - component: {fileID: 3209772649146827653}
+  - component: {fileID: -8143937347120203948}
   m_Layer: 9
   m_Name: DeadGuard
   m_TagString: DeadGuard
@@ -138,6 +139,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-8143937347120203948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2634091774638216683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f844f78e33472e64381ad14c64e4d8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  singleUse: 0
+  isPickedUp: 0
 --- !u!1 &4840253876986066242
 GameObject:
   m_ObjectHideFlags: 0
