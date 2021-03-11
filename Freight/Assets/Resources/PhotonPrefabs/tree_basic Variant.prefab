@@ -27,7 +27,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3
   m_Center: {x: 0, y: 4.7, z: 0}
---- !u!114 &4893252832490736834
+--- !u!114 &-12964839769109959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,10 +111,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -264430861247414160, guid: 1dc5089c6be0bfb45a69467637d28cf5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 03c9dc7c3e346dc44b7816b65c9cbf7a, type: 2}
     - target: {fileID: 919132149155446097, guid: 1dc5089c6be0bfb45a69467637d28cf5,
         type: 3}
       propertyPath: m_Name
-      value: tree_basic Variant 1
+      value: tree_basic Variant
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1dc5089c6be0bfb45a69467637d28cf5,
         type: 3}
@@ -126,6 +131,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 3566390031902043909, guid: 1dc5089c6be0bfb45a69467637d28cf5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bdc893a961d373d4594d4fc0d118e908, type: 2}
     - target: {fileID: 3779745573541866595, guid: 1dc5089c6be0bfb45a69467637d28cf5,
         type: 3}
       propertyPath: m_Layer
