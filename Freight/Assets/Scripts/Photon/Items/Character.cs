@@ -121,6 +121,34 @@ public class Character : MonoBehaviourPun
     }
 
     [PunRPC]
+    void CreateBulletLocal()
+    {
+        //GameObject camera = pickUpDestination.transform.parent.gameObject;
+
+        GameObject parent = pickUpDestination.transform.parent.gameObject;
+
+        GameObject cube = parent.transform.GetChild(2).gameObject;
+
+        GameObject camera = cube.transform.GetChild(0).gameObject;
+        Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
+        Debug.Log(hitInfo.point);
+
+        GameObject bullet = Instantiate(bulletPrefab, pickUpDestinationLocal.transform.GetChild(0).transform.GetChild(1).position, pickUpDestinationLocal.transform.GetChild(0).rotation);
+
+        if (hitInfo.point != new Vector3(0f, 0f, 0f))
+        {
+            bullet.transform.LookAt(hitInfo.point);
+
+            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 5000);
+        }
+        else
+        {
+            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 5000);
+        }
+        bullet.GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    [PunRPC]
     void CreateBullet()
     {
         //GameObject camera = pickUpDestination.transform.parent.gameObject;
@@ -160,7 +188,8 @@ public class Character : MonoBehaviourPun
         //bullet.transform.position = pickUpDestination.position;
         //bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
 
-        photonView.RPC("CreateBullet", RpcTarget.All);
+        photonView.RPC("CreateBullet", RpcTarget.Others);
+        photonView.RPC("CreateBulletLocal", PhotonNetwork.LocalPlayer);
     }
    
 }
