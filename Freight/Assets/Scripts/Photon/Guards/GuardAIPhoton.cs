@@ -69,7 +69,7 @@ public class GuardAIPhoton : MonoBehaviourPun
         // loops through players
         foreach (var player in players)
         {
-            Debug.Log(player);
+            //Debug.Log(player);
             // finds distance between player and guard
             float eDistance = Vector3.Distance(player.transform.position, transform.position);
 
@@ -119,8 +119,8 @@ public class GuardAIPhoton : MonoBehaviourPun
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.position, player.transform.position, obstacleMask) || !Physics.Linecast(transform.position, player.transform.GetChild(2).transform.position, obstacleMask))
                     {
-                        Debug.Log(player.transform.position);
-                        Debug.Log(player.transform.GetChild(2).transform.position);
+                        //Debug.Log(player.transform.position);
+                        //Debug.Log(player.transform.GetChild(2).transform.position);
                         return true;
                     }
                 }
@@ -200,7 +200,7 @@ public class GuardAIPhoton : MonoBehaviourPun
             // if the rock has hit the ground check whether the distance is close enough for the guard to alert other guards
             if (tempRock.rockHitGround)
             {
-                Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
+                //Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
                 if (Vector3.Distance(transform.position, tempRock.transform.position) < 30)
                 {
                     return tempRock.transform.position;
