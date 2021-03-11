@@ -32,7 +32,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         UnityEngine.Random.InitState(seed);
         SpawnTrees();
         SpawnTrains();
-        SpawnTracks();
+        SpawnBridges();
+        SpawnTrackGroups();
+        SpawnIndividualTracks();
         SpawnFences();
         BuildNavMesh();
         
@@ -103,7 +105,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         Debug.Log("Trees");
     }
 
-    void SpawnTracks()
+    void SpawnTrackGroups()
     {
         float dist = 7.5f;
 
@@ -121,7 +123,102 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             }
         }
 
+        for (int i = 0; i < 6; i++)
+        {
+            Vector3 pos;
+            pos.x = 309.1f;
+            pos.y = 5.1f;
+            pos.z = 245.9f + i * 20;
+
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "long_straight_track_detail Variant"), pos, Quaternion.identity);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 pos;
+            pos.x = 295.0f;
+            pos.y = 5.1f;
+            pos.z = 270.0f + i * 20;
+
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "long_straight_track_detail Variant"), pos, Quaternion.identity);
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            Vector3 pos;
+            pos.x = 386.14f;
+            pos.y = 5.1f;
+            pos.z = 239.0f + i * 20;
+
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "long_straight_track_detail Variant"), pos, Quaternion.identity);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 pos;
+            pos.x = 465.86f;
+            pos.y = 0.1f;
+            pos.z = 248.85f + i * 20;
+
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "long_straight_track_detail Variant"), pos, Quaternion.identity);
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            Vector3 pos;
+            pos.x = 456.01f + i * 20;
+            pos.y = 5.1f;
+            pos.z = 209.0f;
+
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "long_straight_track_detail Variant"), pos, Quaternion.Euler(0f, 90f, 0f));
+        }
+
+        for (int i = 0; i < 2; i++)
+        {
+            Vector3 pos;
+            pos.x = 376.01f + i * 20;
+            pos.y = 5.1f;
+            pos.z = 209.0f;
+
+            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "long_straight_track_detail Variant"), pos, Quaternion.Euler(0f, 90f, 0f));
+        }
+
         Debug.Log("Tracks");
+    }
+
+    void SpawnIndividualTracks()
+    {
+        Vector3 pos;
+        pos.x = 426.01f;
+        pos.y = 5.1f;
+        pos.z = 209.0f;
+
+        PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                    "long_straight_track_detail Variant"), pos, Quaternion.Euler(0f, 90f, 0f));
+
+        pos.x = 346.01f;
+        pos.y = 5.1f;
+        pos.z = 209.0f;
+
+        PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                    "long_straight_track_detail Variant"), pos, Quaternion.Euler(0f, 90f, 0f));
+    }
+
+    void SpawnBridges()
+    {
+        Vector3 pos;
+        pos.x = 468.25f;
+        pos.y = 4.9f;
+        pos.z = 209.0f;
+
+        PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                    "bridge_flat Variant"), pos, Quaternion.Euler(0f, 90f, 0f));
     }
 
     void SpawnTrains()
