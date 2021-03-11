@@ -138,11 +138,14 @@ public class Character : MonoBehaviourPun
 
         GameObject camera = cube.transform.GetChild(0).gameObject;
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
+
+        // if bullet collides with guard, tell all users to kill guard 
         if(hitInfo.collider != null)
             if(hitInfo.collider.GetComponent<GuardAIPhoton>() != null) {
                 Debug.Log("Guard was hit acc");
                 photonView.RPC("KillGuard", RpcTarget.MasterClient, hitInfo.collider.GetComponent<PhotonView>().ViewID);
             }
+
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestinationLocal.transform.GetChild(0).transform.GetChild(1).position, pickUpDestinationLocal.transform.GetChild(0).rotation);
 
         if (hitInfo.point != new Vector3(0f, 0f, 0f))
