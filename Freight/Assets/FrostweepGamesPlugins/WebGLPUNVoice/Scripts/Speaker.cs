@@ -10,7 +10,7 @@ namespace FrostweepGames.WebGLPUNVoice
     {
         private GameObject _selfObject;
 
-        public AudioSource _source;
+        private AudioSource _source;
 
         private AudioClip _workingClip;
 
@@ -23,6 +23,11 @@ namespace FrostweepGames.WebGLPUNVoice
         private float _notActiveTime;
 
         private int _maxNotActiveTime = 300; // if 5 minutes client not receives any data then its inactive
+
+        /// <summary>
+        /// AudioSource used by the speaker
+        /// </summary>
+        public AudioSource AudioSource { get { return _source; } }
 
         /// <summary>
         /// Id of as speaker

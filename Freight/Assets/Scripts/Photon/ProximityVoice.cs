@@ -77,7 +77,7 @@ public class ProximityVoice : MonoBehaviourPun
         _sources = new Dictionary<int, AudioSource>();
         foreach(int id in listener.Speakers.Keys)
         {
-            _sources.Add(id, listener.Speakers[id]._source);
+            _sources.Add(id, listener.Speakers[id].AudioSource);
         }
     }
 }
