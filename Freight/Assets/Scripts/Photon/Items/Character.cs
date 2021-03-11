@@ -88,7 +88,7 @@ public class Character : MonoBehaviourPun
     [PunRPC]
     void DropRPC(int ItemID)
     {
-        Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
+        Shootable Item = PhotonView.Find(ItemID).GetComponent<Shootable>();
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
     }
 
