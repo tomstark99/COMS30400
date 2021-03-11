@@ -9,6 +9,9 @@ public class Character : MonoBehaviourPun
     public Transform pickUpDestinationLocal;
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
+
+    [SerializeField]
+    private AudioSource gunShot;
     
     public bool HasItem()
     {
@@ -141,6 +144,7 @@ public class Character : MonoBehaviourPun
             }
         // instantiate the bullet locally
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestinationLocal.transform.GetChild(0).transform.GetChild(1).position, pickUpDestinationLocal.transform.GetChild(0).rotation);
+        gunShot.PlayOneShot(gunShot.clip);
 
         // if it hits something, have the bullet point at that thing and add a force based on bullet forward facing transform
         // this is so the bullet goes towards crosshair
@@ -175,6 +179,7 @@ public class Character : MonoBehaviourPun
 
         // instantiate the bullet locally
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(1).position, pickUpDestination.transform.GetChild(0).rotation);
+        gunShot.PlayOneShot(gunShot.clip);
 
         // if it hits something, have the bullet point at that thing and add a force based on bullet forward facing transform
         // this is so the bullet goes towards crosshair
