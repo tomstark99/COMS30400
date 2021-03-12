@@ -151,12 +151,12 @@ public class Character : MonoBehaviourPun
         {
             bullet.transform.LookAt(hitInfo.point);
 
-            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 5000);
+            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1400);
         }
         // in case it doesn't hit anything, just add force based on camera transform
         else
         {
-            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 5000);
+            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1400);
         }
         // so bullet moves
         bullet.GetComponent<Rigidbody>().isKinematic = false;
@@ -186,12 +186,12 @@ public class Character : MonoBehaviourPun
         {
             bullet.transform.LookAt(hitInfo.point);
 
-            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 5000);
+            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1400);
         }
         // in case it doesn't hit anything, just add force based on camera transform
         else
         {
-            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 5000);
+            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1400);
         }
         // so bullet moves
         bullet.GetComponent<Rigidbody>().isKinematic = false;
