@@ -23,21 +23,21 @@ public class ItemInteract : MonoBehaviourPun
         if(!photonView.IsMine)
         {
             Destroy(this);
-        }    
-     
+        }
+
      character = GetComponent<Character>();
     }
 
     // Update is called once per frame
     void Update()
     {
-            
+
 
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
         bool canInteract = interactableInRange && !character.HasItem();
 
-        if(canInteract) 
+        if(canInteract)
         {
                 PickUpable newInteractable = interactableRock.GetComponent<PickUpable>();
 
@@ -47,13 +47,13 @@ public class ItemInteract : MonoBehaviourPun
 
                 currentInteractable = newInteractable;
                // Debug.Log("current interactable is " + currentInteractable);
-            if (currentInteractable != null) 
+            if (currentInteractable != null)
             {
-                    // If we are able to interact with the new interactable then turn on its glow
+                // If we are able to interact with the new interactable then turn on its glow
 
                     // If we are pressing mouse down then do the interaction
                     //Debug.Log("current interactable has a pick up script");
-                    if (Input.GetKeyDown(KeyCode.E)) 
+                    if (Input.GetKeyDown(KeyCode.E))
                     {
                        // Debug.Log("F was pressed");
                         // Do whatever the primary interaction of this interactable is.
@@ -63,12 +63,12 @@ public class ItemInteract : MonoBehaviourPun
         }
      // Otherwise if we cant interact with anything but we were previously
         // interacting with something.
-        else if (currentInteractable != null) 
+        else if (currentInteractable != null)
         {
             // Then turn off the glow of that thing
-        
+
         // And if bring the mouse button up
-            if (Input.GetMouseButtonDown(0)) 
+            if (Input.GetMouseButtonDown(0))
             {
 
               // Some item have a primary interaction off method, eg drop the
@@ -90,7 +90,7 @@ public class ItemInteract : MonoBehaviourPun
     {
         text.SetActive(false);
     }
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
 
             rocks = GameObject.Find("Environment/Interactables");
@@ -115,7 +115,7 @@ public class ItemInteract : MonoBehaviourPun
                     interactableInRange = false;
                 }
             }
-            
-           
+
+
     }
 }
