@@ -27,7 +27,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // activates player's camera if its theirs and disables all others
         if(photonView.IsMine)
         {
-            transform.Find("Cube").GetChild(0).gameObject.SetActive(true);
+            transform.Find("manlike_steve/head").GetChild(0).gameObject.SetActive(true);
         }
         PV = GetComponent<PhotonView>();
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
