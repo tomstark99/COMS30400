@@ -28,6 +28,7 @@ public class Character : MonoBehaviourPun
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
         Item.transform.parent = pickUpDestinationLocal;
+        Item.transform.Rotate(0, 90, 0);
 
         Item.SetItemPickupConditions();
     }
@@ -45,6 +46,7 @@ public class Character : MonoBehaviourPun
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
         Item.transform.parent = pickUpDestination;
+        Item.transform.Rotate(0, 90, 0);
 
         Item.SetItemPickupConditions();
     }
@@ -140,7 +142,7 @@ public class Character : MonoBehaviourPun
                 photonView.RPC("KillGuard", RpcTarget.MasterClient, hitInfo.collider.GetComponent<PhotonView>().ViewID);
             }
         // instantiate the bullet locally
-        GameObject bullet = Instantiate(bulletPrefab, pickUpDestinationLocal.transform.GetChild(0).transform.GetChild(1).position, pickUpDestinationLocal.transform.GetChild(0).rotation);
+        GameObject bullet = Instantiate(bulletPrefab, pickUpDestinationLocal.transform.GetChild(0).transform.GetChild(14).position, pickUpDestinationLocal.transform.GetChild(0).rotation);
         pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().GunShot();
 
         // if it hits something, have the bullet point at that thing and add a force based on bullet forward facing transform
@@ -175,7 +177,7 @@ public class Character : MonoBehaviourPun
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
 
         // instantiate the bullet locally
-        GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(1).position, pickUpDestination.transform.GetChild(0).rotation);
+        GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(14).position, pickUpDestination.transform.GetChild(0).rotation);
         //pickUpDestination.transform.GetChild(0).GetComponent<Gun>().GunShot();
 
         // if it hits something, have the bullet point at that thing and add a force based on bullet forward facing transform
