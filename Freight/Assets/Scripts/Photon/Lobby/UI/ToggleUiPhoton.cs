@@ -7,6 +7,7 @@ public class ToggleUiPhoton : MonoBehaviour
 {
     public GameObject timetable;
     public GameObject map;
+    public GameObject instructions;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,20 +24,32 @@ public class ToggleUiPhoton : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            if (map.activeSelf)
+            if (map.activeSelf || instructions.activeSelf)
             {
                 map.SetActive(false);
+                instructions.SetActive(false);
             }
             timetable.SetActive(!timetable.activeSelf);
         }
 
         if (Input.GetKeyDown(KeyCode.M))
         {
-            if (timetable.activeSelf)
+            if (timetable.activeSelf || instructions.activeSelf)
             {
                 timetable.SetActive(false);
+                instructions.SetActive(false);
             }
             map.SetActive(!map.activeSelf);
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (map.activeSelf || timetable.activeSelf)
+            {
+                map.SetActive(false);
+                timetable.SetActive(false);
+            }
+            instructions.SetActive(!instructions.activeSelf);
         }
     }
 }
