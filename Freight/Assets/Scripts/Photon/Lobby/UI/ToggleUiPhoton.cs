@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class ToggleUiPhoton : MonoBehaviour
 {
     public GameObject timetable;
     public GameObject map;
+    public TextMeshProUGUI ping;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,5 +40,7 @@ public class ToggleUiPhoton : MonoBehaviour
             }
             map.SetActive(!map.activeSelf);
         }
+
+        ping.text = "Ping: " + PhotonNetwork.GetPing().ToString();
     }
 }
