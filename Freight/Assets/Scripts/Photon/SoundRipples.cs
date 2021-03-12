@@ -20,6 +20,8 @@ public class SoundRipples : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        if (!photonView.IsMine) return;
+
         _microphoneDevice = CustomMicrophone.devices[0];
 
         InvokeRepeating(nameof(UpdateRipples), 0, _updateFrequency);
@@ -27,6 +29,8 @@ public class SoundRipples : MonoBehaviourPun
 
     private void UpdateRipples()
     {
+        if (!photonView.IsMine) return;
+
         AudioClip audioClip = recorder.AudioClip;
 
         int currentPosition = CustomMicrophone.GetPosition(_microphoneDevice);
