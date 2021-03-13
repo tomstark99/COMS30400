@@ -217,7 +217,6 @@ public class Character : MonoBehaviourPun
         Item.SetItemPickupConditions();
         Item.transform.Rotate(90, 0, 0);
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 6f;
-        
     }
 
     public void Drag(Draggable Item)
