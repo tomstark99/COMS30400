@@ -6,6 +6,8 @@
 
 var canvas
 
+let textSiz = 20;
+
 let video;
 let poseNet;
 let pose;
@@ -19,10 +21,15 @@ let pose3;
 
 let brain;
 let poseLabel = "Y";
+let poseSentence = ""
 
 function setup() {
-  canvas = createCanvas(640, 480);
-  canvas.position(0,600);
+  // init canvas
+  canvas = createCanvas(320, 240);
+  canvas.parent('unityContainer');
+  canvas.position(0, 0);
+
+  // init video
   video = createCapture(VIDEO);
   video.hide();
 
@@ -51,9 +58,16 @@ function brainLoaded() {
   classifyPose();
 }
 
+function modelLoaded() {
+  console.log('poseNet ready');
+}
+
+// Generates classification from previous 3 poses
+// Called by gotPoses
 function classifyPose() {
   if (pose) {
       let inputs = [];
+      // Create input ignoreing hips and legs
       for (let i = 0; i < pose.keypoints.length - 6; i++) {
         let x1 = pose1.keypoints[i].position.x;
         let y1 = pose1.keypoints[i].position.y;
@@ -68,24 +82,67 @@ function classifyPose() {
         inputs.push(x3);
         inputs.push(y3);
       }
+    // Classify pose
     brain.classify(inputs, gotResult);
-  } else {
-    setTimeout(classifyPose, 100);
   }
+  // else {
+  //   setTimeout(classifyPose, 100);
+  // }
 }
 
+// Callback from brain.classify
+// Only updates pose when confidence is high enough
 function gotResult(error, results) {
 
+  var tempPoseLabel;
+
   if (results[0].confidence > 0.85) {
-    poseLabel = results[0].label.toUpperCase();
+    tempPoseLabel = results[0].label.toUpperCase();
   } else {
-    poseLabel = 'N';
+    tempPoseLabel = 'N';
   }
   //console.log(results[0].confidence);
-  classifyPose();
+
+  // Change displayed pose phrase
+  if (tempPoseLabel !== poseLabel) {
+    // console.log("change");
+    switch (tempPoseLabel) {
+      case 'N':
+        poseSentence = "No Action";
+        break;
+      case 'U':
+        poseSentence = "Pull Up";
+        break;
+      case 'L':
+        poseSentence = "Ladder Climb";
+        break;
+      case 'P':
+        poseSentence = "Pull Apart";
+        break;
+      case 'I':
+        poseSentence = "Lean Right";
+        break;
+      case 'O':
+        poseSentence = "Lean Left";
+        break;
+      case 'W':
+        poseSentence = "Lie Right";
+        break;
+      case 'Q':
+        poseSentence = "Lie Left";
+        break;
+      case 'C':
+        poseSentence = "Crouch";
+        break;
+      default:
+        poseSentaence = "";
+    }
+    poseLabel = tempPoseLabel;
+  }
 }
 
-
+// Callback from poseNet
+// Populates all 3 pose variabless and calls pose classification
 function gotPoses(poses) {
   if (poses.length > 0) {
     pose = poses[0].pose;
@@ -93,7 +150,7 @@ function gotPoses(poses) {
 
     if (!poseSet) {
       pose1 = pose;
-      pose2 = pose;
+      pose2 = pose;width
       pose3 = pose;
       poseSet = true;
     } else {
@@ -102,12 +159,9 @@ function gotPoses(poses) {
       pose3 = pose;
     }
   }
+  classifyPose();
 }
 
-
-function modelLoaded() {
-  console.log('poseNet ready');
-}
 
 function check() {
   if (pose) {
@@ -121,6 +175,8 @@ function check() {
   return poseString;
 }
 
+// Called by Unity
+// Returns current pose x's, y's and confidence's in a string
 function getPoseAsString() {
   if (pose) {
     poseString = "";
@@ -134,14 +190,18 @@ function getPoseAsString() {
   return poseString.slice(0, -1);
 }
 
+// Called by Unity
+// Retruns gesture label
 function getGestureAsString() {
   return poseLabel;
 }
 
+// Draws to  canvas
+// Called once per frame
 function draw() {
   push();
-  translate(video.width, 0);
-  scale(-1, 1);
+  translate(video.width/2, 0);
+  scale(-1/2, 1/2);
   image(video, 0, 0, video.width, video.height);
 
   if (pose) {
@@ -173,7 +233,15 @@ function draw() {
 
   fill(255, 0, 255);
   noStroke();
-  textSize(512);
+  textSize(256);
   textAlign(CENTER, CENTER);
   text(poseLabel, width / 2, height / 2);
+
+  fill(255,255,255);
+  rect(0, 0, canvas.width, textSiz);
+
+  fill(0,0,0);
+  textSize(textSiz);
+  textAlign(LEFT, TOP);
+  text(poseSentence, 0, 0);
 }
