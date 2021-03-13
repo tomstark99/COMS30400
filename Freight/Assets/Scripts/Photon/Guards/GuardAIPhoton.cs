@@ -20,11 +20,11 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
-    public State guardState;
-    public float timeAlerted;
-    public float timeChasing;
-    public Vector3 alertPosition;
-    public GameObject[] players;
+    private State guardState;
+    private float timeAlerted;
+    private float timeChasing;
+    private Vector3 alertPosition;
+    private GameObject[] players;
 
 
     // Counter to increment points in path
@@ -32,8 +32,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     public float sightRange;
     public float proximityRange;
-    public bool playerSpotted;
-    public bool deadGuardSpotted;
+    private bool playerSpotted;
+    private bool deadGuardSpotted;
     public float guardAngle;
     public Color spotlightColour;
     public Color alertColour;
@@ -277,11 +277,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         //{
         //    Debug.Log("You lose");
         //}
-        if (deadGuardSpotted && guardState == State.Patroling)
+        if (deadGuardSpotted)
         {
             SetAllGuardsToAlerted();
         }
-        else if (guardState == State.DeadGuardAlerted)
+
+        if (!playerSpotted && guardState == State.DeadGuardAlerted)
         {
             timeAlerted += Time.deltaTime;
             if (timeAlerted > 15f)
