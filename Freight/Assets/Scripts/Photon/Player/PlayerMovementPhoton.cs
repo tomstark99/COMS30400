@@ -53,9 +53,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (photonView.IsMine)
             Movement();
 
-        // if escape is pressed, quit game
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
+        //// if escape is pressed, quit game
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //    Application.Quit();
         
     }
 
