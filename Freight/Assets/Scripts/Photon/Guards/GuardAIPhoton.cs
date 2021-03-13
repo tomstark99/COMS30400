@@ -6,12 +6,13 @@ using Photon.Pun;
 using Photon.Realtime;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
-public class GuardAIPhoton : MonoBehaviourPun
+public class GuardAIPhoton : MonoBehaviourPunCallbacks
 {
     public enum State
     {
         Patroling,
         Alerted,
+        DeadGuardAlerted,
         Chasing
     }
 
@@ -32,6 +33,7 @@ public class GuardAIPhoton : MonoBehaviourPun
     public float sightRange;
     public float proximityRange;
     public bool playerSpotted;
+    public bool deadGuardSpotted;
     public float guardAngle;
     public Color spotlightColour;
     public Color alertColour;
@@ -44,7 +46,7 @@ public class GuardAIPhoton : MonoBehaviourPun
         guardState = State.Patroling;
     }
 
-    
+
     void GotoNextPoint()
     {
         // If no points in array, just return
@@ -120,8 +122,6 @@ public class GuardAIPhoton : MonoBehaviourPun
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.position, player.transform.position, obstacleMask) || !Physics.Linecast(transform.position, player.transform.GetChild(2).transform.position, obstacleMask))
                     {
-                        //Debug.Log(player.transform.position);
-                        //Debug.Log(player.transform.GetChild(2).transform.position);
                         return true;
                     }
                 }
@@ -129,6 +129,32 @@ public class GuardAIPhoton : MonoBehaviourPun
             }
             
             // checks if player is in guard's view range 
+        }
+        return false;
+    }
+
+    bool DeadGuardSpotted()
+    {
+        GameObject[] deadGuards = GameObject.FindGameObjectsWithTag("DeadGuard");
+
+        foreach (var deadGuard in deadGuards)
+        {
+            if (Vector3.Distance(transform.position, deadGuard.transform.position) < sightRange)
+            {
+                // vector from guard to player
+                Vector3 dirToPlayer = (deadGuard.transform.position - transform.position).normalized;
+                float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
+                if (guardPlayerAngle < guardAngle / 2f)
+                {
+                    // checks if guard line of sight is blocked by an obstacle
+                    // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
+                    if (!Physics.Linecast(transform.position, deadGuard.transform.position, obstacleMask))
+                    {
+                        return true;
+                    }
+                }
+
+            }
         }
         return false;
     }
@@ -141,6 +167,26 @@ public class GuardAIPhoton : MonoBehaviourPun
     void ChangeToRed()
     {
         spotlight.color = Color.red;
+    }
+
+    void SetAllGuardsToAlerted()
+    {
+        GameObject[] allGuards = GameObject.FindGameObjectsWithTag("Guard");
+        Transform closestPlayer = FindClosestPlayer();
+        foreach (var guard in allGuards)
+        {
+            Transform child = guard.transform;
+            GuardAIPhoton temp = child.gameObject.GetComponent<GuardAIPhoton>();
+            // sets the guard to be alerted if they're not chasing
+            if (temp.guardState != State.Chasing)
+            {
+                temp.guardState = State.DeadGuardAlerted;
+            }
+            // resets time alerted
+            temp.timeAlerted = 0f;
+            // sets alerted position to be the closest player's position
+            temp.alertPosition = closestPlayer.position;
+        }
     }
 
     // sets all guards in the same 'group' to be alerted to the player
@@ -186,6 +232,12 @@ public class GuardAIPhoton : MonoBehaviourPun
     {
         guard.SetDestination(alertPosition);
     }
+
+    void GoToPlayer()
+    {
+        Transform closestPlayer = FindClosestPlayer();
+        guard.SetDestination(closestPlayer.position);
+    }
     // guard checks if a rock dropped next to them
     Vector3 CheckForRock()
     {
@@ -217,6 +269,7 @@ public class GuardAIPhoton : MonoBehaviourPun
         players = GameObject.FindGameObjectsWithTag("Player");
         // Check if player is in guard's sight
         playerSpotted = PlayerSpotted();
+        deadGuardSpotted = DeadGuardSpotted();
 
         Vector3 rockPos = CheckForRock();
 
@@ -224,8 +277,28 @@ public class GuardAIPhoton : MonoBehaviourPun
         //{
         //    Debug.Log("You lose");
         //}
+        if (deadGuardSpotted && guardState == State.Patroling)
+        {
+            SetAllGuardsToAlerted();
+        }
+        else if (guardState == State.DeadGuardAlerted)
+        {
+            timeAlerted += Time.deltaTime;
+            if (timeAlerted > 15f)
+            {
+                guardState = State.Patroling;
+                GotoNextPoint();
+                ChangeToYellow();
+                timeAlerted = 0f;
+            }
+            else
+            {
+                GoToPlayer();
+                ChangeToOrange();
+            }
+        }
         // If the player is not spotted but the guard is in the alerted state
-        if (!playerSpotted && guardState == State.Alerted)
+        else if (!playerSpotted && guardState == State.Alerted)
         {
             // increase time and once it hits limit, go back to patroling
             timeAlerted += Time.deltaTime;

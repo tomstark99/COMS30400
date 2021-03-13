@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 7113846530122952326}
   m_Layer: 9
   m_Name: PhotonGuard
-  m_TagString: Untagged
+  m_TagString: Guard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,6 +197,7 @@ MonoBehaviour:
   sightRange: 30
   proximityRange: 5
   playerSpotted: 0
+  deadGuardSpotted: 0
   guardAngle: 80
   spotlightColour: {r: 0.9137255, g: 0.9098039, b: 0.41960785, a: 1}
   alertColour: {r: 0.8862745, g: 0.6392157, b: 0.29803923, a: 1}
