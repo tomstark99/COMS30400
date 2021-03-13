@@ -99,6 +99,7 @@ public class Character : MonoBehaviourPun
         {
             Item.transform.parent = GameObject.Find("/Environment/Interactables/DeadGuards").transform;
         }
+        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 8f;
     }
 
     public void Drop(PickUpable Item) 
@@ -215,6 +216,7 @@ public class Character : MonoBehaviourPun
 
         Item.SetItemPickupConditions();
         Item.transform.Rotate(90, 0, 0);
+        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 6f;
         
     }
 
