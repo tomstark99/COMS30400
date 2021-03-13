@@ -13,6 +13,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private float speed = 8f;
     private float jumpHeight = 3.5f;
 
+    public float Speed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }
+
     private Vector3 velocity;
     private float groundDistance = 0.4f;
     private bool isGrounded;
