@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class CurrentRoomCanvas : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class CurrentRoomCanvas : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            
+            gameObject.transform.GetChild(4).GetComponent<Button>().interactable = false;
             Debug.Log("Starting Game");
             PhotonNetwork.LoadLevel(1);
         }
