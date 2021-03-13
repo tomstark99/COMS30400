@@ -7,6 +7,7 @@ public class Character : MonoBehaviourPun
 {
     public Transform pickUpDestination;
     public Transform pickUpDestinationLocal;
+    public Transform dragDestination;
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
     
@@ -204,5 +205,26 @@ public class Character : MonoBehaviourPun
         photonView.RPC("CreateBullet", RpcTarget.Others);
         photonView.RPC("CreateBulletLocal", PhotonNetwork.LocalPlayer);
     }
-   
+
+    [PunRPC]
+    void DragRPC(int ItemID)
+    {
+        Draggable Item = PhotonView.Find(ItemID).GetComponent<Draggable>();
+        Item.transform.position = dragDestination.position;
+        Item.transform.parent = dragDestination;
+
+        Item.SetItemPickupConditions();
+        Item.transform.Rotate(90, 0, 0);
+        
+    }
+
+    public void Drag(Draggable Item)
+    {
+        currentHeldItem = Item;
+
+        PhotonView view = Item.GetComponent<PhotonView>();
+        view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        photonView.RPC("DragRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+    }
+
 }

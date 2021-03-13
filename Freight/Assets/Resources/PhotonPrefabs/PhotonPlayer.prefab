@@ -154,6 +154,36 @@ Transform:
   m_Father: {fileID: 7980832975168636561}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 85, z: 0}
+--- !u!1 &2585533103841571249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6011974800846821017}
+  m_Layer: 0
+  m_Name: Drag
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6011974800846821017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2585533103841571249}
+  m_LocalRotation: {x: -0, y: -0.08715578, z: -0, w: 0.9961947}
+  m_LocalPosition: {x: -0.33, y: -0.134, z: 2.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7980832976051256635}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: -10, z: 0}
 --- !u!1 &7980832975168636566
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +388,7 @@ Transform:
   - {fileID: 3470005061625440771}
   - {fileID: 6652596242434911368}
   - {fileID: 5040296584399321528}
+  - {fileID: 6011974800846821017}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -541,6 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickUpDestination: {fileID: 6652596242434911368}
   pickUpDestinationLocal: {fileID: 4705116822242607389}
+  dragDestination: {fileID: 6011974800846821017}
   currentHeldItem: {fileID: 0}
   bulletPrefab: {fileID: 1122964723992546, guid: 674adf642abf5614aae2995443c8250f,
     type: 3}
