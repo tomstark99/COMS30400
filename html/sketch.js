@@ -9,6 +9,7 @@ var canvas
 let textSiz = 20;
 
 let video;
+
 let poseNet;
 let pose;
 let skeleton;
@@ -22,6 +23,8 @@ let pose3;
 let brain;
 let poseLabel = "Y";
 let poseSentence = ""
+
+let overlay;
 
 function setup() {
   // init canvas
@@ -51,6 +54,9 @@ function setup() {
     weights: 'model/model.weights.bin',
   };
   brain.load(modelInfo, brainLoaded);
+
+  // init overlay
+  overlay = loadImage('');
 }
 
 function brainLoaded() {
@@ -196,6 +202,15 @@ function getGestureAsString() {
   return poseLabel;
 }
 
+function loadOverlay(path) {
+  overlay = loadImage(path);
+}
+
+function clearOverlay() {
+  // alert("Clear Overlay");
+  overlay = loadImage('');
+}
+
 // Draws to  canvas
 // Called once per frame
 function draw() {
@@ -231,6 +246,8 @@ function draw() {
   }
   pop();
 
+
+
   fill(255, 0, 255);
   noStroke();
   textSize(256);
@@ -244,4 +261,6 @@ function draw() {
   textSize(textSiz);
   textAlign(LEFT, TOP);
   text(poseSentence, 0, 0);
+
+  image(overlay, 0, 0, canvas.width, canvas.height);
 }

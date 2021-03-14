@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using Photon.Pun;
 
@@ -8,6 +10,13 @@ public class BreakFencePhoton : MonoBehaviourPun
     public GameObject text;
     private GameObject[] players;
     private bool isBroken;
+    private bool overlayDisplayed = false;
+    
+    [DllImport("__Internal")]
+    private static extern void LoadOverlay(String relativePath);
+    [DllImport("__Internal")]
+    private static extern void ClearOverlay();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,13 +26,26 @@ public class BreakFencePhoton : MonoBehaviourPun
     [PunRPC]
     void SetPressPToActive()
     {
-        text.SetActive(true);
+        text.SetActive(true);                
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // if (!overlayDisplayed) {
+        LoadOverlay("overlays/pull_apart_fence.png");
+        //     overlayDisplayed = true;
+        // }
+#endif
     }
 
     [PunRPC]
     void SetPressPToNotActive()
     {
         text.SetActive(false);
+        Debug.Log("clearText");
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // if (overlayDisplayed) {
+        ClearOverlay();
+        //     overlayDisplayed = false;
+        // }
+#endif
     }
 
     [PunRPC]
