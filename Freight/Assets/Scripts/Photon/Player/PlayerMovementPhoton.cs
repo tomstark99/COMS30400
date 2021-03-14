@@ -21,7 +21,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private Transform prev;
     private PhotonView PV;
 
-   
+    // animation variables
+    private Animator animator;
+    private int isWalkingHash;
+    private int isJumpingHash;
+
     void Start()
     {
         // activates player's camera if its theirs and disables all others
@@ -35,6 +39,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             Debug.Log(" DISABLE CONTROLER ");
             Destroy(GetComponent<PlayerMovementPhoton>());
         }
+        // Setup animation variables
+        animator = GetComponent<Animator>();
+
+        // using StringToHash increases performance by nearly 50%
+        isWalkingHash = Animator.StringToHash("isWalking");
+        isJumpingHash = Animator.StringToHash("isJumping");
     }
 
     void Update()
@@ -55,6 +65,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void Movement()
     {
+
         // Checks if the groundCheck object is within distance to the ground layer
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
@@ -67,8 +78,10 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
+        // instantiates move with null so that it can be set depending on climb
         Vector3 move;
 
+        // if forwards velocity is greater than 0 and inside the climbing collider, add to the vertical height instead of the forward height
         if (climbing && z > 0f)
         {
             move = transform.right * x + transform.up * z;
@@ -76,6 +89,17 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else
         {
             move = transform.right * x + transform.forward * z;
+        }
+
+        // Animation
+        bool isWalking = animator.GetBool(isWalkingHash);
+        bool isJumping = animator.GetBool(isJumpingHash);
+
+        if(!isWalking && z > 0.02f) {
+            animator.SetBool(isWalkingHash, true);
+        } 
+        if(z <= 0.1f) {
+            animator.SetBool(isWalkingHash, false);
         }
 
         // sticks the player onto the train
@@ -95,6 +119,14 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             onTrain = false;
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            if (!isJumping) {
+                animator.SetBool(isJumpingHash, true);
+            }
+        }
+        if (isGrounded) {
+            animator.SetBool(isJumpingHash, false);
+        } else {
+            animator.SetBool(isJumpingHash, true);
         }
 
         velocity.y += gravity * Time.deltaTime;

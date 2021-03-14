@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5888635538390580237
 Transform:
   m_ObjectHideFlags: 0
@@ -527,7 +527,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: cec5e3f7f0a68354d85d8877e495b03d, type: 3}
+      objectReference: {fileID: 9000000, guid: c1fdb6c35921eea4a9b976d2712602ad, type: 3}
     - target: {fileID: 5866666021909216657, guid: cec5e3f7f0a68354d85d8877e495b03d,
         type: 3}
       propertyPath: m_Controller
@@ -540,8 +540,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: cec5e3f7f0a68354d85d8877e495b03d,
         type: 3}
+      propertyPath: m_CullingMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: cec5e3f7f0a68354d85d8877e495b03d,
+        type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'Hips'\n\tTransform 'LeftHand'\n\tTransform
+        'RightArm'\n\tTransform 'LeftShoulder'\n\tTransform 'Spine'\n\tTransform
+        'RightUpLeg'\n\tTransform 'Hips'\n\tTransform 'LeftLeg'\n\tTransform 'LeftUpLeg'\n\tTransform
+        'RightLeg'\n\tand more ...\n\tFrom animation clip 'mixamo.com'"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: cec5e3f7f0a68354d85d8877e495b03d,
+        type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cec5e3f7f0a68354d85d8877e495b03d, type: 3}
