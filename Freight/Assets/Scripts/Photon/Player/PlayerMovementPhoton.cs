@@ -125,7 +125,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         if (Input.GetButtonDown("Jump") || !isGrounded) {
             animator.SetBool(isJumpingHash, true);
-            animator.SetBool(isWalkingHash, false);
+            // animator.SetBool(isWalkingHash, false);
         } else if (isGrounded) {
             animator.SetBool(isJumpingHash, false);
         }
