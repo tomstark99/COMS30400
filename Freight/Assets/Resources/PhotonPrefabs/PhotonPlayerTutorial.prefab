@@ -810,6 +810,7 @@ GameObject:
   - component: {fileID: 1584224160647717026}
   - component: {fileID: -8041433480325962717}
   - component: {fileID: 5704460574621402990}
+  - component: {fileID: 9118113964886639293}
   m_Layer: 8
   m_Name: PhotonPlayerTutorial
   m_TagString: Player
@@ -1021,6 +1022,19 @@ MonoBehaviour:
   currentHeldItem: {fileID: 0}
   bulletPrefab: {fileID: 1122964723992546, guid: 674adf642abf5614aae2995443c8250f,
     type: 3}
+--- !u!114 &9118113964886639293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980832976051256633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3569b6f32b72a54aa375b89bb037c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7980832976051256633}
 --- !u!1 &7980832976756422580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,15 +1206,15 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a43a74f54fdb28e49b47571e0133cdcc, type: 3}
---- !u!224 &5040296584399321528 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6182315992054742260, guid: a43a74f54fdb28e49b47571e0133cdcc,
-    type: 3}
-  m_PrefabInstance: {fileID: 1169041076290307404}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5040296583355468102 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6182315993161485322, guid: a43a74f54fdb28e49b47571e0133cdcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1169041076290307404}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &5040296584399321528 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6182315992054742260, guid: a43a74f54fdb28e49b47571e0133cdcc,
     type: 3}
   m_PrefabInstance: {fileID: 1169041076290307404}
   m_PrefabAsset: {fileID: 0}
