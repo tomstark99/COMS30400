@@ -119,14 +119,15 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             onTrain = false;
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            if (!isJumping) {
-                animator.SetBool(isJumpingHash, true);
-            }
+            // if (!isJumping) {
+            //     animator.SetBool(isJumpingHash, true);
+            // }
         }
-        if (isGrounded) {
-            animator.SetBool(isJumpingHash, false);
-        } else {
+        if (Input.GetButtonDown("Jump") || !isGrounded) {
             animator.SetBool(isJumpingHash, true);
+            animator.SetBool(isWalkingHash, false);
+        } else if (isGrounded) {
+            animator.SetBool(isJumpingHash, false);
         }
 
         velocity.y += gravity * Time.deltaTime;
