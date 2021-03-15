@@ -8,6 +8,7 @@ public class MouseMovesScript : MonoBehaviour
     float movementSpeed;
 
     private float moveTime = 0.0f;
+    private float onScreenTime = 0.0f;
     private float movementTime = 3.0f;
 
     private float direction = -1f;
@@ -25,12 +26,13 @@ public class MouseMovesScript : MonoBehaviour
             return;
         }
 
-        if(Time.time > moveTime) {
-            moveTime = Time.time + movementTime;
+        onScreenTime += Time.deltaTime;
+        if (onScreenTime > moveTime) {
+            moveTime = onScreenTime + movementTime;
             direction = direction * -1f;
         }
         transform.position = new Vector3(transform.position.x + 0.5f * direction, transform.position.y, transform.position.z);
-        if(Time.time > 10f) {
+        if(onScreenTime > 10f) {
             transform.parent.gameObject.SetActive(false);
         }
     }
