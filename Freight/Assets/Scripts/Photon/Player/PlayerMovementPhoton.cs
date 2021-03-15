@@ -28,13 +28,16 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private int isJumpingHash;
     private int isLeftHash;
     private int isRightHash;
+    private int isCrouchedHash;
 
     void Start()
     {
         // activates player's camera if its theirs and disables all others
         if(photonView.IsMine)
         {
-            transform.Find("Camera").gameObject.SetActive(true);
+            // transform.Find("Camera").gameObject.SetActive(true);
+            transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head/Camera/Camera").gameObject.SetActive(true);
+            // transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head/Camera").gameObject.transform.localRotation = Quaternion.Euler(0.0f, 180.0f, -90.0f);
         }
         PV = GetComponent<PhotonView>();
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
@@ -51,6 +54,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         isJumpingHash = Animator.StringToHash("isJumping");
         isLeftHash = Animator.StringToHash("walkLeft");
         isRightHash = Animator.StringToHash("walkRight");
+        isCrouchedHash = Animator.StringToHash("crouched");
     }
 
     void Update()
@@ -103,6 +107,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         bool isWalking = animator.GetBool(isWalkingHash);
         bool isLeft = animator.GetBool(isLeftHash);
         bool isRight = animator.GetBool(isRightHash);
+        bool isCrouched = animator.GetBool(isCrouchedHash);
 
         if(!isWalking && z > 0.02f) {
             animator.SetBool(isWalkingHash, true);
@@ -115,14 +120,14 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             animator.SetBool(isRunningBackHash, false);
         }
         if (!isRight && x > 0.02f) {
-            animator.SetBool(isLeftHash, true);
+            animator.SetBool(isRightHash, true);
         }
         if (x <= 0.02f && x >= -0.02f) {
             animator.SetBool(isLeftHash, false);
             animator.SetBool(isRightHash, false);
         }
         if (!isLeft && x < -0.02f) {
-            animator.SetBool(isRightHash, true);
+            animator.SetBool(isLeftHash, true);
         }
 
         // sticks the player onto the train
@@ -151,6 +156,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             // animator.SetBool(isWalkingHash, false);
         } else if (isGrounded) {
             animator.SetBool(isJumpingHash, false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched) {
+            animator.SetBool(isCrouchedHash, true);
+        } else if (Input.GetKeyUp(KeyCode.LeftControl) && isCrouched) {
+            animator.SetBool(isCrouchedHash, false);
         }
 
         velocity.y += gravity * Time.deltaTime;
