@@ -17,9 +17,17 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject playerMovement;
 
+    [Header("Mouse")]
+    [SerializeField]
+    private GameObject mouse;
+    [SerializeField]
+    private GameObject moveMouse;
+
     [Header("Player")]
     [SerializeField]
     private GameObject player;
+    [SerializeField]
+    private GameObject camera;
 
     private int tutorialCounter;
     private bool wPressed;
@@ -27,6 +35,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     private bool sPressed;
     private bool dPressed;
     private int keysPressed;
+    private int cubesLookedAt;
 
     // Start is called before the first frame update
     void Start()
@@ -66,11 +75,40 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             }
             if (keysPressed == 4)
             {
-
                 tutorialCounter++;
                 Destroy(playerMovement);
+                mouse.SetActive(true);
             }
         }
+        else if (tutorialCounter == 1)
+        {
+            if (mouse.activeSelf == false)
+            {
+                tutorialCounter++;
+                moveMouse.SetActive(true);
+            }
+        }
+        else if (tutorialCounter == 2)
+        {
+            // shoots out a raycast to see if user looks at cube
+            Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
+
+            if (hitInfo.collider.gameObject.tag == "Cube")
+            {
+                cubesLookedAt++;
+                Destroy(hitInfo.collider.gameObject);
+            }
+
+            if (cubesLookedAt == 2)
+            {
+                tutorialCounter++;
+                Destroy(moveMouse);
+            }
+        }
+
+
+
+        Debug.Log(tutorialCounter);
     }
 
 }
