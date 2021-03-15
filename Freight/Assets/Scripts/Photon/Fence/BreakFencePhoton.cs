@@ -37,6 +37,7 @@ public class BreakFencePhoton : MonoBehaviourPun
         if (isBroken)
          return;
         players = GameObject.FindGameObjectsWithTag("Player");
+        
         foreach (var player in players)
         {
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
