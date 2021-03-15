@@ -11,7 +11,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     private float gravity = -17f;
     private float speed = 8f;
-    private float jumpHeight = 3.5f;
+    private float jumpHeight = 1.5f;
 
     private Vector3 velocity;
     private float groundDistance = 0.4f;
@@ -24,6 +24,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     // animation variables
     private Animator animator;
     private int isWalkingHash;
+    private int isRunningBackHash;
     private int isJumpingHash;
 
     void Start()
@@ -44,6 +45,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         // using StringToHash increases performance by nearly 50%
         isWalkingHash = Animator.StringToHash("isWalking");
+        isRunningBackHash = Animator.StringToHash("isRunningBack");
         isJumpingHash = Animator.StringToHash("isJumping");
     }
 
@@ -92,14 +94,19 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
 
         // Animation
-        bool isWalking = animator.GetBool(isWalkingHash);
         bool isJumping = animator.GetBool(isJumpingHash);
+        bool isRunningBack = animator.GetBool(isRunningBackHash);
+        bool isWalking = animator.GetBool(isWalkingHash);
 
         if(!isWalking && z > 0.02f) {
             animator.SetBool(isWalkingHash, true);
         } 
-        if(z <= 0.1f) {
+        if(!isRunningBack && z < -0.02f) {
+            animator.SetBool(isRunningBackHash, true);
+        }
+        if(z <= 0.02f && z >= -0.02f) {
             animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningBackHash, false);
         }
 
         // sticks the player onto the train
