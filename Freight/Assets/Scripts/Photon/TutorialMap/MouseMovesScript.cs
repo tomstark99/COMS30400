@@ -20,6 +20,11 @@ public class MouseMovesScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!gameObject.activeSelf)
+        {
+            return;
+        }
+
         if(Time.time > moveTime) {
             moveTime = Time.time + movementTime;
             direction = direction * -1f;
