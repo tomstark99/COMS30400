@@ -26,6 +26,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private int isWalkingHash;
     private int isRunningBackHash;
     private int isJumpingHash;
+    private int isLeftHash;
+    private int isRightHash;
 
     void Start()
     {
@@ -47,6 +49,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         isWalkingHash = Animator.StringToHash("isWalking");
         isRunningBackHash = Animator.StringToHash("isRunningBack");
         isJumpingHash = Animator.StringToHash("isJumping");
+        isLeftHash = Animator.StringToHash("walkLeft");
+        isRightHash = Animator.StringToHash("walkRight");
     }
 
     void Update()
@@ -97,6 +101,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         bool isJumping = animator.GetBool(isJumpingHash);
         bool isRunningBack = animator.GetBool(isRunningBackHash);
         bool isWalking = animator.GetBool(isWalkingHash);
+        bool isLeft = animator.GetBool(isLeftHash);
+        bool isRight = animator.GetBool(isRightHash);
 
         if(!isWalking && z > 0.02f) {
             animator.SetBool(isWalkingHash, true);
@@ -107,6 +113,16 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if(z <= 0.02f && z >= -0.02f) {
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningBackHash, false);
+        }
+        if (!isRight && x > 0.02f) {
+            animator.SetBool(isLeftHash, true);
+        }
+        if (x <= 0.02f && x >= -0.02f) {
+            animator.SetBool(isLeftHash, false);
+            animator.SetBool(isRightHash, false);
+        }
+        if (!isLeft && x < -0.02f) {
+            animator.SetBool(isRightHash, true);
         }
 
         // sticks the player onto the train
