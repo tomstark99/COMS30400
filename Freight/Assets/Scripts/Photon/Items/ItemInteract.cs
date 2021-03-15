@@ -95,6 +95,11 @@ public class ItemInteract : MonoBehaviourPun
     {
 
         interactables = GameObject.Find("Environment/Interactables");
+
+        if (interactables == null)
+        {
+            return;
+        }
         
         //rocks = rocks.transform.GetChild(0).gameObject;
         float minimumDistanceToObject = float.MaxValue;
