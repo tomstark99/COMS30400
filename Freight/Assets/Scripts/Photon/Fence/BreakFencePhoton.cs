@@ -28,10 +28,10 @@ public class BreakFencePhoton : MonoBehaviourPun
     {
         text.SetActive(true);                
 #if UNITY_WEBGL && !UNITY_EDITOR
-        // if (!overlayDisplayed) {
-        LoadOverlay("overlays/pull_apart_fence.png");
-        //     overlayDisplayed = true;
-        // }
+        if (!overlayDisplayed) {
+            LoadOverlay("overlays/pull_apart_fence.png");
+            overlayDisplayed = true;
+        }
 #endif
     }
 
@@ -41,10 +41,10 @@ public class BreakFencePhoton : MonoBehaviourPun
         text.SetActive(false);
         Debug.Log("clearText");
 #if UNITY_WEBGL && !UNITY_EDITOR
-        // if (overlayDisplayed) {
-        ClearOverlay();
-        //     overlayDisplayed = false;
-        // }
+        if (overlayDisplayed) {
+            ClearOverlay();
+            overlayDisplayed = false;
+        }
 #endif
     }
 
@@ -56,11 +56,12 @@ public class BreakFencePhoton : MonoBehaviourPun
 
     void Update()
     {
-        if (isBroken)
-         return;
+        // if (isBroken)
+        //  return;
         players = GameObject.FindGameObjectsWithTag("Player");
         foreach (var player in players)
         {
+            if (!player.GetPhotonView().IsMine) continue;
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
             string gesture = player.GetComponent<PhotonPlayer>().gesture;
             bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
@@ -74,6 +75,7 @@ public class BreakFencePhoton : MonoBehaviourPun
 
                     photonView.RPC("DestroyFence", RpcTarget.MasterClient);
                     PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
+                    photonView.RPC("SetPressPToNotActive", player.GetComponent<PhotonView>().Owner);
                     isBroken = true;
                     break;
                 }
