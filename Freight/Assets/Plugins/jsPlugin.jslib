@@ -16,11 +16,11 @@ mergeInto(LibraryManager.library, {
       return buffer;
     },
     
-    LoadOverlay: function (relativePath) {
+    LoadOverlayPlugin: function (relativePath) {
     	loadOverlay(Pointer_stringify(relativePath));
     },
 
-    ClearOverlay: function () {
+    ClearOverlayPlugin: function () {
     	clearOverlay();
     }
 });

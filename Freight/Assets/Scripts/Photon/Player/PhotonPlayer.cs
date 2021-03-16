@@ -9,10 +9,6 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
     public GameObject playerUI;
     public string gesture;
     
-    [DllImport("__Internal")]
-    private static extern void ClearOverlay();
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -22,9 +18,7 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             transform.Find("UI 1").gameObject.SetActive(true);
-#if UNITY_WEBGL && !UNITY_EDITOR
-            ClearOverlay();
-#endif
+            Overlay.ClearOverlay();
         }
         // if UI is not the player's, disable it
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
