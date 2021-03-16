@@ -17,6 +17,12 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject playerMovement;
 
+    [SerializeField]
+    private GameObject spaceUnpressedSprite;
+
+    [SerializeField]
+    private GameObject spacePressed;
+
     [Header("Mouse")]
     [SerializeField]
     private GameObject mouse;
@@ -57,6 +63,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     private int keysPressed;
     private int cubesLookedAt;
 
+    [SerializeField]
+    private GameObject pickUpGuard;
     // Start is called before the first frame update
     void Start()
     {
@@ -105,7 +113,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             if (keysPressed == 4)
             {
                 tutorialCounter++;
-                Destroy(playerMovement);
+                wSprite.SetActive(false);
+                aSprite.SetActive(false);
+                sSprite.SetActive(false);
+                dSprite.SetActive(false);
                 // set active the mouse AI tooltip
                 mouse.SetActive(true);
             }
@@ -221,9 +232,18 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 Instantiate(arrow, arrowPos, arrow.transform.rotation);
                 tutorialCounter++;
             }
+        } else if(tutorialCounter == 7) {
+                spaceUnpressedSprite.SetActive(true);
+                if(Input.GetKeyDown(KeyCode.Space)) 
+                {
+                    spaceUnpressedSprite.SetActive(false);
+                    spacePressed.SetActive(true);
+                    tutorialCounter++;
+                    Destroy(playerMovement);
+                }
         }
         // this part moves the wall up and allows the user to proceed onto the next part
-        else if (tutorialCounter == 7)
+        else if (tutorialCounter == 8)
         {
             // if the user and dead guard are still in the old room, wall continues to rise
             if (transform.position.x < 273 || guardToDrag.transform.position.x < 273)
@@ -242,7 +262,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             }
         }
         // this part waits for the user to break the fence
-        else if (tutorialCounter == 8)
+        else if (tutorialCounter == 9)
         {
 
         }
