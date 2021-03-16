@@ -229,6 +229,11 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 tutorialCounter++;
             }
         }
+        // this part waits for the user to break the fence
+        else if (tutorialCounter == 8)
+        {
+
+        }
 
 
         //Debug.Log(tutorialCounter);
