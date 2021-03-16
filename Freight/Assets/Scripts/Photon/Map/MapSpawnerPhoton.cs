@@ -453,7 +453,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                 position.y -= 3;
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
-            else
+            if (!(i > 15 && i < 20))
             {
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
