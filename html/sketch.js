@@ -56,7 +56,7 @@ function setup() {
   brain.load(modelInfo, brainLoaded);
 
   // init overlay
-  overlay = loadImage('');
+  overlay = loadImage('overlays/Neutral.png');
 }
 
 function brainLoaded() {
