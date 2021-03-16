@@ -10,12 +10,11 @@ public class ButtonClick : MonoBehaviourPun
     public AudioClip hover;
     public AudioClip click;
 
-    //function for hover button sound
     public void HoverSound()
     {
         source.PlayOneShot(hover);
     }
-    //function for click button sound
+
     public void ClickSound()
     {
         source.PlayOneShot(click);
