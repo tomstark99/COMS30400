@@ -37,8 +37,11 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [Header("AdvanceToNextRoom")]
     [SerializeField]
     private GameObject advanceToNext;
+    [SerializeField]
+    private GameObject arrow;
 
     private GameObject cageGuard;
+    private GameObject guardToDrag;
 
     [Header("Player")]
     [SerializeField]
@@ -168,10 +171,21 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 WallLifts2.transform.position = new Vector3(WallLifts2Transform.position.x, 3, WallLifts2Transform.position.z);
                 tutorialCounter++;
             }
+        } else if (tutorialCounter == 6)
+        {
+            //Debug.Log(GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length);
+            if (GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length == 9)
+            {
+                int random = Random.Range(0, 4);
+                guardToDrag = GameObject.Find("Environment/Interactables/DeadGuards").transform.GetChild(random).gameObject;
+                Vector3 arrowPos = new Vector3(guardToDrag.transform.position.x, guardToDrag.transform.position.y + 5, guardToDrag.transform.position.z);
+                Instantiate(arrow, arrowPos, arrow.transform.rotation);
+                tutorialCounter++;
+            }
         }
 
 
-        Debug.Log(tutorialCounter);
+        //Debug.Log(tutorialCounter);
     }
 
 }
