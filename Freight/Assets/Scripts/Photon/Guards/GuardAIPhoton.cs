@@ -216,7 +216,12 @@ public class GuardAIPhoton : MonoBehaviourPun
     {
         players = GameObject.FindGameObjectsWithTag("Player");
         // Check if player is in guard's sight
+        bool old = playerSpotted;
         playerSpotted = PlayerSpotted();
+
+        if(old != playerSpotted) {
+            GetComponent<GuardAnimation>().setChasing(playerSpotted);
+        }
 
         Vector3 rockPos = CheckForRock();
 
