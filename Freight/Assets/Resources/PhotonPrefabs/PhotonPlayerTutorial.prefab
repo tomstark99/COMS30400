@@ -542,7 +542,7 @@ MonoBehaviour:
   maxInteractionDistance: 10
   cameraTransform: {fileID: 7980832975168636561}
   currentInteractable: {fileID: 0}
-  text: {fileID: 0}
+  text: {fileID: 5431445580900827609}
 --- !u!114 &5704460574621402990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,11 +735,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6182315993161485322, guid: 710d7a3f6d3768543bbaaebe227079f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 710d7a3f6d3768543bbaaebe227079f3, type: 3}
 --- !u!224 &5431445582005498151 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6182315992054742260, guid: 710d7a3f6d3768543bbaaebe227079f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 2210037447523225043}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5431445580900827609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6182315993161485322, guid: 710d7a3f6d3768543bbaaebe227079f3,
     type: 3}
   m_PrefabInstance: {fileID: 2210037447523225043}
   m_PrefabAsset: {fileID: 0}
