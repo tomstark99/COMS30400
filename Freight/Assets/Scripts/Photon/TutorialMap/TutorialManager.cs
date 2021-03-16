@@ -23,6 +23,18 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject moveMouse;
 
+    private GameObject WallLifts1;
+    private Transform WallLifts1Transform;
+    private GameObject WallLifts2;
+    private GameObject WallLifts3;
+    private GameObject WallLifts4;
+
+    [Header("AdvanceToNextRoom")]
+    [SerializeField]
+    private GameObject advanceToNext;
+    
+
+
     [Header("Player")]
     [SerializeField]
     private GameObject player;
@@ -42,6 +54,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     {
         tutorialCounter = 0;
         keysPressed = 0;
+         Debug.Log(GameObject.Find("Room1"));
+        WallLifts1 = GameObject.Find("Room1").transform.GetChild(2).gameObject;
+        WallLifts1Transform = WallLifts1.transform;
+       
     }
 
     // Update is called once per frame
@@ -93,19 +109,33 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             // shoots out a raycast to see if user looks at cube
             Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
 
-            if (hitInfo.collider.gameObject.tag == "Cube")
-            {
-                cubesLookedAt++;
-                Destroy(hitInfo.collider.gameObject);
-            }
+            if(hitInfo.collider != null)
+                if (hitInfo.collider.gameObject.tag == "Cube")
+                {
+                    cubesLookedAt++;
+                    Destroy(hitInfo.collider.gameObject);
+                }
 
             if (cubesLookedAt == 2)
             {
                 tutorialCounter++;
                 Destroy(moveMouse);
             }
-        }
+        } else if(tutorialCounter == 3 ) {
 
+                 if(transform.position.z < 93) 
+                 {
+
+                    advanceToNext.SetActive(true);
+                    WallLifts1.transform.position = new Vector3(WallLifts1.transform.position.x , WallLifts1.transform.position.y + 0.05f, WallLifts1.transform.position.z);
+                 }
+                 else 
+                    {
+                        advanceToNext.SetActive(false);
+                        WallLifts1.transform.position = new Vector3(WallLifts1Transform.position.x, 3, WallLifts1Transform.position.z);
+                        tutorialCounter++;
+                    }
+        }
 
 
         Debug.Log(tutorialCounter);
