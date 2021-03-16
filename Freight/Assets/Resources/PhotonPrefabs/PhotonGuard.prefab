@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7139ffe6178d8fa40b35215e5f297578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guard: {fileID: 1267076886, guid: 2d5445f5b3a0af742b47dbb413593445, type: 3}
+  guard: {fileID: -5741005676224242585}
   groundMask:
     serializedVersion: 2
     m_Bits: 65536
@@ -22,7 +22,9 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 32768
-  points: []
+  points:
+  - {fileID: 0}
+  - {fileID: 0}
   spotlight: {fileID: 350683341932205344, guid: 2d5445f5b3a0af742b47dbb413593445,
     type: 3}
   guardState: 0
