@@ -11,11 +11,6 @@ public class BreakFencePhoton : MonoBehaviourPun
     private GameObject[] players;
     private bool isBroken;
     private bool overlayDisplayed = false;
-    
-    [DllImport("__Internal")]
-    private static extern void LoadOverlay(String relativePath);
-    [DllImport("__Internal")]
-    private static extern void ClearOverlay();
 
     // Start is called before the first frame update
     void Start()
@@ -26,26 +21,27 @@ public class BreakFencePhoton : MonoBehaviourPun
     [PunRPC]
     void SetPressPToActive()
     {
-        text.SetActive(true);                
-#if UNITY_WEBGL && !UNITY_EDITOR
         if (!overlayDisplayed) {
-            LoadOverlay("overlays/pull_apart_fence.png");
+            text.SetActive(true);
+            
+            Overlay.LoadOverlay("overlays/pull_apart_fence.png");
             overlayDisplayed = true;
+            
+            // Show hands gif
         }
-#endif
     }
 
     [PunRPC]
     void SetPressPToNotActive()
     {
-        text.SetActive(false);
-        Debug.Log("clearText");
-#if UNITY_WEBGL && !UNITY_EDITOR
         if (overlayDisplayed) {
-            ClearOverlay();
+            text.SetActive(false);
+            
+            Overlay.ClearOverlay();
             overlayDisplayed = false;
+            
+            // Stop showing hand gif
         }
-#endif
     }
 
     [PunRPC]
