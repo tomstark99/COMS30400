@@ -27,6 +27,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject throwRock;
     
+    [SerializeField]
+    private GameObject pressGtoThrow;
     private GameObject WallLifts1;
     private GameObject WallLifts2;
     private GameObject WallLifts3;
@@ -161,16 +163,26 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 WallLifts1.transform.position = new Vector3(WallLifts1.transform.position.x, 3, WallLifts1.transform.position.z);
                 tutorialCounter++;
                 throwRock.SetActive(true);
+                
+                
             }
         }
         // checks if guard gets alerted by rock
         else if (tutorialCounter == 4)
         {
+            Debug.Log(camera.transform.GetChild(0).childCount);
+                Debug.Log(camera.transform.GetChild(0));
+                if(camera.transform.GetChild(0).childCount != 0) {
+                     throwRock.SetActive(false);
+                     pressGtoThrow.SetActive(true);
+                     //Destroy(throwRock);
+                }
             // once guard gets alerted by rock we can move onto the next part
             if (cageGuard.GetComponent<GuardAIPhoton>().GuardState == GuardAIPhoton.State.Alerted)
             {
                 tutorialCounter++;
                 Destroy(throwRock);
+                Destroy(pressGtoThrow);
             }
        
         }
