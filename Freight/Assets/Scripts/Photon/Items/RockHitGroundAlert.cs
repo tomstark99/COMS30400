@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class RockHitGroundAlert : MonoBehaviour
     public bool isGrounded ;
     private bool lastFrameValueOfIsGrounded;
     public bool rockHitGround;
+
+    public event Action RockHitGround;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +39,7 @@ public class RockHitGroundAlert : MonoBehaviour
         {
             Debug.Log("Rock hit the ground alie");
             rockHitGround = true;
+            RockHitGround();
         }
         else
         {

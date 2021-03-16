@@ -33,12 +33,17 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     private GameObject WallLifts2;
     private GameObject WallLifts3;
     private GameObject WallLifts4;
+    private GameObject fenceToBreak;
 
     [Header("AdvanceToNextRoom")]
     [SerializeField]
     private GameObject advanceToNext;
     [SerializeField]
     private GameObject arrow;
+
+    [Header("Fence/Ladder")]
+    [SerializeField]
+    private GameObject breakFence;
 
     private GameObject cageGuard;
     private GameObject guardToDrag;
@@ -66,8 +71,9 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         WallLifts2 = GameObject.Find("Room2").transform.GetChild(1).gameObject;
         WallLifts3 = GameObject.Find("Room3").transform.GetChild(1).gameObject;
         cageGuard = GameObject.Find("Guards").transform.GetChild(0).gameObject;
-        
-       
+        fenceToBreak = GameObject.Find("Fences").transform.GetChild(0).gameObject;
+        fenceToBreak.GetComponent<BreakFencePhoton>().FenceBroke += HandleBrokenFence;
+
     }
 
     // Update is called once per frame
@@ -238,17 +244,25 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             {
                 advanceToNext.SetActive(false);
                 WallLifts3.transform.position = new Vector3(WallLifts3.transform.position.x, 3, WallLifts3.transform.position.z);
+                breakFence.SetActive(true);
                 tutorialCounter++;
             }
         }
         // this part waits for the user to break the fence
         else if (tutorialCounter == 8)
         {
-
+            // subscribed to this in Start function
+            //fenceToBreak.GetComponent<BreakFencePhoton>().FenceBroke -= HandleBrokenFence;
         }
 
 
         //Debug.Log(tutorialCounter);
+    }
+
+    void HandleBrokenFence()
+    {
+        tutorialCounter++;
+        breakFence.SetActive(false);
     }
 
 }
