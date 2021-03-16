@@ -457,7 +457,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198458435}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 254.13521, y: 11.09895, z: 130.16}
+  m_LocalPosition: {x: 254.13521, y: 9.698933, z: 130.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1804520281}
@@ -480,7 +480,7 @@ GameObject:
   - component: {fileID: 218041295}
   - component: {fileID: 218041294}
   - component: {fileID: 218041293}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: rightSideCage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1018,7 +1018,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361721938}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1029,7 +1029,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: afd5e63d7ba42f145b633bdf6bfb90da, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1617,7 +1617,7 @@ GameObject:
   - component: {fileID: 692782495}
   - component: {fileID: 692782494}
   - component: {fileID: 692782493}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: rightSideCage (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1964,6 +1964,7 @@ MonoBehaviour:
   playerMovement: {fileID: 0}
   mouse: {fileID: 0}
   moveMouse: {fileID: 0}
+  throwRock: {fileID: 0}
   advanceToNext: {fileID: 0}
   player: {fileID: 0}
   camera: {fileID: 0}
@@ -1979,7 +1980,7 @@ GameObject:
   - component: {fileID: 933176387}
   - component: {fileID: 933176386}
   - component: {fileID: 933176385}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: rightSideCage (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2161,7 +2162,7 @@ PrefabInstance:
     - target: {fileID: 2362659519456846823, guid: 569c103861054444e8a110f729f7bc25,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.7020111
+      value: -11.75
       objectReference: {fileID: 0}
     - target: {fileID: 2362659519456846823, guid: 569c103861054444e8a110f729f7bc25,
         type: 3}
@@ -2548,7 +2549,7 @@ GameObject:
   - component: {fileID: 1185362100}
   - component: {fileID: 1185362099}
   - component: {fileID: 1185362098}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: rightSideCage (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2868,7 +2869,12 @@ PrefabInstance:
     - target: {fileID: 1568756235422134994, guid: 2d5445f5b3a0af742b47dbb413593445,
         type: 3}
       propertyPath: sightRange
-      value: 2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568756235422134994, guid: 2d5445f5b3a0af742b47dbb413593445,
+        type: 3}
+      propertyPath: proximityRange
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1568756235422134994, guid: 2d5445f5b3a0af742b47dbb413593445,
         type: 3}
@@ -3096,7 +3102,7 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4096
-  m_UseGeometry: 1
+  m_UseGeometry: 0
   m_DefaultArea: 0
   m_IgnoreNavMeshAgent: 1
   m_IgnoreNavMeshObstacle: 1
@@ -3114,7 +3120,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1579373919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 243.29599, y: 2.340406, z: 129.73}
+  m_LocalPosition: {x: 243.29599, y: 0.94038755, z: 129.73}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3184,7 +3190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4607237736965208, guid: 779fa3e6908846940a9d714da7530be0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5000184
+      value: -0.9
       objectReference: {fileID: 0}
     - target: {fileID: 4607237736965208, guid: 779fa3e6908846940a9d714da7530be0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3251,7 +3257,7 @@ PrefabInstance:
     - target: {fileID: 2362659519456846823, guid: 569c103861054444e8a110f729f7bc25,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.8064117
+      value: -10.61
       objectReference: {fileID: 0}
     - target: {fileID: 2362659519456846823, guid: 569c103861054444e8a110f729f7bc25,
         type: 3}
@@ -3509,7 +3515,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1804167338}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 237.49377, y: -39.35129, z: 171.35611}
+  m_LocalPosition: {x: 237.49377, y: -40.751312, z: 171.35611}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1497384368}
@@ -3528,7 +3534,7 @@ GameObject:
   - component: {fileID: 1804520284}
   - component: {fileID: 1804520283}
   - component: {fileID: 1804520282}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3624,7 +3630,7 @@ PrefabInstance:
     - target: {fileID: 2362659519456846823, guid: 569c103861054444e8a110f729f7bc25,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -41.58261
+      value: -37.8
       objectReference: {fileID: 0}
     - target: {fileID: 2362659519456846823, guid: 569c103861054444e8a110f729f7bc25,
         type: 3}
@@ -3634,7 +3640,7 @@ PrefabInstance:
     - target: {fileID: 2362659519456846823, guid: 569c103861054444e8a110f729f7bc25,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.58976746
+      value: -11.1
       objectReference: {fileID: 0}
     - target: {fileID: 2362659519456846823, guid: 569c103861054444e8a110f729f7bc25,
         type: 3}

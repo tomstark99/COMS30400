@@ -23,17 +23,22 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject moveMouse;
 
+    [Header("GuardDistraction")]
+    [SerializeField]
+    private GameObject throwRock;
+    
     private GameObject WallLifts1;
     private Transform WallLifts1Transform;
     private GameObject WallLifts2;
+    private Transform WallLifts2Transform;
     private GameObject WallLifts3;
     private GameObject WallLifts4;
 
     [Header("AdvanceToNextRoom")]
     [SerializeField]
     private GameObject advanceToNext;
-    
 
+    private GameObject cageGuard;
 
     [Header("Player")]
     [SerializeField]
@@ -54,9 +59,12 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     {
         tutorialCounter = 0;
         keysPressed = 0;
-         Debug.Log(GameObject.Find("Room1"));
+        Debug.Log(GameObject.Find("Room1"));
         WallLifts1 = GameObject.Find("Room1").transform.GetChild(2).gameObject;
         WallLifts1Transform = WallLifts1.transform;
+        WallLifts2 = GameObject.Find("Room2").transform.GetChild(1).gameObject;
+        WallLifts2Transform = WallLifts2.transform;
+        cageGuard = GameObject.Find("Guards").transform.GetChild(0).gameObject;
        
     }
 
@@ -121,20 +129,45 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 tutorialCounter++;
                 Destroy(moveMouse);
             }
-        } else if(tutorialCounter == 3 ) {
+        } else if(tutorialCounter == 3) {
 
-                 if(transform.position.z < 93) 
-                 {
-
+            if(transform.position.z < 93) 
+            {
+                if (advanceToNext.activeSelf == false)
                     advanceToNext.SetActive(true);
-                    WallLifts1.transform.position = new Vector3(WallLifts1.transform.position.x , WallLifts1.transform.position.y + 0.05f, WallLifts1.transform.position.z);
-                 }
-                 else 
-                    {
-                        advanceToNext.SetActive(false);
-                        WallLifts1.transform.position = new Vector3(WallLifts1Transform.position.x, 3, WallLifts1Transform.position.z);
-                        tutorialCounter++;
-                    }
+
+                WallLifts1.transform.position = new Vector3(WallLifts1.transform.position.x , WallLifts1.transform.position.y + 0.05f, WallLifts1.transform.position.z);
+            }
+            else 
+            {
+                advanceToNext.SetActive(false);
+                WallLifts1.transform.position = new Vector3(WallLifts1Transform.position.x, 3, WallLifts1Transform.position.z);
+                tutorialCounter++;
+                throwRock.SetActive(true);
+            }
+        } else if (tutorialCounter == 4)
+        {
+            // once guard gets alerted by rock
+            if (cageGuard.GetComponent<GuardAIPhoton>().GuardState == GuardAIPhoton.State.Alerted)
+            {
+                tutorialCounter++;
+                Destroy(throwRock);
+            }
+        } else if (tutorialCounter == 5)
+        {
+            if (transform.position.z < 142)
+            {
+                if (advanceToNext.activeSelf == false)
+                    advanceToNext.SetActive(true);
+
+                WallLifts2.transform.position = new Vector3(WallLifts2.transform.position.x, WallLifts2.transform.position.y + 0.05f, WallLifts2.transform.position.z);
+            }
+            else
+            {
+                advanceToNext.SetActive(false);
+                WallLifts2.transform.position = new Vector3(WallLifts2Transform.position.x, 3, WallLifts2Transform.position.z);
+                tutorialCounter++;
+            }
         }
 
 
