@@ -16,6 +16,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         Chasing
     }
 
+    [SerializeField]
+    private bool reactsToRocks;
+
     public NavMeshAgent guard;
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
@@ -276,7 +279,17 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         playerSpotted = PlayerSpotted();
         deadGuardSpotted = DeadGuardSpotted();
 
-        Vector3 rockPos = CheckForRock();
+        Vector3 rockPos;
+
+        if (reactsToRocks)
+        {
+            rockPos = CheckForRock();
+        }
+        else
+        {
+            rockPos = new Vector3(0f, 0f, 0f);
+        }
+            
 
         //if (timeChasing > 8f)
         //{
