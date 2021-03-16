@@ -365,6 +365,7 @@ GameObject:
   - component: {fileID: -8041433480325962717}
   - component: {fileID: 5704460574621402990}
   - component: {fileID: 9118113964886639293}
+  - component: {fileID: -273002921174226663}
   m_Layer: 8
   m_Name: PhotonPlayerTutorial
   m_TagString: Player
@@ -586,6 +587,21 @@ MonoBehaviour:
   arrow: {fileID: 7076740511760446279, guid: f2c1dc196fd2a604e8f28e4496e98ba6, type: 3}
   player: {fileID: 7980832976051256633}
   camera: {fileID: 7980832975168636566}
+--- !u!114 &-273002921174226663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980832976051256633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9b84d8b5ea26084987c3e3d51fcd504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUI: {fileID: 6182315992054742256, guid: 710d7a3f6d3768543bbaaebe227079f3,
+    type: 3}
+  gesture: 
 --- !u!1 &7980832976756422580
 GameObject:
   m_ObjectHideFlags: 0
