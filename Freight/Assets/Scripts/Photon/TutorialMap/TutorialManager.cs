@@ -118,7 +118,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 // sets active the move mouse to red cubes tooltip
                 moveMouse.SetActive(true);
             }
-        }
+
+        } 
         // checks if if the player is looking at the 2 cubes in the scene
         else if (tutorialCounter == 2)
         {
@@ -140,8 +141,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 tutorialCounter++;
                 Destroy(moveMouse);
             }
+        }
         // this part moves the wall up and allows the user to proceed onto the next part
-        } else if(tutorialCounter == 3) {
+        else if (tutorialCounter == 3) 
+        {
 
             // if the user is still in the old room, wall continues to rise
             if(transform.position.z < 93) 
@@ -159,8 +162,9 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 tutorialCounter++;
                 throwRock.SetActive(true);
             }
+        }
         // checks if guard gets alerted by rock
-        } else if (tutorialCounter == 4)
+        else if (tutorialCounter == 4)
         {
             // once guard gets alerted by rock we can move onto the next part
             if (cageGuard.GetComponent<GuardAIPhoton>().GuardState == GuardAIPhoton.State.Alerted)
@@ -168,8 +172,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 tutorialCounter++;
                 Destroy(throwRock);
             }
+       
+        }
         // this part moves the wall up and allows the user to proceed onto the next part
-        } else if (tutorialCounter == 5)
+        else if (tutorialCounter == 5)
         {
             // if the user is still in the old room, wall continues to rise
             if (transform.position.z < 142)
@@ -186,8 +192,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 WallLifts2.transform.position = new Vector3(WallLifts2.transform.position.x, 3, WallLifts2.transform.position.z);
                 tutorialCounter++;
             }
+       
+        }
         // checks if all the shooting range guards have been killed
-        } else if (tutorialCounter == 6)
+        else if (tutorialCounter == 6)
         {
             // once all guards have been found to be dead
             if (GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length == 9)
@@ -201,8 +209,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 Instantiate(arrow, arrowPos, arrow.transform.rotation);
                 tutorialCounter++;
             }
-        // this part moves the wall up and allows the user to proceed onto the next part
         }
+        // this part moves the wall up and allows the user to proceed onto the next part
         else if (tutorialCounter == 7)
         {
             // if the user and dead guard are still in the old room, wall continues to rise
