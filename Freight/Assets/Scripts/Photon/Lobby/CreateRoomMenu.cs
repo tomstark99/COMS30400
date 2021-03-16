@@ -36,6 +36,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         if (PhotonNetwork.CurrentRoom.IsVisible == false)
         {
             PhotonNetwork.LoadLevel(2);
+            roomsCanvases.CurrentRoomCanvas.Hide();
+            roomsCanvases.CreateOrJoinRoomCanvas.Hide();
         }
         else
         {
