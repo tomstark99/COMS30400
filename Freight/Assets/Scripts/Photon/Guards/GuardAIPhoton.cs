@@ -38,6 +38,11 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public Color spotlightColour;
     public Color alertColour;
 
+    public State GuardState
+    {
+        get { return guardState; }
+    }
+
     void Start()
     {
         // find players, set the guard to its own navmeshagent and set the guard state to patroling
