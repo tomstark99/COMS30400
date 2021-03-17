@@ -9,13 +9,12 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [Header("Audio")]
     [SerializeField]
     private GameObject helloWelcome;
-
     [SerializeField]
     private GameObject wasdMovementSound;
     [SerializeField]
     private GameObject pointCrosshair;
     [SerializeField]
-    private GameObject procedToTheNextTrainingLevel;
+    private GameObject proceedToTheNextTrainingLevel;
     [SerializeField]
     private GameObject congratulationForCompletingTheFirstLevel;
     [SerializeField]
@@ -30,13 +29,13 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     private GameObject findTheGuardWithTheGreenArrow;
     [SerializeField]
     private GameObject guardsBecomeAlertedIfSeesDeadGuards;
-   
     [SerializeField]
     private GameObject congratulationForCompletingTheThirdLevel;
     [SerializeField]
-    private GameObject procedToTheLadder;
+    private GameObject proceedToTheLadder;
     [SerializeField]
     private GameObject graduatedFreight;
+
     [Header("WASD")]
     [SerializeField]
     private GameObject wSprite;
@@ -198,6 +197,11 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 pressKeysText.SetActive(false);
                 unPressedKeys.SetActive(false);
                 // set active the mouse AI tooltip
+                if (mouse.activeSelf == false)
+                {
+                    Debug.Log("oiyo");
+                    mouse.SetActive(true);
+                }
                 
             }
         }
@@ -233,18 +237,25 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             // if looked at both cubes, destroy the UI tooltip and move onto next part
             if (cubesLookedAt == 2)
             {
-                procedToTheNextTrainingLevel.SetActive(true);
-                if(procedToTheNextTrainingLevel.GetComponent<AudioSource>().isPlaying && !pointCrosshair.GetComponent<AudioSource>().isPlaying)
-                     tutorialCounter++;
+                proceedToTheNextTrainingLevel.SetActive(true);
+                if(proceedToTheNextTrainingLevel.GetComponent<AudioSource>().isPlaying && pointCrosshair.GetComponent<AudioSource>().isPlaying)
+                {
+                    pointCrosshair.GetComponent<AudioSource>().Stop();
+                    tutorialCounter++;
+                } else
+                {
+                    tutorialCounter++;
+                }
+                     
                 Destroy(moveMouse);
             }
         }
         // this part moves the wall up and allows the user to proceed onto the next part
-        else if (tutorialCounter == 3) 
+        else if (tutorialCounter == 3)
         {
 
             // if the user is still in the old room, wall continues to rise
-            if(transform.position.z < 93) 
+            if (transform.position.z < 93) 
             {
                 if (advanceToNext.activeSelf == false)
                     advanceToNext.SetActive(true);
@@ -258,8 +269,13 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 WallLifts1.transform.position = new Vector3(WallLifts1.transform.position.x, 3, WallLifts1.transform.position.z);
                 tutorialCounter++;
                 throwRock.SetActive(true);
-                
-                
+                if (proceedToTheNextTrainingLevel.GetComponent<AudioSource>().isPlaying)
+                {
+                    proceedToTheNextTrainingLevel.GetComponent<AudioSource>().Stop();
+                    
+                }
+                congratulationForCompletingTheFirstLevel.SetActive(true);
+
             }
         }
         // checks if guard gets alerted by rock
@@ -274,6 +290,11 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             // once guard gets alerted by rock we can move onto the next part
             if (cageGuard.GetComponent<GuardAIPhoton>().GuardState == GuardAIPhoton.State.Alerted)
             {
+                if (congratulationForCompletingTheFirstLevel.GetComponent<AudioSource>().isPlaying)
+                {
+                    congratulationForCompletingTheFirstLevel.GetComponent<AudioSource>().Stop();
+                }
+                theGuardsGetDistracted.SetActive(true);
                 tutorialCounter++;
                 Destroy(throwRock);
                 Destroy(pressGtoThrow);
@@ -297,6 +318,12 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 advanceToNext.SetActive(false);
                 WallLifts2.transform.position = new Vector3(WallLifts2.transform.position.x, 3, WallLifts2.transform.position.z);
                 tutorialCounter++;
+                if (theGuardsGetDistracted.GetComponent<AudioSource>().isPlaying)
+                {
+                    theGuardsGetDistracted.GetComponent<AudioSource>().Stop();
+
+                }
+                pleaseWalkUpToTheGunAndPickItUp.SetActive(true);
             }
        
         }
@@ -309,20 +336,27 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 Debug.Log(camera.transform.GetChild(0));
                 
                 if(pickUpTheGunAndKillTheGuards != null)
-                     pickUpTheGunAndKillTheGuards.SetActive(true);
+                    pickUpTheGunAndKillTheGuards.SetActive(true);
                     
                      //Destroy(throwRock);
-                } else {
-
-                    Destroy(pickUpTheGunAndKillTheGuards);
-                    
-                    if(pressClickToShoot != null)
-                      pressClickToShoot.SetActive(true);
-                    
-                    if(Input.GetMouseButton(0)) {
-                        Destroy(pressClickToShoot);
-                    }
+            } else {
+                if (pleaseWalkUpToTheGunAndPickItUp.GetComponent<AudioSource>().isPlaying)
+                {
+                    pleaseWalkUpToTheGunAndPickItUp.GetComponent<AudioSource>().Stop();
                 }
+                Destroy(pickUpTheGunAndKillTheGuards);
+                    
+                if(pressClickToShoot != null)
+                {
+                    pressClickToShoot.SetActive(true);
+                    killAll4Guards.SetActive(true);
+                }
+                    
+                if(Input.GetMouseButton(0)) 
+                {
+                    Destroy(pressClickToShoot);
+                }
+            }
             // once all guards have been found to be dead
             if (GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length == 9)
             {
@@ -334,6 +368,12 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 Vector3 arrowPos = new Vector3(guardToDrag.transform.position.x, guardToDrag.transform.position.y + 5, guardToDrag.transform.position.z);
                 Instantiate(arrow, arrowPos, arrow.transform.rotation);
                 tutorialCounter++;
+
+                if (killAll4Guards.GetComponent<AudioSource>().isPlaying)
+                {
+                    killAll4Guards.GetComponent<AudioSource>().Stop();
+                }
+                findTheGuardWithTheGreenArrow.SetActive(true);
             }
         } else if(tutorialCounter == 7) {
                 spaceUnpressedSprite.SetActive(true);
@@ -351,11 +391,13 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             // if the user and dead guard are still in the old room, wall continues to rise
             if (transform.position.x < 273 || guardToDrag.transform.position.x < 273)
             {
-                if(transform.Find("Drag").childCount == 0) {
+                if(transform.Find("Drag").childCount == 0) 
+                {
            
                     if(Vector3.Distance(transform.position, guardToDrag.transform.position) < 5.0f) 
                     {
-                        if(Input.GetKeyDown(KeyCode.E)) {
+                        if(Input.GetKeyDown(KeyCode.E)) 
+                        {
                             pressGtoDropYourGun.SetActive(true);
                             pickUpGuard.SetActive(false);
                         }
@@ -382,6 +424,13 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 breakFence.SetActive(true);
                 pickUpGuard.SetActive(false);
                 tutorialCounter++;
+
+                if (findTheGuardWithTheGreenArrow.GetComponent<AudioSource>().isPlaying)
+                {
+                    findTheGuardWithTheGreenArrow.GetComponent<AudioSource>().Stop();
+                }
+
+                guardsBecomeAlertedIfSeesDeadGuards.SetActive(true);
             }
         }
         // this part waits for the user to break the fence
@@ -389,8 +438,15 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         {
             // subscribed to this in Start function
             //fenceToBreak.GetComponent<BreakFencePhoton>().FenceBroke -= HandleBrokenFence;
+
+            if (!guardsBecomeAlertedIfSeesDeadGuards.GetComponent<AudioSource>().isPlaying)
+            {
+                congratulationForCompletingTheThirdLevel.SetActive(true);
+            }
+
         } else if(transform.position.x > 305) {
             trainingOver.SetActive(true);
+            graduatedFreight.SetActive(true);
         }
 
 
@@ -401,6 +457,12 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     {
         tutorialCounter++;
         breakFence.SetActive(false);
+        if (congratulationForCompletingTheThirdLevel.GetComponent<AudioSource>().isPlaying || guardsBecomeAlertedIfSeesDeadGuards.GetComponent<AudioSource>().isPlaying)
+        {
+            congratulationForCompletingTheThirdLevel.GetComponent<AudioSource>().Stop();
+            guardsBecomeAlertedIfSeesDeadGuards.GetComponent<AudioSource>().Stop();
+        }
+        proceedToTheLadder.SetActive(true);
     }
 
 }
