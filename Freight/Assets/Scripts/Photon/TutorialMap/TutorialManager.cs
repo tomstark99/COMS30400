@@ -234,7 +234,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             if (cubesLookedAt == 2)
             {
                 procedToTheNextTrainingLevel.SetActive(true);
-                if(procedToTheNextTrainingLevel.GetComponent<AudioSource>().isPlaying)
+                if(procedToTheNextTrainingLevel.GetComponent<AudioSource>().isPlaying && !pointCrosshair.GetComponent<AudioSource>().isPlaying)
                      tutorialCounter++;
                 Destroy(moveMouse);
             }
