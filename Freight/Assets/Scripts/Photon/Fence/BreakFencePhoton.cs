@@ -8,6 +8,10 @@ using Photon.Pun;
 public class BreakFencePhoton : MonoBehaviourPun
 {
     public GameObject text;
+
+    public GameObject LeftHand;
+    public GameObject RightHand;
+
     private GameObject[] players;
     private bool isBroken;
     private bool overlayDisplayed = false;
@@ -23,11 +27,14 @@ public class BreakFencePhoton : MonoBehaviourPun
     {
         if (!overlayDisplayed) {
             text.SetActive(true);
+            LeftHand.SetActive(true);
+            RightHand.SetActive(true);
             
             Overlay.LoadOverlay("overlays/pull_apart_fence.png");
             overlayDisplayed = true;
             
             // Show hands gif
+       
         }
     }
 
@@ -36,6 +43,8 @@ public class BreakFencePhoton : MonoBehaviourPun
     {
         if (overlayDisplayed) {
             text.SetActive(false);
+            LeftHand.SetActive(false);
+            RightHand.SetActive(false);
             
             Overlay.ClearOverlay();
             overlayDisplayed = false;
