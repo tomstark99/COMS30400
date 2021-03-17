@@ -5,6 +5,10 @@ using Photon.Pun;
 
 public class TutorialManager : MonoBehaviourPunCallbacks
 {
+
+    [Header("Audio")]
+    [SerializeField]
+    private GameObject helloWelcome;
     [Header("WASD")]
     [SerializeField]
     private GameObject wSprite;
@@ -95,7 +99,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        tutorialCounter = 0;
+        tutorialCounter = -1;
         keysPressed = 0;
         WallLifts1 = GameObject.Find("Room1").transform.GetChild(2).gameObject;
         WallLifts2 = GameObject.Find("Room2").transform.GetChild(1).gameObject;
@@ -111,9 +115,15 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+        if(tutorialCounter == -1)
+        {
+            if(helloWelcome.activeSelf == false)
+                 helloWelcome.SetActive(true);
+        }
         // checks for when you press all of W A S D
         if (tutorialCounter == 0)
         {
+            
             // checks each keycode and sets the bool to true + increases keysPressed counter
             if (Input.GetKeyDown(KeyCode.W) && !wPressed)
             {
