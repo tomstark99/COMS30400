@@ -10,7 +10,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     public LayerMask groundMask;
 
     private float gravity = -17f;
-    private float speed = 8f;
+    private float speedWalking = 4.0f;
+    private float speedRunning = 8.0f;
+    private float speed = 4.0f;
     private float jumpHeight = 1.5f;
 
     private Vector3 velocity;
@@ -20,8 +22,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private bool onTrain;
     private Transform prev;
     private PhotonView PV;
-
-    
 
     void Start()
     {
@@ -146,12 +146,31 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         return this.isGrounded;
     }
 
+    public float getSpeedWalking() {
+        return this.speedWalking;
+    }
+    
+    public float getSpeedRunning() {
+        return this.speedRunning;
+    }
+
     public float getSpeed() {
         return this.speed;
     }
 
+    public void setSpeedRunning(float val) {
+        this.speedRunning = val;
+    }
+
+    public void setSpeedWalking(float val) {
+        this.speedWalking = val;
+    }
+
     public void setSpeed(float val) {
-        this.speed = val;
+        if(this.speed != val) {
+            Debug.Log("SET SPEED" + val);
+            this.speed = val;
+        }
     }
 
     public void setGrounded(bool val) {

@@ -9,6 +9,7 @@ public class PlayerAnimation : MonoBehaviourPun
     // animation variables
     private Animator animator;
     private int isWalkingHash;
+    private int isRunningHash;
     private int isRunningBackHash;
     private int isJumpingHash;
     private int isLeftHash;
@@ -16,18 +17,26 @@ public class PlayerAnimation : MonoBehaviourPun
     private int isCrouchedHash;
 
     private bool isGrounded;
+    private float runningSpeed;
+    private float walkingSpeed;
+
+    private PlayerMovementPhoton player;
 
     // Start is called before the first frame update
     void Start()
     {
         // get grounded state from movement controller
-        isGrounded = GetComponent<PlayerMovementPhoton>().getGrounded();
+        player = GetComponent<PlayerMovementPhoton>();
+        isGrounded = player.getGrounded();
+        runningSpeed = player.getSpeedRunning();
+        walkingSpeed = player.getSpeedWalking();
 
         // Setup animation variables
         animator = GetComponent<Animator>();
 
         // using StringToHash increases performance by nearly 50%
         isWalkingHash = Animator.StringToHash("isWalking");
+        isRunningHash = Animator.StringToHash("isRunning");
         isRunningBackHash = Animator.StringToHash("isRunningBack");
         isJumpingHash = Animator.StringToHash("isJumping");
         isLeftHash = Animator.StringToHash("walkLeft");
@@ -51,9 +60,10 @@ public class PlayerAnimation : MonoBehaviourPun
 
     private void Animate() {
 
+        bool isWalking = animator.GetBool(isWalkingHash);
         bool isJumping = animator.GetBool(isJumpingHash);
         bool isRunningBack = animator.GetBool(isRunningBackHash);
-        bool isWalking = animator.GetBool(isWalkingHash);
+        bool isRunning = animator.GetBool(isRunningHash);
         bool isLeft = animator.GetBool(isLeftHash);
         bool isRight = animator.GetBool(isRightHash);
         bool isCrouched = animator.GetBool(isCrouchedHash);
@@ -69,6 +79,7 @@ public class PlayerAnimation : MonoBehaviourPun
         }
         if(z <= 0.02f && z >= -0.02f) {
             animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningHash, false);
             animator.SetBool(isRunningBackHash, false);
         }
         if (!isRight && x > 0.02f) {
@@ -82,9 +93,20 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isLeftHash, true);
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && (isWalking || z > 0.02f)) {
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningHash, true);
+            player.setSpeed(runningSpeed);
+
+        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning) {
+            animator.SetBool(isWalkingHash, true);
+            animator.SetBool(isRunningHash, false);
+            player.setSpeed(walkingSpeed);
+        }
+
         if (Input.GetButtonDown("Jump") || !isGrounded) {
             animator.SetBool(isJumpingHash, true);
-            // animator.SetBool(isWalkingHash, false);
+            // animator.SetBool(isRunningHash, false);
         } else if (isGrounded) {
             animator.SetBool(isJumpingHash, false);
         }
