@@ -25,6 +25,9 @@ public class GuardAIPhoton : MonoBehaviourPun
     public Vector3 alertPosition;
     public GameObject[] players;
 
+    public float speedPatrolling = 3.0f;
+    public float speedChasing = 7.0f;
+
 
     // Counter to increment points in path
     private int destPoint = 0;
@@ -69,7 +72,7 @@ public class GuardAIPhoton : MonoBehaviourPun
         // loops through players
         foreach (var player in players)
         {
-            Debug.Log(player);
+            // Debug.Log(player);
             // finds distance between player and guard
             float eDistance = Vector3.Distance(player.transform.position, transform.position);
 
@@ -102,6 +105,7 @@ public class GuardAIPhoton : MonoBehaviourPun
         // checks if player is within proximity (so if player gets too close behind guard he will also be spotted)
         if (Physics.CheckSphere(transform.position, proximityRange, playerMask))
         {
+            guard.speed = speedChasing;
             return true;
         }
 
@@ -119,8 +123,9 @@ public class GuardAIPhoton : MonoBehaviourPun
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.position, player.transform.position, obstacleMask) || !Physics.Linecast(transform.position, player.transform.GetChild(2).transform.position, obstacleMask))
                     {
-                        Debug.Log(player.transform.position);
-                        Debug.Log(player.transform.GetChild(2).transform.position);
+                        // Debug.Log(player.transform.position);
+                        // Debug.Log(player.transform.GetChild(2).transform.position);
+                        guard.speed = speedChasing;
                         return true;
                     }
                 }
@@ -129,6 +134,7 @@ public class GuardAIPhoton : MonoBehaviourPun
             
             // checks if player is in guard's view range 
         }
+        guard.speed = speedPatrolling;
         return false;
     }
 

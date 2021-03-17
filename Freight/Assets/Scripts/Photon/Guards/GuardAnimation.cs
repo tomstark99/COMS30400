@@ -32,7 +32,7 @@ public class GuardAnimation : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(guard.velocity);
+        // Debug.Log("SPEED ANIM " + guard.speed);
         bool isWalking = animator.GetBool(isWalkingHash);
         bool isChasing = animator.GetBool(isChasingHash);
         bool hasCaught = animator.GetBool(hasCaughtHash);
@@ -65,6 +65,6 @@ public class GuardAnimation : MonoBehaviourPun
         return this.chasingPlayer;
     }
     public void setChasing(bool val) {
-        chasingPlayer = val;
+        this.chasingPlayer = val;
     }
 }
