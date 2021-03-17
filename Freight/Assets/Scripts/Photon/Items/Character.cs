@@ -68,7 +68,6 @@ public class Character : MonoBehaviourPun
     void ThrowRPC(int ItemID)
     {
         Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
-        Debug.Log(Item);
         GameObject parent = pickUpDestination.transform.parent.gameObject;
 
         GameObject cube = parent.transform.GetChild(2).gameObject;

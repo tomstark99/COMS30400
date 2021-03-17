@@ -14,6 +14,14 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     private GameObject sSprite;
     [SerializeField]
     private GameObject dSprite;
+
+    [SerializeField]
+    private GameObject unPressedKeys;
+
+    [SerializeField]
+    private GameObject pressKeysText;
+
+
     [SerializeField]
     private GameObject playerMovement;
 
@@ -44,6 +52,9 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [Header("AdvanceToNextRoom")]
     [SerializeField]
     private GameObject advanceToNext;
+    
+    [SerializeField]
+    private GameObject advanceToNextWithGuard;
     [SerializeField]
     private GameObject arrow;
 
@@ -60,6 +71,14 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject camera;
 
+    [SerializeField]
+    private GameObject pressGtoDropYourGun;
+
+    [SerializeField]
+    private GameObject pressClickToShoot;
+
+    [SerializeField]
+    private GameObject pickUpTheGunAndKillTheGuards;
     private int tutorialCounter;
     private bool wPressed;
     private bool aPressed;
@@ -81,6 +100,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         cageGuard = GameObject.Find("Guards").transform.GetChild(0).gameObject;
         fenceToBreak = GameObject.Find("Fences").transform.GetChild(0).gameObject;
         fenceToBreak.GetComponent<BreakFencePhoton>().FenceBroke += HandleBrokenFence;
+        unPressedKeys.SetActive(true);
+        pressKeysText.SetActive(true);
 
     }
 
@@ -123,6 +144,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 aSprite.SetActive(false);
                 sSprite.SetActive(false);
                 dSprite.SetActive(false);
+                pressKeysText.SetActive(false);
+                unPressedKeys.SetActive(false);
                 // set active the mouse AI tooltip
                 mouse.SetActive(true);
             }
@@ -188,7 +211,6 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         else if (tutorialCounter == 4)
         {
             Debug.Log(camera.transform.GetChild(0).childCount);
-                Debug.Log(camera.transform.GetChild(0));
                 if(camera.transform.GetChild(0).childCount != 0) {
                      throwRock.SetActive(false);
                      pressGtoThrow.SetActive(true);
@@ -226,6 +248,26 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         // checks if all the shooting range guards have been killed
         else if (tutorialCounter == 6)
         {
+            if(camera.transform.GetChild(0).childCount == 0) {
+
+                Debug.Log(camera.transform.GetChild(0).childCount);
+                Debug.Log(camera.transform.GetChild(0));
+                
+                if(pickUpTheGunAndKillTheGuards != null)
+                     pickUpTheGunAndKillTheGuards.SetActive(true);
+                    
+                     //Destroy(throwRock);
+                } else {
+
+                    Destroy(pickUpTheGunAndKillTheGuards);
+                    
+                    if(pressClickToShoot != null)
+                      pressClickToShoot.SetActive(true);
+                    
+                    if(Input.GetMouseButton(0)) {
+                        Destroy(pressClickToShoot);
+                    }
+                }
             // once all guards have been found to be dead
             if (GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length == 9)
             {
@@ -254,17 +296,36 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             // if the user and dead guard are still in the old room, wall continues to rise
             if (transform.position.x < 273 || guardToDrag.transform.position.x < 273)
             {
-                if (advanceToNext.activeSelf == false)
-                    advanceToNext.SetActive(true);
-
+                if(transform.Find("Drag").childCount == 0) {
+           
+                    if(Vector3.Distance(transform.position, guardToDrag.transform.position) < 5.0f) 
+                    {
+                        if(Input.GetKeyDown(KeyCode.E)) {
+                            pressGtoDropYourGun.SetActive(true);
+                            pickUpGuard.SetActive(false);
+                        }
+                    } else 
+                       {
+                           pickUpGuard.SetActive(true);
+                           pressGtoDropYourGun.SetActive(false);
+                       }
+                } else 
+                { 
+                    pressGtoDropYourGun.SetActive(false);
+                    advanceToNextWithGuard.SetActive(true); 
+                    pickUpGuard.SetActive(false);
+                }
+                    
                 WallLifts3.transform.position = new Vector3(WallLifts3.transform.position.x, WallLifts3.transform.position.y + 0.05f, WallLifts3.transform.position.z);
             }
             // if user and dead guard are in the new room, wall comes back and we move onto next tutorial
             else
             {
+                advanceToNextWithGuard.SetActive(false);
                 advanceToNext.SetActive(false);
                 WallLifts3.transform.position = new Vector3(WallLifts3.transform.position.x, 3, WallLifts3.transform.position.z);
                 breakFence.SetActive(true);
+                pickUpGuard.SetActive(false);
                 tutorialCounter++;
             }
         }
