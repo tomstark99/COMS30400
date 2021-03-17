@@ -9,6 +9,34 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [Header("Audio")]
     [SerializeField]
     private GameObject helloWelcome;
+
+    [SerializeField]
+    private GameObject wasdMovementSound;
+    [SerializeField]
+    private GameObject pointCrosshair;
+    [SerializeField]
+    private GameObject procedToTheNextTrainingLevel;
+    [SerializeField]
+    private GameObject congratulationForCompletingTheFirstLevel;
+    [SerializeField]
+    private GameObject theGuardsGetDistracted;
+    [SerializeField]
+    private GameObject congratulationForCompletingTheSecondLevel;
+    [SerializeField]
+    private GameObject pleaseWalkUpToTheGunAndPickItUp;
+    [SerializeField]
+    private GameObject killAll4Guards;
+    [SerializeField]
+    private GameObject findTheGuardWithTheGreenArrow;
+    [SerializeField]
+    private GameObject guardsBecomeAlertedIfSeesDeadGuards;
+   
+    [SerializeField]
+    private GameObject congratulationForCompletingTheThirdLevel;
+    [SerializeField]
+    private GameObject procedToTheLadder;
+    [SerializeField]
+    private GameObject graduatedFreight;
     [Header("WASD")]
     [SerializeField]
     private GameObject wSprite;
@@ -109,8 +137,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         cageGuard = GameObject.Find("Guards").transform.GetChild(0).gameObject;
         fenceToBreak = GameObject.Find("Fences").transform.GetChild(0).gameObject;
         fenceToBreak.GetComponent<BreakFencePhoton>().FenceBroke += HandleBrokenFence;
-        unPressedKeys.SetActive(true);
-        pressKeysText.SetActive(true);
+        
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
@@ -122,12 +149,17 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             if (helloWelcome.activeSelf == false)
                 helloWelcome.SetActive(true);
 
-            Debug.Log(helloWelcome.GetComponent<AudioSource>().isPlaying);
+            if(helloWelcome.GetComponent<AudioSource>().isPlaying == false)
+                tutorialCounter++;
         }
         // checks for when you press all of W A S D
         if (tutorialCounter == 0)
         {
-            
+            unPressedKeys.SetActive(true);
+            pressKeysText.SetActive(true);
+            if(wasdMovementSound.activeSelf == false) {
+                wasdMovementSound.SetActive(true);
+            }
             // checks each keycode and sets the bool to true + increases keysPressed counter
             if (Input.GetKeyDown(KeyCode.W) && !wPressed)
             {
@@ -156,7 +188,9 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             // once 4 keys are pressed, we destory the tooltip form the UI and move onto the next tutorial part
             if (keysPressed == 4)
             {
-                tutorialCounter++;
+                if(wasdMovementSound.GetComponent<AudioSource>().isPlaying == false)
+                    tutorialCounter++;
+
                 wSprite.SetActive(false);
                 aSprite.SetActive(false);
                 sSprite.SetActive(false);
@@ -164,7 +198,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 pressKeysText.SetActive(false);
                 unPressedKeys.SetActive(false);
                 // set active the mouse AI tooltip
-                mouse.SetActive(true);
+                
             }
         }
         // short animation to tell you to use the mouse to move the camera
@@ -173,9 +207,11 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             // UI element has a script on itself that does a short animation and then deactivates, once it is deactivated we move onto next tutorial part
             if (mouse.activeSelf == false)
             {
+
                 tutorialCounter++;
                 // sets active the move mouse to red cubes tooltip
                 moveMouse.SetActive(true);
+                pointCrosshair.SetActive(true);
             }
 
         } 
@@ -197,7 +233,9 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             // if looked at both cubes, destroy the UI tooltip and move onto next part
             if (cubesLookedAt == 2)
             {
-                tutorialCounter++;
+                procedToTheNextTrainingLevel.SetActive(true);
+                if(procedToTheNextTrainingLevel.GetComponent<AudioSource>().isPlaying)
+                     tutorialCounter++;
                 Destroy(moveMouse);
             }
         }
