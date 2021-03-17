@@ -10,6 +10,8 @@ public class NetworkController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        if (PhotonNetwork.IsConnected)
+            PhotonNetwork.Disconnect();
         PhotonNetwork.ConnectUsingSettings();
         PhotonNetwork.LocalPlayer.NickName = GetRandomName();
         PhotonNetwork.AutomaticallySyncScene = true;
