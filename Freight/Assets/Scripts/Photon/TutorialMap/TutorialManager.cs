@@ -79,6 +79,9 @@ public class TutorialManager : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private GameObject pickUpTheGunAndKillTheGuards;
+
+    [SerializeField]
+    private GameObject trainingOver;
     private int tutorialCounter;
     private bool wPressed;
     private bool aPressed;
@@ -274,7 +277,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 // get a random number and set the guard to drag to be that random guard
                 int random = Random.Range(0, 4);
                 guardToDrag = GameObject.Find("Environment/Interactables/DeadGuards").transform.GetChild(random).gameObject;
-
+                guardToDrag.GetComponent<Rigidbody>().isKinematic = true;
                 // spawn an arrow above that guard and set the arrow's position to be slightly above the guard
                 Vector3 arrowPos = new Vector3(guardToDrag.transform.position.x, guardToDrag.transform.position.y + 5, guardToDrag.transform.position.z);
                 Instantiate(arrow, arrowPos, arrow.transform.rotation);
@@ -334,6 +337,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         {
             // subscribed to this in Start function
             //fenceToBreak.GetComponent<BreakFencePhoton>().FenceBroke -= HandleBrokenFence;
+        } else if(transform.position.x > 305) {
+            trainingOver.SetActive(true);
         }
 
 
