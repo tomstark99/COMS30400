@@ -444,9 +444,24 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 congratulationForCompletingTheThirdLevel.SetActive(true);
             }
 
-        } else if(transform.position.x > 305) {
-            trainingOver.SetActive(true);
-            graduatedFreight.SetActive(true);
+        } 
+        else if (tutorialCounter == 10) 
+        {
+            if (transform.position.x > 305)
+            {
+                trainingOver.SetActive(true);
+                graduatedFreight.SetActive(true);
+                tutorialCounter++;
+            }
+        }
+        else if (tutorialCounter == 11)
+        {
+            if (!graduatedFreight.GetComponent<AudioSource>().isPlaying)
+            {
+                PhotonNetwork.LoadLevel(0);
+                //PhotonNetwork.Disconnect();
+                tutorialCounter++;
+            }
         }
 
 
