@@ -11,7 +11,11 @@ public class NetworkController : MonoBehaviourPunCallbacks
     void Start()
     {
         if (PhotonNetwork.IsConnected)
+        {
             PhotonNetwork.Disconnect();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
         PhotonNetwork.ConnectUsingSettings();
         PhotonNetwork.LocalPlayer.NickName = GetRandomName();
         PhotonNetwork.AutomaticallySyncScene = true;

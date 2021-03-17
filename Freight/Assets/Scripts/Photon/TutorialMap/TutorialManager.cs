@@ -450,6 +450,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             if (transform.position.x > 305)
             {
                 trainingOver.SetActive(true);
+                if (proceedToTheLadder.GetComponent<AudioSource>().isPlaying)
+                {
+                    proceedToTheLadder.GetComponent<AudioSource>().Stop();
+                }
                 graduatedFreight.SetActive(true);
                 tutorialCounter++;
             }
