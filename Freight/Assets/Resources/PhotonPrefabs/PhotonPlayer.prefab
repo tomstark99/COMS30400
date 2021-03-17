@@ -132,6 +132,18 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &-8709540283117659389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8280293940317006692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfdfd54e10afc34499b40e3d1279324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-6210127670318762070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +264,7 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 1
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 2
   ObservedComponents:
   - {fileID: -6210127670318762070}
   - {fileID: -4803433454189283141}

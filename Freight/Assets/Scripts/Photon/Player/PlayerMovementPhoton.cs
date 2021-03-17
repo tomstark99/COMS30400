@@ -21,14 +21,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private Transform prev;
     private PhotonView PV;
 
-    // animation variables
-    private Animator animator;
-    private int isWalkingHash;
-    private int isRunningBackHash;
-    private int isJumpingHash;
-    private int isLeftHash;
-    private int isRightHash;
-    private int isCrouchedHash;
+    
 
     void Start()
     {
@@ -45,16 +38,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             Debug.Log(" DISABLE CONTROLER ");
             Destroy(GetComponent<PlayerMovementPhoton>());
         }
-        // Setup animation variables
-        animator = GetComponent<Animator>();
-
-        // using StringToHash increases performance by nearly 50%
-        isWalkingHash = Animator.StringToHash("isWalking");
-        isRunningBackHash = Animator.StringToHash("isRunningBack");
-        isJumpingHash = Animator.StringToHash("isJumping");
-        isLeftHash = Animator.StringToHash("walkLeft");
-        isRightHash = Animator.StringToHash("walkRight");
-        isCrouchedHash = Animator.StringToHash("crouched");
+        
     }
 
     void Update()
@@ -77,7 +61,10 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     {
 
         // Checks if the groundCheck object is within distance to the ground layer
+        bool old = isGrounded;
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        if (old != isGrounded) GetComponent<PlayerAnimation>().setGrounded(isGrounded);
 
         // Prevents downward velocity from decreasing infinitely if player is on the ground
         if (isGrounded && velocity.y < 0)
@@ -101,35 +88,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move = transform.right * x + transform.forward * z;
         }
 
-        // Animation
-        bool isJumping = animator.GetBool(isJumpingHash);
-        bool isRunningBack = animator.GetBool(isRunningBackHash);
-        bool isWalking = animator.GetBool(isWalkingHash);
-        bool isLeft = animator.GetBool(isLeftHash);
-        bool isRight = animator.GetBool(isRightHash);
-        bool isCrouched = animator.GetBool(isCrouchedHash);
-
-        if(!isWalking && z > 0.02f) {
-            animator.SetBool(isWalkingHash, true);
-        } 
-        if(!isRunningBack && z < -0.02f) {
-            animator.SetBool(isRunningBackHash, true);
-        }
-        if(z <= 0.02f && z >= -0.02f) {
-            animator.SetBool(isWalkingHash, false);
-            animator.SetBool(isRunningBackHash, false);
-        }
-        if (!isRight && x > 0.02f) {
-            animator.SetBool(isRightHash, true);
-        }
-        if (x <= 0.02f && x >= -0.02f) {
-            animator.SetBool(isLeftHash, false);
-            animator.SetBool(isRightHash, false);
-        }
-        if (!isLeft && x < -0.02f) {
-            animator.SetBool(isLeftHash, true);
-        }
-
         // sticks the player onto the train
         if (onTrain)
         {
@@ -147,21 +105,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             onTrain = false;
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            // if (!isJumping) {
-            //     animator.SetBool(isJumpingHash, true);
-            // }
-        }
-        if (Input.GetButtonDown("Jump") || !isGrounded) {
-            animator.SetBool(isJumpingHash, true);
-            // animator.SetBool(isWalkingHash, false);
-        } else if (isGrounded) {
-            animator.SetBool(isJumpingHash, false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched) {
-            animator.SetBool(isCrouchedHash, true);
-        } else if (Input.GetKeyUp(KeyCode.LeftControl) && isCrouched) {
-            animator.SetBool(isCrouchedHash, false);
         }
 
         velocity.y += gravity * Time.deltaTime;
@@ -197,5 +140,21 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             Debug.Log("stef is NOT aiiiir");
             onTrain = false;
         }
+    }
+
+    public bool getGrounded() {
+        return this.isGrounded;
+    }
+
+    public float getSpeed() {
+        return this.speed;
+    }
+
+    public void setSpeed(float val) {
+        this.speed = val;
+    }
+
+    public void setGrounded(bool val) {
+        this.isGrounded = val;
     }
 }
