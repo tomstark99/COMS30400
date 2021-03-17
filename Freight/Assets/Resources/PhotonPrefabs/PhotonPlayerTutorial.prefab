@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5003297193764466816
 Transform:
   m_ObjectHideFlags: 0
@@ -54,7 +54,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -1500,6 +1500,7 @@ MonoBehaviour:
   pickUpTheGunAndKillTheGuards: {fileID: 3434230645380744267}
   trainingOver: {fileID: 6418139196154854349}
   pickUpGuard: {fileID: 1314890091816285993}
+  audioManager: {fileID: 0}
 --- !u!114 &-273002921174226663
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -96,6 +96,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private GameObject pickUpGuard;
+
+    public AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -109,7 +111,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         fenceToBreak.GetComponent<BreakFencePhoton>().FenceBroke += HandleBrokenFence;
         unPressedKeys.SetActive(true);
         pressKeysText.SetActive(true);
-
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -117,8 +119,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     {
         if(tutorialCounter == -1)
         {
-            if(helloWelcome.activeSelf == false)
-                 helloWelcome.SetActive(true);
+            if (helloWelcome.activeSelf == false)
+                helloWelcome.SetActive(true);
+
+            Debug.Log(helloWelcome.GetComponent<AudioSource>().isPlaying);
         }
         // checks for when you press all of W A S D
         if (tutorialCounter == 0)

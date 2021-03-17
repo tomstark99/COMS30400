@@ -3381,20 +3381,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3569b6f32b72a54aa375b89bb037c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helloWelcome: {fileID: 0}
   wSprite: {fileID: 0}
   aSprite: {fileID: 0}
   sSprite: {fileID: 0}
   dSprite: {fileID: 0}
+  unPressedKeys: {fileID: 0}
+  pressKeysText: {fileID: 0}
   playerMovement: {fileID: 0}
+  spaceUnpressedSprite: {fileID: 0}
+  spacePressed: {fileID: 0}
   mouse: {fileID: 0}
   moveMouse: {fileID: 0}
   throwRock: {fileID: 0}
   pressGtoThrow: {fileID: 0}
   advanceToNext: {fileID: 0}
+  advanceToNextWithGuard: {fileID: 0}
   arrow: {fileID: 0}
   breakFence: {fileID: 0}
   player: {fileID: 0}
   camera: {fileID: 0}
+  pressGtoDropYourGun: {fileID: 0}
+  pressClickToShoot: {fileID: 0}
+  pickUpTheGunAndKillTheGuards: {fileID: 0}
+  trainingOver: {fileID: 0}
+  pickUpGuard: {fileID: 0}
 --- !u!1 &933176383
 GameObject:
   m_ObjectHideFlags: 0
@@ -5468,6 +5479,50 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1635971923}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1641738828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1641738830}
+  - component: {fileID: 1641738829}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1641738829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641738828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cabdbd3ec5ab48d47abedc79da701cc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAudio: {fileID: 0}
+--- !u!4 &1641738830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641738828}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 794, y: 304, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1656183923
 GameObject:
   m_ObjectHideFlags: 0
