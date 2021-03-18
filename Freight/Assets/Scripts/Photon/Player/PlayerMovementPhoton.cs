@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -26,6 +27,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private bool onTrain;
     private Transform prev;
     private PhotonView PV;
+
+    public bool OnTrain
+    {
+        get { return onTrain; }
+    }
 
    
     void Start()
