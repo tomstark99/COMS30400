@@ -299,7 +299,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             GetComponent<GuardAnimation>().setChasing(playerSpotted);
         }
 
-        Vector3 rockPos = CheckForRock();
+        Vector3 rockPos; 
 
         if (reactsToRocks)
         {
