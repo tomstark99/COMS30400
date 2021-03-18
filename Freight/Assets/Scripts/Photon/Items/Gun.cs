@@ -43,14 +43,13 @@ public class Gun : MonoBehaviourPun
     public void GunShot()
     {
         photonView.RPC("PlayGunShot", RpcTarget.All);
-        ammo -= 1;
-        Debug.Log(ammo);
-        ammoUI.text = ammo.ToString();
     }
 
     [PunRPC]
     void PlayGunShot()
     {
         gunShot.PlayOneShot(gunShot.clip);
+        ammo -= 1;
+        ammoUI.text = ammo.ToString();
     }
 }
