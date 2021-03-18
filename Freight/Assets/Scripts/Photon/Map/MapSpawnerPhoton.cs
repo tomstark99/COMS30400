@@ -36,10 +36,12 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         SpawnTrackGroups();
         SpawnIndividualTracks();
         SpawnFences();
-        BuildNavMesh();
+        photonView.RPC("BuildNavMesh", RpcTarget.All);
+        //BuildNavMesh();
         
     }
 
+    [PunRPC]
     void BuildNavMesh()
     {
         GameObject navGameObject = GameObject.FindGameObjectWithTag("TrainStationNavMesh");
