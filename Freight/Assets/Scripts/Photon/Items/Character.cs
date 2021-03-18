@@ -60,6 +60,11 @@ public class Character : MonoBehaviourPun
         view.TransferOwnership(PhotonNetwork.LocalPlayer);
         //Item.SetItemPickupConditions();
 
+        if (Item.tag == "Gun")
+        {
+            Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+        }
+
         photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
         photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, Item.transform.GetComponent<PhotonView>().ViewID);
     }
@@ -105,6 +110,12 @@ public class Character : MonoBehaviourPun
     {
         currentHeldItem = null;
         Item.ResetItemConditions(this);
+
+        if (Item.tag == "Gun")
+        {
+            Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
+        }
+
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
         photonView.RPC("DropRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
@@ -202,8 +213,16 @@ public class Character : MonoBehaviourPun
     {
         // send an RPC to shoot a bullet on the local client and on all other clients
         // this is done because the local player has to hold the gun in a game object that is the child of the camera
-        photonView.RPC("CreateBullet", RpcTarget.Others);
-        photonView.RPC("CreateBulletLocal", PhotonNetwork.LocalPlayer);
+        if (pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().Ammo > 0)
+        {
+            photonView.RPC("CreateBullet", RpcTarget.Others);
+            photonView.RPC("CreateBulletLocal", PhotonNetwork.LocalPlayer);
+        } 
+        else
+        {
+            pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().EmptyGunShot();
+        }
+        
     }
 
     [PunRPC]
