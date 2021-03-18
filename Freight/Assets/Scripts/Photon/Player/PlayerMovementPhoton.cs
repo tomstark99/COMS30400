@@ -71,12 +71,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+        float l = Input.GetAxis("Ladder");
 
         Vector3 move;
 
-        if (climbing && z > 0f)
+        if (climbing && l>0f)
         {
-            move = transform.up * z;
+            move = transform.up * l;
             // move = transform.right * x + transform.up * z;
         }
         else
@@ -128,7 +129,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     {
         if (other.gameObject.tag == "locomotive")
         {
-            Debug.Log("PLAYER ENTERED LADDER");
+            // Debug.Log("PLAYER ENTERED LADDER");
             train = other.gameObject;
             ladderCentreLine = ((BoxCollider) other).center;
             // Debug.Log("LADDER COORDS" + (train.transform.position + ladderCentreLine).ToString());
@@ -137,6 +138,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (other.gameObject.tag == "trainfloor")
         {
             Debug.Log("stef is aiiiir");
+            climbing = false;
             onTrain = true;
         }
     }
@@ -145,7 +147,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     {
         if (climbing && other.gameObject.tag == "locomotive")
         {
-            Debug.Log("player stopped climbing");
+            // Debug.Log("player stopped climbing");
             climbing = false;
         }
         else if (onTrain && other.gameObject.tag == "trainfloor")
