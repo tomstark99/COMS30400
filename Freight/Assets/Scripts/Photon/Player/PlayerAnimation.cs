@@ -58,9 +58,10 @@ public class PlayerAnimation : MonoBehaviourPun
         }
         // animate function
         if (photonView.IsMine)
+        {
             Animate();
-
-        camera.transform.position = head.transform.position;
+            camera.transform.position = head.transform.position;
+        }
         
     }
 
@@ -119,7 +120,7 @@ public class PlayerAnimation : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched) {
             animator.SetBool(isCrouchedHash, true);
-        } else if (Input.GetKeyUp(KeyCode.LeftControl) && isCrouched) {
+        } else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched) {
             animator.SetBool(isCrouchedHash, false);
         }
 
