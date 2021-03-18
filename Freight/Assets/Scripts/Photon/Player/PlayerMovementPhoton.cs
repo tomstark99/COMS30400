@@ -8,7 +8,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     public CharacterController controller;
     public Transform groundCheck;
     public LayerMask groundMask;
-
+    public GameObject face;
     private float gravity = -17f;
     private float speed = 8f;
     private float jumpHeight = 3.5f;
@@ -18,6 +18,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private bool isGrounded;
     private bool climbing;
     private bool onTrain;
+    private bool check = false;
     private Transform prev;
     private PhotonView PV;
 
@@ -53,6 +54,17 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         
     }
 
+    IEnumerator SetFaceActive(){
+        if(check == false){
+            face.SetActive(true);
+        }
+        yield return new WaitForSeconds(2);
+        if(Input.GetKeyDown(KeyCode.C) || PoseParser.GETGestureAsString().CompareTo("C") == 0){
+            face.SetActive(false);
+            check = true;
+        }
+    }
+
     void Movement()
     {
         // Checks if the groundCheck object is within distance to the ground layer
@@ -81,6 +93,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // sticks the player onto the train
         if (onTrain)
         {
+            StartCoroutine(SetFaceActive());
             Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) - GameObject.FindGameObjectWithTag("locomotive").transform.position;
             trainMove.x = -trainMove.x;
             trainMove.y = 0f;
@@ -94,6 +107,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             onTrain = false;
+            face.SetActive(false);
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
