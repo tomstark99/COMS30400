@@ -23,6 +23,8 @@ let pose3;
 let brain;
 let poseLabel = "Y";
 let poseSentence = ""
+let poseBufferLength = 5;
+let poseBuffer = [];
 
 let overlay;
 
@@ -57,6 +59,11 @@ function setup() {
 
   // init overlay
   overlay = loadImage('overlays/Neutral.png');
+
+  // init poseBuffer
+  for (var i = 0; i < poseBufferLength; i++) {
+    poseBuffer.push('N');
+  }
 }
 
 function brainLoaded() {
@@ -96,21 +103,60 @@ function classifyPose() {
   // }
 }
 
+
+// Returns the modal element of an array
+// If there are multiple modes returns the earliest seen
+// e.g. getMode([1,1,2,2,3]) => 1
+function getMode(array) {
+  var dictionary = {};
+
+  for (var i = 0; i < array.length; i++) {
+    var val = array[i];
+    if (dictionary[val] == null) {
+      dictionary[val] = 1;
+    } else {
+      dictionary[val] += 1;
+    }
+  }
+
+  // console.log(dictionary);
+
+  var highestCount = 0;
+  var highestVal = '';
+
+  for (var key in dictionary) {
+    if (dictionary[key] > highestCount) {
+      highestCount = dictionary[key];
+      highestVal = key;
+    }
+  }
+
+  // console.log(highestVal);
+  return highestVal
+}
+
 // Callback from brain.classify
-// Only updates pose when confidence is high enough
+// Only updates pose when confidence is high enough and
+// buffer is significantly full (over 50%)
 function gotResult(error, results) {
 
-  var tempPoseLabel;
+  var buffPoseLabel;
 
   if (results[0].confidence > 0.85) {
-    tempPoseLabel = results[0].label.toUpperCase();
+    buffPoseLabel = results[0].label.toUpperCase();
   } else {
-    tempPoseLabel = 'N';
+    buffPoseLabel = 'N';
   }
   //console.log(results[0].confidence);
+  poseBuffer.push(buffPoseLabel);
+  poseBuffer.shift();
+
+  console.log(poseBuffer);
+  var tempPoseLabel = getMode(poseBuffer);
 
   // Change displayed pose phrase
   if (tempPoseLabel !== poseLabel) {
+    poseLabel = tempPoseLabel;
     // console.log("change");
     switch (tempPoseLabel) {
       case 'N':
@@ -143,8 +189,9 @@ function gotResult(error, results) {
       default:
         poseSentaence = "";
     }
-    poseLabel = tempPoseLabel;
   }
+
+
 }
 
 // Callback from poseNet
@@ -246,13 +293,11 @@ function draw() {
   }
   pop();
 
-
-
-  fill(255, 0, 255);
-  noStroke();
-  textSize(256);
-  textAlign(CENTER, CENTER);
-  text(poseLabel, width / 2, height / 2);
+  // fill(255, 0, 255);
+  // noStroke();
+  // textSize(256);
+  // textAlign(CENTER, CENTER);
+  // text(poseLabel, width / 2, height / 2);
 
   fill(255,255,255);
   rect(0, 0, canvas.width, textSiz);
