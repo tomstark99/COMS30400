@@ -26,6 +26,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private float groundDistance = 0.4f;
     private bool isGrounded;
     private bool climbing;
+    private bool crouching;
     private bool onTrain;
     private Transform prev;
     private PhotonView PV;
@@ -118,6 +119,17 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             onTrain = false;
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl) && !crouching)
+        {
+            crouching = true;
+            controller.height = 1.2f;
+        } 
+        else if (Input.GetKeyDown(KeyCode.LeftControl) && crouching)
+        {
+            crouching = false;
+            controller.height = 1.8f;
         }
 
         velocity.y += gravity * Time.deltaTime;
