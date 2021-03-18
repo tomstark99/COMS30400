@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 928902886819812171}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.384, z: 0}
   m_LocalScale: {x: 0.7692308, y: 0.7692308, z: 0.7692308}
   m_Children: []
   m_Father: {fileID: 5344661117719534427}
@@ -134,7 +134,7 @@ MonoBehaviour:
   - {fileID: 0}
   spotlight: {fileID: 6820645754090454329}
   speedPatrolling: 3
-  speedChasing: 7
+  speedChasing: 4
   sightRange: 30
   proximityRange: 5
   guardAngle: 80
@@ -528,6 +528,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 329111104556720423, guid: 676ebdfa154fbf3409caf5181ecd992e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 446130240844419049, guid: 676ebdfa154fbf3409caf5181ecd992e,
         type: 3}

@@ -137,12 +137,13 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
                 if (guardPlayerAngle < guardAngle / 2f)
                 {
+                    Debug.Log(Physics.Linecast(transform.position, player.transform.GetChild(11).position, obstacleMask));
+                    Debug.Log(Physics.Linecast(transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask));
                     // checks if guard line of sight is blocked by an obstacle
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
-                    if (!Physics.Linecast(transform.position, player.transform.position, obstacleMask) || !Physics.Linecast(transform.position, player.transform.GetChild(2).transform.position, obstacleMask))
+                    if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.GetChild(11).position, obstacleMask) || !Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
-                        // Debug.Log(player.transform.position);
-                        // Debug.Log(player.transform.GetChild(2).transform.position);
+
                         guard.speed = speedChasing;
                         return true;
                     }
@@ -171,7 +172,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 {
                     // checks if guard line of sight is blocked by an obstacle
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
-                    if (!Physics.Linecast(transform.position, deadGuard.transform.position, obstacleMask))
+                    if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, deadGuard.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
                         return true;
                     }
