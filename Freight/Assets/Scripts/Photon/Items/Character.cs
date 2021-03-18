@@ -103,7 +103,7 @@ public class Character : MonoBehaviourPun
         {
             Item.transform.parent = GameObject.Find("/Environment/Interactables/DeadGuards").transform;
         }
-        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 8f;
+        
     }
 
     public void Drop(PickUpable Item) 
@@ -115,7 +115,7 @@ public class Character : MonoBehaviourPun
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
         }
-
+        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 8f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
         photonView.RPC("DropRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
@@ -234,7 +234,7 @@ public class Character : MonoBehaviourPun
 
         Item.SetItemPickupConditions();
         Item.transform.Rotate(90, 0, 0);
-        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 6f;
+       
     }
 
     public void Drag(Draggable Item)
@@ -243,6 +243,7 @@ public class Character : MonoBehaviourPun
 
         PhotonView view = Item.GetComponent<PhotonView>();
         view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 6f;
         photonView.RPC("DragRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
