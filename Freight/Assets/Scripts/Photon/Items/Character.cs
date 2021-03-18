@@ -75,11 +75,6 @@ public class Character : MonoBehaviourPun
     void ThrowRPC(int ItemID)
     {
         Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
-        GameObject parent = pickUpDestination.transform.parent.gameObject;
-
-        GameObject cube = parent.transform.GetChild(2).gameObject;
-
-        GameObject camera = cube.transform.GetChild(0).gameObject;
 
         Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
