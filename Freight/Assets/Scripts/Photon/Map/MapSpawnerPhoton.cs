@@ -880,13 +880,36 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         for (int i = 0; i < 50; i++)
         {
             Vector3 position = new Vector3(270.0f, 6.5f, (193.0f + i * 5.0f));
+
+            Vector3 fence_start = new Vector3(position.x - 2.5f, position.y, position.z);
+            Vector3 fence_end = new Vector3(position.x + 2.5f, position.y, position.z);
+            float height_start = Terrain.activeTerrain.SampleHeight(fence_start);
+            float height_end = Terrain.activeTerrain.SampleHeight(fence_end);
+
             if (i == 10)
             {
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_broken_closed Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
             }
             else
             {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                if (height_start > 8.0f || height_end > 8.0f)
+                {
+                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                    position.y += 3;
+                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                    position.y += 3;
+                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                }
+                else if (height_start > 5.0f || height_end > 5.0f)
+                {
+                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                    position.y += 3;
+                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                }
+                else
+                {
+                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                }
                 
             }
         }
@@ -894,7 +917,31 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         for (int i = 0; i < 50; i++)
         {
             Vector3 position = new Vector3(500.0f, 6.5f, (193.0f + i * 5.0f));
-            if (i > 4 || i < 2)
+
+            Vector3 fence_start = new Vector3(position.x - 2.5f, position.y, position.z);
+            Vector3 fence_end = new Vector3(position.x + 2.5f, position.y, position.z);
+            float height_start = Terrain.activeTerrain.SampleHeight(fence_start);
+            float height_end = Terrain.activeTerrain.SampleHeight(fence_end);
+
+            if (height_start > 8.0f || height_end > 8.0f)
+            {
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                position.y += 3;
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                position.y += 3;
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+            }
+            else if (height_start > 5.0f || height_end > 5.0f)
+            {
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                position.y += 3;
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+            }
+            else if (!(i > 4 || i < 2))
+            {
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+            }
+            else
             {
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
             }
@@ -918,8 +965,8 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
             else
-            {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+            { 
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));   
             }
 
         }
@@ -941,8 +988,25 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                 position.y -= 3;
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
-            // gap where guard towers are
+            else if (height_start > 8.0f || height_end > 8.0f)
+            {
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                position.y += 3;
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                position.y += 3;
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+            }
+            else if (height_start > 5.0f || height_end > 5.0f)
+            {
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                position.y += 3;
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+            }
             else if (!(i > 15 && i < 20))
+            {
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+            }
+            else
             {
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
