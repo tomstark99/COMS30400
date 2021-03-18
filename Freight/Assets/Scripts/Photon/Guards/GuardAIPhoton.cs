@@ -392,4 +392,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward * sightRange);
     }
+
+    public bool getSpotted() {
+        return this.playerSpotted;
+    }
 }
