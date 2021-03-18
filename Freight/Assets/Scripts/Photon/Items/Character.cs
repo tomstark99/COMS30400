@@ -10,6 +10,8 @@ public class Character : MonoBehaviourPun
     public Transform dragDestination;
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
+
+    public GameObject camera;
     
     public bool HasItem()
     {
@@ -126,6 +128,7 @@ public class Character : MonoBehaviourPun
         // get the guard's photon view
         PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>();
         Vector3 guardPos = killedGuard.transform.position;
+        guardPos.y += 1.0f;
         if (GameObject.Find("Endgame") != null)
             GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
         // remove the guard 
@@ -138,13 +141,13 @@ public class Character : MonoBehaviourPun
     [PunRPC]
     void CreateBulletLocal()
     {
-        //GameObject camera = pickUpDestination.transform.parent.gameObject;
+        // //GameObject camera = pickUpDestination.transform.parent.gameObject;
 
-        GameObject parent = pickUpDestination.transform.parent.gameObject;
+        // GameObject parent = pickUpDestination.transform.parent.gameObject;
 
-        GameObject cube = parent.transform.GetChild(2).gameObject;
+        // GameObject cube = parent.transform.GetChild(2).gameObject;
 
-        GameObject camera = cube.transform.GetChild(0).gameObject;
+        // GameObject camera = cube.transform.GetChild(0).gameObject;
 
         // shoots out a raycast to see what the bullet hits
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
@@ -181,11 +184,11 @@ public class Character : MonoBehaviourPun
     {
         //GameObject camera = pickUpDestination.transform.parent.gameObject;
 
-        GameObject parent = pickUpDestination.transform.parent.gameObject;
+        // GameObject parent = pickUpDestination.transform.parent.gameObject;
 
-        GameObject cube = parent.transform.GetChild(2).gameObject;
+        // GameObject cube = parent.transform.GetChild(2).gameObject;
 
-        GameObject camera = cube.transform.GetChild(0).gameObject;
+        // GameObject camera = cube.transform.GetChild(0).gameObject;
 
         // shoots out a raycast to see what the bullet hits
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);

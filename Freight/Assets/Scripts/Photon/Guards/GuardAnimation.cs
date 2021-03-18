@@ -18,7 +18,7 @@ public class GuardAnimation : MonoBehaviourPun
     void Start()
     {
         guard = GetComponent<NavMeshAgent>();
-        chasingPlayer = GetComponent<GuardAIPhoton>().playerSpotted;
+        chasingPlayer = GetComponent<GuardAIPhoton>().getSpotted();
 
         // Setup animation variables
         animator = GetComponent<Animator>();
