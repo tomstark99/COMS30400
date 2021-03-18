@@ -123,13 +123,14 @@ public class Character : MonoBehaviourPun
         // get the guard's photon view
         PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>();
         Vector3 guardPos = killedGuard.transform.position;
-        guardPos.y += 1.0f;
+        Quaternion guardRot = killedGuard.transform.rotation;
+        guardPos.y += 0.5f;
         if (GameObject.Find("Endgame") != null)
             GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
         // remove the guard 
         PhotonNetwork.Destroy(killedGuard);
-        // create a dead body that will be draggable
-        GameObject deadGuard = PhotonNetwork.Instantiate("PhotonPrefabs/DeadGuard", guardPos, Quaternion.Euler(90, 0, 0));
+        // create a dead body that will be draggable (allow new guard model)
+        GameObject deadGuard = PhotonNetwork.Instantiate("PhotonPrefabs/dead_guard", guardPos, guardRot);
         
     }
 
