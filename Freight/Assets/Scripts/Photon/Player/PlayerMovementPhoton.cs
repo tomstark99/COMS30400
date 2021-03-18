@@ -42,7 +42,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if(photonView.IsMine)
         {
             // transform.Find("Camera").gameObject.SetActive(true);
-            transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head/Camera/Camera").gameObject.SetActive(true);
+            transform.Find("Camera/Camera").gameObject.SetActive(true);
             // transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head/Camera").gameObject.transform.localRotation = Quaternion.Euler(0.0f, 180.0f, -90.0f);
         }
         PV = GetComponent<PhotonView>();

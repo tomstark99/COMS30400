@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -19,6 +20,9 @@ public class PlayerAnimation : MonoBehaviourPun
     private bool isGrounded;
     private float runningSpeed;
     private float walkingSpeed;
+
+    public GameObject camera;
+    public GameObject head;
 
     private PlayerMovementPhoton player;
 
@@ -55,6 +59,8 @@ public class PlayerAnimation : MonoBehaviourPun
         // animate function
         if (photonView.IsMine)
             Animate();
+
+        camera.transform.position = head.transform.position;
         
     }
 
@@ -116,6 +122,7 @@ public class PlayerAnimation : MonoBehaviourPun
         } else if (Input.GetKeyUp(KeyCode.LeftControl) && isCrouched) {
             animator.SetBool(isCrouchedHash, false);
         }
+
     }
 
     public bool getGrounded() {
