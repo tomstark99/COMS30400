@@ -31,10 +31,7 @@ public class BreakFencePhoton : MonoBehaviourPun
             RightHand.SetActive(true);
             
             Overlay.LoadOverlay("overlays/pull_apart_fence.png");
-            overlayDisplayed = true;
-            
-            // Show hands gif
-       
+            overlayDisplayed = true;  
         }
     }
 
@@ -48,8 +45,6 @@ public class BreakFencePhoton : MonoBehaviourPun
             
             Overlay.ClearOverlay();
             overlayDisplayed = false;
-            
-            // Stop showing hand gif
         }
     }
 
