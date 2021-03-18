@@ -45,7 +45,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
         {
             Debug.Log(" DISABLE CONTROLER ");
-            Destroy(GetComponent<PlayerMovementPhoton>());
+            GetComponent<PlayerMovementPhoton>().gameObject.SetActive(false);
         }
     }
 
