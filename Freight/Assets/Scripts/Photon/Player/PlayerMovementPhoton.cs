@@ -74,8 +74,24 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         float l = Input.GetAxis("Ladder");
 
         Vector3 move;
+        
+#if UNITY_WEBGL && !UNITY_EDITOR
 
-        if (climbing && l>0f)
+        if (climbing && PoseParser.GETGestureAsString().CompareTo("L") == 0)
+        {
+            move = transform.up * 0.2f;
+        } else if (climbing && l > 0f)
+        {
+            move = transform.up * l;
+        } 
+        else
+        {
+            move = transform.right * x + transform.forward * z;
+        }
+        
+#else
+        
+        if (climbing && l > 0f)
         {
             move = transform.up * l;
             // move = transform.right * x + transform.up * z;
@@ -84,6 +100,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.right * x + transform.forward * z;
         }
+        
+#endif
 
         // sticks the player onto the train
         if (onTrain)

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4642542322640842562}
   - component: {fileID: 3997612552543001008}
+  - component: {fileID: 1419782255406561109}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: trainfloor
@@ -44,6 +45,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 0.5, z: 7.8}
   m_Center: {x: 0, y: 1.45, z: 0}
+--- !u!65 &1419782255406561109
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837071661384288046}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.120058, y: 1.5194798, z: 2.2858276}
+  m_Center: {x: -1.7350988, y: 4.0484514, z: -3.0071106}
 --- !u!1 &3193351391837010055
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,8 +433,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6454601, y: 2.75, z: 1.25}
-  m_Center: {x: -1.1727297, y: 1.3499999, z: -3}
+  m_Size: {x: 0.81297565, y: 3.8197532, z: 1.9945679}
+  m_Center: {x: -1.2564875, y: 1.8848765, z: -3.0797424}
 --- !u!114 &-8357392182169258683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,6 +792,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683499191303609803, guid: 9e08ba66140b3314998ff35d7b578dfe,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1973580570141481598, guid: 9e08ba66140b3314998ff35d7b578dfe,
         type: 3}
