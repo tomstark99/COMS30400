@@ -78,8 +78,19 @@ public class PlayerAnimation : MonoBehaviourPun
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        if(!isWalking && z > 0.02f) {
-            animator.SetBool(isWalkingHash, true);
+        if (!isWalking && z > 0.02f) {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                animator.SetBool(isRunningHash, true);
+                player.setSpeed(runningSpeed);
+            }
+
+            else
+            {
+                animator.SetBool(isWalkingHash, true);
+                player.setSpeed(walkingSpeed);
+            }
+                
         } 
         if(!isRunningBack && z < -0.02f) {
             animator.SetBool(isRunningBackHash, true);
