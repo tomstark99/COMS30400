@@ -112,7 +112,7 @@ public class Character : MonoBehaviourPun
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
         }
-        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 8f;
+        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
         photonView.RPC("DropRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
@@ -124,7 +124,7 @@ public class Character : MonoBehaviourPun
         PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>();
         Vector3 guardPos = killedGuard.transform.position;
         Quaternion guardRot = killedGuard.transform.rotation;
-        //guardPos.y += 0.5f;
+        guardPos.y += 0.5f;
         if (GameObject.Find("Endgame") != null)
             GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
         // remove the guard 
@@ -137,13 +137,6 @@ public class Character : MonoBehaviourPun
     [PunRPC]
     void CreateBulletLocal()
     {
-        // //GameObject camera = pickUpDestination.transform.parent.gameObject;
-
-        // GameObject parent = pickUpDestination.transform.parent.gameObject;
-
-        // GameObject cube = parent.transform.GetChild(2).gameObject;
-
-        // GameObject camera = cube.transform.GetChild(0).gameObject;
 
         // shoots out a raycast to see what the bullet hits
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
@@ -178,13 +171,6 @@ public class Character : MonoBehaviourPun
     [PunRPC]
     void CreateBullet()
     {
-        //GameObject camera = pickUpDestination.transform.parent.gameObject;
-
-        // GameObject parent = pickUpDestination.transform.parent.gameObject;
-
-        // GameObject cube = parent.transform.GetChild(2).gameObject;
-
-        // GameObject camera = cube.transform.GetChild(0).gameObject;
 
         // shoots out a raycast to see what the bullet hits
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
@@ -234,7 +220,7 @@ public class Character : MonoBehaviourPun
         Item.transform.parent = dragDestination;
 
         Item.SetItemPickupConditions();
-        Item.transform.Rotate(90, 0, 0);
+        //Item.transform.Rotate(90, 0, 0);
        
     }
 
@@ -244,7 +230,7 @@ public class Character : MonoBehaviourPun
 
         PhotonView view = Item.GetComponent<PhotonView>();
         view.TransferOwnership(PhotonNetwork.LocalPlayer);
-        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 6f;
+        gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 3f;
         photonView.RPC("DragRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
