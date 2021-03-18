@@ -85,7 +85,7 @@ public class EndGame : MonoBehaviour
                     Debug.Log("you won!");
                     foreach (var player in players)
                     {
-                        player.transform.GetChild(4).GetChild(0).gameObject.SetActive(true);
+                        player.transform.GetChild(13).GetChild(0).gameObject.SetActive(true);
                     }
                 } 
                 else
@@ -93,7 +93,7 @@ public class EndGame : MonoBehaviour
                     Debug.Log("you lost...");
                     foreach (var player in players)
                     {
-                        player.transform.GetChild(4).GetChild(1).gameObject.SetActive(true);
+                        player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
                     }
                 }
 
