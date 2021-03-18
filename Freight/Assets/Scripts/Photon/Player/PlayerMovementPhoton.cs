@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -15,6 +16,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private float speed = 4.0f;
     private float jumpHeight = 1.5f;
 
+    public float Speed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }
+
     private Vector3 velocity;
     private float groundDistance = 0.4f;
     private bool isGrounded;
@@ -23,6 +30,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private Transform prev;
     private PhotonView PV;
 
+    public bool OnTrain
+    {
+        get { return onTrain; }
+    }
+
+   
     void Start()
     {
         // activates player's camera if its theirs and disables all others
@@ -36,7 +49,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
         {
             Debug.Log(" DISABLE CONTROLER ");
-            Destroy(GetComponent<PlayerMovementPhoton>());
+            GetComponent<PlayerMovementPhoton>().enabled = false;
         }
         
     }
@@ -51,9 +64,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (photonView.IsMine)
             Movement();
 
-        // if escape is pressed, quit game
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
+        //// if escape is pressed, quit game
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //    Application.Quit();
         
     }
 
