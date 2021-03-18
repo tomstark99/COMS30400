@@ -2127,6 +2127,16 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3945322952535345410, guid: c62ab3d5d377d3244b3b15807ab5fdd6,
+        type: 3}
+      propertyPath: ammo
+      value: 9999
+      objectReference: {fileID: 0}
+    - target: {fileID: 7049762922829088135, guid: c62ab3d5d377d3244b3b15807ab5fdd6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8491663893193092704, guid: c62ab3d5d377d3244b3b15807ab5fdd6,
         type: 3}
       propertyPath: m_RootOrder
@@ -3382,6 +3392,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   helloWelcome: {fileID: 0}
+  wasdMovementSound: {fileID: 0}
+  pointCrosshair: {fileID: 0}
+  proceedToTheNextTrainingLevel: {fileID: 0}
+  congratulationForCompletingTheFirstLevel: {fileID: 0}
+  theGuardsGetDistracted: {fileID: 0}
+  congratulationForCompletingTheSecondLevel: {fileID: 0}
+  pleaseWalkUpToTheGunAndPickItUp: {fileID: 0}
+  killAll4Guards: {fileID: 0}
+  findTheGuardWithTheGreenArrow: {fileID: 0}
+  guardsBecomeAlertedIfSeesDeadGuards: {fileID: 0}
+  congratulationForCompletingTheThirdLevel: {fileID: 0}
+  proceedToTheLadder: {fileID: 0}
+  graduatedFreight: {fileID: 0}
   wSprite: {fileID: 0}
   aSprite: {fileID: 0}
   sSprite: {fileID: 0}
@@ -3406,6 +3429,7 @@ MonoBehaviour:
   pickUpTheGunAndKillTheGuards: {fileID: 0}
   trainingOver: {fileID: 0}
   pickUpGuard: {fileID: 0}
+  audioManager: {fileID: 0}
 --- !u!1 &933176383
 GameObject:
   m_ObjectHideFlags: 0
@@ -5509,6 +5533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentAudio: {fileID: 0}
+  helloWelcome: {fileID: 0}
 --- !u!4 &1641738830
 Transform:
   m_ObjectHideFlags: 0

@@ -52,7 +52,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         players = GameObject.FindGameObjectsWithTag("Player");
         guard = GetComponent<NavMeshAgent>();
         guardState = State.Patroling;
-        GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
+        if (GameObject.Find("Endgame") != null) 
+            GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
     }
 
     public void DisableGuards()
