@@ -64,7 +64,7 @@ public class MouseLookPhoton : MonoBehaviourPun
         else
         {
             yRotation += mouseX;
-            yRotation = Mathf.Clamp(yRotation, -180f, 170f);
+            yRotation = Mathf.Clamp(yRotation, -150f, 130f);
             cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
         }
             
