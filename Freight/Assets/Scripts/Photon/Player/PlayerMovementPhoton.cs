@@ -27,6 +27,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private Transform prev;
     private PhotonView PV;
 
+    public bool onMenu;
    
     void Start()
     {
@@ -94,6 +95,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move += trainMove;
         }
 
+        if (onMenu)
+            return;
+            
         controller.Move(move * speed * Time.deltaTime);
 
         // Checks if jump button is pressed and allows user to jump if they are on the ground
@@ -119,7 +123,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         else if (other.gameObject.tag == "trainfloor")
         {
-            Debug.Log("stef is aiiiir");
             onTrain = true;
         }
     }
@@ -135,6 +138,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             Debug.Log("stef is NOT aiiiir");
             onTrain = false;
+          
         }
     }
 }
