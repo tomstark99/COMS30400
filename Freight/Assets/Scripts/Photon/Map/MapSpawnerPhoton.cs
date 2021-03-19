@@ -940,7 +940,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             }
             else if (!(i > 4 || i < 2))
             {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                Debug.Log("no fence");
             }
             else
             {
@@ -1003,9 +1003,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                 position.y += 3;
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
-            else if (!(i > 15 && i < 20))
+            else if (!(i > 19 || i < 16))
             {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                Debug.Log("fence gap");
             }
             else
             {
