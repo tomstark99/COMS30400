@@ -31,8 +31,6 @@ public class SoundRipples : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        AudioClip audioClip = recorder.AudioClip;
-
         int currentPosition = CustomMicrophone.GetPosition(_microphoneDevice);
 
         if(currentPosition != _lastPosition)
@@ -40,24 +38,19 @@ public class SoundRipples : MonoBehaviourPun
             int length = Constants.RecordingTime * Constants.SampleRate;
             float[] data = new float[length];
 
-            audioClip.GetData(data, 0);
+            CustomMicrophone.GetRawData(ref data, recorder.AudioClip);
 
             if (currentPosition > _lastPosition)
             {
-                var buffer = new List<float>();
-                buffer.AddRange(data.ToList().GetRange(_lastPosition, currentPosition - _lastPosition));
                 int len = currentPosition - _lastPosition;
-                decibelsValue = ComputeDB(buffer.ToArray(), 0, ref len);
+                decibelsValue = ComputeDB(data, _lastPosition, ref len);
                 _lastPosition = currentPosition;
             } 
             else
             { 
-                var buffer = new List<float>();
-                buffer.AddRange(data.ToList().GetRange(_lastPosition, data.Length - _lastPosition));
-                buffer.AddRange(data.ToList().GetRange(0, currentPosition));
-                int len = data.Length - _lastPosition + currentPosition;
-                decibelsValue = ComputeDB(buffer.ToArray(), 0, ref len);
-                _lastPosition = currentPosition;
+                int len = data.Length - _lastPosition;
+                decibelsValue = ComputeDB(data, _lastPosition, ref len);
+                _lastPosition = 0;
             }
             //Debug.Log(decibelsValue);
             if (decibelsValue <= 0)

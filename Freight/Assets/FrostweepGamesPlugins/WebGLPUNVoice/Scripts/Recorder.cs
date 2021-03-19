@@ -3,6 +3,7 @@ using FrostweepGames.Plugins.Native;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Photon.Pun;
 
 namespace FrostweepGames.WebGLPUNVoice
 {
@@ -66,6 +67,13 @@ namespace FrostweepGames.WebGLPUNVoice
 		/// </summary>
 		public bool recording = false;
 
+
+		public ProximityVoice proximity;
+
+		private Dictionary<int, float> _soundVolumes;
+
+		public float sendThreshold = 0.1f; 
+
 		/// <summary>
 		/// Initializes buffer, refreshes microphones list and selects first microphone device if exists
 		/// </summary>
@@ -79,7 +87,16 @@ namespace FrostweepGames.WebGLPUNVoice
 			{
 				_microphoneDevice = CustomMicrophone.devices[0];
 			}
+
+			// make sure it's never null and then subscribe to changes
+			_soundVolumes = new Dictionary<int, float>();
+			proximity.OnSoundVolumesUpdate += UpdateSoundVolumes;
 		}
+
+		private void UpdateSoundVolumes()
+        {
+			_soundVolumes = proximity.SoundVolumes;
+        }
 
 		/// <summary>
 		/// Handles processing of recording each frame
@@ -127,6 +144,7 @@ namespace FrostweepGames.WebGLPUNVoice
 			{
 				if (_buffer.Count > 0)
 				{
+
 					SendDataToNetwork(_buffer);
 					_buffer.Clear();
 				}
@@ -139,11 +157,39 @@ namespace FrostweepGames.WebGLPUNVoice
 		/// <param name="samples">list of sampels that will be sent over network</param>
 		private void SendDataToNetwork(List<float> samples)
 		{
+			float sum = 0;
+
+			foreach(float sample in samples)
+            {
+				sum += sample;
+            }
+			Debug.Log(sum / samples.Count());
+			// skip no sound 
+			if (sum / samples.Count() < sendThreshold) return;
+
 			// data in bytes to send over network
 			byte[] bytes = AudioConverter.FloatToByte(samples);
 
+			List<int> targets = new List<int>();
+
+			// skip far away players since they don't hear the sound anyway
+			foreach(int id in _soundVolumes.Keys)
+            {
+				if(_soundVolumes[id] > 0)
+                {
+					targets.Add(id);
+                }
+            }
+
+			// add yourself if debugEcho = true 
+			if(debugEcho)
+            {
+				targets.Add(PhotonNetwork.LocalPlayer.ActorNumber);
+			}
+
 			// sending data of recorded samples by using raise event feature
-			Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { Receivers = debugEcho ? Photon.Realtime.ReceiverGroup.All : Photon.Realtime.ReceiverGroup.Others };
+			Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { TargetActors = targets.ToArray() };
+			//Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { Receivers = debugEcho ? Photon.Realtime.ReceiverGroup.All : Photon.Realtime.ReceiverGroup.Others };
 			ExitGames.Client.Photon.SendOptions sendOptions = new ExitGames.Client.Photon.SendOptions { Reliability = reliableTransmission };
 			Photon.Pun.PhotonNetwork.RaiseEvent(Constants.VoiceEventCode, bytes, raiseEventOptions, sendOptions);
 		}
@@ -154,6 +200,7 @@ namespace FrostweepGames.WebGLPUNVoice
 		public void RefreshMicrophones()
 		{
 			CustomMicrophone.RequestMicrophonePermission();
+			CustomMicrophone.RefreshMicrophoneDevices();
 		}
 
 		/// <summary>
