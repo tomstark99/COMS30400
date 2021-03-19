@@ -30,12 +30,13 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     {
         seed = (int)DateTime.Now.Ticks;
         UnityEngine.Random.InitState(seed);
-        SpawnTrees();
+        SpawnFences();
         SpawnTrains();
         SpawnBridges();
         SpawnTrackGroups();
         SpawnIndividualTracks();
-        SpawnFences();
+        SpawnTrees();
+        SpawnBushes();
         BuildNavMesh();
         
     }
@@ -50,59 +51,81 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     void SpawnTrees()
     {
         UnityEngine.Random.InitState(seed);
-        for (int i = 0; i < 40; i++)
-        {
-            Vector3 pos;
-            pos.x = UnityEngine.Random.Range(200.0f, 265.0f);
-            pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
-            pos.y = 0.0f;
-            pos.y = Terrain.activeTerrain.SampleHeight(pos);
 
-            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                "tree_basic Variant"), pos, Quaternion.identity);
-        }
-
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 200; i++)
         {
-            Vector3 pos;
-            pos.x = UnityEngine.Random.Range(270.0f, 600.0f);
-            pos.z = UnityEngine.Random.Range(100.0f, 180.0f);
-            if (pos.x > 310.0f && pos.x < 420.0f && pos.z < 180.0f && pos.z > 110.0f)
+            Vector3 pos = Vector3.zero;
+            bool validPos = false;
+
+            while (!validPos)
             {
-                pos.x = UnityEngine.Random.Range(420.0f, 600.0f);
+                pos.x = UnityEngine.Random.Range(200.0f, 600.0f);
+                pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
+                pos.y = 0.0f;
+                pos.y = Terrain.activeTerrain.SampleHeight(pos);
+                pos.y += UnityEngine.Random.Range(0.1f, 2.0f);
+
+                validPos = true;
+                Collider[] colliders = Physics.OverlapSphere(pos, 2.0f);
+
+                foreach (Collider col in colliders)
+                {
+                    if (col.tag == "Track" || col.tag == "Building" || col.tag == "Fence" || col.tag == "Water")
+                    {
+                        Debug.Log("overlap");
+                        validPos = false;
+                    }
+                }
             }
-            pos.y = 0.0f;
-            pos.y = Terrain.activeTerrain.SampleHeight(pos);
 
-            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                "tree_basic Variant"), pos, Quaternion.identity);
-        }
-
-        for (int i = 0; i < 40; i++)
-        {
-            Vector3 pos;
-            pos.x = UnityEngine.Random.Range(270.0f, 600.0f);
-            pos.z = UnityEngine.Random.Range(445.0f, 500.0f);
-            pos.y = 0.0f;
-            pos.y = Terrain.activeTerrain.SampleHeight(pos);
-
-            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                "tree_basic Variant"), pos, Quaternion.identity);
-        }
-
-        for (int i = 0; i < 40; i++)
-        {
-            Vector3 pos;
-            pos.x = UnityEngine.Random.Range(535.0f, 600.0f);
-            pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
-            pos.y = 0.0f;
-            pos.y = Terrain.activeTerrain.SampleHeight(pos);
-
-            PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                "tree_basic Variant"), pos, Quaternion.identity);
+            if (validPos)
+            {
+                float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "tree_basic Variant"), pos, Quaternion.Euler(0f, y_rot, 0f));
+            }
         }
 
         Debug.Log("Trees");
+    }
+
+    void SpawnBushes()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            Vector3 pos = Vector3.zero;
+            bool validPos = false;
+
+            while (!validPos)
+            {
+                pos.x = UnityEngine.Random.Range(200.0f, 600.0f);
+                pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
+                pos.y = 0.0f;
+                pos.y = Terrain.activeTerrain.SampleHeight(pos);
+
+                validPos = true;
+                Collider[] colliders = Physics.OverlapSphere(pos, 5.0f);
+
+                foreach (Collider col in colliders)
+                {
+                    if (col.tag == "Track" || col.tag == "Building" || col.tag == "Fence" || col.tag == "Tree" || col.tag == "Water")
+                    {
+                        Debug.Log("overlap");
+                        validPos = false;
+                    }
+                }
+            }
+
+            if (validPos)
+            {
+                float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
+
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "bush_basic Variant"), pos, Quaternion.Euler(0f, y_rot, 0f));
+            }
+        }
+
+        Debug.Log("bushes");
     }
 
     void SpawnTrackGroups()
