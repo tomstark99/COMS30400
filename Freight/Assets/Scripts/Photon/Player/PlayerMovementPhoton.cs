@@ -95,9 +95,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move += trainMove;
         }
 
-        if (onMenu)
-            return;
-            
+        /*if (onMenu)
+            return;*/
+
         controller.Move(move * speed * Time.deltaTime);
 
         // Checks if jump button is pressed and allows user to jump if they are on the ground
