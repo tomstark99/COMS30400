@@ -145,6 +145,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             Debug.Log("PLAYER ENTERED LADDER");
             climbing = true;
+            GetComponent<PlayerAnimation>().setClimbing(climbing);
         }
         else if (other.gameObject.tag == "trainfloor")
         {
@@ -159,6 +160,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             Debug.Log("player stopped climbing");
             climbing = false;
+            GetComponent<PlayerAnimation>().setClimbing(climbing);
         }
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
