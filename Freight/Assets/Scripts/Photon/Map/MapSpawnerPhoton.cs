@@ -285,7 +285,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         pos.y = 2.66f;
         pos.z = 221.28f;
 
-        PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/ssssrt_straight_track_detail Variant", pos, Quaternion.Euler(25f, 45f, 0f));
+        PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Tracks/short_straight_track_detail Variant", pos, Quaternion.Euler(25f, 45f, 0f));
 
         pos.x = 302.26f;
         pos.y = 5.1f;
