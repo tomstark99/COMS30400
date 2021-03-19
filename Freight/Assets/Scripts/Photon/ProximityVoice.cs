@@ -56,8 +56,8 @@ public class ProximityVoice : MonoBehaviourPun
 
     private float VolumeValue(float distance)
     {
-        if (distance < 1f) return 1f; //Max volume
-        if (distance > 5f) return 0f; //Min volume
+        if (distance < minDistance) return 1f; //Max volume
+        if (distance > maxDistance) return 0f; //Min volume
         return a + b / Mathf.Sqrt(distance); // maxVolume in minDistance and minVolume in maxDistance
     }
 
@@ -75,7 +75,8 @@ public class ProximityVoice : MonoBehaviourPun
             var distance = Vector3.Distance(transform.position, player.transform.position);
             var newVolume = VolumeValue(distance);
             _sources[Id].volume = newVolume;
-            SoundVolumes[Id] = newVolume;
+            SoundVolumes.Remove(Id);
+            SoundVolumes.Add(Id, newVolume);
         }
     }
 
