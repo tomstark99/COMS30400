@@ -119,8 +119,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             angle_pos.z -= 15.4675f;
 
             if (i == 0) {
+                Vector3 position = new Vector3(325.97f, 5.1f, 245.13f);
                 PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                    "Tracks/45_deg_fork_right_track_detail Variant"), angle_pos, Quaternion.Euler(0f, -45f, 0f));
+                    "Tracks/45_deg_right_track_detail Variant"), position, Quaternion.Euler(0f, -22.5f, 0f));
             } else {
                 PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
                     "Tracks/45_deg_fork_right_track_detail Variant"), angle_pos, Quaternion.Euler(0f, -45f, 0f));
