@@ -16,8 +16,10 @@ public class PlayerAnimation : MonoBehaviourPun
     private int isLeftHash;
     private int isRightHash;
     private int isCrouchedHash;
+    private int isClimbingHash;
 
     private bool isGrounded;
+    private bool climbing;
     private float runningSpeed;
     private float walkingSpeed;
 
@@ -46,6 +48,7 @@ public class PlayerAnimation : MonoBehaviourPun
         isLeftHash = Animator.StringToHash("walkLeft");
         isRightHash = Animator.StringToHash("walkRight");
         isCrouchedHash = Animator.StringToHash("crouched");
+        isClimbingHash = Animator.StringToHash("isClimbing");
     }
 
     // Update is called once per frame
@@ -74,9 +77,18 @@ public class PlayerAnimation : MonoBehaviourPun
         bool isLeft = animator.GetBool(isLeftHash);
         bool isRight = animator.GetBool(isRightHash);
         bool isCrouched = animator.GetBool(isCrouchedHash);
+        bool isClimbing = animator.GetBool(isClimbingHash);
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+
+        Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
+
+        if(climbing && Input.GetKey(KeyCode.W)) {
+            animator.SetBool(isClimbingHash, true);
+        } else {
+            animator.SetBool(isClimbingHash, false);
+        }
 
         if (!isWalking && z > 0.02f) {
             if (Input.GetKey(KeyCode.LeftShift))
@@ -131,7 +143,7 @@ public class PlayerAnimation : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched) {
             animator.SetBool(isCrouchedHash, true);
-        } else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched) {
+        } else if (Input.GetKeyUp(KeyCode.LeftControl) && isCrouched) {
             animator.SetBool(isCrouchedHash, false);
         }
 
@@ -140,7 +152,14 @@ public class PlayerAnimation : MonoBehaviourPun
     public bool getGrounded() {
         return this.isGrounded;
     }
+    public bool getClimbing() {
+        return this.climbing;
+    }
+
     public void setGrounded(bool val) {
         this.isGrounded = val;
+    }
+    public void setClimbing(bool val) {
+        this.climbing = val;
     }
 }
