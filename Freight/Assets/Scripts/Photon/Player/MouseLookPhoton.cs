@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class MouseLookPhoton : MonoBehaviourPun
 {
-    private float mouseSensitivity = 150f;
+    public float mouseSensitivity;
 
     [Header("Camera")]
     [SerializeField] private Transform playerBody;
@@ -18,7 +18,7 @@ public class MouseLookPhoton : MonoBehaviourPun
     private Quaternion oldCameraRot;
     private bool freeCam;
 
-
+    public bool onMenu;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +27,10 @@ public class MouseLookPhoton : MonoBehaviourPun
             cameraTransform = virtualCamera.GetComponent<Transform>();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+              if (PlayerPrefs.HasKey("MouseSensibility"))
+                mouseSensitivity = PlayerPrefs.GetFloat("MouseSensibility");
+              else
+            mouseSensitivity = 100f;
         }
        
     }
@@ -54,7 +58,8 @@ public class MouseLookPhoton : MonoBehaviourPun
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 70f);
 
-        
+        if(onMenu)
+            return;
 
         if (!freeCam)
         {
