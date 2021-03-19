@@ -9,7 +9,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     public CharacterController controller;
     public Transform groundCheck;
     public LayerMask groundMask;
-    public GameObject face;
+    public GameObject faceUI;
+    public GameObject LeftHandUpUI;
+    public GameObject RightHandUpUI;
     private float gravity = -17f;
     private float speed = 8f;
     private float jumpHeight = 3.5f;
@@ -61,11 +63,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     IEnumerator SetFaceActive(){
         if(check == false){
-            face.SetActive(true);
+            faceUI.SetActive(true);
         }
         yield return new WaitForSeconds(2);
         if(Input.GetKeyDown(KeyCode.C) || PoseParser.GETGestureAsString().CompareTo("C") == 0){
-            face.SetActive(false);
+            faceUI.SetActive(false);
             check = true;
         }
     }
@@ -128,6 +130,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         if (climbing)
         {
+            faceUI.SetActive(false);
             Vector3 ladderPos = train.transform.position + (train.transform.rotation * ladderCentreLine);
             ladderPos.y = transform.position.y;
             move += ladderPos - transform.position;
@@ -139,7 +142,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             onTrain = false;
-            face.SetActive(false);
+            faceUI.SetActive(false);
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
@@ -163,11 +166,16 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             ladderCentreLine = ((BoxCollider) other).center;
             // Debug.Log("LADDER COORDS" + (train.transform.position + ladderCentreLine).ToString());
             climbing = true;
+            //faceUI.SetActive(false);
+            LeftHandUpUI.SetActive(true);
+            RightHandUpUI.SetActive(true);
         }
         else if (other.gameObject.tag == "trainfloor")
         {
             Debug.Log("stef is aiiiir");
             climbing = false;
+            LeftHandUpUI.SetActive(false);
+            RightHandUpUI.SetActive(false);
             onTrain = true;
         }
     }
@@ -178,6 +186,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             // Debug.Log("player stopped climbing");
             climbing = false;
+            LeftHandUpUI.SetActive(false);
+            RightHandUpUI.SetActive(false);
         }
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {

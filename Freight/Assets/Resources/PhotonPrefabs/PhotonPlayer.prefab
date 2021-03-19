@@ -19,13 +19,14 @@ GameObject:
   - component: {fileID: 8900766765902317748}
   - component: {fileID: 9174394754350910633}
   - component: {fileID: 2205578059323261568}
+  - component: {fileID: 7366075534264834197}
   m_Layer: 5
   m_Name: RightHandLadder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8900766765902317748
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33,16 +34,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183646101729217403}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 5040296584399321528}
   m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 33, y: 0}
+  m_AnchoredPosition: {x: -55, y: 0}
   m_SizeDelta: {x: 590, y: 590}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9174394754350910633
@@ -82,6 +83,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &7366075534264834197
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183646101729217403}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 69ff0219893ad54cf8665055fc282cad, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &370830149110173130
 GameObject:
   m_ObjectHideFlags: 0
@@ -4877,13 +4897,14 @@ GameObject:
   - component: {fileID: 5588104274937609108}
   - component: {fileID: 3555335623586154729}
   - component: {fileID: 1151477026968942577}
+  - component: {fileID: 6115798014098376365}
   m_Layer: 5
   m_Name: 'LeftHandLadder '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5588104274937609108
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4891,16 +4912,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216072234491207380}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 5040296584399321528}
   m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -18, y: 0}
+  m_AnchoredPosition: {x: 55, y: 100}
   m_SizeDelta: {x: 590, y: 590}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3555335623586154729
@@ -4940,6 +4961,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &6115798014098376365
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216072234491207380}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f3fc90355a1c2b86c80bbb03bc541140, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1299166492865684683
 GameObject:
   m_ObjectHideFlags: 0
@@ -5395,7 +5435,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 98304
-  face: {fileID: 1539016604499805538}
+  faceUI: {fileID: 1539016604499805538}
+  LeftHandUpUI: {fileID: 1216072234491207380}
+  RightHandUpUI: {fileID: 183646101729217403}
 --- !u!114 &4492067779300841653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5686,18 +5728,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 770cef4903d510742b4bab88dc975b32, type: 3}
---- !u!114 &257455286093060565 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 473757851317592581, guid: 770cef4903d510742b4bab88dc975b32,
-    type: 3}
-  m_PrefabInstance: {fileID: 360721686930783184}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 33678981502340898}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 046a7347a93740943a8bd395bf81e297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7634450650693227252 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7850493353477548324, guid: 770cef4903d510742b4bab88dc975b32,
@@ -5708,6 +5738,18 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 871db227761936c4982e00c060f15de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &257455286093060565 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 473757851317592581, guid: 770cef4903d510742b4bab88dc975b32,
+    type: 3}
+  m_PrefabInstance: {fileID: 360721686930783184}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33678981502340898}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 046a7347a93740943a8bd395bf81e297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &3010433264901784119 stripped
