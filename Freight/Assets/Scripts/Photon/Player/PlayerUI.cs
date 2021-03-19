@@ -31,6 +31,7 @@ public class PlayerUI : MonoBehaviour
     {
         mouseLook.mouseSensitivity = mouseSensibilitySlider.value;
         PlayerPrefs.SetFloat("MouseSensibility", mouseLook.mouseSensitivity);
+        PlayerPrefs.Save();
     }
 
     private void Update()
