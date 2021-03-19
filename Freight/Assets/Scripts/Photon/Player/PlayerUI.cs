@@ -11,7 +11,7 @@ public class PlayerUI : MonoBehaviour
     public MouseLookPhoton mouseLook;
     public PlayerMovementPhoton playerMovement;
 
-    //public GameObject Menu;
+    public GameObject Menu;
     public GameObject BasicMenu;
     public GameObject OptionInGame;
 
@@ -19,9 +19,11 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey("MouseSensibility"))
+       /* if (PlayerPrefs.HasKey("MouseSensibility"))
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
-        else
+        else*/
+           
+            Debug.Log(mouseSensibilitySlider);
             mouseSensibilitySlider.value = 100f;
     }
 
@@ -33,6 +35,8 @@ public class PlayerUI : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(mouseSensibilitySlider.value);
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             menuOpened = !menuOpened;   
