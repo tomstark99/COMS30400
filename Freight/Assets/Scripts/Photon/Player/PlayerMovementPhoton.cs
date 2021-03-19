@@ -94,7 +94,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (climbing && l > 0f)
         {
             move = transform.up * l;
-            // move = transform.right * x + transform.up * z;
         }
         else
         {
@@ -108,14 +107,15 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             Vector3 trainMove =
                 Vector3.MoveTowards(gameObject.transform.position,
-                    GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) -
-                GameObject.FindGameObjectWithTag("locomotive").transform.position;
+                    train.transform.position, Time.deltaTime) -
+                train.transform.position;
             trainMove.x = -trainMove.x;
             trainMove.y = 0f;
             trainMove.z = -trainMove.z;
             move += trainMove;
         }
 
+        //Sticks player to centreline of ladder
         if (climbing)
         {
             Vector3 ladderPos = train.transform.position + (train.transform.rotation * ladderCentreLine);
@@ -156,6 +156,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (other.gameObject.tag == "trainfloor")
         {
             Debug.Log("stef is aiiiir");
+            train = other.gameObject;
             climbing = false;
             onTrain = true;
         }
