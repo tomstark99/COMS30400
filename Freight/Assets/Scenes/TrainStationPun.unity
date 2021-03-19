@@ -109,9 +109,9 @@ NavMeshSettings:
     agentRadius: 0.5
     agentHeight: 2
     agentSlope: 45
-    agentClimb: 0.5
+    agentClimb: 1
     ledgeDropHeight: 0
-    maxJumpAcrossDistance: 10
+    maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
@@ -120,7 +120,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 133783c6e42c07648ace54220427ee6f, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!1001 &2469076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -81798,7 +81798,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1531072270}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 374.70383, y: -38.514126, z: 298.17007}
+  m_LocalPosition: {x: 374.70383, y: 37.4, z: 298.17007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
