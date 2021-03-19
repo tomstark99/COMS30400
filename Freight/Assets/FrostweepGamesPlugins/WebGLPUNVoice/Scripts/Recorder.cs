@@ -70,9 +70,7 @@ namespace FrostweepGames.WebGLPUNVoice
 
 		public ProximityVoice proximity;
 
-		private Dictionary<int, float> _soundVolumes;
-
-		public float sendThreshold = 0.1f; 
+		public float sendThreshold = -0.10f; 
 
 		/// <summary>
 		/// Initializes buffer, refreshes microphones list and selects first microphone device if exists
@@ -88,15 +86,7 @@ namespace FrostweepGames.WebGLPUNVoice
 				_microphoneDevice = CustomMicrophone.devices[0];
 			}
 
-			// make sure it's never null and then subscribe to changes
-			_soundVolumes = new Dictionary<int, float>();
-			proximity.OnSoundVolumesUpdate += UpdateSoundVolumes;
 		}
-
-		private void UpdateSoundVolumes()
-        {
-			_soundVolumes = proximity.SoundVolumes;
-        }
 
 		/// <summary>
 		/// Handles processing of recording each frame
@@ -142,6 +132,7 @@ namespace FrostweepGames.WebGLPUNVoice
 			}
 			else
 			{
+
 				if (_buffer.Count > 0)
 				{
 
@@ -163,7 +154,7 @@ namespace FrostweepGames.WebGLPUNVoice
             {
 				sum += sample;
             }
-			Debug.Log(sum / samples.Count());
+			//Debug.Log(sum / samples.Count());
 			// skip no sound 
 			if (sum / samples.Count() < sendThreshold) return;
 
@@ -172,9 +163,11 @@ namespace FrostweepGames.WebGLPUNVoice
 
 			List<int> targets = new List<int>();
 
+			var _soundVolumes = proximity.SoundVolumes;
 			// skip far away players since they don't hear the sound anyway
-			foreach(int id in _soundVolumes.Keys)
+			foreach (int id in _soundVolumes.Keys)
             {
+				Debug.Log(_soundVolumes[id]);
 				if(_soundVolumes[id] > 0)
                 {
 					targets.Add(id);

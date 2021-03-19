@@ -53,18 +53,24 @@ public class SoundRipples : MonoBehaviourPun
                 _lastPosition = 0;
             }
             //Debug.Log(decibelsValue);
-            if (decibelsValue <= 0)
-            {
-                ParticleSystem.MainModule main = particles.main;
-                main.startSize = 1;
-            }
-            else
-            {
-                ParticleSystem.MainModule main = particles.main;
-                main.startSize = decibelsValue;
-            }
+            photonView.RPC(nameof(UpdateSoundRiples), RpcTarget.All, decibelsValue);
         }
 
+    }
+
+    [PunRPC]
+    private void UpdateSoundRiples(float decibels)
+    {
+        if (decibels <= 0)
+        {
+            ParticleSystem.MainModule main = particles.main;
+            main.startSize = 1;
+        }
+        else
+        {
+            ParticleSystem.MainModule main = particles.main;
+            main.startSize = decibels;
+        }
     }
 
     private float ComputeRMS(float[] buffer, int offset, ref int length)
