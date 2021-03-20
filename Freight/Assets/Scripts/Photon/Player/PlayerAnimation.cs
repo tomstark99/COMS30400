@@ -82,7 +82,7 @@ public class PlayerAnimation : MonoBehaviourPun
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
+        // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
         if(climbing && Input.GetKey(KeyCode.W)) {
             animator.SetBool(isClimbingHash, true);
