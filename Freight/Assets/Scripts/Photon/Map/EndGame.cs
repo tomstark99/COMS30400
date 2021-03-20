@@ -29,6 +29,7 @@ public class EndGame : MonoBehaviour
 
     private void OnTriggerEnter (Collider other)
     {
+        Debug.Log(other.gameObject.tag);
         if (other.gameObject.tag == "locomotive")
         {
             colliders.Add(other);
