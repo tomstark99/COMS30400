@@ -12,9 +12,6 @@ public class ProximityVoice : MonoBehaviourPun
     public Listener listener;
     public Recorder recorder;
     public AudioListener audioListener;
-    public Dictionary<int, float> SoundVolumes;
-
-    public event Action OnSoundVolumesUpdate;
 
     private Dictionary<int, AudioSource> _sources;
     private GameObject[] _players;
@@ -42,9 +39,6 @@ public class ProximityVoice : MonoBehaviourPun
 
         _sources = new Dictionary<int, AudioSource>();
         _players = GameObject.FindGameObjectsWithTag("Player");
-
-        SoundVolumes = new Dictionary<int, float>();
-        OnSoundVolumesUpdate?.Invoke();
 
         listener.SpeakersUpdatedEvent += OnSpeakerUpdate;
 
@@ -75,8 +69,6 @@ public class ProximityVoice : MonoBehaviourPun
             var distance = Vector3.Distance(transform.position, player.transform.position);
             var newVolume = VolumeValue(distance);
             _sources[Id].volume = newVolume;
-            SoundVolumes.Remove(Id);
-            SoundVolumes.Add(Id, newVolume);
         }
     }
 
@@ -84,15 +76,10 @@ public class ProximityVoice : MonoBehaviourPun
     {
         _players = GameObject.FindGameObjectsWithTag("Player");
 
-        SoundVolumes = new Dictionary<int, float>();
-
         _sources = new Dictionary<int, AudioSource>();
         foreach(int id in listener.Speakers.Keys)
         {
             _sources.Add(id, listener.Speakers[id].AudioSource);
-            SoundVolumes.Add(id, 1f);
         }
-
-        OnSoundVolumesUpdate?.Invoke();
     }
 }

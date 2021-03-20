@@ -5329,6 +5329,7 @@ MonoBehaviour:
   particles: {fileID: 504963560280851156}
   recorder: {fileID: 7634450650693227252}
   decibelsValue: 0
+  positiveInLastSecond: 0
 --- !u!1 &7980832976756422580
 GameObject:
   m_ObjectHideFlags: 0
@@ -5436,6 +5437,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7850493353477548324, guid: 770cef4903d510742b4bab88dc975b32,
+        type: 3}
+      propertyPath: ripples
+      value: 
+      objectReference: {fileID: 7302812998202872865}
     - target: {fileID: 7850493353477548324, guid: 770cef4903d510742b4bab88dc975b32,
         type: 3}
       propertyPath: m_Enabled
