@@ -36,7 +36,7 @@ public class PlayerUI : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(mouseSensibilitySlider.value);
+        //Debug.Log(mouseSensibilitySlider.value);
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

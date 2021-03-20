@@ -145,7 +145,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     // trigger collider for the ladder and the train floor
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "locomotive")
+        if (other.gameObject.tag == "locomotive" || other.gameObject.tag == "ladder")
         {
             Debug.Log("PLAYER ENTERED LADDER");
             climbing = true;
@@ -159,7 +159,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void OnTriggerExit(Collider other)
     {
-        if (climbing && other.gameObject.tag == "locomotive")
+        if (climbing && other.gameObject.tag == "locomotive" || other.gameObject.tag == "ladder")
         {
             Debug.Log("player stopped climbing");
             climbing = false;
