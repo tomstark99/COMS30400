@@ -69,8 +69,7 @@ namespace FrostweepGames.WebGLPUNVoice
 
 
 		public ProximityVoice proximity;
-
-		public float sendThreshold = -0.10f; 
+		public SoundRipples ripples;
 
 		/// <summary>
 		/// Initializes buffer, refreshes microphones list and selects first microphone device if exists
@@ -148,27 +147,20 @@ namespace FrostweepGames.WebGLPUNVoice
 		/// <param name="samples">list of sampels that will be sent over network</param>
 		private void SendDataToNetwork(List<float> samples)
 		{
-			float sum = 0;
-
-			foreach(float sample in samples)
-            {
-				sum += sample;
-            }
-			//Debug.Log(sum / samples.Count());
-			// skip no sound 
-			if (sum / samples.Count() < sendThreshold) return;
+			//skip second with no sound
+			if (!ripples.positiveInLastSecond) return; 
 
 			// data in bytes to send over network
 			byte[] bytes = AudioConverter.FloatToByte(samples);
 
 			List<int> targets = new List<int>();
 
-			var _soundVolumes = proximity.SoundVolumes;
+			var speakers = proximity.listener.Speakers;
 			// skip far away players since they don't hear the sound anyway
-			foreach (int id in _soundVolumes.Keys)
+			foreach (int id in speakers.Keys)
             {
-				Debug.Log(_soundVolumes[id]);
-				if(_soundVolumes[id] > 0)
+				Debug.Log(speakers[id].AudioSource.volume);
+				if(speakers[id].AudioSource.volume > 0)
                 {
 					targets.Add(id);
                 }
@@ -179,7 +171,7 @@ namespace FrostweepGames.WebGLPUNVoice
             {
 				targets.Add(PhotonNetwork.LocalPlayer.ActorNumber);
 			}
-
+			Debug.Log("Send data");
 			// sending data of recorded samples by using raise event feature
 			Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { TargetActors = targets.ToArray() };
 			//Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { Receivers = debugEcho ? Photon.Realtime.ReceiverGroup.All : Photon.Realtime.ReceiverGroup.Others };
