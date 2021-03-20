@@ -159,7 +159,7 @@ namespace FrostweepGames.WebGLPUNVoice
 			// skip far away players since they don't hear the sound anyway
 			foreach (int id in speakers.Keys)
             {
-				Debug.Log(speakers[id].AudioSource.volume);
+				//Debug.Log(speakers[id].AudioSource.volume);
 				if(speakers[id].AudioSource.volume > 0)
                 {
 					targets.Add(id);
@@ -171,7 +171,7 @@ namespace FrostweepGames.WebGLPUNVoice
             {
 				targets.Add(PhotonNetwork.LocalPlayer.ActorNumber);
 			}
-			Debug.Log("Send data");
+			//Debug.Log("Send data");
 			// sending data of recorded samples by using raise event feature
 			Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { TargetActors = targets.ToArray() };
 			//Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { Receivers = debugEcho ? Photon.Realtime.ReceiverGroup.All : Photon.Realtime.ReceiverGroup.Others };
