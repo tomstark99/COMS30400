@@ -159,9 +159,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             ladderPos.y = transform.position.y;
             move += ladderPos - transform.position;
         }
-
         // if forwards velocity is greater than 0 and inside the climbing collider, add to the vertical height instead of the forward height
-        if (climbingBuilding && z > 0f)
+        else if (climbingBuilding && z > 0f)
         {
             move = transform.right * x + transform.up * z;
         }
@@ -220,7 +219,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (other.gameObject.tag == "ladder")
         {
             climbingBuilding = true;
-            GetComponent<PlayerAnimation>().setClimbing(climbing);
+            GetComponent<PlayerAnimation>().setClimbing(climbingBuilding);
         }
         else if (other.gameObject.tag == "trainfloor")
         {
@@ -246,7 +245,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (other.gameObject.tag == "ladder")
         {
             climbingBuilding = false;
-            GetComponent<PlayerAnimation>().setClimbing(climbing);
+            GetComponent<PlayerAnimation>().setClimbing(climbingBuilding);
         }
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
