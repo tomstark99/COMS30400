@@ -5,17 +5,20 @@ using Photon.Pun;
 
 public class MouseLookPhoton : MonoBehaviourPun
 {
-    private float mouseSensitivity = 150f;
+    public float mouseSensitivity;
 
     [Header("Camera")]
     [SerializeField] private Transform playerBody;
     [SerializeField] private Camera virtualCamera;
 
     float xRotation = 0f;
+    float yRotation = 0f;
 
     private Transform cameraTransform;
+    private Quaternion oldCameraRot;
+    private bool freeCam;
 
-
+    public bool onMenu;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +27,10 @@ public class MouseLookPhoton : MonoBehaviourPun
             cameraTransform = virtualCamera.GetComponent<Transform>();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+              if (PlayerPrefs.HasKey("MouseSensibility"))
+                mouseSensitivity = PlayerPrefs.GetFloat("MouseSensibility");
+              else
+            mouseSensitivity = 100f;
         }
        
     }
@@ -33,14 +40,38 @@ public class MouseLookPhoton : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            oldCameraRot = cameraTransform.localRotation;
+            freeCam = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftAlt))
+        {
+            cameraTransform.localRotation = oldCameraRot;
+            yRotation = 0f;
+            freeCam = false;
+        }
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        xRotation = Mathf.Clamp(xRotation, -90f, 70f);
 
-        cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        if(onMenu)
+            return;
 
-        playerBody.Rotate(Vector3.up * mouseX);
+        if (!freeCam)
+        {
+            cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            playerBody.Rotate(Vector3.up * mouseX);
+        }
+        else
+        {
+            yRotation += mouseX;
+            yRotation = Mathf.Clamp(yRotation, -150f, 130f);
+            cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        }
+            
     }
 }
