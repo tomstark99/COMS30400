@@ -5,6 +5,7 @@ using Photon.Pun;
 using FrostweepGames.Plugins.Native;
 using FrostweepGames.WebGLPUNVoice;
 using System.Linq;
+using System;
 
 public class ProximityVoice : MonoBehaviourPun
 {
@@ -49,8 +50,8 @@ public class ProximityVoice : MonoBehaviourPun
 
     private float VolumeValue(float distance)
     {
-        if (distance < 1f) return 1f; //Max volume
-        if (distance > 5f) return 0f; //Min volume
+        if (distance < minDistance) return 1f; //Max volume
+        if (distance > maxDistance) return 0f; //Min volume
         return a + b / Mathf.Sqrt(distance); // maxVolume in minDistance and minVolume in maxDistance
     }
 
@@ -66,7 +67,8 @@ public class ProximityVoice : MonoBehaviourPun
             if (!_sources.ContainsKey(Id)) continue; 
 
             var distance = Vector3.Distance(transform.position, player.transform.position);
-            _sources[Id].volume = VolumeValue(distance);
+            var newVolume = VolumeValue(distance);
+            _sources[Id].volume = newVolume;
         }
     }
 
