@@ -27,7 +27,7 @@ public class HeadMovementPhoton : MonoBehaviourPun
     [PunRPC]
     void newHeadPos()
     {
-        cameraTransform.localPosition = origionalTranfromPos + noseOffset;
+        cameraTransform.localPosition = origionalTranfromPos + Quaternion.Euler(0, 0, 0) * noseOffset;
     }
 
     // Update is called once per frame
