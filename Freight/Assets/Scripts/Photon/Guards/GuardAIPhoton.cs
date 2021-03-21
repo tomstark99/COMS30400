@@ -271,9 +271,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         foreach (GameObject rock in rocks)
         {
 
-            //Debug.Log(rock);
-            //Debug.Log("It finds rocks");
-
             // gets the rock alert component
             RockHitGroundAlert tempRock = rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>();
 
