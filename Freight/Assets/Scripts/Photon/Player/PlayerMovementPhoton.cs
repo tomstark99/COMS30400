@@ -73,10 +73,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // movement function
         if (photonView.IsMine)
             Movement();
-
-        //// if escape is pressed, quit game
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //    Application.Quit();
         
     }
 
@@ -85,7 +81,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             faceUI.SetActive(true);
         }
         yield return new WaitForSeconds(2);
-        if(Input.GetKeyDown(KeyCode.C) || PoseParser.GETGestureAsString().CompareTo("C") == 0){
+        if(Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0){
             faceUI.SetActive(false);
             check = true;
         }
@@ -137,19 +133,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.right * x + transform.forward * z;
         }
-        
-#endif
 
-        // sticks the player onto the train
-        if (onTrain)
-        {
-            StartCoroutine(SetFaceActive());
-            Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) - GameObject.FindGameObjectWithTag("locomotive").transform.position;
-            trainMove.x = -trainMove.x;
-            trainMove.y = 0f;
-            trainMove.z = -trainMove.z;
-            move += trainMove;
-        }
+#endif
 
         //Sticks player to centreline of ladder
         if (climbing)
@@ -168,6 +153,19 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.right * x + transform.forward * z;
         }
+
+        // sticks the player onto the train
+        if (onTrain)
+        {
+            StartCoroutine(SetFaceActive());
+            Debug.Log(GameObject.FindGameObjectWithTag("locomotive"));
+            Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) - GameObject.FindGameObjectWithTag("locomotive").transform.position;
+            trainMove.x = -trainMove.x;
+            trainMove.y = 0f;
+            trainMove.z = -trainMove.z;
+            move += trainMove;
+        }
+
 
         controller.Move(move * speed * Time.deltaTime);
 
@@ -211,7 +209,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             ladderCentreLine = ((BoxCollider) other).center;
             // Debug.Log("LADDER COORDS" + (train.transform.position + ladderCentreLine).ToString());
             climbing = true;
-            GetComponent<PlayerAnimation>().setClimbing(climbing);
+            //GetComponent<PlayerAnimation>().setClimbing(climbing);
             //faceUI.SetActive(false);
             LeftHandUpUI.SetActive(true);
             RightHandUpUI.SetActive(true);
@@ -238,11 +236,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             // Debug.Log("player stopped climbing");
             climbing = false;
-            GetComponent<PlayerAnimation>().setClimbing(climbing);
+            //GetComponent<PlayerAnimation>().setClimbing(climbing);
             LeftHandUpUI.SetActive(false);
             RightHandUpUI.SetActive(false);
         }
-        else if (other.gameObject.tag == "ladder")
+        else if (climbingBuilding && other.gameObject.tag == "ladder")
         {
             climbingBuilding = false;
             GetComponent<PlayerAnimation>().setClimbing(climbingBuilding);
