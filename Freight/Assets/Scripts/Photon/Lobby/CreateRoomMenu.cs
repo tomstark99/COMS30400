@@ -33,8 +33,17 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         Debug.Log("Room created");
-        roomsCanvases.CurrentRoomCanvas.Show();
-        roomsCanvases.CreateOrJoinRoomCanvas.Hide();
+        if (PhotonNetwork.CurrentRoom.IsVisible == false)
+        {
+            PhotonNetwork.LoadLevel(2);
+            roomsCanvases.CurrentRoomCanvas.Hide();
+            roomsCanvases.CreateOrJoinRoomCanvas.Hide();
+        }
+        else
+        {
+            roomsCanvases.CurrentRoomCanvas.Show();
+            roomsCanvases.CreateOrJoinRoomCanvas.Hide();
+        }
     }
 
     // debug log if room creation failed
