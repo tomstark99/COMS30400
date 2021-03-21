@@ -174,13 +174,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             crouching = true;
             controller.height = 1.2f;
         } 
-        else if (Input.GetKeyDown(KeyCode.LeftControl) && crouching)
+        else if (Input.GetKeyUp(KeyCode.LeftControl) && crouching)
         {
             crouching = false;
             controller.height = 1.8f;
         }
 
-        velocity.y += gravity * Time.deltaTime;
+        //velocity.y += gravity * Time.deltaTime;
         // Only applies gravity when not climbing, this allows players to stay on ladder
         if (!climbing)
         {
