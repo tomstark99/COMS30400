@@ -17,6 +17,12 @@ public class SoundRipples : MonoBehaviourPun
     private string _microphoneDevice;
     private readonly float _updateFrequency = 0.25f;
 
+    //checks if the decibels value was positive in the last second
+    //if not, using a refPower of 0.001f, means that no sound was made
+    //see ComputeDB line 6
+    public bool positiveInLastSecond = false;
+    private int count = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,47 +37,61 @@ public class SoundRipples : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        AudioClip audioClip = recorder.AudioClip;
-
         int currentPosition = CustomMicrophone.GetPosition(_microphoneDevice);
 
+        //cheks how many samples were recorder since last time we calculated
+        //if it went around the buffer (so past the limit and back to 0) we just 
+        //do the rest of the array and next time start from 0
         if(currentPosition != _lastPosition)
         {
             int length = Constants.RecordingTime * Constants.SampleRate;
             float[] data = new float[length];
 
-            audioClip.GetData(data, 0);
+            CustomMicrophone.GetRawData(ref data, recorder.AudioClip);
 
             if (currentPosition > _lastPosition)
             {
-                var buffer = new List<float>();
-                buffer.AddRange(data.ToList().GetRange(_lastPosition, currentPosition - _lastPosition));
                 int len = currentPosition - _lastPosition;
-                decibelsValue = ComputeDB(buffer.ToArray(), 0, ref len);
+                decibelsValue = ComputeDB(data, _lastPosition, ref len);
                 _lastPosition = currentPosition;
             } 
             else
             { 
-                var buffer = new List<float>();
-                buffer.AddRange(data.ToList().GetRange(_lastPosition, data.Length - _lastPosition));
-                buffer.AddRange(data.ToList().GetRange(0, currentPosition));
-                int len = data.Length - _lastPosition + currentPosition;
-                decibelsValue = ComputeDB(buffer.ToArray(), 0, ref len);
-                _lastPosition = currentPosition;
+                int len = data.Length - _lastPosition;
+                decibelsValue = ComputeDB(data, _lastPosition, ref len);
+                _lastPosition = 0;
             }
-            //Debug.Log(decibelsValue);
-            if (decibelsValue <= 0)
+
+            //udpate sound ripples animation on all clients
+            photonView.RPC(nameof(UpdateSoundRiples), RpcTarget.All, decibelsValue);
+
+            if(count < 1 / _updateFrequency)
             {
-                ParticleSystem.MainModule main = particles.main;
-                main.startSize = 1;
+                count++;
+                positiveInLastSecond |= decibelsValue > 0;
             }
             else
             {
-                ParticleSystem.MainModule main = particles.main;
-                main.startSize = decibelsValue;
+                count = 1;
+                positiveInLastSecond = decibelsValue > 0;
             }
         }
 
+    }
+
+    [PunRPC]
+    private void UpdateSoundRiples(float decibels)
+    {
+        if (decibels <= 0)
+        {
+            ParticleSystem.MainModule main = particles.main;
+            main.startSize = 1;
+        }
+        else
+        {
+            ParticleSystem.MainModule main = particles.main;
+            main.startSize = decibels;
+        }
     }
 
     private float ComputeRMS(float[] buffer, int offset, ref int length)
@@ -102,6 +122,9 @@ public class SoundRipples : MonoBehaviourPun
 
         rms = ComputeRMS(buffer, offset, ref length);
 
+        //0.001f works really well, if no sound is made, result will be below 0
+        //with wispers, the result will be between 10 - 20, and normal talking will be above 20 
+        //friendly reminder that decibels values are relative to a chosen "basic" value
         float refPower = 0.001f;
         return 10 * Mathf.Log10(rms / refPower);
     }

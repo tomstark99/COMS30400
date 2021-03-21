@@ -435,6 +435,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9b84d8b5ea26084987c3e3d51fcd504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particles: {fileID: 504963560280851156}
+  recorder: {fileID: 7634450650693227252}
+  decibelsValue: 0
+  positiveInLastSecond: 0
+--- !u!1 &7980832976756422580
   playerUI: {fileID: 7260541692980074186}
   gesture: 
 --- !u!1 &8337203980185033405
@@ -657,6 +662,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4447779116337271253, guid: 934fa5e8fc3530243991072c91aecaf7,
         type: 3}
+      propertyPath: ripples
+      value: 
+      objectReference: {fileID: 7302812998202872865}
+    - target: {fileID: 7850493353477548324, guid: 770cef4903d510742b4bab88dc975b32,
+        type: 3}
+      propertyPath: m_Enabled
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
@@ -680,6 +691,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7850493353477548324, guid: 770cef4903d510742b4bab88dc975b32,
+        type: 3}
+      propertyPath: proximity
+      value: 
+      objectReference: {fileID: 6582057755498782199}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 934fa5e8fc3530243991072c91aecaf7, type: 3}
 --- !u!1 &8865870502819156188 stripped
