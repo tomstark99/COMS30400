@@ -171,6 +171,11 @@ namespace FrostweepGames.WebGLPUNVoice
             {
 				targets.Add(PhotonNetwork.LocalPlayer.ActorNumber);
 			}
+
+            if (targets.Count == 0) {
+                return;
+            }
+
 			//Debug.Log("Send data");
 			// sending data of recorded samples by using raise event feature
 			Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { TargetActors = targets.ToArray() };
