@@ -30,6 +30,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private float groundDistance = 0.4f;
     private bool isGrounded;
     private bool climbing;
+    private bool climbingBuilding;
     private bool crouching;
     private bool onTrain;
     private bool check = false;
@@ -159,6 +160,16 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move += ladderPos - transform.position;
         }
 
+        // if forwards velocity is greater than 0 and inside the climbing collider, add to the vertical height instead of the forward height
+        if (climbingBuilding && z > 0f)
+        {
+            move = transform.right * x + transform.up * z;
+        }
+        else
+        {
+            move = transform.right * x + transform.forward * z;
+        }
+
         controller.Move(move * speed * Time.deltaTime);
 
         // Checks if jump button is pressed and allows user to jump if they are on the ground
@@ -194,7 +205,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     // trigger collider for the ladder and the train floor
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "locomotive" || other.gameObject.tag == "ladder")
+        if (other.gameObject.tag == "locomotive")
         {
             // Debug.Log("PLAYER ENTERED LADDER");
             train = other.gameObject;
@@ -205,6 +216,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             //faceUI.SetActive(false);
             LeftHandUpUI.SetActive(true);
             RightHandUpUI.SetActive(true);
+        }
+        else if (other.gameObject.tag == "ladder")
+        {
+            climbingBuilding = true;
+            GetComponent<PlayerAnimation>().setClimbing(climbing);
         }
         else if (other.gameObject.tag == "trainfloor")
         {
@@ -219,13 +235,18 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void OnTriggerExit(Collider other)
     {
-        if (climbing && other.gameObject.tag == "locomotive" || other.gameObject.tag == "ladder")
+        if (climbing && other.gameObject.tag == "locomotive")
         {
             // Debug.Log("player stopped climbing");
             climbing = false;
             GetComponent<PlayerAnimation>().setClimbing(climbing);
             LeftHandUpUI.SetActive(false);
             RightHandUpUI.SetActive(false);
+        }
+        else if (other.gameObject.tag == "ladder")
+        {
+            climbingBuilding = false;
+            GetComponent<PlayerAnimation>().setClimbing(climbing);
         }
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
