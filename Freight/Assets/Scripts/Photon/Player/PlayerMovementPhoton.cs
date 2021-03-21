@@ -108,7 +108,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (climbing && l > 0f)
         {
             move = transform.up * l;
-            // move = transform.right * x + transform.up * z;
         }
         else
         {
@@ -128,6 +127,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move += trainMove;
         }
 
+        //Sticks player to centreline of ladder
         if (climbing)
         {
             faceUI.SetActive(false);
@@ -173,6 +173,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (other.gameObject.tag == "trainfloor")
         {
             Debug.Log("stef is aiiiir");
+            train = other.gameObject;
             climbing = false;
             LeftHandUpUI.SetActive(false);
             RightHandUpUI.SetActive(false);
