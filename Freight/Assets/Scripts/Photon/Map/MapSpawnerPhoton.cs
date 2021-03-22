@@ -19,7 +19,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     private Vector3 position = new Vector3(325.0f, 5.1f, 260.0f);
     private const int instantiations = 11;
     private int numTrees = 100;
-    private Vector3[] positions = new Vector3[100];
+    public Vector3[] positions = new Vector3[100];
 
     void Start()
     {
@@ -27,6 +27,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         {
             SpawnPrefabs();
         }
+        SpawnTrees();
     }
 
     public void SpawnPrefabs()
@@ -39,7 +40,6 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         SpawnTrackGroups();
         SpawnIndividualTracks();
         SpawnFences();
-        SpawnTrees();
         SpawnBushes();
         //BuildNavMesh();
         photonView.RPC("BuildNavMesh", RpcTarget.All);
@@ -95,8 +95,8 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
         // Vector3[] positions = new Vector3[numTrees];
 
-        if (PhotonNetwork.IsMasterClient)
-        {
+        // if (PhotonNetwork.IsMasterClient)
+        // {
             Debug.Log("master client allow");
             for (int i = 0; i < numTrees; i++)
             {
@@ -131,17 +131,17 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                     // Instantiate(tree, pos, Quaternion.Euler(0f, y_rot, 0f));
                 }
             }
-        }
+        // }
 
-        else
-        {
-            for (int i = 0; i < numTrees; i++)
-            {
-                float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
-                Instantiate(tree, positions[i], Quaternion.Euler(0f, y_rot, 0f));
-            }
-            Debug.Log("not master");
-        }
+        // else
+        // {
+        //     for (int i = 0; i < numTrees; i++)
+        //     {
+        //         float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
+        //         Instantiate(tree, positions[i], Quaternion.Euler(0f, y_rot, 0f));
+        //     }
+        //     Debug.Log("not master");
+        // }
 
         Debug.Log("Trees");
     }

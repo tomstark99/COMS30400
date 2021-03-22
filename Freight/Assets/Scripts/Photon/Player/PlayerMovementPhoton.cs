@@ -43,6 +43,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         get { return onTrain; }
     }
 
+    private Vector3[] positions;
+    private bool safeToSpawn = false;
    
     void Start()
     {
@@ -51,12 +53,22 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             // transform.Find("Camera").gameObject.SetActive(true);
             transform.Find("Camera/Camera").gameObject.SetActive(true);
-            Vector3[] positions = GameObject.FindGameObjectWithTag("MapSpawner").GetComponent<MapSpawnerPhoton>().getTreePositions();
+
+            /* ================== NETWORK WIDE RANDOM TREE SPAWNING WIP NOT DEMO READY FFS ==================
+
+            if(PhotonNetwork.IsMasterClient) {
+                positions = GameObject.FindGameObjectWithTag("MapSpawner").GetComponent<MapSpawnerPhoton>().getTreePositions();
+                safeToSpawn = true;
+            } else {
+                while(GameObject.FindGameObjectWithTag("Player"))
+            }
+
+
             foreach (Vector3 pos in positions) {
-                Debug.Log("PLAYER tree Pos" + pos);
                 float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
                 Instantiate(GameObject.FindGameObjectWithTag("MapSpawner").GetComponent<MapSpawnerPhoton>().tree, pos, Quaternion.Euler(0f, y_rot, 0f));
             }
+            */
             // transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head/Camera").gameObject.transform.localRotation = Quaternion.Euler(0.0f, 180.0f, -90.0f);
         }
 
@@ -273,6 +285,18 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     public float getSpeed() {
         return this.speed;
+    }
+
+    public Vector3 getTreePositions() {
+        if(PhotonNetwork.IsMasterClient) {
+            return this.positions;
+        } else { return; }
+    }
+
+    public bool getSafeSpawn() {
+        if(PhotonNetwork.IsMasterClient) {
+            return this.safeToSpawn;
+        } else { return false; }
     }
 
     public void setSpeedRunning(float val) {
