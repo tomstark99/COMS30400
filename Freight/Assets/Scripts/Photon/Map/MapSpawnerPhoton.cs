@@ -11,6 +11,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 {
     // variables for scene creation
     int seed;
+    public GameObject tree;
 
     // variables for spawning trains
     const float gap = 7.07f;
@@ -55,7 +56,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     {
         UnityEngine.Random.InitState(seed);
 
-        for (int i = 0; i < 100; i++)
+        /*for (int i = 0; i < 100; i++)
         {
             Debug.Log("tree " + i);
             Vector3 pos = Vector3.zero;
@@ -88,6 +89,57 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                 PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
                         "tree_basic Variant"), pos, Quaternion.Euler(0f, y_rot, 0f));
             }
+        }*/
+
+        int numTrees = 100;
+        Vector3[] positions = new Vector3[numTrees];
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("master client allow");
+            for (int i = 0; i < numTrees; i++)
+            {
+                Vector3 pos = Vector3.zero;
+                bool validPos = false;
+
+                while (!validPos)
+                {
+                    pos.x = UnityEngine.Random.Range(200.0f, 600.0f);
+                    pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
+                    pos.y = 0.0f;
+                    pos.y = Terrain.activeTerrain.SampleHeight(pos);
+                    pos.y += UnityEngine.Random.Range(0.1f, 2.0f);
+
+                    validPos = true;
+                    Collider[] colliders = Physics.OverlapSphere(pos, 2.0f);
+
+                    foreach (Collider col in colliders)
+                    {
+                        if (col.tag == "Track" || col.tag == "Building" || col.tag == "Fence" || col.tag == "Water")
+                        {
+                            Debug.Log("overlap");
+                            validPos = false;
+                        }
+                    }
+                }
+
+                if (validPos)
+                {
+                    float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
+                    positions[i] = pos;
+                    Instantiate(tree, pos, Quaternion.Euler(0f, y_rot, 0f));
+                }
+            }
+        }
+
+        else
+        {
+            for (int i = 0; i < numTrees; i++)
+            {
+                float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
+                Instantiate(tree, positions[i], Quaternion.Euler(0f, y_rot, 0f));
+            }
+            Debug.Log("not master");
         }
 
         Debug.Log("Trees");
