@@ -30,14 +30,16 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     {
         seed = (int)DateTime.Now.Ticks;
         UnityEngine.Random.InitState(seed);
-        SpawnTrees();
+        SpawnFences();
         SpawnTrains();
         SpawnBridges();
         SpawnTrackGroups();
         SpawnIndividualTracks();
         SpawnFences();
-        photonView.RPC("BuildNavMesh", RpcTarget.All);
+        SpawnTrees();
+        SpawnBushes();
         //BuildNavMesh();
+        photonView.RPC("BuildNavMesh", RpcTarget.All);
         
     }
 
@@ -52,55 +54,81 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     void SpawnTrees()
     {
         UnityEngine.Random.InitState(seed);
-        for (int i = 0; i < 40; i++)
-        {
-            Vector3 pos;
-            pos.x = UnityEngine.Random.Range(200.0f, 265.0f);
-            pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
-            pos.y = 0.0f;
-            pos.y = Terrain.activeTerrain.SampleHeight(pos);
 
-            PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/tree_basic Variant", pos, Quaternion.identity);
-        }
-
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 200; i++)
         {
-            Vector3 pos;
-            pos.x = UnityEngine.Random.Range(270.0f, 600.0f);
-            pos.z = UnityEngine.Random.Range(100.0f, 180.0f);
-            if (pos.x > 310.0f && pos.x < 420.0f && pos.z < 180.0f && pos.z > 110.0f)
+            Vector3 pos = Vector3.zero;
+            bool validPos = false;
+
+            while (!validPos)
             {
-                pos.x = UnityEngine.Random.Range(420.0f, 600.0f);
+                pos.x = UnityEngine.Random.Range(200.0f, 600.0f);
+                pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
+                pos.y = 0.0f;
+                pos.y = Terrain.activeTerrain.SampleHeight(pos);
+                pos.y += UnityEngine.Random.Range(0.1f, 2.0f);
+
+                validPos = true;
+                Collider[] colliders = Physics.OverlapSphere(pos, 2.0f);
+
+                foreach (Collider col in colliders)
+                {
+                    if (col.tag == "Track" || col.tag == "Building" || col.tag == "Fence" || col.tag == "Water")
+                    {
+                        Debug.Log("overlap");
+                        validPos = false;
+                    }
+                }
             }
-            pos.y = 0.0f;
-            pos.y = Terrain.activeTerrain.SampleHeight(pos);
 
-            PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/tree_basic Variant", pos, Quaternion.identity);
-        }
-
-        for (int i = 0; i < 40; i++)
-        {
-            Vector3 pos;
-            pos.x = UnityEngine.Random.Range(270.0f, 600.0f);
-            pos.z = UnityEngine.Random.Range(445.0f, 500.0f);
-            pos.y = 0.0f;
-            pos.y = Terrain.activeTerrain.SampleHeight(pos);
-
-            PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/tree_basic Variant", pos, Quaternion.identity);
-        }
-
-        for (int i = 0; i < 40; i++)
-        {
-            Vector3 pos;
-            pos.x = UnityEngine.Random.Range(535.0f, 600.0f);
-            pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
-            pos.y = 0.0f;
-            pos.y = Terrain.activeTerrain.SampleHeight(pos);
-
-            PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/tree_basic Variant", pos, Quaternion.identity);
+            if (validPos)
+            {
+                float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "tree_basic Variant"), pos, Quaternion.Euler(0f, y_rot, 0f));
+            }
         }
 
         Debug.Log("Trees");
+    }
+
+    void SpawnBushes()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            Vector3 pos = Vector3.zero;
+            bool validPos = false;
+
+            while (!validPos)
+            {
+                pos.x = UnityEngine.Random.Range(200.0f, 600.0f);
+                pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
+                pos.y = 0.0f;
+                pos.y = Terrain.activeTerrain.SampleHeight(pos);
+
+                validPos = true;
+                Collider[] colliders = Physics.OverlapSphere(pos, 5.0f);
+
+                foreach (Collider col in colliders)
+                {
+                    if (col.tag == "Track" || col.tag == "Building" || col.tag == "Fence" || col.tag == "Tree" || col.tag == "Water")
+                    {
+                        Debug.Log("overlap");
+                        validPos = false;
+                    }
+                }
+            }
+
+            if (validPos)
+            {
+                float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
+
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                        "bush_basic Variant"), pos, Quaternion.Euler(0f, y_rot, 0f));
+            }
+        }
+
+        Debug.Log("bushes");
     }
 
     void SpawnTrackGroups()
@@ -117,7 +145,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             angle_pos.z -= 15.4675f;
 
             if (i == 0) {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Tracks/45_deg_fork_right_track_detail Variant", angle_pos, Quaternion.Euler(0f, -45f, 0f));
+                Vector3 position = new Vector3(325.97f, 5.1f, 245.13f);
+                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
+                    "Tracks/45_deg_right_track_detail Variant"), position, Quaternion.Euler(0f, -22.5f, 0f));
             } else {
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Tracks/45_deg_fork_right_track_detail Variant", angle_pos, Quaternion.Euler(0f, -45f, 0f));
             }
@@ -857,7 +887,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             }
             else if (!(i > 4 || i < 2))
             {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
+                Debug.Log("no fence");
             }
             else
             {
@@ -920,9 +950,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                 position.y += 3;
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
-            else if (!(i > 15 && i < 20))
+            else if (!(i > 19 || i < 16))
             {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
+                Debug.Log("fence gap");
             }
             else
             {
