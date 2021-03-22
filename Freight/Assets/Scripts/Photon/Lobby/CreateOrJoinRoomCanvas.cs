@@ -25,7 +25,7 @@ public class CreateOrJoinRoomCanvas : MonoBehaviourPunCallbacks
         roomsCanvases = canvases;
         createRoomMenu.Initialise(canvases);
         roomListingsMenu.Initalise(canvases);
-        name.text = PhotonNetwork.LocalPlayer.NickName;
+        //name.text = PhotonNetwork.LocalPlayer.NickName;
     }
 
     // sets the create or join room canvas to active
