@@ -51,6 +51,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             // transform.Find("Camera").gameObject.SetActive(true);
             transform.Find("Camera/Camera").gameObject.SetActive(true);
+            Vector3[] positions = GameObject.FindGameObjectWithTag("MapSpawner").GetComponent<MapSpawnerPhoton>().getTreePositions();
+            foreach (Vector3 pos in positions) {
+                Debug.Log("PLAYER tree Pos" + pos);
+                float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
+                Instantiate(GameObject.FindGameObjectWithTag("MapSpawner").GetComponent<MapSpawnerPhoton>().tree, pos, Quaternion.Euler(0f, y_rot, 0f));
+            }
             // transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head/Camera").gameObject.transform.localRotation = Quaternion.Euler(0.0f, 180.0f, -90.0f);
         }
 
