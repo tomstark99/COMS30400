@@ -24,6 +24,12 @@ public class HeadMovementPhoton : MonoBehaviourPun
         origionalTranfromPos = cameraTransform.localPosition;
     }
 
+    [PunRPC]
+    void newHeadPos()
+    {
+        cameraTransform.localPosition = origionalTranfromPos + Quaternion.Euler(0, 0, 0) * noseOffset;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -39,6 +45,7 @@ public class HeadMovementPhoton : MonoBehaviourPun
 
         //Debug.Log(noseOffset.ToString());
 
-        cameraTransform.localPosition = origionalTranfromPos + noseOffset;
+        //cameraTransform.localPosition = origionalTranfromPos + noseOffset;
+        photonView.RPC("newHeadPos", RpcTarget.All);
     }
 }
