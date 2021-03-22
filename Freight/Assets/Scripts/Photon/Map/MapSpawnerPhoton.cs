@@ -55,8 +55,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     {
         UnityEngine.Random.InitState(seed);
 
-        for (int i = 0; i < 200; i++)
+        for (int i = 0; i < 100; i++)
         {
+            Debug.Log("tree " + i);
             Vector3 pos = Vector3.zero;
             bool validPos = false;
 
@@ -94,8 +95,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
     void SpawnBushes()
     {
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 30; i++)
         {
+            Debug.Log("bush " + i);
             Vector3 pos = Vector3.zero;
             bool validPos = false;
 
@@ -123,8 +125,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             {
                 float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
 
-                PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs",
-                        "bush_basic Variant"), pos, Quaternion.Euler(0f, y_rot, 0f));
+                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/bush_basic Variant", pos, Quaternion.Euler(0f, y_rot, 0f));
             }
         }
 
