@@ -24,7 +24,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsConnected) return;
 
         RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 7;
+        options.MaxPlayers = 2;
         PhotonNetwork.JoinOrCreateRoom(roomName.text, options, TypedLobby.Default);
         roomsCanvases.CurrentRoomCanvas.SetRoomName(roomName.text);
     }
@@ -33,8 +33,17 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         Debug.Log("Room created");
-        roomsCanvases.CurrentRoomCanvas.Show();
-        roomsCanvases.CreateOrJoinRoomCanvas.Hide();
+        if (PhotonNetwork.CurrentRoom.IsVisible == false)
+        {
+            PhotonNetwork.LoadLevel(2);
+            roomsCanvases.CurrentRoomCanvas.Hide();
+            roomsCanvases.CreateOrJoinRoomCanvas.Hide();
+        }
+        else
+        {
+            roomsCanvases.CurrentRoomCanvas.Show();
+            roomsCanvases.CreateOrJoinRoomCanvas.Hide();
+        }
     }
 
     // debug log if room creation failed

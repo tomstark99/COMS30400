@@ -9,7 +9,8 @@ public class ItemInteract : MonoBehaviourPun
     [SerializeField] private Transform cameraTransform;
     private Character character;
     private bool interactableInRange = false;
-    private PickUpable currentInteractable;
+    [SerializeField]
+    private Interactable currentInteractable;
 
     public GameObject text;
 
@@ -23,58 +24,58 @@ public class ItemInteract : MonoBehaviourPun
         if(!photonView.IsMine)
         {
             Destroy(this);
-        }    
-     
+        }
+
      character = GetComponent<Character>();
     }
 
     // Update is called once per frame
     void Update()
     {
-            
+
 
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
         bool canInteract = interactableInRange && !character.HasItem();
 
-        if(canInteract) 
+        if(canInteract)
         {
-                PickUpable newInteractable = interactableRock.GetComponent<PickUpable>();
+            Interactable newInteractable = interactableRock.GetComponent<Interactable>();
 
-                /* If we are already interacting with something but we are now
-                trying to interact with something new, then we need to disable
-                the other interaction (turn off its glow).*/
+            //currentInteractable = newInteractable;
 
-                currentInteractable = newInteractable;
-               // Debug.Log("current interactable is " + currentInteractable);
-            if (currentInteractable != null) 
+            if (newInteractable != null) 
             {
-                    // If we are able to interact with the new interactable then turn on its glow
 
-                    // If we are pressing mouse down then do the interaction
-                    //Debug.Log("current interactable has a pick up script");
-                    if (Input.GetKeyDown(KeyCode.E)) 
-                    {
-                       // Debug.Log("F was pressed");
-                        // Do whatever the primary interaction of this interactable is.
-                        currentInteractable.PrimaryInteraction(character);
-                    }
+                // If we are pressing mouse down then do the interaction
+                //Debug.Log("current interactable has a pick up script");
+                if (Input.GetKeyDown(KeyCode.E)) 
+                {
+                    currentInteractable = newInteractable;
+                    // Debug.Log("F was pressed");
+                    // Do whatever the primary interaction of this interactable is.
+                    currentInteractable.PrimaryInteraction(character);
+                }
             }
         }
-     // Otherwise if we cant interact with anything but we were previously
+        // Otherwise if we cant interact with anything but we were previously
         // interacting with something.
-        else if (currentInteractable != null) 
+        else if (currentInteractable != null)
         {
-            // Then turn off the glow of that thing
         
-        // And if bring the mouse button up
-            if (Input.GetMouseButtonDown(0)) 
+            // And if bring the mouse button up
+            if (Input.GetKeyDown(KeyCode.G)) 
             {
+                // Some item have a primary interaction off method, eg drop the
+                // item after pickup. Therefore run this on mouse up.
+                currentInteractable.PrimaryInteractionOff(character);
+                currentInteractable = null;
+            }
 
-              // Some item have a primary interaction off method, eg drop the
-              // item after pickup. Therefore run this on mouse up.
-              currentInteractable.PrimaryInteractionOff(character);
-              currentInteractable = null;
+            if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Shootable>() != null) 
+            {
+                Debug.Log(currentInteractable);
+                currentInteractable.GetComponent<Shootable>().ShootGun(character);
             }
         }
     }
@@ -90,31 +91,44 @@ public class ItemInteract : MonoBehaviourPun
     {
         text.SetActive(false);
     }
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
 
-            rocks = GameObject.Find("Environment/Interactables");
-            interactables = rocks.transform.GetChild(0).gameObject;
-            float minimumDistanceToObject = float.MaxValue;
-            foreach (Transform rock in interactables.transform)
+        interactables = GameObject.Find("Environment/Interactables");
+
+        if (interactables == null)
+        {
+            return;
+        }
+        
+        //rocks = rocks.transform.GetChild(0).gameObject;
+        float minimumDistanceToObject = float.MaxValue;
+        bool found = false;
+        foreach(Transform interactable in interactables.transform) 
+        {
+            foreach (Transform interact in interactable.transform)
             {
-                float tempDist = Vector3.Distance(rock.transform.position, transform.position);
+                float tempDist = Vector3.Distance(interact.transform.position, transform.position);
                 if (tempDist <= 2.5f)
                 {
                     photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
                     interactableInRange = true;
 
                     if(tempDist < minimumDistanceToObject) {
-                        interactableRock = rock.gameObject;
+                        interactableRock = interact.gameObject;
                         minimumDistanceToObject = tempDist;
                     }
+                    found = true;
+
                 }
-                else if (tempDist > 2.5f)
+                else if (tempDist > 2.5f && found == false)
                 {
                     photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
                     interactableInRange = false;
                 }
             }
+        }
+            
             
            
     }
