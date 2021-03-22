@@ -18,6 +18,8 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     private Vector3 positionStart = new Vector3(325.0f, 5.1f, 260.0f);
     private Vector3 position = new Vector3(325.0f, 5.1f, 260.0f);
     private const int instantiations = 11;
+    private int numTrees = 100;
+    private Vector3[] positions = new Vector3[100];
 
     void Start()
     {
@@ -91,8 +93,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             }
         }*/
 
-        int numTrees = 100;
-        Vector3[] positions = new Vector3[numTrees];
+        // Vector3[] positions = new Vector3[numTrees];
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -125,9 +126,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
                 if (validPos)
                 {
-                    float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
                     positions[i] = pos;
-                    Instantiate(tree, pos, Quaternion.Euler(0f, y_rot, 0f));
+                    // float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
+                    // Instantiate(tree, pos, Quaternion.Euler(0f, y_rot, 0f));
                 }
             }
         }
@@ -1013,5 +1014,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             }
         }
         Debug.Log("Fences");
+    }
+
+    public Vector3[] getTreePositions() {
+        return this.positions;
     }
 }
