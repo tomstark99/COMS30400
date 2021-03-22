@@ -17,7 +17,7 @@ public class CreateOrJoinRoomCanvas : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        name.text = PhotonNetwork.LocalPlayer.NickName;
+//        name.text = PhotonNetwork.LocalPlayer.NickName;
     }
 
     public void Initialise(RoomsCanvases canvases)
@@ -25,6 +25,7 @@ public class CreateOrJoinRoomCanvas : MonoBehaviourPunCallbacks
         roomsCanvases = canvases;
         createRoomMenu.Initialise(canvases);
         roomListingsMenu.Initalise(canvases);
+        Debug.Log("lololol");
         //name.text = PhotonNetwork.LocalPlayer.NickName;
     }
 
