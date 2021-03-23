@@ -19,11 +19,9 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-       /* if (PlayerPrefs.HasKey("MouseSensibility"))
+        if (PlayerPrefs.HasKey("MouseSensibility"))
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
-        else*/
-           
-            Debug.Log(mouseSensibilitySlider);
+        else
             mouseSensibilitySlider.value = 100f;
     }
 
