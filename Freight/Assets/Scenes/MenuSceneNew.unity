@@ -859,7 +859,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 134331328}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -229.48677, y: -157.50488, z: 30.247963}
+  m_LocalPosition: {x: -229.48677, y: -157.50488, z: 0}
   m_LocalScale: {x: 0.7879748, y: 0.7879748, z: 0.7879748}
   m_Children:
   - {fileID: 380917057}
@@ -4100,7 +4100,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745428433}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -328.31775}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.6458334, y: 1.6458334, z: 0.8229167}
   m_Children:
   - {fileID: 744936449}
@@ -4165,7 +4165,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 53219287}
         m_MethodName: AdjustVolume
         m_Mode: 1
         m_Arguments:
@@ -4203,7 +4203,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 765460936}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children:
   - {fileID: 1947641544}
@@ -4258,7 +4258,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 53219287}
         m_MethodName: SaveSettings
         m_Mode: 1
         m_Arguments:
@@ -4500,7 +4500,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770698439}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 67.332924, y: 228.0191, z: 352.3209}
+  m_LocalPosition: {x: 67.332924, y: 228.0191, z: 0}
   m_LocalScale: {x: 1.5421686, y: 1.5421686, z: 1.5421686}
   m_Children:
   - {fileID: 1555264971}
@@ -6225,8 +6225,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: AdjustVolume
+      - m_Target: {fileID: 357754413}
+        m_MethodName: SetMouseSensibility
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8737,7 +8737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -100}
+  m_AnchoredPosition: {x: 0, y: -47}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1944270591
