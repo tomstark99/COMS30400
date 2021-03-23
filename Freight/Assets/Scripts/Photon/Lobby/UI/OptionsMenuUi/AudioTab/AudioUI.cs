@@ -9,6 +9,13 @@ public class AudioUI : MonoBehaviour
    public GameObject text;
 
    public Slider MasterAudioSlider;
+
+   public void Start() {
+       if (PlayerPrefs.HasKey("MasterAudio"))
+            MasterAudioSlider.value = PlayerPrefs.GetFloat("MasterAudio");
+        else
+            MasterAudioSlider.value = 1f;
+   }
     // Start is called before the first frame update
     public void OnMouseOver() {
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
@@ -39,6 +46,7 @@ public class AudioUI : MonoBehaviour
  }
 
     public void SaveSettings () {
+        Debug.Log("Saved Audio Settings");
         AudioListener.volume = MasterAudioSlider.value;
         PlayerPrefs.SetFloat("MasterAudio", AudioListener.volume);
         PlayerPrefs.Save();
