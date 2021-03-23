@@ -11,6 +11,9 @@ public class AudioUI : MonoBehaviour
    public Slider MasterAudioSlider;
 
    public GameObject audioUIMenu;
+   public GameObject GameplayTab;
+   public GameObject ControlsTab;
+   public GameObject DisplayTab;
 
    public void Start() {
        if (PlayerPrefs.HasKey("MasterAudio"))
@@ -56,5 +59,8 @@ public class AudioUI : MonoBehaviour
 
     public void OnMouseClick() {
         audioUIMenu.SetActive(!audioUIMenu.activeSelf);
+        GameplayTab.SetActive(false);
+        ControlsTab.SetActive(false);
+        DisplayTab.SetActive(false);
     }
 }
