@@ -287,10 +287,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         return this.speed;
     }
 
-    public Vector3 getTreePositions() {
-        if(PhotonNetwork.IsMasterClient) {
-            return this.positions;
-        } else { return; }
+    public Vector3[] getTreePositions() {
+        return this.positions;
     }
 
     public bool getSafeSpawn() {
