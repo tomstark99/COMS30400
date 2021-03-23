@@ -7,6 +7,8 @@ using TMPro;
 public class AudioUI : MonoBehaviour
 {
    public GameObject text;
+
+   public Slider MasterAudioSlider;
     // Start is called before the first frame update
     public void OnMouseOver() {
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
@@ -28,5 +30,17 @@ public class AudioUI : MonoBehaviour
         
         TextMeshPros.color = new Color32(151, 158, 169, 255);
         transform.GetComponent<Image>().enabled = false;
+    }
+
+    public void AdjustVolume () {
+     
+     AudioListener.volume = MasterAudioSlider.value;
+     Debug.Log(AudioListener.volume);
+ }
+
+    public void SaveSettings () {
+        AudioListener.volume = MasterAudioSlider.value;
+        PlayerPrefs.SetFloat("MasterAudio", AudioListener.volume);
+        PlayerPrefs.Save();
     }
 }
