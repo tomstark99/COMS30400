@@ -50,4 +50,11 @@ public class GameplayUI : MonoBehaviour
        // PlayerPrefs.SetFloat("MouseSensibility", mouseLook.mouseSensitivity);
        // PlayerPrefs.Save();
     }
+
+    public void OnMouseClick() {
+        GameplayTab.SetActive(!GameplayTab.activeSelf);
+        ControlsTab.SetActive(false);
+        AudioTab.SetActive(false);
+        DisplayTab.SetActive(false);
+    }
 }
