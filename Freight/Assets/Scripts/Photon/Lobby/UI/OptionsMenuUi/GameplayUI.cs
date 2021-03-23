@@ -11,6 +11,15 @@ public class GameplayUI : MonoBehaviour
     public GameObject ControlsTab;
     public GameObject AudioTab;
     public GameObject DisplayTab;
+    public Slider mouseSensibilitySlider;
+
+    private void Start()
+    {
+        if (PlayerPrefs.HasKey("MouseSensibility"))
+            mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
+        else
+            mouseSensibilitySlider.value = 100f;
+    }
     // Start is called before the first frame update
     public void OnMouseOver() {
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
@@ -32,5 +41,13 @@ public class GameplayUI : MonoBehaviour
         
         TextMeshPros.color = new Color32(151, 158, 169, 255);
         transform.GetComponent<Image>().enabled = false;
+    }
+
+    public void SetMouseSensibility()
+    {
+        //needs changing
+        //mouseLook.mouseSensitivity = mouseSensibilitySlider.value;
+       // PlayerPrefs.SetFloat("MouseSensibility", mouseLook.mouseSensitivity);
+       // PlayerPrefs.Save();
     }
 }
