@@ -6,7 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 
-public class OptionsMenu : MonoBehaviour
+public class BackButtonMenu : MonoBehaviour
 {
     private RoomsCanvases roomsCanvases;
 
@@ -16,10 +16,9 @@ public class OptionsMenu : MonoBehaviour
     }
 
     // when click on create room, create a 2 player room
-    public void OnClick_OptionsButton()
+    public void OnClick_BackButton()
     {
-        roomsCanvases.OptionsCanvas.Show();
-        roomsCanvases.CreateOrJoinRoomCanvas.Hide();
+        //roomsCanvases.OptionsMenu.Hide();
+        roomsCanvases.CreateOrJoinRoomCanvas.Show();
     }
 }
-

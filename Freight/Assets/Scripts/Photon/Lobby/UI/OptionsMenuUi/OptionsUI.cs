@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class OptionsUI : MonoBehaviour
+public class OptionsUi : MonoBehaviour
 {
     // Start is called before the first frame update public GameObject text;
     public GameObject text;
-    public GameObject playerListScroll;
+    //public 
     // Start is called before the first frame update
     public void OnMouseOver() {
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
@@ -30,8 +30,4 @@ public class OptionsUI : MonoBehaviour
         transform.GetComponent<Image>().enabled = false;
     }
 
-    public void OnPointerClick() {
-        playerListScroll.SetActive(true);
-        Debug.Log(playerListScroll);
-    }
 }
