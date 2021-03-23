@@ -10,6 +10,8 @@ public class AudioUI : MonoBehaviour
 
    public Slider MasterAudioSlider;
 
+   public GameObject audioUIMenu;
+
    public void Start() {
        if (PlayerPrefs.HasKey("MasterAudio"))
             MasterAudioSlider.value = PlayerPrefs.GetFloat("MasterAudio");
@@ -50,5 +52,9 @@ public class AudioUI : MonoBehaviour
         AudioListener.volume = MasterAudioSlider.value;
         PlayerPrefs.SetFloat("MasterAudio", AudioListener.volume);
         PlayerPrefs.Save();
+    }
+
+    public void OnMouseClick() {
+        audioUIMenu.SetActive(!audioUIMenu.activeSelf);
     }
 }
