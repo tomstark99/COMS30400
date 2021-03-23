@@ -6,7 +6,12 @@ using TMPro;
 public class DisplayUI : MonoBehaviour
 {
     // Start is called before the first frame update
-     public GameObject text;
+    public GameObject text;
+
+    public GameObject GameplayTab;
+    public GameObject ControlsTab;
+    public GameObject AudioTab;
+    public GameObject DisplayTab;
     // Start is called before the first frame update
     public void OnMouseOver() {
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
