@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -35,7 +36,10 @@ public class PlayerUI : MonoBehaviour
     private void Update()
     {
         //Debug.Log(mouseSensibilitySlider.value);
-
+        if (!gameObject.transform.parent.GetComponent<PhotonView>().IsMine)
+        {
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             menuOpened = !menuOpened;   
