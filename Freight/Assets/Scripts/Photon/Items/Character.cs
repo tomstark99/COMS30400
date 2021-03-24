@@ -176,7 +176,7 @@ public class Character : MonoBehaviourPun
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
 
         // instantiate the bullet locally
-        GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(14).position, pickUpDestination.transform.GetChild(0).rotation);
+        GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(1).transform.GetChild(14).position, pickUpDestination.transform.GetChild(1).rotation);
         //pickUpDestination.transform.GetChild(0).GetComponent<Gun>().GunShot();
 
         // if it hits something, have the bullet point at that thing and add a force based on bullet forward facing transform
