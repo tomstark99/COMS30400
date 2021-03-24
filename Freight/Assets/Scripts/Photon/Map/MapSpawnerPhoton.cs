@@ -18,8 +18,6 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     private Vector3 positionStart = new Vector3(325.0f, 5.1f, 260.0f);
     private Vector3 position = new Vector3(325.0f, 5.1f, 260.0f);
     private const int instantiations = 11;
-    private int numTrees = 100;
-    public Vector3[] positions = new Vector3[100];
 
     void Start()
     {
@@ -35,9 +33,10 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         UnityEngine.Random.InitState(seed);
         
         SpawnTrains();
+        SpawnBrokenFence();
+        SpawnBushes();
         // SpawnBridges();
         
-        SpawnBushes();
         //BuildNavMesh();
         photonView.RPC("BuildNavMesh", RpcTarget.All);
         
@@ -90,15 +89,15 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         Debug.Log("bushes");
     }
 
-    void SpawnBridges()
-    {
-        Vector3 pos;
-        pos.x = 468.25f;
-        pos.y = 4.9f;
-        pos.z = 209.0f;
+    // void SpawnBridges()
+    // {
+    //     Vector3 pos;
+    //     pos.x = 468.25f;
+    //     pos.y = 4.9f;
+    //     pos.z = 209.0f;
 
-        PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/bridge_flat Variant", pos, Quaternion.Euler(0f, 90f, 0f));
-    }
+    //     PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/bridge_flat Variant", pos, Quaternion.Euler(0f, 90f, 0f));
+    // }
 
     void SpawnTrains()
     {
@@ -240,6 +239,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
         Debug.Log("Trains");
     }
+
     bool inSkip(int i, int[] positions, int gaps)
     {
         for (int j = 0; j < gaps; j++)
@@ -249,124 +249,18 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         return false;
     }
 
-    void SpawnFences()
-    {
-        //Random.seed = (int)System.DateTime.Now.Ticks/(Random.Range(1,50000));
-        //int brokenPartPos = Random.Range(10,30);
-        for (int i = 0; i < 50; i++)
+    void SpawnBrokenFence() {
+        int brokenPartPos = UnityEngine.Random.Range(0,5);
+        Vector3 position = new Vector3(277.42f, 6.5f, 257.82f);
+        for (int i = 0; i < 5; i++)
         {
-            Vector3 position = new Vector3(270.0f, 6.5f, (193.0f + i * 5.0f));
-
-            Vector3 fence_start = new Vector3(position.x - 2.5f, position.y, position.z);
-            Vector3 fence_end = new Vector3(position.x + 2.5f, position.y, position.z);
-            float height_start = Terrain.activeTerrain.SampleHeight(fence_start);
-            float height_end = Terrain.activeTerrain.SampleHeight(fence_end);
-
-            if (i == 10)
-            {
+            if (i == brokenPartPos) {
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_broken_closed Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-            }
-            else
-            {
-                if (height_start > 8.0f || height_end > 8.0f)
-                {
-                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-                    position.y += 3;
-                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-                    position.y += 3;
+            } else {
                     PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-                }
-                else if (height_start > 5.0f || height_end > 5.0f)
-                {
-                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-                    position.y += 3;
-                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-                }
-                else
-                {
-                    PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-                }
-                
             }
+            position.z += 5.0f;
         }
-
-        for (int i = 0; i < 50; i++)
-        {
-            Vector3 position = new Vector3(500.0f, 6.5f, (193.0f + i * 5.0f));
-
-            Vector3 fence_start = new Vector3(position.x - 2.5f, position.y, position.z);
-            Vector3 fence_end = new Vector3(position.x + 2.5f, position.y, position.z);
-            float height_start = Terrain.activeTerrain.SampleHeight(fence_start);
-            float height_end = Terrain.activeTerrain.SampleHeight(fence_end);
-
-            if (height_start > 8.0f || height_end > 8.0f)
-            {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-                position.y += 3;
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-                position.y += 3;
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-            }
-            else if (height_start > 5.0f || height_end > 5.0f)
-            {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-                position.y += 3;
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-            }
-            else if (!(i > 4 || i < 2))
-            {
-                Debug.Log("no fence");
-            }
-            else
-            {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 90f, 0f));
-            }
-        }
-
-        for (int i = 0; i < 46; i++)
-        {
-            Vector3 position = new Vector3((272.5f + i * 5.0f), 6.5f, 440.5f);
-
-            Vector3 fence_start = new Vector3(position.x - 2.5f, position.y, position.z);
-            Vector3 fence_end = new Vector3(position.x + 2.5f, position.y, position.z);
-            float height_start = Terrain.activeTerrain.SampleHeight(fence_start);
-            float height_end = Terrain.activeTerrain.SampleHeight(fence_end);
-
-            if (height_start < 4.99f || height_end < 4.99f)
-            {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
-                position.y -= 3;
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
-                position.y -= 3;
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
-            }
-            else if (height_start > 8.0f || height_end > 8.0f)
-            {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
-                position.y += 3;
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
-                position.y += 3;
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
-            }
-            else if (height_start > 5.0f || height_end > 5.0f)
-            {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple_bottom Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
-                position.y += 3;
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
-            }
-            else if (!(i > 19 || i < 16))
-            {
-                Debug.Log("fence gap");
-            }
-            else
-            {
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
-            }
-        }
-        Debug.Log("Fences");
     }
 
-    public Vector3[] getTreePositions() {
-        return this.positions;
-    }
 }
