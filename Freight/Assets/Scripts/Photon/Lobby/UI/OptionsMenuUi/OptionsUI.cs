@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class OptionsUi : MonoBehaviour
+public class OptionsUI : MonoBehaviour
 {
     // Start is called before the first frame update public GameObject text;
     public GameObject text;
