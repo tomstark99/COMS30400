@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class Character : MonoBehaviourPun
+public class Character : MonoBehaviourPunCallbacks
 {
     public Transform pickUpDestination;
     public Transform pickUpDestinationLocal;
@@ -44,7 +45,7 @@ public class Character : MonoBehaviourPun
         //PhotonView view = Item.GetComponent<PhotonView>();
         //view.TransferOwnership(PhotonNetwork.LocalPlayer);
         // Move to players pickup destination.
-        Item.transform.position = pickUpDestination.position;
+        //Item.transform.position = pickUpDestination.position;
 
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
@@ -54,21 +55,36 @@ public class Character : MonoBehaviourPun
         Item.SetItemPickupConditions();
     }
 
+    void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
+    {
+        if (currentHeldItem.tag == "Gun")
+        {
+            currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+        }
+
+        photonView.RPC("PickUpRPC", RpcTarget.Others, currentHeldItem.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, currentHeldItem.transform.GetComponent<PhotonView>().ViewID);
+    }
+
     public void PickUp(PickUpable Item) 
     {
         currentHeldItem = Item;
 
         PhotonView view = Item.GetComponent<PhotonView>();
-        view.TransferOwnership(PhotonNetwork.LocalPlayer);
-        //Item.SetItemPickupConditions();
-
-        if (Item.tag == "Gun")
+        if (!view.IsMine)
+            view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        else
         {
-            Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+            if (Item.tag == "Gun")
+            {
+                Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+            }
+
+            photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, Item.transform.GetComponent<PhotonView>().ViewID);
         }
 
-        photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
-        photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, Item.transform.GetComponent<PhotonView>().ViewID);
+
     }
 
     [PunRPC]
