@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class OptionsUI : MonoBehaviour
+public class DisplayUI : MonoBehaviour
 {
-    // Start is called before the first frame update public GameObject text;
+    // Start is called before the first frame update
     public GameObject text;
-    public GameObject playerListScroll;
+
+    public GameObject GameplayTab;
+    public GameObject ControlsTab;
+    public GameObject AudioTab;
+    public GameObject DisplayTab;
     // Start is called before the first frame update
     public void OnMouseOver() {
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
@@ -15,7 +19,7 @@ public class OptionsUI : MonoBehaviour
         Debug.Log("Mouse is over GameObject.");
         transform.GetComponent<Image>().enabled = true;
         Debug.Log(TextMeshPros);
-        TextMeshPros.color = new Color32(0, 0, 0, 255);
+        TextMeshPros.color  = new Color32(0, 0, 0, 255);
     }
 
     // Update is called once per frame
@@ -26,12 +30,8 @@ public class OptionsUI : MonoBehaviour
         
 
         
-        TextMeshPros.color  = new Color32(255, 255, 255, 255);
+        
+        TextMeshPros.color = new Color32(151, 158, 169, 255);
         transform.GetComponent<Image>().enabled = false;
-    }
-
-    public void OnPointerClick() {
-        playerListScroll.SetActive(true);
-        Debug.Log(playerListScroll);
     }
 }
