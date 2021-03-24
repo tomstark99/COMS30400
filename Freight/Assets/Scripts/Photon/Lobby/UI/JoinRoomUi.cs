@@ -32,7 +32,7 @@ public class JoinRoomUi : MonoBehaviour
     }
 
     public void OnPointerClick() {
-        playerListScroll.SetActive(true);
+        playerListScroll.SetActive(!playerListScroll.activeSelf);
         Debug.Log(playerListScroll);
     }
 }

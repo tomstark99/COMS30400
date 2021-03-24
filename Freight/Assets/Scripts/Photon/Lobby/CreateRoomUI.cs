@@ -32,7 +32,7 @@ public class CreateRoomUI : MonoBehaviour
     }
 
     public void OnPointerClick() {
-        enterRoomNumber.SetActive(true);
+        enterRoomNumber.SetActive(!enterRoomNumber.activeSelf);
         Debug.Log(enterRoomNumber);
     }
 }
