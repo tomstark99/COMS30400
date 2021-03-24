@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class PlayerUI : MonoBehaviour
+public class PlayerUI : MonoBehaviourPun
 {
 
     public Slider mouseSensibilitySlider;
@@ -20,11 +20,6 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-        if (!gameObject.transform.parent.GetComponent<PhotonView>().IsMine)
-        {
-            this.enabled = false;
-        }
-
         if (PlayerPrefs.HasKey("MouseSensibility"))
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
         else
@@ -41,12 +36,14 @@ public class PlayerUI : MonoBehaviour
     private void Update()
     {
         //Debug.Log(mouseSensibilitySlider.value);
-        if (!gameObject.transform.parent.GetComponent<PhotonView>().IsMine)
-        {
-            return;
-        }
+        //if (!gameObject.transform.parent.GetComponent<PhotonView>().IsMine)
+        //{
+        //    return;
+        //}
+        Debug.Log("menu");
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Debug.Log("esc");
             menuOpened = !menuOpened;   
             ConfigCursor();
             MenuActive(menuOpened);
@@ -75,7 +72,7 @@ public class PlayerUI : MonoBehaviour
         menuOpened = value;
         mouseLook.onMenu = menuOpened;
         playerMovement.onMenu = menuOpened;
-        Menu.SetActive(menuOpened);
+        OptionInGame.SetActive(menuOpened);
         ConfigCursor();
     }
 
