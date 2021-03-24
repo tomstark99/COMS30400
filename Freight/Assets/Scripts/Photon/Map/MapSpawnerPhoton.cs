@@ -35,7 +35,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         UnityEngine.Random.InitState(seed);
         
         SpawnTrains();
-        SpawnBridges();
+        // SpawnBridges();
         
         SpawnBushes();
         //BuildNavMesh();
