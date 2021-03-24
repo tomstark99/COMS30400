@@ -20,6 +20,11 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
+        if (!gameObject.transform.parent.GetComponent<PhotonView>().IsMine)
+        {
+            this.enabled = false;
+        }
+
         if (PlayerPrefs.HasKey("MouseSensibility"))
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
         else
