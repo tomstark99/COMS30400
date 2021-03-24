@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class Character : MonoBehaviourPunCallbacks
+public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     public Transform pickUpDestination;
     public Transform pickUpDestinationLocal;
@@ -55,8 +55,14 @@ public class Character : MonoBehaviourPunCallbacks
         Item.SetItemPickupConditions();
     }
 
-    void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
+    public void OnOwnershipRequest(PhotonView targetView, Photon.Realtime.Player previousOwner)
     {
+
+    }
+
+    public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
+    {
+        Debug.Log("ye");
         if (currentHeldItem.tag == "Gun")
         {
             currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
