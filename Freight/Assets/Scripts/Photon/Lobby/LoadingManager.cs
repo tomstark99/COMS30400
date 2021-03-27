@@ -14,6 +14,8 @@ public class LoadingManager : MonoBehaviourPun
 
     private bool mapLoaded;
 
+    private int loadedCount;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +25,7 @@ public class LoadingManager : MonoBehaviourPun
         }
 
         mapLoaded = false;
+        loadedCount = 0;
     }
 
     [PunRPC]
@@ -44,12 +47,24 @@ public class LoadingManager : MonoBehaviourPun
             loadingBar.value = op.progress;
             loadingText.text = 100f * op.progress + "%";
 
-            if (op.progress > 0.9f && mapLoaded == false)
+            if (op.progress >= 0.9f && mapLoaded == false)
             {
                 mapLoaded = true;
+                photonView.RPC(nameof(AddLoaded), RpcTarget.All);
+            }
+            if (loadedCount >= PhotonNetwork.CurrentRoom.PlayerCount)
+            {
+                op.allowSceneActivation = true;
             }
 
             yield return null;
         }
+    }
+
+    [PunRPC]
+    public void AddLoaded()
+    {
+        Debug.Log("loaded player");
+        loadedCount += 1;
     }
 }
