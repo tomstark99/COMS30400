@@ -127,7 +127,9 @@ public class ItemInteract : MonoBehaviourPun
                     interact.GetComponent<Outline>().enabled = true;
                     if (!tooltip)
                     {
-                        Instantiate(tooltipObject, new Vector3(interact.position.x, interact.position.y + 5, interact.position.z), interact.rotation);
+                        Quaternion objRot = transform.rotation;
+                        GameObject playerTooltip = Instantiate(tooltipObject, new Vector3(interact.position.x, interact.position.y + 5, interact.position.z), Quaternion.Euler(objRot.eulerAngles));
+                        playerTooltip.GetComponent<Tooltip>().Player = gameObject;
                         tooltip = true;
                     }
                 } 
