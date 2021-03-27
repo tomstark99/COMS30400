@@ -108,7 +108,14 @@ public class ItemInteract : MonoBehaviourPun
         {
             foreach (Transform interact in interactable.transform)
             {
+                
                 float tempDist = Vector3.Distance(interact.transform.position, transform.position);
+                if(tempDist <= 20f) {
+                    interact.GetComponent<Outline>().enabled = true;
+                } else {
+                    if(interact.GetComponent<Outline>().enabled == true)
+                        interact.GetComponent<Outline>().enabled = false;
+                }
                 if (tempDist <= 2.5f)
                 {
                     photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
@@ -126,6 +133,8 @@ public class ItemInteract : MonoBehaviourPun
                     photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
                     interactableInRange = false;
                 }
+
+                
             }
         }
             
