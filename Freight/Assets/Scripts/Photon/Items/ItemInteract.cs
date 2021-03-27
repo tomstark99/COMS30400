@@ -110,8 +110,8 @@ public class ItemInteract : MonoBehaviourPun
             {
                 
                 float tempDist = Vector3.Distance(interact.transform.position, transform.position);
-                if(tempDist <= 20f) {
-                    interact.GetComponent<Outline>().enabled = true;
+                if(tempDist <= 20f && interact.GetComponent<Outline>() !=null) {
+                     interact.GetComponent<Outline>().enabled = true;
                 } else {
                     if(interact.GetComponent<Outline>().enabled == true)
                         interact.GetComponent<Outline>().enabled = false;
