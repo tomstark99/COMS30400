@@ -24,6 +24,9 @@ Rewired_Core.XML filter=lfs diff=lfs merge=lfs -text
 #only if subfolders with terrains exist:
 /Assets/Terrains/**/*.asset filter=lfs diff=lfs merge=lfs -text
 *.meta merge=unityyamlmerge eol=lf
+/Assets/Terrains/*.asset.meta filter=lfs diff=lfs merge=lfs -text
+#only if subfolders with terrains exist:
+/Assets/Terrains/**/*.asset.meta filter=lfs diff=lfs merge=lfs -text
 *.controller merge=unityyamlmerge eol=lf
 
 ## git-lfs ##
