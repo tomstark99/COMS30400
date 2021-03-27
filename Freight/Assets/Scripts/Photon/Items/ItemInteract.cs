@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,12 +13,17 @@ public class ItemInteract : MonoBehaviourPun
     [SerializeField]
     private Interactable currentInteractable;
 
+    [SerializeField]
+    private GameObject tooltipObject;
+
     public GameObject text;
 
     private GameObject rocks;
 
     private GameObject interactableRock;
     private GameObject interactables;
+
+    private bool tooltip;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +32,13 @@ public class ItemInteract : MonoBehaviourPun
             Destroy(this);
         }
 
-     character = GetComponent<Character>();
+        character = GetComponent<Character>();
+        tooltip = false;
+    }
+
+    void DisplayTooltip()
+    {
+
     }
 
     // Update is called once per frame
@@ -110,9 +122,17 @@ public class ItemInteract : MonoBehaviourPun
             {
                 
                 float tempDist = Vector3.Distance(interact.transform.position, transform.position);
-                if(tempDist <= 20f && interact.GetComponent<Outline>() !=null) {
-                     interact.GetComponent<Outline>().enabled = true;
-                } else {
+                if(tempDist <= 20f && interact.GetComponent<Outline>() != null) 
+                {
+                    interact.GetComponent<Outline>().enabled = true;
+                    if (!tooltip)
+                    {
+                        Instantiate(tooltipObject, new Vector3(interact.position.x, interact.position.y + 5, interact.position.z), interact.rotation);
+                        tooltip = true;
+                    }
+                } 
+                else 
+                {
                     if(interact.GetComponent<Outline>().enabled == true)
                         interact.GetComponent<Outline>().enabled = false;
                 }
