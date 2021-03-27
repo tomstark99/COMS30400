@@ -64,6 +64,7 @@ public class ItemInteract : MonoBehaviourPun
                 if (Input.GetKeyDown(KeyCode.E)) 
                 {
                     currentInteractable = newInteractable;
+                    currentInteractable.GetComponent<Outline>().enabled = false;
                     // Debug.Log("F was pressed");
                     // Do whatever the primary interaction of this interactable is.
                     currentInteractable.PrimaryInteraction(character);
@@ -81,6 +82,7 @@ public class ItemInteract : MonoBehaviourPun
                 // Some item have a primary interaction off method, eg drop the
                 // item after pickup. Therefore run this on mouse up.
                 currentInteractable.PrimaryInteractionOff(character);
+                currentInteractable.GetComponent<Outline>().enabled = true;
                 currentInteractable = null;
             }
 
