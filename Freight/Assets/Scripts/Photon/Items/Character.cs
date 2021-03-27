@@ -220,16 +220,19 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     public void Shoot(Shootable Item) 
     {
-        // send an RPC to shoot a bullet on the local client and on all other clients
-        // this is done because the local player has to hold the gun in a game object that is the child of the camera
-        if (pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().Ammo > 0)
+        if (!gameObject.GetComponent<PlayerMovementPhoton>().onMenu)
         {
-            photonView.RPC("CreateBullet", RpcTarget.Others);
-            photonView.RPC("CreateBulletLocal", PhotonNetwork.LocalPlayer);
-        } 
-        else
-        {
-            pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().EmptyGunShot();
+            // send an RPC to shoot a bullet on the local client and on all other clients
+            // this is done because the local player has to hold the gun in a game object that is the child of the camera
+            if (pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().Ammo > 0)
+            {
+                photonView.RPC("CreateBullet", RpcTarget.Others);
+                photonView.RPC("CreateBulletLocal", PhotonNetwork.LocalPlayer);
+            }
+            else
+            {
+                pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().EmptyGunShot();
+            }
         }
         
     }
