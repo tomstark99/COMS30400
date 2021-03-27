@@ -58,6 +58,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             Debug.Log(" DISABLE CONTROLER ");
             GetComponent<PlayerMovementPhoton>().enabled = false;
         }
+
+        onMenu = false;
         
     }
 
@@ -69,7 +71,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
 
         // movement function
-        if (photonView.IsMine)
+        if (photonView.IsMine && !onMenu)
             Movement();
         
     }
