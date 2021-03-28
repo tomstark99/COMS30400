@@ -17,7 +17,7 @@ public class SplineWalkerPhoton : MonoBehaviourPun
 
     // WHEN CHANGING TIME TO LEAVE PLEASE CHANGE BOTH OF THESE VARIABLES!!!!
     private float originalTimeToLeave = 60.0f;
-    private float timeToLeave = 60.0f;
+    private float timeToLeave;
 
     public float OriginalTimeToLeave
     {
@@ -31,6 +31,8 @@ public class SplineWalkerPhoton : MonoBehaviourPun
     {
         if(!PhotonNetwork.IsMasterClient)
             return;
+
+        timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
 
         if (goingForward)
         {

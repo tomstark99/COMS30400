@@ -47,9 +47,8 @@ public class Clock : MonoBehaviour
             }
 
         }
+        timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
 
-        timeToLeave = FindObjectOfType<SplineWalkerPhoton>().OriginalTimeToLeave;
-        Debug.Log("OIYYYOOYO" + timeToLeave);
     }
 
     // Update is called once per frame
