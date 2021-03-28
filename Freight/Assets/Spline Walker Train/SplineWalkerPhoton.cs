@@ -15,14 +15,8 @@ public class SplineWalkerPhoton : MonoBehaviourPun
     private float progress;
     private bool goingForward = true;
 
-    // WHEN CHANGING TIME TO LEAVE PLEASE CHANGE BOTH OF THESE VARIABLES!!!!
-    private float originalTimeToLeave = 60.0f;
+    // if you want to change the time to leave, go to the SyncedTime script and change it there
     private float timeToLeave;
-
-    public float OriginalTimeToLeave
-    {
-        get { return originalTimeToLeave;  }
-    }
 
     public Vector3 trainPos;
     public Vector3 prevPos;
