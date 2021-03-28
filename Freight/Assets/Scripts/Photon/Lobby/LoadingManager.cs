@@ -50,7 +50,7 @@ public class LoadingManager : MonoBehaviourPun
             if (op.progress >= 0.9f && mapLoaded == false)
             {
                 mapLoaded = true;
-                photonView.RPC(nameof(AddLoaded), RpcTarget.All);
+                photonView.RPC(nameof(AddLoaded), RpcTarget.AllBufferedViaServer);
             }
             if (loadedCount >= PhotonNetwork.CurrentRoom.PlayerCount)
             {
