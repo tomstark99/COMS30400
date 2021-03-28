@@ -34,7 +34,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         
         SpawnTrains();
         SpawnBrokenFence();
-        SpawnBushes();
+        //SpawnBushes();
         // SpawnBridges();
         
         //BuildNavMesh();
