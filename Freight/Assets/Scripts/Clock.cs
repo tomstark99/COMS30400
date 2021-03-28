@@ -66,7 +66,7 @@ public class Clock : MonoBehaviour
             }
         }
 
-        timerIncrementer = Math.Floor(timeToLeave + (startTime - PhotonNetwork.Time));
+        timerIncrementer = Math.Truncate(timeToLeave + (startTime - PhotonNetwork.Time));
         text.text = timerIncrementer.ToString();
     }
 
