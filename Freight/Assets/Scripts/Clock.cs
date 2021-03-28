@@ -40,8 +40,12 @@ public class Clock : MonoBehaviour
         }
         else
         {
-            startTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
-            startTimer = true;
+            if (PhotonNetwork.CurrentRoom.CustomProperties["StartTime"] != null)
+            {
+                startTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+                startTimer = true;
+            }
+
         }
 
         timeToLeave = FindObjectOfType<SplineWalkerPhoton>().OriginalTimeToLeave;
@@ -51,7 +55,17 @@ public class Clock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!startTimer) return;
+        if (!startTimer) {
+            if (PhotonNetwork.CurrentRoom.CustomProperties["StartTime"] != null)
+            {
+                startTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+                startTimer = true;
+            }
+            else
+            {
+                return;
+            }
+        }
 
         timerIncrementer = Math.Floor(timeToLeave + (startTime - PhotonNetwork.Time));
         text.text = timerIncrementer.ToString();
