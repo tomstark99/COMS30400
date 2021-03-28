@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Mirror;
 using Photon.Pun;
 
 public class SplineWalkerPhoton : MonoBehaviourPun
@@ -15,8 +14,15 @@ public class SplineWalkerPhoton : MonoBehaviourPun
 
     private float progress;
     private bool goingForward = true;
-    // private bool leaveStation = false;
+
+    // WHEN CHANGING TIME TO LEAVE PLEASE CHANGE BOTH OF THESE VARIABLES!!!!
+    private float originalTimeToLeave = 60.0f;
     private float timeToLeave = 60.0f;
+
+    public float OriginalTimeToLeave
+    {
+        get { return originalTimeToLeave;  }
+    }
 
     public Vector3 trainPos;
     public Vector3 prevPos;

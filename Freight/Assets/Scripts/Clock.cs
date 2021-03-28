@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
-using Mirror;
+using Photon.Pun;
 
-public class Clock : NetworkBehaviour
+public class Clock : MonoBehaviour
 {
     public TextMeshProUGUI text;
     //public GameObject text;
@@ -14,35 +14,60 @@ public class Clock : NetworkBehaviour
     string hour;
     string minute;
     string second;
-    DateTime startTime;
+    double startTime;
+    bool startTimer;
+    double timerIncrementer;
     DateTime currentTime;
-    [SyncVar] DateTime gameTime;
+
+    float timeToLeave;
+
+    private ExitGames.Client.Photon.Hashtable CustomValue;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        startTime = DateTime.Now;
-        InvokeRepeating("updateClock", 1f, 1f);
+        //startTime = DateTime.Now;
+        //InvokeRepeating("updateClock", 1f, 1f);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CustomValue = new ExitGames.Client.Photon.Hashtable();
+            startTime = PhotonNetwork.Time;
+            startTimer = true;
+            CustomValue.Add("StartTime", startTime);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(CustomValue);
+        }
+        else
+        {
+            startTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+            startTimer = true;
+        }
+
+        timeToLeave = FindObjectOfType<SplineWalkerPhoton>().OriginalTimeToLeave;
+        Debug.Log("OIYYYOOYO" + timeToLeave);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (!startTimer) return;
+
+        timerIncrementer = Math.Floor(timeToLeave + (startTime - PhotonNetwork.Time));
+        text.text = timerIncrementer.ToString();
     }
 
-    void updateClock()
-    {
-        currentTime = DateTime.Now;
-        TimeSpan difference = currentTime - startTime;
-        gameTime = Convert.ToDateTime("01/01/2020 12:00:00");
-        gameTime = gameTime.Add(difference);
-        hour = leadingZero(gameTime.Hour);
-        minute = leadingZero(gameTime.Minute);
-        second = leadingZero(gameTime.Second);
-        text.text = hour + ":" + minute + ":" + second;
-    }
+    //void updateClock()
+    //{
+    //    currentTime = DateTime.Now;
+    //    TimeSpan difference = currentTime - startTime;
+    //    gameTime = Convert.ToDateTime("01/01/2020 12:00:00");
+    //    gameTime = gameTime.Add(difference);
+    //    hour = leadingZero(gameTime.Hour);
+    //    minute = leadingZero(gameTime.Minute);
+    //    second = leadingZero(gameTime.Second);
+    //    text.text = hour + ":" + minute + ":" + second;
+    //}
 
     string leadingZero(int n)
     {
