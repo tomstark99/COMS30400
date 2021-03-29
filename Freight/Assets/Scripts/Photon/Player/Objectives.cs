@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Objectives : MonoBehaviour
 {
@@ -18,12 +19,19 @@ public class Objectives : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence += setBreakFenceToActive;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void setBreakFenceToActive()
+    {
+        findBrokenFence.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+        breakFence.SetActive(true);
+        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= setBreakFenceToActive;
     }
 }
