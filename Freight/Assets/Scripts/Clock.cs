@@ -16,6 +16,7 @@ public class Clock : MonoBehaviour
     string second;
     double startTime;
     bool startTimer;
+    bool trainLeft;
     double timerIncrementer;
     DateTime currentTime;
 
@@ -48,6 +49,7 @@ public class Clock : MonoBehaviour
 
         }
         timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
+        trainLeft = false;
 
     }
 
@@ -64,10 +66,17 @@ public class Clock : MonoBehaviour
             {
                 return;
             }
-        }
-
-        timerIncrementer = Math.Truncate(timeToLeave + (startTime - PhotonNetwork.Time));
-        text.text = timerIncrementer.ToString();
+        } else if (!trainLeft)
+        {
+            double newTime = timeToLeave + (startTime - PhotonNetwork.Time);
+            timerIncrementer = Math.Truncate(newTime);
+            text.text = "Time to leave: " + timerIncrementer.ToString();
+            if (newTime <= 0)
+            {
+                trainLeft = true;
+                text.text = "Train is leaving!";
+            }
+        } 
     }
 
     //void updateClock()
