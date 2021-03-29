@@ -41,7 +41,6 @@ public class PlayerUI : MonoBehaviourPun
         //{
         //    return;
         //}
-        Debug.Log("menu");
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("esc");

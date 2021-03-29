@@ -14,6 +14,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public GameObject bulletPrefab;
 
     public GameObject camera;
+
+    private bool holdingTheBag;
+
+    public bool HoldingTheBag
+    {
+        get { return holdingTheBag; }
+    }
     
     public bool HasItem()
     {
@@ -277,7 +284,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     public void Grab(Grabbable Item)
     {
-        currentHeldItem = Item;
+        holdingTheBag = true;
 
         PhotonView view = Item.GetComponent<PhotonView>();
         if (!view.IsMine)
