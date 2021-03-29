@@ -32,12 +32,9 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         seed = (int)DateTime.Now.Ticks;
         UnityEngine.Random.InitState(seed);
         
-        SpawnTrains();
+        //SpawnTrains();
         SpawnBrokenFence();
-        //SpawnBushes();
-        // SpawnBridges();
-        
-        //BuildNavMesh();
+  
         photonView.RPC("BuildNavMesh", RpcTarget.All);
         
     }
@@ -50,96 +47,11 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         surface.BuildNavMesh();
     }
 
-    void SpawnBushes()
-    {
-        for (int i = 0; i < 100; i++)
-        {
-            Debug.Log("bush " + i);
-            Vector3 pos = Vector3.zero;
-            bool validPos = false;
-
-            while (!validPos)
-            {
-                pos.x = UnityEngine.Random.Range(200.0f, 600.0f);
-                pos.z = UnityEngine.Random.Range(100.0f, 500.0f);
-                pos.y = 0.0f;
-                pos.y = Terrain.activeTerrain.SampleHeight(pos);
-
-                validPos = true;
-                Collider[] colliders = Physics.OverlapSphere(pos, 5.0f);
-
-                foreach (Collider col in colliders)
-                {
-                    if (col.tag == "Track" || col.tag == "Building" || col.tag == "Fence" || col.tag == "Tree" || col.tag == "Water")
-                    {
-                        Debug.Log("overlap");
-                        validPos = false;
-                    }
-                }
-            }
-
-            if (validPos)
-            {
-                float y_rot = UnityEngine.Random.Range(0.0f, 360.0f);
-
-                PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/bush_basic Variant", pos, Quaternion.Euler(0f, y_rot, 0f));
-            }
-        }
-
-        Debug.Log("bushes");
-    }
-
-    // void SpawnBridges()
-    // {
-    //     Vector3 pos;
-    //     pos.x = 468.25f;
-    //     pos.y = 4.9f;
-    //     pos.z = 209.0f;
-
-    //     PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/bridge_flat Variant", pos, Quaternion.Euler(0f, 90f, 0f));
-    // }
-
     void SpawnTrains()
     {
-        /*UnityEngine.Random.InitState(seed);
-        int clearTrack = UnityEngine.Random.Range(0, 5);
-        Debug.Log("skipped track: " + clearTrack);
-        for (int j = 0; j < 5; j++)
-        {
-
-            position = positionStart;
-            position.x += (j * gap);
-            position.z -= (j * gap);
-
-            if (!(clearTrack == j))
-            {
-
-                int gaps = UnityEngine.Random.Range(0, 6);
-                int[] positions = new int[gaps];
-                for (int i = 0; i < gaps; i++)
-                {
-                    positions[i] = UnityEngine.Random.Range(0, instantiations);
-                }
-                for (int i = 0; i < instantiations; i++)
-                {
-                    if (!inSkip(i, positions, gaps))
-                    {
-                        GameObject trainGo = Instantiate(train, position, Quaternion.Euler(0f, 0f, 0f));
-                        NetworkServer.Spawn(trainGo);
-                    }
-                    position.z += 8.15f;
-                }
-            }
-
-        }*/
 
         int clearTrack = UnityEngine.Random.Range(0, 5);
         Debug.Log("skipped track: " + clearTrack);
-        //GameObject freight_train_coal_loc = PhotonNetwork.Instantiate("PhotonPrefabs/freight_train_coal_ladder Variant 1", new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f));
-        //Debug.Log("loca" + freight_train_coal_loc);
-        //GameObject track = GameObject.FindWithTag(clearTrack.ToString());
-       // Debug.Log("track" + track);
-        //freight_train_coal_loc.GetComponent<SplineWalkerPhoton>().spline = track.GetComponent<BezierSpline>();
 
         for (int j = 0; j < 5; j++)
         {
