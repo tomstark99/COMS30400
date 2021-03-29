@@ -32,7 +32,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         seed = (int)DateTime.Now.Ticks;
         UnityEngine.Random.InitState(seed);
         
-        SpawnTrains();
+        //SpawnTrains();
         SpawnBrokenFence();
   
         photonView.RPC("BuildNavMesh", RpcTarget.All);
