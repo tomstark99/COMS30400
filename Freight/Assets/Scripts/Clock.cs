@@ -69,7 +69,7 @@ public class Clock : MonoBehaviour
         } else if (!trainLeft)
         {
             double newTime = timeToLeave + (startTime - PhotonNetwork.Time);
-            timerIncrementer = Math.Truncate(newTime);
+            timerIncrementer = Math.Round(newTime, 4);
             text.text = "Time to leave: " + timerIncrementer.ToString();
             if (newTime <= 0)
             {
