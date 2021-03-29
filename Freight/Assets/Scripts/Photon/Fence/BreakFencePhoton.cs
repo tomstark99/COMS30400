@@ -98,11 +98,17 @@ public class BreakFencePhoton : MonoBehaviourPun
         
     }
 
+    [PunRPC]
+    void InRangeOfFenceRPC()
+    {
+        InRangeOfFence();
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (!walkedInRangeOfFence)
         {
-            InRangeOfFence();
+            photonView.RPC(nameof(InRangeOfFenceRPC), RpcTarget.All);
         }
     }
 
