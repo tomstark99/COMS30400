@@ -16,12 +16,15 @@ public class BreakFencePhoton : MonoBehaviourPun
     private bool isBroken;
 
     public event Action FenceBroke;
+    public event Action InRangeOfFence;
     private bool overlayDisplayed = false;
+    private bool walkedInRangeOfFence = false;
 
     // Start is called before the first frame update
     void Start()
     {
         isBroken = false;
+        InRangeOfFence += setFenceOutline;
     }
 
     [PunRPC]
@@ -94,5 +97,19 @@ public class BreakFencePhoton : MonoBehaviourPun
         }
 
         
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (!walkedInRangeOfFence)
+        {
+            InRangeOfFence();
+        }
+    }
+
+    void setFenceOutline()
+    {
+        walkedInRangeOfFence = true;
+        gameObject.GetComponent<Outline>().enabled = true;
     }
 }
