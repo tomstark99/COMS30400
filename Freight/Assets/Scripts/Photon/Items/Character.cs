@@ -9,6 +9,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public Transform pickUpDestination;
     public Transform pickUpDestinationLocal;
     public Transform dragDestination;
+    public Transform grabDestination;
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
 
@@ -62,6 +63,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
     {
+        if (targetView.gameObject.GetComponent<Grabbable>() != null)
+        {
+            photonView.RPC("GrabRPC", RpcTarget.All, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
+            return;
+        }
         Debug.Log("ye");
         if (currentHeldItem.tag == "Gun")
         {
@@ -259,4 +265,26 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         photonView.RPC("DragRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
+    [PunRPC]
+    void GrabRPC(int ItemID)
+    {
+        Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
+        Item.transform.position = grabDestination.position;
+        Item.transform.parent = grabDestination;
+
+        Item.SetItemPickupConditions();
+    }
+
+    public void Grab(Grabbable Item)
+    {
+        currentHeldItem = Item;
+
+        PhotonView view = Item.GetComponent<PhotonView>();
+        if (!view.IsMine)
+            view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        else
+        {
+            photonView.RPC(nameof(GrabRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        }
+    }
 }

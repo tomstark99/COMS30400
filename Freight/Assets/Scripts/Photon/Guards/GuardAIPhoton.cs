@@ -113,7 +113,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         // sets the guard destination to player's position
         transform.LookAt(closestPlayer.transform);
         // - new Vector3(proximityRange, 0, 0)
-        guard.SetDestination(closestPlayer.position);
+        guard.SetDestination(closestPlayer.position - new Vector3(1f, 0, 0));
         // sets the guard's alert position to the player's current position (so when the player goes out of range, the guard will run to the last place they saw the player)
         guard.gameObject.GetComponent<GuardAIPhoton>().alertPosition = closestPlayer.position;
     }
@@ -141,7 +141,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                     // Debug.Log(Physics.Linecast(transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask));
                     // checks if guard line of sight is blocked by an obstacle
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
-                    if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.GetChild(11).position, obstacleMask) || !Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
+                    if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
 
                         guard.speed = speedChasing;
