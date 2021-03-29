@@ -20,6 +20,7 @@ public class Objectives : MonoBehaviour
     void Start()
     {
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence += setBreakFenceToActive;
+        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += setFindBackpacksToActive;
     }
 
     // Update is called once per frame
@@ -33,5 +34,11 @@ public class Objectives : MonoBehaviour
         findBrokenFence.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
         breakFence.SetActive(true);
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= setBreakFenceToActive;
+    }
+
+    void setFindBackpacksToActive()
+    {
+        breakFence.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+        findBackpacks.SetActive(true);
     }
 }
