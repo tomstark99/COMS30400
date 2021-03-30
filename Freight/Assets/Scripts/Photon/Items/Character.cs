@@ -72,6 +72,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         if (targetView.gameObject.GetComponent<Grabbable>() != null)
         {
+            Debug.Log("ONOWNERSHIPTRANSFER :3");
             photonView.RPC("GrabRPC", RpcTarget.All, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
             return;
         }
@@ -275,6 +276,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     [PunRPC]
     void GrabRPC(int ItemID)
     {
+        Debug.Log("GRABRPC");
         Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
         Item.transform.position = grabDestination.position;
         Item.transform.parent = grabDestination;
