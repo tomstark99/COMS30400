@@ -279,7 +279,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         Debug.Log("GRABRPC");
         Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
-        //Item.transform.position = grabDestination.position;
+        Item.transform.position = grabDestination.position;
         Item.transform.parent = grabDestination;
 
         Item.SetItemPickupConditions();
@@ -288,7 +288,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     [PunRPC] 
     void GrabRPCLocal(int ItemID)
     {
-        Grabbable Item = PhotonView.Find(ItemID).GetComponent <Grabbable>();
+        Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
         Debug.Log("LOCAL");
         Item.transform.position = grabDestination.position;
 
