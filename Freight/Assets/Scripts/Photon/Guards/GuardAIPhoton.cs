@@ -49,6 +49,29 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         get { return guardState; }
     }
 
+    /*
+     IEnumerator SolveStuck() {
+        Vector3 lastPosition = this.transform.position;
+ 
+        while (true) {
+            yield return new WaitForSeconds(3f);
+ 
+            //Maybe we can also use agent.velocity.sqrMagnitude == 0f or similar
+            if (!agent.pathPending && agent.hasPath && agent.remainingDistance > agent.stoppingDistance) {
+                Vector3 currentPosition = this.transform.position;
+                if (Vector3.Distance(currentPosition, lastPosition) < 1f) {
+                    Vector3 destination = agent.destination;
+                    agent.ResetPath();
+                    agent.SetDestination(destination);
+                    Debug.Log("Agent Is Stuck");
+                }
+                Debug.Log("Current Position " + currentPosition + " Last Position " + lastPosition);
+                lastPosition = currentPosition;
+            }
+        }
+    }
+    */
+    
     void Start()
     {
         // find players, set the guard to its own navmeshagent and set the guard state to patroling
