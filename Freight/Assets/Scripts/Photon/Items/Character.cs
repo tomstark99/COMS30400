@@ -278,8 +278,23 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         Debug.Log("GRABRPC");
         Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
-        Item.transform.position = grabDestination.position;
+        //Item.transform.position = grabDestination.position;
         Item.transform.parent = grabDestination;
+
+        Item.SetItemPickupConditions();
+    }
+
+    [PunRPC] 
+    void GrabRPCLocal(int ItemID)
+    {
+        Grabbable Item = PhotonView.Find(ItemID).GetComponent <Grabbable>();
+        Debug.Log("LOCAL");
+        Item.transform.position = grabDestination.position;
+
+        // Set the parent of the object to the pickupDestination so that it moves
+        // with the player.
+        Item.transform.parent = grabDestination;
+        Item.transform.Rotate(0, 90, 0);
 
         Item.SetItemPickupConditions();
     }
@@ -293,7 +308,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             view.TransferOwnership(PhotonNetwork.LocalPlayer);
         else
         {
-            photonView.RPC(nameof(GrabRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC(nameof(GrabRPC), RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC(nameof(GrabRPCLocal), PhotonNetwork.LocalPlayer, Item.transform.GetComponent<PhotonView>().ViewID);
         }
     }
 }
