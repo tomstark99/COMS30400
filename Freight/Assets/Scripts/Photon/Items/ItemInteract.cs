@@ -52,7 +52,17 @@ public class ItemInteract : MonoBehaviourPun
 
         if(canInteract)
         {
-            Interactable newInteractable = interactableRock.GetComponent<Interactable>();
+            Interactable newInteractable = null;
+
+            try
+            {
+                 newInteractable = interactableRock.GetComponent<Interactable>();
+             }
+            catch
+            {
+                Debug.Log("Interactable is null");
+            }
+           
 
             //currentInteractable = newInteractable;
 
