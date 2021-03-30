@@ -73,7 +73,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (targetView.gameObject.GetComponent<Grabbable>() != null)
         {
             Debug.Log("ONOWNERSHIPTRANSFER :3");
-            photonView.RPC("GrabRPC", RpcTarget.All, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC(nameof(GrabRPC), RpcTarget.Others, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC(nameof(GrabRPCLocal), PhotonNetwork.LocalPlayer, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
             return;
         }
         Debug.Log("ye");
