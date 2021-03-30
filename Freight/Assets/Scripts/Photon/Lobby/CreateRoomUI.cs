@@ -8,6 +8,8 @@ public class CreateRoomUI : MonoBehaviour
     // Start is called before the first frame update
     public GameObject text;
 
+    [SerializeField]
+    private GameObject ScrollJoinRoom;
     public GameObject enterRoomNumber;
     // Start is called before the first frame update
     public void OnMouseOver() {
@@ -33,6 +35,8 @@ public class CreateRoomUI : MonoBehaviour
 
     public void OnPointerClick() {
         enterRoomNumber.SetActive(!enterRoomNumber.activeSelf);
+         if(ScrollJoinRoom.activeSelf == true)
+            ScrollJoinRoom.SetActive(false);
         Debug.Log(enterRoomNumber);
     }
 }
