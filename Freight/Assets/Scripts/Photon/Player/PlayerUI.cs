@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class PlayerUI : MonoBehaviour
+public class PlayerUI : MonoBehaviourPun
 {
 
     public Slider mouseSensibilitySlider;
@@ -17,13 +18,12 @@ public class PlayerUI : MonoBehaviour
 
     private bool menuOpened = false;
 
+    // https://titanwolf.org/Network/Articles/Article?AID=5698ab7c-fa2c-4dd3-997e-0512d22a64ba#gsc.tab=0
     private void Start()
     {
-       /* if (PlayerPrefs.HasKey("MouseSensibility"))
+        if (PlayerPrefs.HasKey("MouseSensibility"))
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
-        else*/
-           
-            Debug.Log(mouseSensibilitySlider);
+        else
             mouseSensibilitySlider.value = 100f;
     }
 
@@ -37,9 +37,13 @@ public class PlayerUI : MonoBehaviour
     private void Update()
     {
         //Debug.Log(mouseSensibilitySlider.value);
-
+        //if (!gameObject.transform.parent.GetComponent<PhotonView>().IsMine)
+        //{
+        //    return;
+        //}
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Debug.Log("esc");
             menuOpened = !menuOpened;   
             ConfigCursor();
             MenuActive(menuOpened);
@@ -68,7 +72,7 @@ public class PlayerUI : MonoBehaviour
         menuOpened = value;
         mouseLook.onMenu = menuOpened;
         playerMovement.onMenu = menuOpened;
-        Menu.SetActive(menuOpened);
+        OptionInGame.SetActive(menuOpened);
         ConfigCursor();
     }
 

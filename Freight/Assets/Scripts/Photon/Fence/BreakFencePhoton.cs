@@ -16,12 +16,15 @@ public class BreakFencePhoton : MonoBehaviourPun
     private bool isBroken;
 
     public event Action FenceBroke;
+    public event Action InRangeOfFence;
     private bool overlayDisplayed = false;
+    private bool walkedInRangeOfFence = false;
 
     // Start is called before the first frame update
     void Start()
     {
         isBroken = false;
+        InRangeOfFence += setFenceOutline;
     }
 
     [PunRPC]
@@ -29,8 +32,8 @@ public class BreakFencePhoton : MonoBehaviourPun
     {
         if (!overlayDisplayed) {
             text.SetActive(true);
-            LeftHand.SetActive(true);
-            RightHand.SetActive(true);
+            //LeftHand.SetActive(true);
+           // RightHand.SetActive(true);
             
             Overlay.LoadOverlay("overlays/pull_apart_fence.png");
             overlayDisplayed = true;  
@@ -42,8 +45,8 @@ public class BreakFencePhoton : MonoBehaviourPun
     {
         if (overlayDisplayed) {
             text.SetActive(false);
-            LeftHand.SetActive(false);
-            RightHand.SetActive(false);
+            //LeftHand.SetActive(false);
+            //RightHand.SetActive(false);
             
             Overlay.ClearOverlay();
             overlayDisplayed = false;
@@ -80,9 +83,8 @@ public class BreakFencePhoton : MonoBehaviourPun
 
                     photonView.RPC("DestroyFence", RpcTarget.MasterClient);
                     PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
-                    if (player.GetComponent<TutorialManager>() != null) {
-                        FenceBroke();
-                    }
+                    // event
+                    FenceBroke();
                     isBroken = true;
                     break;
                 }
@@ -94,5 +96,25 @@ public class BreakFencePhoton : MonoBehaviourPun
         }
 
         
+    }
+
+    [PunRPC]
+    void InRangeOfFenceRPC()
+    {
+        InRangeOfFence();
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (!walkedInRangeOfFence)
+        {
+            photonView.RPC(nameof(InRangeOfFenceRPC), RpcTarget.All);
+        }
+    }
+
+    void setFenceOutline()
+    {
+        walkedInRangeOfFence = true;
+        gameObject.GetComponent<Outline>().enabled = true;
     }
 }

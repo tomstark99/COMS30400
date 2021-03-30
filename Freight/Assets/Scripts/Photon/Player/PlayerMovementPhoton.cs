@@ -9,7 +9,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     public CharacterController controller;
     public Transform groundCheck;
     public LayerMask groundMask;
-    public GameObject faceUI;
+   
     public GameObject LeftHandUpUI;
     public GameObject RightHandUpUI;
     private float gravity = -17f;
@@ -42,7 +42,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     {
         get { return onTrain; }
     }
-
    
     void Start()
     {
@@ -51,7 +50,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             // transform.Find("Camera").gameObject.SetActive(true);
             transform.Find("Camera/Camera").gameObject.SetActive(true);
-            // transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head/Camera").gameObject.transform.localRotation = Quaternion.Euler(0.0f, 180.0f, -90.0f);
         }
 
         PV = GetComponent<PhotonView>();
@@ -60,6 +58,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             Debug.Log(" DISABLE CONTROLER ");
             GetComponent<PlayerMovementPhoton>().enabled = false;
         }
+
+        onMenu = false;
         
     }
 
@@ -71,12 +71,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
 
         // movement function
-        if (photonView.IsMine)
+        if (photonView.IsMine && !onMenu)
             Movement();
         
     }
 
-    IEnumerator SetFaceActive(){
+    /*IEnumerator SetFaceActive(){
         if(check == false){
             faceUI.SetActive(true);
         }
@@ -85,7 +85,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             faceUI.SetActive(false);
             check = true;
         }
-    }
+    }*/
 
     void Movement()
     {
@@ -139,7 +139,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         //Sticks player to centreline of ladder
         if (climbing)
         {
-            faceUI.SetActive(false);
+            //faceUI.SetActive(false);
             Vector3 ladderPos = train.transform.position + (train.transform.rotation * ladderCentreLine);
             ladderPos.y = transform.position.y;
             move += ladderPos - transform.position;
@@ -157,7 +157,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // sticks the player onto the train
         if (onTrain)
         {
-            StartCoroutine(SetFaceActive());
+            //StartCoroutine(SetFaceActive());
             Debug.Log(GameObject.FindGameObjectWithTag("locomotive"));
             Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) - GameObject.FindGameObjectWithTag("locomotive").transform.position;
             trainMove.x = -trainMove.x;
@@ -173,7 +173,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             onTrain = false;
-            faceUI.SetActive(false);
+            //faceUI.SetActive(false);
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
@@ -211,8 +211,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             climbing = true;
             //GetComponent<PlayerAnimation>().setClimbing(climbing);
             //faceUI.SetActive(false);
-            LeftHandUpUI.SetActive(true);
-            RightHandUpUI.SetActive(true);
+            //LeftHandUpUI.SetActive(true);
+            //RightHandUpUI.SetActive(true);
         }
         else if (other.gameObject.tag == "ladder")
         {
@@ -224,8 +224,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             Debug.Log("stef is aiiiir");
             train = other.gameObject;
             climbing = false;
-            LeftHandUpUI.SetActive(false);
-            RightHandUpUI.SetActive(false);
+           // LeftHandUpUI.SetActive(false);
+            //RightHandUpUI.SetActive(false);
             onTrain = true;
         }
     }
@@ -237,8 +237,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             // Debug.Log("player stopped climbing");
             climbing = false;
             //GetComponent<PlayerAnimation>().setClimbing(climbing);
-            LeftHandUpUI.SetActive(false);
-            RightHandUpUI.SetActive(false);
+            //LeftHandUpUI.SetActive(false);
+            //RightHandUpUI.SetActive(false);
         }
         else if (climbingBuilding && other.gameObject.tag == "ladder")
         {

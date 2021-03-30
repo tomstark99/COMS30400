@@ -1,28 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2559510662747944764
-MonoBehaviour:
+--- !u!65 &5623714660589124705
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6735503057471323346}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 0
-  ObservedComponents:
-  - {fileID: 0}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  serializedVersion: 2
+  m_Size: {x: 4, y: 0.1, z: 10}
+  m_Center: {x: -0.4, y: 0, z: 0}
 --- !u!1001 &5888519776853000579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -89,6 +79,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: 45_deg_left_track_detail Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 48b9d44683db1244db1a3f8dcc6e4340,
+        type: 3}
+      propertyPath: m_TagString
+      value: Track
       objectReference: {fileID: 0}
     - target: {fileID: 2639332767969421819, guid: 48b9d44683db1244db1a3f8dcc6e4340,
         type: 3}
