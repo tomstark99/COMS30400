@@ -12,7 +12,6 @@ public class GameplayUI : MonoBehaviour
     public GameObject AudioTab;
     public GameObject DisplayTab;
     public Slider mouseSensibilitySlider;
-    public MouseLookPhoton mouseLook;
 
     private void Start()
     {
@@ -48,9 +47,8 @@ public class GameplayUI : MonoBehaviour
     {
         //needs changing
         Debug.Log(mouseSensibilitySlider.value);
-        mouseLook.mouseSensitivity = mouseSensibilitySlider.value;
-       // PlayerPrefs.SetFloat("MouseSensibility", mouseLook.mouseSensitivity);
-       // PlayerPrefs.Save();
+        PlayerPrefs.SetFloat("MouseSensibility", mouseSensibilitySlider.value);
+        PlayerPrefs.Save();
     }
 
     public void OnMouseClick() {
