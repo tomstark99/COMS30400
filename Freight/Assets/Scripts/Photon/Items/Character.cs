@@ -1,17 +1,26 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class Character : MonoBehaviourPun
+public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     public Transform pickUpDestination;
     public Transform pickUpDestinationLocal;
     public Transform dragDestination;
+    public Transform grabDestination;
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
 
     public GameObject camera;
+
+    private bool holdingTheBag;
+
+    public bool HoldingTheBag
+    {
+        get { return holdingTheBag; }
+    }
     
     public bool HasItem()
     {
@@ -44,7 +53,7 @@ public class Character : MonoBehaviourPun
         //PhotonView view = Item.GetComponent<PhotonView>();
         //view.TransferOwnership(PhotonNetwork.LocalPlayer);
         // Move to players pickup destination.
-        Item.transform.position = pickUpDestination.position;
+        //Item.transform.position = pickUpDestination.position;
 
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
@@ -54,21 +63,47 @@ public class Character : MonoBehaviourPun
         Item.SetItemPickupConditions();
     }
 
+    public void OnOwnershipRequest(PhotonView targetView, Photon.Realtime.Player previousOwner)
+    {
+
+    }
+
+    public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
+    {
+        if (targetView.gameObject.GetComponent<Grabbable>() != null)
+        {
+            photonView.RPC("GrabRPC", RpcTarget.All, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
+            return;
+        }
+        Debug.Log("ye");
+        if (currentHeldItem.tag == "Gun")
+        {
+            currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+        }
+
+        photonView.RPC("PickUpRPC", RpcTarget.Others, currentHeldItem.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, currentHeldItem.transform.GetComponent<PhotonView>().ViewID);
+    }
+
     public void PickUp(PickUpable Item) 
     {
         currentHeldItem = Item;
 
         PhotonView view = Item.GetComponent<PhotonView>();
-        view.TransferOwnership(PhotonNetwork.LocalPlayer);
-        //Item.SetItemPickupConditions();
-
-        if (Item.tag == "Gun")
+        if (!view.IsMine)
+            view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        else
         {
-            Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+            if (Item.tag == "Gun")
+            {
+                Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+            }
+
+            photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, Item.transform.GetComponent<PhotonView>().ViewID);
         }
 
-        photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
-        photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, Item.transform.GetComponent<PhotonView>().ViewID);
+
     }
 
     [PunRPC]
@@ -176,7 +211,7 @@ public class Character : MonoBehaviourPun
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
 
         // instantiate the bullet locally
-        GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(0).transform.GetChild(14).position, pickUpDestination.transform.GetChild(0).rotation);
+        GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(1).transform.GetChild(14).position, pickUpDestination.transform.GetChild(1).rotation);
         //pickUpDestination.transform.GetChild(0).GetComponent<Gun>().GunShot();
 
         // if it hits something, have the bullet point at that thing and add a force based on bullet forward facing transform
@@ -198,16 +233,19 @@ public class Character : MonoBehaviourPun
 
     public void Shoot(Shootable Item) 
     {
-        // send an RPC to shoot a bullet on the local client and on all other clients
-        // this is done because the local player has to hold the gun in a game object that is the child of the camera
-        if (pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().Ammo > 0)
+        if (!gameObject.GetComponent<PlayerMovementPhoton>().onMenu)
         {
-            photonView.RPC("CreateBullet", RpcTarget.Others);
-            photonView.RPC("CreateBulletLocal", PhotonNetwork.LocalPlayer);
-        } 
-        else
-        {
-            pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().EmptyGunShot();
+            // send an RPC to shoot a bullet on the local client and on all other clients
+            // this is done because the local player has to hold the gun in a game object that is the child of the camera
+            if (pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().Ammo > 0)
+            {
+                photonView.RPC("CreateBullet", RpcTarget.Others);
+                photonView.RPC("CreateBulletLocal", PhotonNetwork.LocalPlayer);
+            }
+            else
+            {
+                pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().EmptyGunShot();
+            }
         }
         
     }
@@ -234,4 +272,26 @@ public class Character : MonoBehaviourPun
         photonView.RPC("DragRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
+    [PunRPC]
+    void GrabRPC(int ItemID)
+    {
+        Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
+        Item.transform.position = grabDestination.position;
+        Item.transform.parent = grabDestination;
+
+        Item.SetItemPickupConditions();
+    }
+
+    public void Grab(Grabbable Item)
+    {
+        holdingTheBag = true;
+
+        PhotonView view = Item.GetComponent<PhotonView>();
+        if (!view.IsMine)
+            view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        else
+        {
+            photonView.RPC(nameof(GrabRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        }
+    }
 }
