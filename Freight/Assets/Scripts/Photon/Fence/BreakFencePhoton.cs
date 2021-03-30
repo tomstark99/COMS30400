@@ -56,6 +56,8 @@ public class BreakFencePhoton : MonoBehaviourPun
     [PunRPC]
     void DestroyFence()
     {
+        // event
+        FenceBroke();
         PhotonNetwork.Destroy(transform.gameObject);
     }
 
@@ -83,8 +85,6 @@ public class BreakFencePhoton : MonoBehaviourPun
 
                     photonView.RPC("DestroyFence", RpcTarget.MasterClient);
                     PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
-                    // event
-                    FenceBroke();
                     isBroken = true;
                     break;
                 }
