@@ -72,13 +72,6 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
     {
-        if (targetView.gameObject.GetComponent<Grabbable>() != null)
-        {
-            Debug.Log("ONOWNERSHIPTRANSFER :3");
-            photonView.RPC(nameof(GrabRPC), RpcTarget.Others, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
-            photonView.RPC(nameof(GrabRPCLocal), PhotonNetwork.LocalPlayer, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
-            return;
-        }
         Debug.Log("ye");
         if (currentHeldItem.tag == "Gun")
         {
@@ -277,57 +270,23 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     }
 
     [PunRPC]
-    void GrabRPC(int ItemID)
-    {
-        Debug.Log("GRABRPC");
-        Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
-        Item.transform.position = grabDestination.position;
-        Item.transform.parent = grabDestination;
-
-        Item.SetItemPickupConditions();
-    }
-
-    [PunRPC] 
-    void GrabRPCLocal(int ItemID)
-    {
-        Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
-        Debug.Log("LOCAL");
-        Item.transform.position = grabDestination.position;
-
-        // Set the parent of the object to the pickupDestination so that it moves
-        // with the player.
-        Item.transform.parent = grabDestination;
-        //Item.transform.Rotate(0, 90, 0);
-
-        Item.SetItemPickupConditions();
-    }
-
-    [PunRPC]
     void DestroyBackpack(int backPackId)
     {
         PhotonNetwork.Destroy(PhotonView.Find(backPackId));
         
     }
     [PunRPC]
-    public void ActivateBackPack(int ItemID) {
-        //PhotonView.Find(ItemID).gameObject.SetActive(true);
+    public void ActivateBackPack() 
+    {
         backPackObject.SetActive(true);
     }
     public void Grab(Grabbable Item)
     {
         holdingTheBag = true;
 
-        /*PhotonView view = Item.GetComponent<PhotonView>();
-        if (!view.IsMine)
-            view.TransferOwnership(PhotonNetwork.LocalPlayer);
-        else
-        {
-            photonView.RPC(nameof(GrabRPC), RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
-            photonView.RPC(nameof(GrabRPCLocal), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
-        }*/
         Debug.Log(backPackObject);
         photonView.RPC(nameof(DestroyBackpack), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
-        photonView.RPC(nameof(ActivateBackPack), RpcTarget.All, backPackObject.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(ActivateBackPack), RpcTarget.All);
 
     }
 }
