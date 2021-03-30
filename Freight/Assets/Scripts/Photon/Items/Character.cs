@@ -306,8 +306,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void DestroyBackpack(int backPackId)
     {
         PhotonNetwork.Destroy(PhotonView.Find(backPackId));
+        
     }
-
+    [PunRPC]
+    public void ActivateBackPack(int ItemID) {
+        //PhotonView.Find(ItemID).gameObject.SetActive(true);
+        backPackObject.SetActive(true);
+    }
     public void Grab(Grabbable Item)
     {
         holdingTheBag = true;
@@ -322,7 +327,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }*/
         Debug.Log(backPackObject);
         photonView.RPC(nameof(DestroyBackpack), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
-        backPackObject.SetActive(true);
+        photonView.RPC(nameof(ActivateBackPack), RpcTarget.All, backPackObject.transform.GetComponent<PhotonView>().ViewID);
 
     }
 }
