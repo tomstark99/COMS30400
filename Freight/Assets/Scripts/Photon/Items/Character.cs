@@ -17,6 +17,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     private bool holdingTheBag;
 
+    public GameObject backPackObject;
+
     public bool HoldingTheBag
     {
         get { return holdingTheBag; }
@@ -295,22 +297,32 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
         Item.transform.parent = grabDestination;
-        Item.transform.Rotate(0, 90, 0);
+        //Item.transform.Rotate(0, 90, 0);
 
         Item.SetItemPickupConditions();
+    }
+
+    [PunRPC]
+    void DestroyBackpack(int backPackId)
+    {
+        PhotonNetwork.Destroy(PhotonView.Find(backPackId));
     }
 
     public void Grab(Grabbable Item)
     {
         holdingTheBag = true;
 
-        PhotonView view = Item.GetComponent<PhotonView>();
+        /*PhotonView view = Item.GetComponent<PhotonView>();
         if (!view.IsMine)
             view.TransferOwnership(PhotonNetwork.LocalPlayer);
         else
         {
             photonView.RPC(nameof(GrabRPC), RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
-            photonView.RPC(nameof(GrabRPCLocal), PhotonNetwork.LocalPlayer, Item.transform.GetComponent<PhotonView>().ViewID);
-        }
+            photonView.RPC(nameof(GrabRPCLocal), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        }*/
+        Debug.Log(backPackObject);
+        photonView.RPC(nameof(DestroyBackpack), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
+        backPackObject.SetActive(true);
+
     }
 }
