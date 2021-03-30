@@ -8,6 +8,9 @@ public class JoinRoomUi : MonoBehaviour
     // Start is called before the first frame update
     public GameObject text;
 
+    [SerializeField]
+    private GameObject createRoomUi;
+
     public GameObject playerListScroll;
     // Start is called before the first frame update
     public void OnMouseOver() {
@@ -33,6 +36,8 @@ public class JoinRoomUi : MonoBehaviour
 
     public void OnPointerClick() {
         playerListScroll.SetActive(!playerListScroll.activeSelf);
+        
+        createRoomUi.SetActive(false);
         Debug.Log(playerListScroll);
     }
 }
