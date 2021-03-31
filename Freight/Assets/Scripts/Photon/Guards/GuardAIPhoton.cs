@@ -80,6 +80,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         guardState = State.Patroling;
         if (GameObject.Find("Endgame") != null) 
             GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
+
+        GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        foreach (var light in lights)
+        {
+            light.GetComponent<rotateLight>().PlayerInLight += SetAllGuardsToAlerted;
+        }
     }
 
     public void DisableGuards()
