@@ -16,7 +16,15 @@ public class BackButtonMenu : MonoBehaviour
         roomsCanvases = canvases;
     }
 
+    private void Update() {
 
+         if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(roomsCanvases.CreateOrJoinRoomCanvas != null) {
+                roomsCanvases.CreateOrJoinRoomCanvas.Show();
+            }
+        }
+    } 
     // when click on create room, create a 2 player room
     public void OnClick_BackButton()
     {
