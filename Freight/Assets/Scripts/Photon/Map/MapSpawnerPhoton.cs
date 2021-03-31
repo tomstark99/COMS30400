@@ -100,7 +100,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/tree_basic Variant", pos, Quaternion.identity);
         }
 
-        Debug.Log("Trees");
+        //Debug.Log("Trees");
     }
 
     void SpawnTrackGroups()
@@ -233,7 +233,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
             PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Tracks/straight_track_detail Variant", pos, Quaternion.Euler(0f, 90f, 0f));
         }
 
-        Debug.Log("Tracks");
+        //Debug.Log("Tracks");
     }
 
     void SpawnIndividualTracks()
@@ -677,7 +677,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
         }*/
 
         int clearTrack = UnityEngine.Random.Range(0, 5);
-        Debug.Log("skipped track: " + clearTrack);
+        //Debug.Log("skipped track: " + clearTrack);
         //GameObject freight_train_coal_loc = PhotonNetwork.Instantiate("PhotonPrefabs/freight_train_coal_ladder Variant 1", new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f));
         //Debug.Log("loca" + freight_train_coal_loc);
         //GameObject track = GameObject.FindWithTag(clearTrack.ToString());
@@ -726,14 +726,14 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                                 //trainGo.transform.Find("TrainNumber").gameObject.transform.GetChild(0).transform.GetComponent<TextMeshPro>().text = ("Train number " + j.ToString());
 
                             }
-                            Debug.Log("burst train");
+                            //Debug.Log("burst train");
                         }
                         else
                         {
-                            Debug.Log("got to the normal train");
+                            //Debug.Log("got to the normal train");
                             //trainGo = Instantiate(train, position, Quaternion.Euler(0f, 0f, 0f));
                             int ran = UnityEngine.Random.Range(0, 3);
-                            Debug.Log(ran);
+                            //Debug.Log(ran);
                             if (ran == 1)
                             {
                                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Trains/freight_train_stationary Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
@@ -780,7 +780,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
         }
 
-        Debug.Log("Trains");
+        //Debug.Log("Trains");
     }
     bool inSkip(int i, int[] positions, int gaps)
     {
@@ -929,6 +929,6 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/fence_simple Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
             }
         }
-        Debug.Log("Fences");
+        //Debug.Log("Fences");
     }
 }

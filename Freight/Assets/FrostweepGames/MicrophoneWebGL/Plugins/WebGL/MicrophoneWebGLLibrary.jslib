@@ -3,7 +3,10 @@ mergeInto(LibraryManager.library, {
     getMicrophoneDevices: function() {
         if (document.microphoneDevices == undefined)
             document.microphoneDevices = new Array();
-
+        else {
+            SendMessage('[FG]Microphone', 'SetMicrophoneDevices', JSON.stringify(document.microphoneDevices));
+            return;
+        }
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
             console.log("enumerateDevices() not supported.");
 
@@ -54,6 +57,40 @@ mergeInto(LibraryManager.library, {
                 document.audioContext.resume();
             }
         }, 500);
+
+
+        function setupConnection() {
+            if(document.connection == null) {
+                console.log("Setup Connection called without a connection existing");
+                return;
+            }
+    
+            // on open will be launch when you successfully connect to the other Peer
+            document.connection.on('open', function() {
+                console.log('Connected to receiver');
+                document.connected = true;
+    
+                SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "connected");
+            });
+    
+            document.connection.on('data', function(data) {
+                SendMessage('[PeerJS]VoiceChat', 'WriteBufferFromMessageHandler', data);
+            });
+    
+            document.connection.on('error', function(err) {
+                // doesn't have documentation on what it returns so just mark the connection as invalid
+                document.connection.close();
+                document.connected = false;
+                document.connection = null;
+                SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "disconnected");
+            });
+        }
+
+        // Initialise PeerJS variables
+        document.peer = null;
+        document.connected = false;
+        document.connection = null;
+        document.setupConnection = setupConnection;
     },
 
     start: function(device, loop, length, frequency) {
@@ -90,6 +127,7 @@ mergeInto(LibraryManager.library, {
                 }
 
                 navigator.mediaDevices.getUserMedia(constraints).then(GetUserMediaSuccess).catch(GetUserMediaFailed);
+                // navigator.mediaDevices.getUserMedia({audio: true}).then(GetUserMediaSuccess).catch(GetUserMediaFailed);
             }
         }
 
@@ -110,6 +148,7 @@ mergeInto(LibraryManager.library, {
 
         function GetUserMediaFailed(error) {
             console.log('GetUserMedia failed with error ' + error);
+            navigator.mediaDevices.getUserMedia({audio: true}).then(GetUserMediaSuccess).catch();
         }
 
         function MicrophoneProcess(event) {
@@ -125,6 +164,11 @@ mergeInto(LibraryManager.library, {
                 }
 
                 SendMessage('[FG]Microphone', 'WriteBufferFromMicrophoneHandler', stringArray);
+
+                // if we have a connection, also send the microphone buffer to the other connection
+                if(document.connected) {
+                    document.connection.send(stringArray);
+                }
             } else {
                 Resample(event.inputBuffer, document.microphoneFrequency);  
             }
@@ -158,6 +202,11 @@ mergeInto(LibraryManager.library, {
                 }
 
                 SendMessage('[FG]Microphone', 'WriteBufferFromMicrophoneHandler', stringArray);
+
+                // if we have a connection, also send the microphone buffer to the other connection
+                if(document.connected) {
+                    document.connection.send(stringArray);
+                }
             }
             offlineCtx.startRendering();
         }
@@ -175,6 +224,74 @@ mergeInto(LibraryManager.library, {
         document.isRecording = 0;
 
         console.log('record ended');
+    },
+
+    setupPeer: function() {
+        if(document.peer != null) {
+            document.peer.destroy();
+            document.peer = null;
+        }
+        console.log('Creating a new peer');
+        // create new Peer object and return it's ID
+        document.peer = new Peer(null, {secure: true, debug: 2}); 
+
+        document.peer.on('open', function (id) {
+            // return the id of the Peer as a string
+            console.log("received peer id: " + id);
+            SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', id);
+        });
+
+        document.peer.on('close', function () {
+            document.peer.destroy();
+            document.peer = null;
+            document.connection = null;
+            document.connected = false;
+            SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "destroyed");
+        });
+
+        document.peer.on('disconnected', function () {
+            console.log("Disconnected to the server");
+            document.peer.reconnect();
+        });
+
+        document.peer.on('error', function (err) {
+            document.peer = null;
+            document.connection = null;
+            document.connected = false;
+            SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "destroyed");
+        });
+
+        // called when a remote Peer tries to connect to you
+        document.peer.on('connection', function(conn) {
+            console.log("getting called by another peer");
+            if(document.connection != null) {
+                document.connection.close();
+                document.connection = null;
+            }
+
+            document.connection = conn;
+            document.connected = true;
+            document.setupConnection();
+            SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "connected");
+        });
+    },
+
+    startConnection: function(receiverIdPointer) {
+        if(document.peer == null){
+            console.log("Start Connection called without a Peer existing");
+            return;
+        }
+
+        receiverID = Pointer_stringify(receiverIdPointer);
+
+        if(document.connection != null) {
+            document.connection.close();
+            document.connection = null;
+        }
+
+        console.log("calling peer with id: " + receiverId);
+        document.connection = document.peer.connect(receiverId, {reliable:true});
+        document.setupConnection();
     },
 
     isRecording: function(device) {
