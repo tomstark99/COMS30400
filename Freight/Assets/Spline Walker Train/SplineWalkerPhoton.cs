@@ -79,7 +79,7 @@ public class SplineWalkerPhoton : MonoBehaviourPun
         if(!PhotonNetwork.IsMasterClient)
             return;
 
-        Debug.Log("time to leave:" + timeToLeave);
+       // Debug.Log("time to leave:" + timeToLeave);
         timeToLeave -= Time.deltaTime;
         if (timeToLeave < 0)
         {

@@ -35,9 +35,10 @@ public class PlayerUI : MonoBehaviourPun
     }
 
     public void closeorOpenMenu() {
-        Debug.Log("terrain is fucccked");
-            menuOpened = !menuOpened;   
-            ConfigCursor();
+            menuOpened = !menuOpened; 
+            Debug.Log("menu is openend:" + menuOpened);
+  
+            //ConfigCursor();
             MenuActive(menuOpened);
     }
 
@@ -86,11 +87,14 @@ public class PlayerUI : MonoBehaviourPun
     {
         if (menuOpened)
         {
+            Debug.Log("menu is opened here");
+
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
         else
         {
+            Debug.Log("allow");
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
