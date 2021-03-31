@@ -34,6 +34,13 @@ public class PlayerUI : MonoBehaviourPun
         PlayerPrefs.Save();
     }
 
+    public void closeorOpenMenu() {
+        Debug.Log("terrain is fucccked");
+            menuOpened = !menuOpened;   
+            ConfigCursor();
+            MenuActive(menuOpened);
+    }
+
     private void Update()
     {
         //Debug.Log(mouseSensibilitySlider.value);
@@ -44,9 +51,7 @@ public class PlayerUI : MonoBehaviourPun
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("esc");
-            menuOpened = !menuOpened;   
-            ConfigCursor();
-            MenuActive(menuOpened);
+            closeorOpenMenu();
         }
     }
 
