@@ -65,7 +65,7 @@ public class SplineWalkerPhoton : MonoBehaviourPun
             transform.LookAt(position + spline.GetDirection(progress));
         }
 
-        Debug.Log(spline);
+        //Debug.Log(spline);
     }
 
     // void timer_Tick(object sender, EventArgs e) {

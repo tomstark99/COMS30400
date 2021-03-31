@@ -23,7 +23,7 @@ public class PlayerUI : MonoBehaviour
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
         else*/
            
-            Debug.Log(mouseSensibilitySlider);
+            //Debug.Log(mouseSensibilitySlider);
             mouseSensibilitySlider.value = 100f;
     }
 

@@ -9,12 +9,10 @@ using System;
 
 public class ProximityVoice : MonoBehaviourPun
 {
-    public Listener listener;
-    public Recorder recorder;
-    public AudioListener audioListener;
+    public VoiceChatConnector voice;
 
-    private Dictionary<int, AudioSource> _sources;
-    private GameObject[] _players;
+    private GameObject otherPlayer = null;
+    private AudioSource otherPlayerSource;
 
     public float minDistance = 1f;
     public float maxDistance = 25f;
@@ -30,17 +28,8 @@ public class ProximityVoice : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        listener.enabled = true;
-        recorder.enabled = true;
-        audioListener.enabled = true;
-
-        listener.StartListen();
-        recorder.StartRecord();
-
-        _sources = new Dictionary<int, AudioSource>();
-        _players = GameObject.FindGameObjectsWithTag("Player");
-
-        listener.SpeakersUpdatedEvent += OnSpeakerUpdate;
+        voice.OnStatusConnected += UpdateOtherPlayer;
+        otherPlayerSource = voice.foreignAudioSource;
 
         b = (minVolume - maxVolume) / (1 / Mathf.Sqrt(maxDistance) - 1 / Mathf.Sqrt(minDistance));
         a = maxVolume - b / Mathf.Sqrt(minDistance);
@@ -55,31 +44,28 @@ public class ProximityVoice : MonoBehaviourPun
         return a + b / Mathf.Sqrt(distance); // maxVolume in minDistance and minVolume in maxDistance
     }
 
-
     public void UpdateVolume()
     {
         if (!photonView.IsMine) return;
 
-        foreach (GameObject player in _players)
+        if(otherPlayer !=  null)
         {
-            int Id = player.GetPhotonView().Owner.ActorNumber;
-            //both for the player object of this owner and because order of calling functions it's a black box
-            if (!_sources.ContainsKey(Id)) continue; 
-
-            var distance = Vector3.Distance(transform.position, player.transform.position);
+            var distance = Vector3.Distance(transform.position, otherPlayer.transform.position);
             var newVolume = VolumeValue(distance);
-            _sources[Id].volume = newVolume;
+            otherPlayerSource.volume = newVolume;
         }
     }
 
-    private void OnSpeakerUpdate()
+    private void UpdateOtherPlayer()
     {
-        _players = GameObject.FindGameObjectsWithTag("Player");
+        var players = GameObject.FindGameObjectsWithTag("Player");
 
-        _sources = new Dictionary<int, AudioSource>();
-        foreach(int id in listener.Speakers.Keys)
+        foreach(GameObject player in players)
         {
-            _sources.Add(id, listener.Speakers[id].AudioSource);
+            if(!player.GetPhotonView().AmOwner)
+            {
+                otherPlayer = player;
+            }
         }
     }
 }
