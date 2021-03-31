@@ -108,8 +108,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         // instantiates move with null so that it can be set depending on climb
         Vector3 move;
-        
-#if UNITY_WEBGL && !UNITY_EDITOR
 
         if (climbing && PoseParser.GETGestureAsString().CompareTo("L") == 0)
         {
@@ -122,19 +120,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.right * x + transform.forward * z;
         }
-        
-#else
-        
-        if (climbing && l > 0f)
-        {
-            move = transform.up * l;
-        }
-        else
-        {
-            move = transform.right * x + transform.forward * z;
-        }
-
-#endif
 
         //Sticks player to centreline of ladder
         if (climbing)
@@ -177,12 +162,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !crouching)
+        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C")==0) && !crouching)
         {
             crouching = true;
             controller.height = 1.2f;
         } 
-        else if (Input.GetKeyUp(KeyCode.LeftControl) && crouching)
+        else if (Input.GetKeyUp(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0 && crouching)
         {
             crouching = false;
             controller.height = 1.8f;
