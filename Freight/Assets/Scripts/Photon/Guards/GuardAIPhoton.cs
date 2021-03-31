@@ -389,7 +389,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             SetGuardsToAlertedItem(rockPos);
         }
         // If the player is not spotted and the guard has reached their destination, go to new point
-        else if (!playerSpotted && guard.remainingDistance < 0.5f)
+        else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {
             guardState = State.Patroling;
             timeChasing = 0f;
