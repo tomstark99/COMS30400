@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using Cinemachine;
 public class EndGame : MonoBehaviour
 {
     private HashSet<Collider> colliders = new HashSet<Collider>();
@@ -15,7 +15,8 @@ public class EndGame : MonoBehaviour
     private bool gameWon;
     private bool showingEndScreen;
     private float endScreen;
-
+    public CinemachineVirtualCamera vcam;
+    
     public HashSet<Collider> GetColliders() { return colliders; }
 
     void Start()
@@ -91,14 +92,17 @@ public class EndGame : MonoBehaviour
                 } 
                 else
                 {
+                    vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
                     Debug.Log("you lost...");
                     foreach (var player in players)
                     {
-                        player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
+                        //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
+                        player.transform.GetChild(13).GetChild(13).gameObject.SetActive(true);
+                        player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
                     }
                 }
 
-                EndTheGame();
+                //EndTheGame();
                 
             }
         }
