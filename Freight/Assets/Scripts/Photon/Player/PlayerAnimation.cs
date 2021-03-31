@@ -129,7 +129,7 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isRunningHash, true);
             player.setSpeed(runningSpeed);
 
-        } else if (Input.GetKeyUp(KeyCode.LeftShift) && PoseParser.GETGestureAsString().CompareTo("I")!=0 && isRunning) {
+        } else if (!Input.GetKey(KeyCode.LeftShift) && PoseParser.GETGestureAsString().CompareTo("I")!=0 && isRunning) {
             animator.SetBool(isWalkingHash, true);
             animator.SetBool(isRunningHash, false);
             player.setSpeed(walkingSpeed);
@@ -144,7 +144,7 @@ public class PlayerAnimation : MonoBehaviourPun
 
         if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C")==0) && !isCrouched) {
             animator.SetBool(isCrouchedHash, true);
-        } else if (Input.GetKeyUp(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0 && isCrouched) {
+        } else if (!Input.GetKey(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0 && isCrouched) {
             animator.SetBool(isCrouchedHash, false);
         }
 
