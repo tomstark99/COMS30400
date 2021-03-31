@@ -10,6 +10,7 @@ public class ItemInteract : MonoBehaviourPun
     [SerializeField] private Transform cameraTransform;
     private Character character;
     private bool interactableInRange = false;
+    private bool bagInRange = false;
     [SerializeField]
     private Interactable currentInteractable;
 
@@ -20,7 +21,7 @@ public class ItemInteract : MonoBehaviourPun
 
     private GameObject rocks;
 
-    private GameObject interactableRock;
+    private GameObject interactableObject;
     private GameObject interactables;
 
     private bool tooltip;
@@ -56,8 +57,8 @@ public class ItemInteract : MonoBehaviourPun
 
             try
             {
-                 newInteractable = interactableRock.GetComponent<Interactable>();
-             }
+                 newInteractable = interactableObject.GetComponent<Interactable>();
+            }
             catch
             {
                 Debug.Log("Interactable is null");
@@ -85,17 +86,33 @@ public class ItemInteract : MonoBehaviourPun
         // interacting with something.
         else if (currentInteractable != null)
         {
-        
-            // And if bring the mouse button up
+            // check if there is a bag nearby as we can still pickup bags if we are holding an item
+            Grabbable newBag = null;
+
+            try
+            {
+                newBag = interactableObject.GetComponent<Grabbable>();
+            }
+            catch
+            {
+                Debug.Log("rock is null");
+            }
+
+            if (Input.GetKeyDown(KeyCode.E) && newBag != null)
+            {
+                newBag.PrimaryInteraction(character);
+            }
+
+            // press G to drop/throw item
             if (Input.GetKeyDown(KeyCode.G)) 
             {
-                // Some item have a primary interaction off method, eg drop the
-                // item after pickup. Therefore run this on mouse up.
+                // we drop/throw item and turn off its outline
                 currentInteractable.PrimaryInteractionOff(character);
                 currentInteractable.GetComponent<Outline>().enabled = true;
                 currentInteractable = null;
             }
 
+            // if item is shootable
             if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Shootable>() != null) 
             {
                 Debug.Log(currentInteractable);
@@ -156,7 +173,7 @@ public class ItemInteract : MonoBehaviourPun
                     interactableInRange = true;
 
                     if(tempDist < minimumDistanceToObject) {
-                        interactableRock = interact.gameObject;
+                        interactableObject = interact.gameObject;
                         minimumDistanceToObject = tempDist;
                     }
                     found = true;

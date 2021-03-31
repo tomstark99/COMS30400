@@ -93,7 +93,7 @@ public class EndGame : MonoBehaviour
                 else
                 {
                     //uncomment for cinemachine transition
-                    //vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
+                    vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
                     Debug.Log("you lost...");
                     foreach (var player in players)
                     {
