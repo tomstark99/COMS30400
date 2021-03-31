@@ -7,8 +7,7 @@ public class rotateLight : MonoBehaviour
     [SerializeField]
     private GameObject spotlight;
     private bool positiveRotation;
-    private float rotationMultiplier = 0.25f;
-    public bool spinningLeft;
+    private float rotationMultiplier = 10f;
     public float rotationUpperLimit;
     public float rotationLowerLimit;
 
@@ -16,33 +15,41 @@ public class rotateLight : MonoBehaviour
     void Start()
     {
         positiveRotation = true;
-        if (spinningLeft == false)
-        {
-            rotationMultiplier *= -1;
-            positiveRotation = false;
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(spotlight.transform.rotation.y);
+        Debug.Log(spotlight.transform.eulerAngles.y);
         if (positiveRotation == true)
         {
-            spotlight.transform.Rotate(Vector3.up * rotationMultiplier);
-            if (spotlight.transform.rotation.y > rotationUpperLimit)
+            spotlight.transform.Rotate(Vector3.up * rotationMultiplier * Time.deltaTime);
+            if (spotlight.transform.eulerAngles.y < rotationUpperLimit && spotlight.transform.eulerAngles.y > rotationLowerLimit)
             {
-                positiveRotation = false;
+                if (positiveRotation == true)
+                {
+                    positiveRotation = false;
+                }
+                else
+                {
+                    positiveRotation = true;
+                }
             }
         }
         else
         {
-            spotlight.transform.Rotate(Vector3.up * -rotationMultiplier);
-            if (spotlight.transform.rotation.y < rotationLowerLimit)
+            spotlight.transform.Rotate(Vector3.up * -rotationMultiplier * Time.deltaTime);
+            if (spotlight.transform.eulerAngles.y < rotationUpperLimit && spotlight.transform.eulerAngles.y > rotationLowerLimit)
             {
-                positiveRotation = true;
+                if (positiveRotation == true)
+                {
+                    positiveRotation = false;
+                }
+                else
+                {
+                    positiveRotation = true;
+                }
             }
         }
-        
     }
 }
