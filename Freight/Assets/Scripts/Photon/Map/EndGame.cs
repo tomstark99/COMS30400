@@ -6,6 +6,7 @@ using Photon.Pun;
 using Cinemachine;
 public class EndGame : MonoBehaviour
 {
+    public GameObject leavingTrain;
     private HashSet<Collider> colliders = new HashSet<Collider>();
 
     public event Action StartEndGame;
@@ -92,15 +93,24 @@ public class EndGame : MonoBehaviour
                 } 
                 else
                 {
-                    //uncomment for cinemachine transition
-                    vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
-                    Debug.Log("you lost...");
-                    foreach (var player in players)
+                    bool switchCamera = false;
+                    foreach(var player in players)
+                      if(Vector3.Distance(player.transform.position, leavingTrain.transform.position) > 100)
+                        switchCamera = true;
+                    
+                    if(switchCamera)
                     {
-                        //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
-                        player.transform.GetChild(13).GetChild(13).gameObject.SetActive(true);
-                        player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+                        vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
+                        Debug.Log("you lost...");
+                        foreach (var player in players)
+                        {
+                            //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
+                            player.transform.GetChild(13).GetChild(13).gameObject.SetActive(true);
+                            player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+                        }
                     }
+                    //uncomment for cinemachine transition
+                    
                 }
 
                 //EndTheGame();
