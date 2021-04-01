@@ -30,20 +30,20 @@ public class rotateLight : MonoBehaviour
         positiveRotation = true;
         players = GameObject.FindGameObjectsWithTag("Player");
         
-        angleDifference =  Math.Max(0,transform.rotation.y - 360);
+        //angleDifference =  Math.Max(0,transform.rotation.y - 360);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(spotlight.transform.eulerAngles.y  + angleDifference);
+        Debug.Log(spotlight.transform.eulerAngles.y);
         players = GameObject.FindGameObjectsWithTag("Player");
 
         if (positiveRotation == true)
         {
             spotlight.transform.Rotate(Vector3.up * rotationMultiplier * Time.deltaTime);
-            if (spotlight.transform.eulerAngles.y  + angleDifference > rotationUpperLimit)
+            if (spotlight.transform.eulerAngles.y > rotationUpperLimit)
             {
                 
                     positiveRotation = false;
