@@ -49,6 +49,29 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         get { return guardState; }
     }
 
+    /*
+     IEnumerator SolveStuck() {
+        Vector3 lastPosition = this.transform.position;
+ 
+        while (true) {
+            yield return new WaitForSeconds(3f);
+ 
+            //Maybe we can also use agent.velocity.sqrMagnitude == 0f or similar
+            if (!agent.pathPending && agent.hasPath && agent.remainingDistance > agent.stoppingDistance) {
+                Vector3 currentPosition = this.transform.position;
+                if (Vector3.Distance(currentPosition, lastPosition) < 1f) {
+                    Vector3 destination = agent.destination;
+                    agent.ResetPath();
+                    agent.SetDestination(destination);
+                    Debug.Log("Agent Is Stuck");
+                }
+                Debug.Log("Current Position " + currentPosition + " Last Position " + lastPosition);
+                lastPosition = currentPosition;
+            }
+        }
+    }
+    */
+    
     void Start()
     {
         // find players, set the guard to its own navmeshagent and set the guard state to patroling
@@ -57,6 +80,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         guardState = State.Patroling;
         if (GameObject.Find("Endgame") != null) 
             GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
+
+        GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        foreach (var light in lights)
+        {
+            light.GetComponent<rotateLight>().PlayerInLight += SetAllGuardsToAlerted;
+        }
     }
 
     public void DisableGuards()
@@ -366,7 +395,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             SetGuardsToAlertedItem(rockPos);
         }
         // If the player is not spotted and the guard has reached their destination, go to new point
-        else if (!playerSpotted && guard.remainingDistance < 0.5f)
+        else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {
             guardState = State.Patroling;
             timeChasing = 0f;
