@@ -173,6 +173,12 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         guardPos.y += 0.5f;
         if (GameObject.Find("Endgame") != null)
             GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
+
+        GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        foreach (var light in lights)
+        {
+            light.GetComponent<rotateLight>().PlayerInLight += killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
+        }
         // remove the guard 
         PhotonNetwork.Destroy(killedGuard);
         // create a dead body that will be draggable (allow new guard model)
