@@ -8,14 +8,16 @@ public class PlayerLightUI : MonoBehaviour
     private bool isOn;
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         isOn = false;
+        timeToDisable = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(timeToDisable);
         if (isOn)
         {
             timeToDisable += Time.deltaTime;

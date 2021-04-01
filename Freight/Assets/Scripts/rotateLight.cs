@@ -85,11 +85,12 @@ public class rotateLight : MonoBehaviour
                // Debug.Log("lightAngle / 2f" + lightAngle / 2f);
                 if (guardPlayerAngle < lightAngle / 2f)
                 {
-                    Debug.Log("YE MANS IN THE ANGLE STILL");
+                   
                     // checks if guard line of sight is blocked by an obstacle
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.Find("pCylinder3/Point Light").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("pCylinder3/Point Light").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
+                        Debug.Log("YE MANS GETTING DETECTED STIIIIIIIIIIIIIIIIIIIIIIIIIL");
                         PlayerInLight();
                     }
                 }
