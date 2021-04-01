@@ -74,11 +74,19 @@ public class ItemInteract : MonoBehaviourPun
                 //Debug.Log("current interactable has a pick up script");
                 if (Input.GetKeyDown(KeyCode.E)) 
                 {
-                    currentInteractable = newInteractable;
-                    currentInteractable.GetComponent<Outline>().enabled = false;
-                    // Debug.Log("F was pressed");
-                    // Do whatever the primary interaction of this interactable is.
-                    currentInteractable.PrimaryInteraction(character);
+                    if (newInteractable.GetComponent<Switchable>() != null)
+                    {
+                        newInteractable.PrimaryInteraction(character);
+                    }
+                    else
+                    {
+                        currentInteractable = newInteractable;
+                        currentInteractable.GetComponent<Outline>().enabled = false;
+                        // Debug.Log("F was pressed");
+                        // Do whatever the primary interaction of this interactable is.
+                        currentInteractable.PrimaryInteraction(character);
+                    }
+
                 }
             }
         }
