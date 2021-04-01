@@ -88,6 +88,7 @@ public class ItemInteract : MonoBehaviourPun
         {
             // check if there is a bag nearby as we can still pickup bags if we are holding an item
             Grabbable newBag = null;
+            Switchable newSwitch = null;
 
             try
             {
@@ -98,9 +99,23 @@ public class ItemInteract : MonoBehaviourPun
                 Debug.Log("rock is null");
             }
 
+            try
+            {
+                newSwitch = interactableObject.GetComponent<Switchable>();
+            }
+            catch
+            {
+                Debug.Log("switch is null");
+            }
+
             if (Input.GetKeyDown(KeyCode.E) && newBag != null)
             {
                 newBag.PrimaryInteraction(character);
+            }
+
+            if (Input.GetKeyDown(KeyCode.E) && newSwitch != null)
+            {
+                newSwitch.PrimaryInteraction(character);
             }
 
             // press G to drop/throw item
