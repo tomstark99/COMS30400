@@ -26,14 +26,7 @@ public class rotateLight : MonoBehaviour
             spotlight.transform.Rotate(Vector3.up * rotationMultiplier * Time.deltaTime);
             if (spotlight.transform.eulerAngles.y < rotationUpperLimit && spotlight.transform.eulerAngles.y > rotationLowerLimit)
             {
-                if (positiveRotation == true)
-                {
-                    positiveRotation = false;
-                }
-                else
-                {
-                    positiveRotation = true;
-                }
+                positiveRotation = false;
             }
         }
         else
@@ -41,14 +34,7 @@ public class rotateLight : MonoBehaviour
             spotlight.transform.Rotate(Vector3.up * -rotationMultiplier * Time.deltaTime);
             if (spotlight.transform.eulerAngles.y < rotationUpperLimit && spotlight.transform.eulerAngles.y > rotationLowerLimit)
             {
-                if (positiveRotation == true)
-                {
-                    positiveRotation = false;
-                }
-                else
-                {
-                    positiveRotation = true;
-                }
+                positiveRotation = true;
             }
         }
     }
