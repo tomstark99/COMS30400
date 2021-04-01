@@ -73,13 +73,23 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
     {
         Debug.Log("Is this mine? " + targetView.IsMine);
+        Debug.Log("Current item = " + currentHeldItem);
         if (!targetView.IsMine)
         {
             return;
         }
-        if (currentHeldItem.tag == "Gun")
+
+        if (currentHeldItem != null)
         {
-            currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+            if (currentHeldItem.tag == "Gun")
+            {
+                currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+            }
+
+        }
+        else
+        {
+            return;
         }
 
         photonView.RPC("PickUpRPC", RpcTarget.Others, currentHeldItem.transform.GetComponent<PhotonView>().ViewID);
