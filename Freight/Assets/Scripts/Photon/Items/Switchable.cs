@@ -9,20 +9,6 @@ public class Switchable : Interactable
 
     public override void PrimaryInteraction(Character character)
     {
-        if (!isSwitchedOff)
-        {
-            character.SwitchOff(this);
-        }
-    }
-
-    [PunRPC]
-    void SetSwitchToOffRPC()
-    {
-        isSwitchedOff = true;
-    }
-
-    public void SetSwitchToOff()
-    {
-        GetComponent<PhotonView>().RPC(nameof(SetSwitchToOffRPC), RpcTarget.All);
+        character.SwitchOff(this);
     }
 }
