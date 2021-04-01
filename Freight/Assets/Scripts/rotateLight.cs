@@ -8,7 +8,9 @@ public class rotateLight : MonoBehaviour
     [SerializeField]
     private GameObject spotlight;
     private bool positiveRotation;
-    private float rotationMultiplier = 10f;
+
+    [SerializeField]
+    private float rotationMultiplier;
     public float rotationUpperLimit;
     public float rotationLowerLimit;
 
