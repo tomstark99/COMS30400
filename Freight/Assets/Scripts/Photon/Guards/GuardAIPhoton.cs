@@ -223,7 +223,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         spotlight.color = Color.red;
     }
 
-    void SetAllGuardsToAlerted()
+    public void SetAllGuardsToAlerted()
     {
         GameObject[] allGuards = GameObject.FindGameObjectsWithTag("Guard");
         Transform closestPlayer = FindClosestPlayer();
