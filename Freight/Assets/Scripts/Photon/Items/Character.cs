@@ -13,9 +13,6 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
 
-    public GameObject lightsOn;
-    public GameObject lightsOff;
-
     public GameObject camera;
 
     private bool holdingTheBag;
@@ -294,27 +291,31 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     }
 
     [PunRPC]
-    void TurnOffLight(int lightID)
+    void TurnOffLight(int lightID, int itemID)
     {
         GameObject light = PhotonView.Find(lightID).gameObject;
+        GameObject laptop = PhotonView.Find(itemID).gameObject;
         light.GetComponent<rotateLight>().lightsTurnedOff = !light.GetComponent<rotateLight>().lightsTurnedOff;
+
+        GameObject lightsOff = laptop.transform.GetChild(0).GetChild(1).gameObject;
+        GameObject lightsOn = laptop.transform.GetChild(0).GetChild(0).gameObject;
         if (light.GetComponent<rotateLight>().lightsTurnedOff)
         {
-            gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
-            gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
-            gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(false);
-            //lightsOff.SetActive(true);
-            //lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
-            //lightsOn.SetActive(false);
+            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+            //gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
+            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(false);
+            lightsOff.SetActive(true);
+            lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
+            lightsOn.SetActive(false);
         } 
         else
         {
-            gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
-            gameObject.transform.GetChild(13).GetChild(9).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
-            gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(false);
-            //lightsOn.SetActive(true);
-            //lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
-            //lightsOff.SetActive(false);
+            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
+            //gameObject.transform.GetChild(13).GetChild(9).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
+            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(false);
+            lightsOn.SetActive(true);
+            lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
+            lightsOff.SetActive(false);
         }
     }
 
@@ -324,7 +325,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         foreach (var light in spinningLights)
         {
-            photonView.RPC(nameof(TurnOffLight), RpcTarget.All, light.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC(nameof(TurnOffLight), RpcTarget.All, light.transform.GetComponent<PhotonView>().ViewID, Item.transform.GetComponent<PhotonView>().ViewID);
         }
     }
 }
