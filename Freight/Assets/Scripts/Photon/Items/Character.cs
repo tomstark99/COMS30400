@@ -294,9 +294,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void TurnOffLight(int lightID)
     {
         GameObject light = PhotonView.Find(lightID).gameObject;
-        Debug.Log(light);
-        light.GetComponent<rotateLight>().lightsTurnedOff = true;
-        Debug.Log(light.GetComponent<rotateLight>().lightsTurnedOff);
+        light.GetComponent<rotateLight>().lightsTurnedOff = !light.GetComponent<rotateLight>().lightsTurnedOff;
     }
 
     public void SwitchOff(Switchable Item)
