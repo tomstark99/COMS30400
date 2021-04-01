@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         return currentHeldItem != null;
     }
+
+    public event Action PistolPickUp;
+    public event Action PistolDrop;
 
     [PunRPC]
     void PickUpRPCLocal(int ItemID)
@@ -94,6 +98,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (Item.tag == "Gun")
             {
                 Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+                PistolPickUp();
             }
 
             photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -143,6 +148,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (Item.tag == "Gun")
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
+            PistolDrop();
         }
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
