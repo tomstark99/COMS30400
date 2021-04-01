@@ -27,6 +27,8 @@ public class PlayerAnimation : MonoBehaviourPun
     public GameObject camera;
     public GameObject head;
 
+    // public event Action ChangeAnimationLayer;
+
     private PlayerMovementPhoton player;
 
     // Start is called before the first frame update
@@ -50,6 +52,12 @@ public class PlayerAnimation : MonoBehaviourPun
         isRightHash = Animator.StringToHash("walkRight");
         isCrouchedHash = Animator.StringToHash("crouched");
         isClimbingHash = Animator.StringToHash("isClimbing");
+
+        GetComponent<Character>().PistolPickUp += ChangeLayerPistol;
+        GetComponent<Character>().PistolDrop += ChangeLayerDefault;
+
+        Debug.Log(animator.GetLayerName(0));
+        Debug.Log(animator.GetLayerName(1));
     }
 
     // Update is called once per frame
@@ -170,5 +178,17 @@ public class PlayerAnimation : MonoBehaviourPun
     }
     public void setClimbing(bool val) {
         this.climbing = val;
+    }
+
+    public void ChangeLayerPistol() {
+        Debug.Log("accc pistol tings");
+        animator.SetLayerWeight(0, 0.0f);
+        animator.SetLayerWeight(1, 1.0f);
+    }
+
+    public void ChangeLayerDefault() {
+        Debug.Log("acc default tings");
+        animator.SetLayerWeight(0, 1.0f);
+        animator.SetLayerWeight(1, 0.0f);
     }
 }
