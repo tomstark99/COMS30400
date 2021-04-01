@@ -37,28 +37,32 @@ public class rotateLight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(spotlight.transform.eulerAngles.y);
         players = GameObject.FindGameObjectsWithTag("Player");
 
+        Rotate();
+
+        PlayerSpotted();
+    }
+
+    void Rotate()
+    {
         if (positiveRotation == true)
         {
             spotlight.transform.Rotate(Vector3.up * rotationMultiplier * Time.deltaTime);
             if (spotlight.transform.eulerAngles.y > rotationUpperLimit)
             {
-                
-                    positiveRotation = false;
+
+                positiveRotation = false;
             }
         }
         else
         {
             spotlight.transform.Rotate(Vector3.up * -rotationMultiplier * Time.deltaTime);
-            if (spotlight.transform.eulerAngles.y  < rotationLowerLimit)
+            if (spotlight.transform.eulerAngles.y < rotationLowerLimit)
             {
-                    positiveRotation = true;
+                positiveRotation = true;
             }
         }
-
-        PlayerSpotted();
     }
 
     void PlayerSpotted()
