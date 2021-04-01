@@ -300,15 +300,21 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         light.GetComponent<rotateLight>().lightsTurnedOff = !light.GetComponent<rotateLight>().lightsTurnedOff;
         if (light.GetComponent<rotateLight>().lightsTurnedOff)
         {
-            lightsOff.SetActive(true);
-            lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
-            lightsOn.SetActive(false);
+            gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+            gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
+            gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
+            //lightsOff.SetActive(true);
+            //lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
+            //lightsOn.SetActive(false);
         } 
         else
         {
-            lightsOn.SetActive(true);
-            lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
-            lightsOff.SetActive(false);
+            gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
+            gameObject.transform.GetChild(13).GetChild(9).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
+            gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+            //lightsOn.SetActive(true);
+            //lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
+            //lightsOff.SetActive(false);
         }
     }
 
