@@ -23,45 +23,38 @@ public class rotateLight : MonoBehaviour
 
     private GameObject[] players;
 
+    private double angleDifference;
     // Start is called before the first frame update
     void Start()
     {
         positiveRotation = true;
         players = GameObject.FindGameObjectsWithTag("Player");
+        
+        angleDifference =  Math.Max(0,transform.rotation.y - 360);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(spotlight.transform.eulerAngles.y  + angleDifference);
         players = GameObject.FindGameObjectsWithTag("Player");
+
         if (positiveRotation == true)
         {
             spotlight.transform.Rotate(Vector3.up * rotationMultiplier * Time.deltaTime);
-            if (spotlight.transform.eulerAngles.y < rotationUpperLimit && spotlight.transform.eulerAngles.y > rotationLowerLimit)
+            if (spotlight.transform.eulerAngles.y  + angleDifference > rotationUpperLimit)
             {
-                if (positiveRotation == true)
-                {
+                
                     positiveRotation = false;
-                }
-                else
-                {
-                    positiveRotation = true;
-                }
             }
         }
         else
         {
             spotlight.transform.Rotate(Vector3.up * -rotationMultiplier * Time.deltaTime);
-            if (spotlight.transform.eulerAngles.y < rotationUpperLimit && spotlight.transform.eulerAngles.y > rotationLowerLimit)
+            if (spotlight.transform.eulerAngles.y  < rotationLowerLimit)
             {
-                if (positiveRotation == true)
-                {
-                    positiveRotation = false;
-                }
-                else
-                {
                     positiveRotation = true;
-                }
             }
         }
 
@@ -72,16 +65,16 @@ public class rotateLight : MonoBehaviour
     {
         foreach (var player in players)
         {
-            Debug.Log(Vector3.Distance(transform.Find("pCylinder3/Point Light").position, player.transform.position));
+            //Debug.Log(Vector3.Distance(transform.Find("pCylinder3/Point Light").position, player.transform.position));
             if (Vector3.Distance(transform.Find("pCylinder3/Point Light").position, player.transform.position) < sightRange)
             {
                 // vector from guard to player
                 Vector3 dirToPlayer = (player.transform.position - transform.Find("pCylinder3/Point Light").position).normalized;
-                Debug.Log("dirToPlayer" + dirToPlayer);
+                //Debug.Log("dirToPlayer" + dirToPlayer);
                 // might have to change the -transform.Find("pCylinder3/Point Light").right
                 float guardPlayerAngle = Vector3.Angle(-transform.Find("pCylinder3/Point Light").right, dirToPlayer);
-                Debug.Log("guardPlayerAngle" + dirToPlayer);
-                Debug.Log("lightAngle / 2f" + lightAngle / 2f);
+                //Debug.Log("guardPlayerAngle" + dirToPlayer);
+               // Debug.Log("lightAngle / 2f" + lightAngle / 2f);
                 if (guardPlayerAngle < lightAngle / 2f)
                 {
                     Debug.Log("YE MANS IN THE ANGLE STILL");
