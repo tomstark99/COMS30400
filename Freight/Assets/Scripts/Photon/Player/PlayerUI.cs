@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class PlayerUI : MonoBehaviour
+public class PlayerUI : MonoBehaviourPun
 {
 
     public Slider mouseSensibilitySlider;
@@ -17,13 +18,12 @@ public class PlayerUI : MonoBehaviour
 
     private bool menuOpened = false;
 
+    // https://titanwolf.org/Network/Articles/Article?AID=5698ab7c-fa2c-4dd3-997e-0512d22a64ba#gsc.tab=0
     private void Start()
     {
-       /* if (PlayerPrefs.HasKey("MouseSensibility"))
+        if (PlayerPrefs.HasKey("MouseSensibility"))
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
-        else*/
-           
-            Debug.Log(mouseSensibilitySlider);
+        else
             mouseSensibilitySlider.value = 100f;
     }
 
@@ -34,15 +34,25 @@ public class PlayerUI : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void closeorOpenMenu() {
+            menuOpened = !menuOpened; 
+            Debug.Log("menu is openend:" + menuOpened);
+  
+            //ConfigCursor();
+            MenuActive(menuOpened);
+    }
+
     private void Update()
     {
         //Debug.Log(mouseSensibilitySlider.value);
-
+        //if (!gameObject.transform.parent.GetComponent<PhotonView>().IsMine)
+        //{
+        //    return;
+        //}
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            menuOpened = !menuOpened;   
-            ConfigCursor();
-            MenuActive(menuOpened);
+            Debug.Log("esc");
+            closeorOpenMenu();
         }
     }
 
@@ -68,7 +78,7 @@ public class PlayerUI : MonoBehaviour
         menuOpened = value;
         mouseLook.onMenu = menuOpened;
         playerMovement.onMenu = menuOpened;
-        Menu.SetActive(menuOpened);
+        OptionInGame.SetActive(menuOpened);
         ConfigCursor();
     }
 
@@ -77,11 +87,14 @@ public class PlayerUI : MonoBehaviour
     {
         if (menuOpened)
         {
+            Debug.Log("menu is opened here");
+
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
         else
         {
+            Debug.Log("allow");
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

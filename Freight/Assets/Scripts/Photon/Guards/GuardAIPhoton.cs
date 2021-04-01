@@ -49,6 +49,29 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         get { return guardState; }
     }
 
+    /*
+     IEnumerator SolveStuck() {
+        Vector3 lastPosition = this.transform.position;
+ 
+        while (true) {
+            yield return new WaitForSeconds(3f);
+ 
+            //Maybe we can also use agent.velocity.sqrMagnitude == 0f or similar
+            if (!agent.pathPending && agent.hasPath && agent.remainingDistance > agent.stoppingDistance) {
+                Vector3 currentPosition = this.transform.position;
+                if (Vector3.Distance(currentPosition, lastPosition) < 1f) {
+                    Vector3 destination = agent.destination;
+                    agent.ResetPath();
+                    agent.SetDestination(destination);
+                    Debug.Log("Agent Is Stuck");
+                }
+                Debug.Log("Current Position " + currentPosition + " Last Position " + lastPosition);
+                lastPosition = currentPosition;
+            }
+        }
+    }
+    */
+    
     void Start()
     {
         // find players, set the guard to its own navmeshagent and set the guard state to patroling
@@ -57,6 +80,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         guardState = State.Patroling;
         if (GameObject.Find("Endgame") != null) 
             GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
+
+        GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        foreach (var light in lights)
+        {
+            light.GetComponent<rotateLight>().PlayerInLight += SetAllGuardsToAlerted;
+        }
     }
 
     public void DisableGuards()
@@ -113,7 +142,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         // sets the guard destination to player's position
         transform.LookAt(closestPlayer.transform);
         // - new Vector3(proximityRange, 0, 0)
-        guard.SetDestination(closestPlayer.position);
+        guard.SetDestination(closestPlayer.position - new Vector3(1f, 0, 0));
         // sets the guard's alert position to the player's current position (so when the player goes out of range, the guard will run to the last place they saw the player)
         guard.gameObject.GetComponent<GuardAIPhoton>().alertPosition = closestPlayer.position;
     }
@@ -141,7 +170,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                     // Debug.Log(Physics.Linecast(transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask));
                     // checks if guard line of sight is blocked by an obstacle
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
-                    if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.GetChild(11).position, obstacleMask) || !Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
+                    if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
 
                         guard.speed = speedChasing;
@@ -366,7 +395,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             SetGuardsToAlertedItem(rockPos);
         }
         // If the player is not spotted and the guard has reached their destination, go to new point
-        else if (!playerSpotted && guard.remainingDistance < 0.5f)
+        else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {
             guardState = State.Patroling;
             timeChasing = 0f;

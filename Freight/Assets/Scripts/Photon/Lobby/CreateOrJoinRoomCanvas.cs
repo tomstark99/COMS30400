@@ -11,13 +11,15 @@ public class CreateOrJoinRoomCanvas : MonoBehaviourPunCallbacks
     [SerializeField]
     private RoomListingsMenu roomListingsMenu;
     [SerializeField]
+    private OptionsMenu optionsMenu;
+    [SerializeField]
     private TextMeshProUGUI name;
 
     private RoomsCanvases roomsCanvases;
 
     public override void OnConnectedToMaster()
     {
-        name.text = PhotonNetwork.LocalPlayer.NickName;
+//        name.text = PhotonNetwork.LocalPlayer.NickName;
     }
 
     public void Initialise(RoomsCanvases canvases)
@@ -25,7 +27,8 @@ public class CreateOrJoinRoomCanvas : MonoBehaviourPunCallbacks
         roomsCanvases = canvases;
         createRoomMenu.Initialise(canvases);
         roomListingsMenu.Initalise(canvases);
-        name.text = PhotonNetwork.LocalPlayer.NickName;
+        optionsMenu.Initialise(canvases);
+
     }
 
     // sets the create or join room canvas to active
