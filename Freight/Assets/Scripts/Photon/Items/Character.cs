@@ -276,7 +276,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         
     }
     [PunRPC]
-    public void ActivateBackPack() 
+    void ActivateBackPack() 
     {
         backPackObject.SetActive(true);
     }
@@ -288,5 +288,17 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         photonView.RPC(nameof(DestroyBackpack), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
         photonView.RPC(nameof(ActivateBackPack), RpcTarget.All);
 
+    }
+
+
+
+    public void SwitchOff(Switchable Item)
+    {
+        GameObject[] spinningLights = GameObject.FindGameObjectsWithTag("SpinningLight");
+
+        foreach (var light in spinningLights)
+        {
+
+        }
     }
 }
