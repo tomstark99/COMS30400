@@ -18,6 +18,13 @@ public class RotateLightAlarm : MonoBehaviour
     [SerializeField]
     private GameObject spotLight;
 
+    [SerializeField]
+    private GameObject pointLight2;
+    [SerializeField]
+    private GameObject spotLight2;
+
+    
+
     public bool isSpinning;
     // Start is called before the first frame update
     void Start()
@@ -49,7 +56,7 @@ public class RotateLightAlarm : MonoBehaviour
         if (positiveRotation == true)
         {
             spotlight.transform.Rotate(Vector3.up * rotationMultiplier * Time.deltaTime);
-            if (spotlight.transform.eulerAngles.y > rotationUpperLimit)
+            if (spotlight.transform.eulerAngles.y + 40 > rotationUpperLimit)
             {
 
                 positiveRotation = false;
@@ -58,7 +65,7 @@ public class RotateLightAlarm : MonoBehaviour
         else
         {
             spotlight.transform.Rotate(Vector3.up * -rotationMultiplier * Time.deltaTime);
-            if (spotlight.transform.eulerAngles.y < rotationLowerLimit)
+            if (spotlight.transform.eulerAngles.y - 20 < rotationLowerLimit)
             {
                 positiveRotation = true;
             }
@@ -70,5 +77,7 @@ public class RotateLightAlarm : MonoBehaviour
         isSpinning = true;
         pointLight.SetActive(true);
         spotLight.SetActive(true);
+        pointLight2.SetActive(true);
+        spotLight2.SetActive(true);
     }
 }
