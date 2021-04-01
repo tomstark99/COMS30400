@@ -34,6 +34,14 @@ public class PlayerUI : MonoBehaviourPun
         PlayerPrefs.Save();
     }
 
+    public void closeorOpenMenu() {
+            menuOpened = !menuOpened; 
+            Debug.Log("menu is openend:" + menuOpened);
+  
+            //ConfigCursor();
+            MenuActive(menuOpened);
+    }
+
     private void Update()
     {
         //Debug.Log(mouseSensibilitySlider.value);
@@ -44,9 +52,7 @@ public class PlayerUI : MonoBehaviourPun
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("esc");
-            menuOpened = !menuOpened;   
-            ConfigCursor();
-            MenuActive(menuOpened);
+            closeorOpenMenu();
         }
     }
 
@@ -81,11 +87,14 @@ public class PlayerUI : MonoBehaviourPun
     {
         if (menuOpened)
         {
+            Debug.Log("menu is opened here");
+
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
         else
         {
+            Debug.Log("allow");
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

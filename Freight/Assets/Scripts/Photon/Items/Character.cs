@@ -17,6 +17,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     private bool holdingTheBag;
 
+    public GameObject backPackObject;
+
     public bool HoldingTheBag
     {
         get { return holdingTheBag; }
@@ -70,15 +72,24 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
     {
-        if (targetView.gameObject.GetComponent<Grabbable>() != null)
+        Debug.Log("Is this mine? " + targetView.IsMine);
+        Debug.Log("Current item = " + currentHeldItem);
+        if (!targetView.IsMine)
         {
-            photonView.RPC("GrabRPC", RpcTarget.All, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
             return;
         }
-        Debug.Log("ye");
-        if (currentHeldItem.tag == "Gun")
+
+        if (currentHeldItem != null)
         {
-            currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+            if (currentHeldItem.tag == "Gun")
+            {
+                currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+            }
+
+        }
+        else
+        {
+            return;
         }
 
         photonView.RPC("PickUpRPC", RpcTarget.Others, currentHeldItem.transform.GetComponent<PhotonView>().ViewID);
@@ -273,25 +284,62 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     }
 
     [PunRPC]
-    void GrabRPC(int ItemID)
+    void DestroyBackpack(int backPackId)
     {
-        Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
-        Item.transform.position = grabDestination.position;
-        Item.transform.parent = grabDestination;
-
-        Item.SetItemPickupConditions();
+        PhotonNetwork.Destroy(PhotonView.Find(backPackId));
+        
     }
-
+    [PunRPC]
+    void ActivateBackPack() 
+    {
+        backPackObject.SetActive(true);
+    }
     public void Grab(Grabbable Item)
     {
         holdingTheBag = true;
 
-        PhotonView view = Item.GetComponent<PhotonView>();
-        if (!view.IsMine)
-            view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        Debug.Log(backPackObject);
+        photonView.RPC(nameof(DestroyBackpack), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(ActivateBackPack), RpcTarget.All);
+
+    }
+
+    [PunRPC]
+    void TurnOffLight(int lightID, int itemID)
+    {
+        GameObject light = PhotonView.Find(lightID).gameObject;
+        GameObject laptop = PhotonView.Find(itemID).gameObject;
+        light.GetComponent<rotateLight>().lightsTurnedOff = !light.GetComponent<rotateLight>().lightsTurnedOff;
+
+        GameObject lightsOff = laptop.transform.GetChild(0).GetChild(1).gameObject;
+        GameObject lightsOn = laptop.transform.GetChild(0).GetChild(0).gameObject;
+        if (light.GetComponent<rotateLight>().lightsTurnedOff)
+        {
+            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+            //gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
+            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(false);
+            lightsOff.SetActive(true);
+            lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
+            lightsOn.SetActive(false);
+        } 
         else
         {
-            photonView.RPC(nameof(GrabRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
+            //gameObject.transform.GetChild(13).GetChild(9).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
+            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(false);
+            lightsOn.SetActive(true);
+            lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
+            lightsOff.SetActive(false);
+        }
+    }
+
+    public void SwitchOff(Switchable Item)
+    {
+        GameObject[] spinningLights = GameObject.FindGameObjectsWithTag("SpinningLight");
+
+        foreach (var light in spinningLights)
+        {
+            photonView.RPC(nameof(TurnOffLight), RpcTarget.All, light.transform.GetComponent<PhotonView>().ViewID, Item.transform.GetComponent<PhotonView>().ViewID);
         }
     }
 }
