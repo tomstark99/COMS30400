@@ -13,6 +13,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
 
+    public GameObject lightsOn;
+    public GameObject lightsOff;
+
     public GameObject camera;
 
     private bool holdingTheBag;
@@ -295,6 +298,18 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         GameObject light = PhotonView.Find(lightID).gameObject;
         light.GetComponent<rotateLight>().lightsTurnedOff = !light.GetComponent<rotateLight>().lightsTurnedOff;
+        if (light.GetComponent<rotateLight>().lightsTurnedOff)
+        {
+            lightsOff.SetActive(true);
+            lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
+            lightsOn.SetActive(false);
+        } 
+        else
+        {
+            lightsOn.SetActive(true);
+            lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
+            lightsOff.SetActive(false);
+        }
     }
 
     public void SwitchOff(Switchable Item)
