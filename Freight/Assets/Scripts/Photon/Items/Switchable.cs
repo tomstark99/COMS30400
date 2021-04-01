@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Switchable : Interactable
 {
@@ -12,5 +13,16 @@ public class Switchable : Interactable
         {
             character.SwitchOff(this);
         }
+    }
+
+    [PunRPC]
+    void SetSwitchToOffRPC()
+    {
+        isSwitchedOff = true;
+    }
+
+    public void SetSwitchToOff()
+    {
+        GetComponent<PhotonView>().RPC(nameof(SetSwitchToOffRPC), RpcTarget.All);
     }
 }

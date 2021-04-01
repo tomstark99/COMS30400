@@ -290,7 +290,12 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     }
 
-
+    [PunRPC]
+    void TurnOffLight(int lightID)
+    {
+        GameObject light = PhotonView.Find(lightID).gameObject;
+        light.GetComponent<rotateLight>().lightsTurnedOff = true;
+    }
 
     public void SwitchOff(Switchable Item)
     {
@@ -298,7 +303,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         foreach (var light in spinningLights)
         {
-
+            photonView.RPC(nameof(TurnOffLight), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
         }
     }
 }

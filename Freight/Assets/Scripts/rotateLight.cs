@@ -23,12 +23,13 @@ public class rotateLight : MonoBehaviour
 
     private GameObject[] players;
 
-    private double angleDifference;
+    public bool lightsTurnedOff;
     // Start is called before the first frame update
     void Start()
     {
         positiveRotation = true;
         players = GameObject.FindGameObjectsWithTag("Player");
+        lightsTurnedOff = false;
         
         //angleDifference =  Math.Max(0,transform.rotation.y - 360);
 
@@ -39,7 +40,10 @@ public class rotateLight : MonoBehaviour
     {
         players = GameObject.FindGameObjectsWithTag("Player");
 
-        Rotate();
+        if (!lightsTurnedOff)
+        {
+            Rotate();
+        }
 
         PlayerSpotted();
     }
