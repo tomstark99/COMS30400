@@ -302,7 +302,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
             gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
-            gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
+            gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(false);
             //lightsOff.SetActive(true);
             //lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
             //lightsOn.SetActive(false);
@@ -311,7 +311,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
             gameObject.transform.GetChild(13).GetChild(9).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
-            gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+            gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(false);
             //lightsOn.SetActive(true);
             //lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
             //lightsOff.SetActive(false);
