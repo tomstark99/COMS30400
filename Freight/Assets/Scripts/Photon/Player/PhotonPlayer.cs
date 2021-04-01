@@ -6,7 +6,11 @@ using Photon.Pun;
 
 public class PhotonPlayer : MonoBehaviourPunCallbacks
 {
-    public GameObject playerUI;
+    [SerializeField]
+    private GameObject playerUI;
+    [SerializeField]
+    private GameObject playerMenu;
+
     public string gesture;
     
     // Start is called before the first frame update
@@ -24,6 +28,7 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
         {
             Debug.Log(" DISABLE CONTROLER ");
             playerUI.SetActive(false);
+            Destroy(playerMenu);
         }
     }
 

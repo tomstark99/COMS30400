@@ -84,7 +84,6 @@ public class PlayerAnimation : MonoBehaviourPun
 
         // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
-        Debug.Log(climbing);
 
         if(climbing && Input.GetKey(KeyCode.W)) {
             animator.SetBool(isClimbingHash, true);
