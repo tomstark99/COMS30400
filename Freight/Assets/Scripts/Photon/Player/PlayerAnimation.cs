@@ -20,11 +20,14 @@ public class PlayerAnimation : MonoBehaviourPun
 
     private bool isGrounded;
     private bool climbing;
+    private bool isCrouched;
     private float runningSpeed;
     private float walkingSpeed;
 
     public GameObject camera;
     public GameObject head;
+
+    // public event Action ChangeAnimationLayer;
 
     private PlayerMovementPhoton player;
 
@@ -49,6 +52,12 @@ public class PlayerAnimation : MonoBehaviourPun
         isRightHash = Animator.StringToHash("walkRight");
         isCrouchedHash = Animator.StringToHash("crouched");
         isClimbingHash = Animator.StringToHash("isClimbing");
+
+        GetComponent<Character>().PistolPickUp += ChangeLayerPistol;
+        GetComponent<Character>().PistolDrop += ChangeLayerDefault;
+
+        Debug.Log(animator.GetLayerName(0));
+        Debug.Log(animator.GetLayerName(1));
     }
 
     // Update is called once per frame
@@ -76,7 +85,7 @@ public class PlayerAnimation : MonoBehaviourPun
         bool isRunning = animator.GetBool(isRunningHash);
         bool isLeft = animator.GetBool(isLeftHash);
         bool isRight = animator.GetBool(isRightHash);
-        bool isCrouched = animator.GetBool(isCrouchedHash);
+        isCrouched = animator.GetBool(isCrouchedHash);
         bool isClimbing = animator.GetBool(isClimbingHash);
 
         float x = Input.GetAxis("Horizontal");
@@ -124,8 +133,13 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isLeftHash, true);
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && isCrouched) {
+            animator.SetBool(isCrouchedHash, false);
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftShift) && (isWalking || z > 0.02f)) {
             animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isCrouchedHash, false);
             animator.SetBool(isRunningHash, true);
             player.setSpeed(runningSpeed);
 
@@ -135,19 +149,18 @@ public class PlayerAnimation : MonoBehaviourPun
             player.setSpeed(walkingSpeed);
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched && !isRunning) {
+            animator.SetBool(isCrouchedHash, true);
+        } else if (Input.GetKeyUp(KeyCode.LeftControl) && isCrouched) {
+            animator.SetBool(isCrouchedHash, false);
+        }
+
         if (Input.GetButtonDown("Jump") || !isGrounded) {
             animator.SetBool(isJumpingHash, true);
             // animator.SetBool(isRunningHash, false);
         } else if (isGrounded) {
             animator.SetBool(isJumpingHash, false);
         }
-
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched) {
-            animator.SetBool(isCrouchedHash, true);
-        } else if (Input.GetKeyUp(KeyCode.LeftControl) && isCrouched) {
-            animator.SetBool(isCrouchedHash, false);
-        }
-
     }
 
     public bool getGrounded() {
@@ -156,11 +169,26 @@ public class PlayerAnimation : MonoBehaviourPun
     public bool getClimbing() {
         return this.climbing;
     }
+    public bool getCrouched() {
+        return this.isCrouched;
+    }
 
     public void setGrounded(bool val) {
         this.isGrounded = val;
     }
     public void setClimbing(bool val) {
         this.climbing = val;
+    }
+
+    public void ChangeLayerPistol() {
+        Debug.Log("accc pistol tings");
+        animator.SetLayerWeight(0, 0.0f);
+        animator.SetLayerWeight(1, 1.0f);
+    }
+
+    public void ChangeLayerDefault() {
+        Debug.Log("acc default tings");
+        animator.SetLayerWeight(0, 1.0f);
+        animator.SetLayerWeight(1, 0.0f);
     }
 }
