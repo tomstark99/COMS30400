@@ -32,6 +32,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks, IPunOwnershipCallb
                 player.GetComponent<PhotonPlayer>().enabled = true;
                 player.GetComponent<MouseLookPhoton>().enabled = true;
                 player.GetComponent<HeadMovementPhoton>().enabled = true;
+                player.GetComponent<IkBehaviour>().enabled = true;
             }
 
             i += 3;
@@ -55,6 +56,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks, IPunOwnershipCallb
             targetView.gameObject.GetComponent<PhotonPlayer>().enabled = true;
             targetView.gameObject.GetComponent<MouseLookPhoton>().enabled = true;
             targetView.gameObject.GetComponent<HeadMovementPhoton>().enabled = true;
+            targetView.gameObject.GetComponent<IkBehaviour>().enabled = true;
         }
 
     }
