@@ -67,7 +67,7 @@ namespace VoiceChatClass
         /// <summary>
         /// Create a Peer object for this client.
         /// </summary>
-        public void InitialisePeer()
+        public void InitializePeer()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
             setupPeer();

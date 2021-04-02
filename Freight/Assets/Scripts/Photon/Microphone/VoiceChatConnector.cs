@@ -64,7 +64,8 @@ public class VoiceChatConnector : MonoBehaviourPun
         foreignClip = voiceChat.GetClip(1, 44100);
         foreignAudioSource.clip = foreignClip;
 
-        voiceChat.GetPeerId();
+        voiceChat.InitializePeer();
+        //voiceChat.GetPeerId();
     }
 
 
