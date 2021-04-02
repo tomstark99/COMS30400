@@ -296,7 +296,7 @@ mergeInto(LibraryManager.library, {
         }
 
         // check if you have id, if so call the other peer, if not add calling him at on 'open'
-        if(document.peer.id == undefined) {
+        if(document.peer.id === undefined || document.peer.id === null) {
             console.log('wait for own id');
             document.peer.on('open', function (id) {
                 console.log("calling peer with id: " + receiverId);
@@ -315,7 +315,7 @@ mergeInto(LibraryManager.library, {
 
     getId: function() {
         if(document.peer != null ) {
-            if(document.peer.id == undefined) {
+            if(document.peer.id === undefined || document.peer.id === null) {
                 document.peer.on('open', function (id) {
                     SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', id);
                 });
