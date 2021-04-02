@@ -281,8 +281,11 @@ mergeInto(LibraryManager.library, {
 
             document.connection = conn;
             document.setupConnection();
-            document.connected = true;
-            SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "connected");
+
+            setTimeout(function() {
+                document.connected = true;
+                SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "connected");
+            },5000);
         });
     },
 
