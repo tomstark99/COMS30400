@@ -25,6 +25,13 @@ public class GameSetupController : MonoBehaviourPunCallbacks, IPunOwnershipCallb
             GameObject player = PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayer", new Vector3(222, 4, 294 + i), Quaternion.identity);
             if (p != PhotonNetwork.LocalPlayer)
                 player.GetComponent<PhotonView>().TransferOwnership(p);
+            else
+            {
+                player.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Fixed;
+                player.GetComponent<PlayerMovementPhoton>().enabled = true;
+                player.GetComponent<PhotonPlayer>().enabled = true;
+                player.GetComponent<MouseLookPhoton>().enabled = true;
+            }
 
             i += 3;
         }
@@ -39,7 +46,14 @@ public class GameSetupController : MonoBehaviourPunCallbacks, IPunOwnershipCallb
 
     public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
     {
-        targetView.OwnershipTransfer = OwnershipOption.Fixed;
-        Debug.Log("UNITY IS IARRIRIRR");
+        if (targetView.gameObject.GetComponent<CharacterController>() != null)
+        {
+            Debug.Log("UNITY IS IARRIRIRR");
+            targetView.OwnershipTransfer = OwnershipOption.Fixed;
+            targetView.gameObject.GetComponent<PlayerMovementPhoton>().enabled = true;
+            targetView.gameObject.GetComponent<PhotonPlayer>().enabled = true;
+            targetView.gameObject.GetComponent<MouseLookPhoton>().enabled = true;
+        }
+
     }
 }
