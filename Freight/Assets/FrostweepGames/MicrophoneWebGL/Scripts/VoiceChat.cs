@@ -12,15 +12,14 @@ namespace VoiceChatClass
 #region __Internal
         [DllImport("__Internal")]
         private static extern void setupPeer();
-        //[DllImport("__Internal")]
-        //private static extern void setupConnection(); //used internally only 
+
         [DllImport("__Internal")]
         private static extern void startConnection(string foreignID);
 
         [DllImport("__Internal")]
         private static extern void getId();
 
-        #endregion
+#endregion
 
         private const char SEPARATOR = ',';
 
@@ -40,6 +39,7 @@ namespace VoiceChatClass
         private bool _loopRecording = true;
         private string _status = "disconnected";
         private string _peerID = "";
+        private string _foreignID = "";
         private float[] _audioDataArray;
         private int _samplePosition;
         private CultureInfo _provider;
@@ -64,19 +64,28 @@ namespace VoiceChatClass
         }
 
 
-
-#if UNITY_WEBGL && !UNITY_EDITOR
         /// <summary>
         /// Create a Peer object for this client.
         /// </summary>
         public void InitialisePeer()
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
             setupPeer();
+#endif
         }
 
         public void GetPeerId()
         {
-            getId();
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if(_peerID != "")
+            {
+                OnIDUpdate?.Invoke(_peerID);
+            }
+            else
+            {
+                getId();
+            }
+#endif
         }
 
         /// <summary>
@@ -86,7 +95,7 @@ namespace VoiceChatClass
         /// <param name="lengthSec">Is the length of the AudioClip produced by the recording.</param>
         /// <param name="frequency">The sample rate of the AudioClip produced by the recording.</param>
         /// <returns>The function returns null if the recording fails to start.</returns>
-        public UnityEngine.AudioClip Connect(string foreignID, int lengthSec, int frequency)
+        public UnityEngine.AudioClip GetClip(int lengthSec, int frequency)
         {
 
             if(lengthSec > 120)
@@ -100,11 +109,25 @@ namespace VoiceChatClass
             _peerClip = UnityEngine.AudioClip.Create("PeerClip", frequency * lengthSec, 1, frequency, false);
             _audioDataArray = new float[frequency * lengthSec];
 
-            startConnection(foreignID);
-
             return _peerClip;
         }
+
+        public void Connect(string foreignID)
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            _foreignID = foreignID;
+            if(_peerID != "")
+            {
+                startConnection(foreignID);
+            }
 #endif
+        }
+
+        public void Disconnect()
+        {
+            _foreignID = "";
+        }
+//#endif
 
         /// <summary>
         /// Get the position in samples of the recording. 
@@ -183,6 +206,13 @@ namespace VoiceChatClass
         private void StatusUpdate(string status)
         {
             _status = status;
+
+            if (status == "destroyed")
+            {
+                // try to create a new peer 
+                setupPeer();
+            }
+
             OnStatusUpdate?.Invoke(_status);
         }
 
@@ -193,8 +223,13 @@ namespace VoiceChatClass
         {
             _peerID = ID;
             OnIDUpdate?.Invoke(_peerID);
+
+            if(_foreignID != "")
+            {
+                startConnection(_foreignID);
+            }
         }
 
     }
-//#endif
+
 }
