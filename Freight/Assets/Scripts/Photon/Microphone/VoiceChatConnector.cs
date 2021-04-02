@@ -81,7 +81,8 @@ public class VoiceChatConnector : MonoBehaviourPun
         {
             Debug.Log("disconnected from the peer");
             foreignAudioSource.Stop();
-            voiceChat.Connect(_foreignID);
+            if (PhotonNetwork.IsMasterClient)
+                voiceChat.Connect(_foreignID);
         }
         else if (status == "destroyed")
         {
