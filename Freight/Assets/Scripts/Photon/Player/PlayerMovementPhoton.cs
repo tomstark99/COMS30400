@@ -171,7 +171,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         controller.Move(move * speed * Time.deltaTime);
 
         // Checks if jump button is pressed and allows user to jump if they are on the ground
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded && !crouching)
         {
             onTrain = false;
             //faceUI.SetActive(false);
