@@ -88,6 +88,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (currentHeldItem.tag == "Gun")
             {
                 currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+                GetComponent<IkBehaviour>().ikActive = true;
+                GetComponent<IkBehaviour>().handObj = currentHeldItem.transform.GetChild(18);
             }
 
         }
