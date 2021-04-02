@@ -280,8 +280,8 @@ mergeInto(LibraryManager.library, {
             }
 
             document.connection = conn;
-            document.connected = true;
             document.setupConnection();
+            document.connected = true;
             SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "connected");
         });
     },
@@ -302,14 +302,16 @@ mergeInto(LibraryManager.library, {
         if(document.hasId) {
             console.log("calling peer with id: " + receiverId);
         
-            document.connection = document.peer.connect(receiverId, {reliable:true});
+            // document.connection = document.peer.connect(receiverId, {reliable:true});
+            document.connection = document.peer.connect(receiverId);
             document.setupConnection();
         } else {
             console.log('wait for own id');
             document.peer.on('open', function (id) {
                 console.log("calling peer with id: " + receiverId);
         
-                document.connection = document.peer.connect(receiverId, {reliable:true});
+                // document.connection = document.peer.connect(receiverId, {reliable:true});
+                document.connection = document.peer.connect(receiverId);
                 document.setupConnection();
             });
         }
