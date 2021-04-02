@@ -10,14 +10,21 @@ public class GameSetupController : MonoBehaviour
      * PhotonPrefabs folder and to look for the prefab named PhotonPlayer.
      * Everything is setting the starting position and rotation values.
      * */
-     void Start()
+    void Start()
     {
-        CreatePlayer();
+        if (PhotonNetwork.IsMasterClient)
+            CreatePlayer();
     }
     private void CreatePlayer()
     {
         Debug.Log("Creating Player");
-        PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayer", new Vector3(222, 4, 294), Quaternion.identity);
+        foreach (var p in PhotonNetwork.PlayerList)
+        {
+            GameObject player = PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayer", new Vector3(222, 4, 294), Quaternion.identity);
+            if (p != PhotonNetwork.LocalPlayer)
+            player.GetComponent<PhotonView>().TransferOwnership(p);
+        }
+        
         
     }
 }
