@@ -13,6 +13,10 @@ public class IkBehaviour : MonoBehaviourPun
     public bool ikActive = false;
     public Transform handObj = null;
     public Transform lookObj = null;
+
+    public Transform rightArm;
+    public Transform rightForeArm;
+    public Transform rightHand;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,20 +25,10 @@ public class IkBehaviour : MonoBehaviourPun
     }
 
     [PunRPC]
-    void AnimateRPC()
+    void AnimateRPC(int playerID)
     {
-        if (lookObj != null)
-        {
-            // animator.SetLookAtWeight(1);
-            // animator.SetLookAtPosition(lookObj.position);
-        }
-        if (handObj != null)
-        {
-            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
-            animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-            animator.SetIKPosition(AvatarIKGoal.RightHand, handObj.position);
-            animator.SetIKRotation(AvatarIKGoal.RightHand, handObj.rotation);
-        }
+        animator.SetIKPosition(AvatarIKGoal.RightHand, handObj.position);
+        animator.SetIKRotation(AvatarIKGoal.RightHand, handObj.rotation);
     }
 
     [PunRPC]
@@ -48,10 +42,29 @@ public class IkBehaviour : MonoBehaviourPun
         if(animator) {
             if(ikActive) {
                 Debug.Log("IK CALLBACK ACCCCCC");
-                photonView.RPC(nameof(AnimateRPC), RpcTarget.All);
+                if (lookObj != null)
+                {
+                    // animator.SetLookAtWeight(1);
+                    // animator.SetLookAtPosition(lookObj.position);
+                }
+                if (handObj != null)
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+                    animator.SetIKPosition(AvatarIKGoal.RightHand, handObj.position);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand, handObj.rotation);
+                    Debug.Log("Right Arm: " + transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/RightShoulder/RightArm").position);
+                    Debug.Log("Right ForeArm: " + transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/RightShoulder/RightArm/RightForeArm").position);
+                    Debug.Log("Right Hand: " + transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/RightShoulder/RightArm/RightForeArm/RightHand").position);
+                    Debug.Log("Right Shoulder: " + transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/RightShoulder").position);
+                    Debug.Log(animator.GetIKPosition(AvatarIKGoal.RightHand));
+                    
+                    //photonView.RPC(nameof(AnimateRPC), RpcTarget.Others, GetComponent<PhotonView>().ViewID);
+                }
             } 
             else {
-                photonView.RPC(nameof(UnAnimateRPC), RpcTarget.All);
+                animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
+                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
                 // animator.SetLookAtWeight(0);
             }
         }
