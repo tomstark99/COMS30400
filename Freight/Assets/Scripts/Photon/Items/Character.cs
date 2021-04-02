@@ -177,7 +177,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
-            light.GetComponent<rotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
+            light.GetComponent<RotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
         }
         // remove the guard 
         PhotonNetwork.Destroy(killedGuard);
@@ -315,11 +315,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         GameObject light = PhotonView.Find(lightID).gameObject;
         GameObject laptop = PhotonView.Find(itemID).gameObject;
-        light.GetComponent<rotateLight>().lightsTurnedOff = !light.GetComponent<rotateLight>().lightsTurnedOff;
+        light.GetComponent<RotateLight>().lightsTurnedOff = !light.GetComponent<RotateLight>().lightsTurnedOff;
 
         GameObject lightsOff = laptop.transform.GetChild(0).GetChild(1).gameObject;
         GameObject lightsOn = laptop.transform.GetChild(0).GetChild(0).gameObject;
-        if (light.GetComponent<rotateLight>().lightsTurnedOff)
+        if (light.GetComponent<RotateLight>().lightsTurnedOff)
         {
             //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
             //gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
