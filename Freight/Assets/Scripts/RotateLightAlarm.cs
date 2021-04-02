@@ -36,7 +36,7 @@ public class RotateLightAlarm : MonoBehaviour
 
         foreach (var light in lights)
         {
-            light.GetComponent<rotateLight>().PlayerInLight += SetToSpinning;
+            light.GetComponent<RotateLight>().PlayerInLight += SetToSpinning;
         }
 
     }
