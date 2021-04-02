@@ -34,7 +34,7 @@ public class ProximityVoice : MonoBehaviourPun
         b = (minVolume - maxVolume) / (1 / Mathf.Sqrt(maxDistance) - 1 / Mathf.Sqrt(minDistance));
         a = maxVolume - b / Mathf.Sqrt(minDistance);
 
-        InvokeRepeating(nameof(UpdateVolume), 0, updateFrequency); // call it 1 / updateFrequency times per second
+        //InvokeRepeating(nameof(UpdateVolume), 0, updateFrequency); // call it 1 / updateFrequency times per second
     }
 
     private float VolumeValue(float distance)

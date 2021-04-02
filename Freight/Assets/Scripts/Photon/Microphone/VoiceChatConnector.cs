@@ -61,6 +61,7 @@ public class VoiceChatConnector : MonoBehaviourPun
         voiceChat.OnStatusUpdate += OnStatusupdate;
         voiceChat.OnIDUpdate += OnIDUpdate;
         voiceChat.InitialisePeer();
+        //voiceChat.GetPeerId();
 #endif
     }
 #if UNITY_WEBGL && !UNITY_EDITOR
