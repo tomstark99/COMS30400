@@ -177,7 +177,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
-            light.GetComponent<rotateLight>().PlayerInLight += killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
+            light.GetComponent<rotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
         }
         // remove the guard 
         PhotonNetwork.Destroy(killedGuard);
