@@ -92,6 +92,7 @@ mergeInto(LibraryManager.library, {
         // Initialise PeerJS variables
         document.peer = null;
         document.connected = false;
+        document.hasId = false
         document.connection = null;
         document.setupConnection = setupConnection;
     },
@@ -241,6 +242,7 @@ mergeInto(LibraryManager.library, {
 
         document.peer.on('open', function (id) {
             // return the id of the Peer as a string
+            document.hasId = true
             console.log("received peer id: " + id);
             SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', id);
         });
@@ -251,6 +253,7 @@ mergeInto(LibraryManager.library, {
             document.peer = null;
             document.connection = null;
             document.connected = false;
+            document.hasId = false;
             SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "destroyed");
         });
 
@@ -264,6 +267,7 @@ mergeInto(LibraryManager.library, {
             document.peer = null;
             document.connection = null;
             document.connected = false;
+            document.hasId = false;
             SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "destroyed");
         });
 
@@ -295,8 +299,12 @@ mergeInto(LibraryManager.library, {
             document.connection = null;
         }
 
-        // check if you have id, if so call the other peer, if not add calling him at on 'open'
-        if(document.peer.id === undefined || document.peer.id === null) {
+        if(document.hasId) {
+            console.log("calling peer with id: " + receiverId);
+        
+            document.connection = document.peer.connect(receiverId, {reliable:true});
+            document.setupConnection();
+        } else {
             console.log('wait for own id');
             document.peer.on('open', function (id) {
                 console.log("calling peer with id: " + receiverId);
@@ -304,26 +312,16 @@ mergeInto(LibraryManager.library, {
                 document.connection = document.peer.connect(receiverId, {reliable:true});
                 document.setupConnection();
             });
-        } else {
-            console.log("calling peer with id: " + receiverId);
-        
-            document.connection = document.peer.connect(receiverId, {reliable:true});
-            document.setupConnection();
         }
-
     },
 
     getId: function() {
-        if(document.peer != null ) {
-            if(document.peer.id === undefined || document.peer.id === null) {
-                document.peer.on('open', function (id) {
-                    SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', id);
-                });
-            } else {
-                SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', document.peer.id);
-            }
+        if(document.hasId) {
+            SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', document.peer.id);
         } else {
-            console.log('GetId called without a peer existing');
+            document.peer.on('open', function (id) {
+                SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', id);
+            });
         }
     },
 

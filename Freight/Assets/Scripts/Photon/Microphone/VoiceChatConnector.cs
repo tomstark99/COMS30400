@@ -29,6 +29,7 @@ public class VoiceChatConnector : MonoBehaviourPun
     private void OnDestroy()
     {
         CustomMicrophone.End(_microphoneDevice);
+        voiceChat.Disconnect();
     }
 
     void Start()
@@ -56,15 +57,17 @@ public class VoiceChatConnector : MonoBehaviourPun
         //get instance 
         voiceChat = VoiceChat.Instance;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        //subscribe to events and initialize peer
+        //subscribe to events and initialize connection
         voiceChat.OnStatusUpdate += OnStatusupdate;
         voiceChat.OnIDUpdate += OnIDUpdate;
-        voiceChat.InitialisePeer();
-        //voiceChat.GetPeerId();
-#endif
+
+        foreignClip = voiceChat.GetClip(1, 44100);
+        foreignAudioSource.clip = foreignClip;
+
+        voiceChat.GetPeerId();
     }
-#if UNITY_WEBGL && !UNITY_EDITOR
+
+
     void OnStatusupdate(string status)
     {
         if(status == "connected")
@@ -76,10 +79,8 @@ public class VoiceChatConnector : MonoBehaviourPun
         else if(status == "disconnected")
         {
             Debug.Log("disconnected from the peer");
-            //try to create a new connection
             foreignAudioSource.Stop();
-            foreignClip = voiceChat.Connect(_foreignID, 1, 44100);
-            foreignAudioSource.clip = foreignClip;
+            voiceChat.Connect(_foreignID);
         }
         else if (status == "destroyed")
         {
@@ -87,7 +88,6 @@ public class VoiceChatConnector : MonoBehaviourPun
             // if this peer crashes, this should crash the other peer as well
             // so both will be reinitialized
             foreignAudioSource.Stop();
-            voiceChat.InitialisePeer();
         }
     }
 
@@ -95,8 +95,7 @@ public class VoiceChatConnector : MonoBehaviourPun
     {
         _foreignID = ID;
 
-        foreignClip = voiceChat.Connect(_foreignID, 1, 44100);
-        foreignAudioSource.clip = foreignClip;
+        voiceChat.Connect(_foreignID);
     }
 
     [PunRPC]
@@ -126,5 +125,4 @@ public class VoiceChatConnector : MonoBehaviourPun
             photonView.RPC(nameof(GetForeignPeerIDRPC), RpcTarget.MasterClient, ID);
         }
     }
-#endif
 }

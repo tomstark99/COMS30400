@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using FrostweepGames.Plugins.Native;
+using VoiceChatClass;
 
 public class NetworkController : MonoBehaviourPunCallbacks
 {
@@ -22,6 +23,11 @@ public class NetworkController : MonoBehaviourPunCallbacks
             CustomMicrophone.RefreshMicrophoneDevices();
         }
         //Debug.Log(CustomMicrophone.devices.Length + " microphone devices found");
+
+
+        //setup peer for Voice Chat
+        var voiceChat = VoiceChat.Instance;
+        voiceChat.InitialisePeer();
 
 
         if (PhotonNetwork.IsConnected)
