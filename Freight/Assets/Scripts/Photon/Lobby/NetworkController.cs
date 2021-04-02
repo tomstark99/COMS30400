@@ -25,11 +25,6 @@ public class NetworkController : MonoBehaviourPunCallbacks
         //Debug.Log(CustomMicrophone.devices.Length + " microphone devices found");
 
 
-        //setup peer for Voice Chat
-        var voiceChat = VoiceChat.Instance;
-        voiceChat.InitialisePeer();
-
-
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.Disconnect();
