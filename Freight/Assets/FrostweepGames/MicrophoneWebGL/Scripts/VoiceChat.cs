@@ -17,7 +17,10 @@ namespace VoiceChatClass
         [DllImport("__Internal")]
         private static extern void startConnection(string foreignID);
 
-#endregion
+        [DllImport("__Internal")]
+        private static extern void getId();
+
+        #endregion
 
         private const char SEPARATOR = ',';
 
@@ -60,6 +63,8 @@ namespace VoiceChatClass
             Dispose();
         }
 
+
+
 #if UNITY_WEBGL && !UNITY_EDITOR
         /// <summary>
         /// Create a Peer object for this client.
@@ -67,6 +72,11 @@ namespace VoiceChatClass
         public void InitialisePeer()
         {
             setupPeer();
+        }
+
+        public void GetPeerId()
+        {
+            getId();
         }
 
         /// <summary>

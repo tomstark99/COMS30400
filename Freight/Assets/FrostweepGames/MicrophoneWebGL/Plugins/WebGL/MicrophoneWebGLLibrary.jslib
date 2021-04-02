@@ -64,7 +64,8 @@ mergeInto(LibraryManager.library, {
                 console.log("Setup Connection called without a connection existing");
                 return;
             }
-    
+            
+            console.log('Setting up a new connection');
             // on open will be launch when you successfully connect to the other Peer
             document.connection.on('open', function() {
                 console.log('Connected to receiver');
@@ -74,11 +75,13 @@ mergeInto(LibraryManager.library, {
             });
     
             document.connection.on('data', function(data) {
+                console.log('Received data');
                 SendMessage('[PeerJS]VoiceChat', 'WriteBufferFromMessageHandler', data);
             });
     
             document.connection.on('error', function(err) {
                 // doesn't have documentation on what it returns so just mark the connection as invalid
+                console.log("create connection exception: " + err.name + ": " + err.message + "; " + err.stack);
                 document.connection.close();
                 document.connected = false;
                 document.connection = null;
@@ -233,7 +236,8 @@ mergeInto(LibraryManager.library, {
         }
         console.log('Creating a new peer');
         // create new Peer object and return it's ID
-        document.peer = new Peer(null, {secure: true, debug: 2}); 
+        // document.peer = new Peer(null, {secure: true, debug: 2}); 
+        document.peer = new Peer(null, {debug: 2}); 
 
         document.peer.on('open', function (id) {
             // return the id of the Peer as a string
@@ -242,6 +246,7 @@ mergeInto(LibraryManager.library, {
         });
 
         document.peer.on('close', function () {
+            console.log('closing peer');
             document.peer.destroy();
             document.peer = null;
             document.connection = null;
@@ -250,11 +255,12 @@ mergeInto(LibraryManager.library, {
         });
 
         document.peer.on('disconnected', function () {
-            console.log("Disconnected to the server");
+            console.log("Disconnected from the server");
             document.peer.reconnect();
         });
 
         document.peer.on('error', function (err) {
+            console.log("peer error exception: " + err.name + ": " + err.message + "; " + err.stack);
             document.peer = null;
             document.connection = null;
             document.connected = false;
@@ -282,16 +288,43 @@ mergeInto(LibraryManager.library, {
             return;
         }
 
-        receiverID = Pointer_stringify(receiverIdPointer);
+        receiverId = Pointer_stringify(receiverIdPointer);
 
         if(document.connection != null) {
             document.connection.close();
             document.connection = null;
         }
 
-        console.log("calling peer with id: " + receiverId);
-        document.connection = document.peer.connect(receiverId, {reliable:true});
-        document.setupConnection();
+        // check if you have id, if so call the other peer, if not add calling him at on 'open'
+        if(document.peer.id == undefined) {
+            console.log('wait for own id');
+            document.peer.on('open', function (id) {
+                console.log("calling peer with id: " + receiverId);
+        
+                document.connection = document.peer.connect(receiverId, {reliable:true});
+                document.setupConnection();
+            });
+        } else {
+            console.log("calling peer with id: " + receiverId);
+        
+            document.connection = document.peer.connect(receiverId, {reliable:true});
+            document.setupConnection();
+        }
+
+    },
+
+    getId: function() {
+        if(document.peer != null ) {
+            if(document.peer.id == undefined) {
+                document.peer.on('open', function (id) {
+                    SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', id);
+                });
+            } else {
+                SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', document.peer.id);
+            }
+        } else {
+            console.log('GetId called without a peer existing');
+        }
     },
 
     isRecording: function(device) {
