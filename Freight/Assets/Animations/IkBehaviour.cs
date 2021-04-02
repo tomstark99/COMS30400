@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 [RequireComponent(typeof(Animator))]
 
-public class IkBehaviour : MonoBehaviour
+public class IkBehaviour : MonoBehaviourPun
 {
     protected Animator animator;
 

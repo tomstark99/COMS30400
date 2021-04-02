@@ -84,6 +84,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
+            
             light.GetComponent<RotateLight>().PlayerInLight += SetAllGuardsToAlerted;
         }
     }
