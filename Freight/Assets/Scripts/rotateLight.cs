@@ -72,16 +72,16 @@ public class rotateLight : MonoBehaviour
     {
         foreach (var player in players)
         {
-            Debug.Log(Vector3.Distance(transform.Find("pCylinder3/Point Light").position, player.transform.position));
+            // Debug.Log(Vector3.Distance(transform.Find("pCylinder3/Point Light").position, player.transform.position));
             if (Vector3.Distance(transform.Find("pCylinder3/Point Light").position, player.transform.position) < sightRange)
             {
                 // vector from guard to player
                 Vector3 dirToPlayer = (player.transform.position - transform.Find("pCylinder3/Point Light").position).normalized;
-                Debug.Log("dirToPlayer" + dirToPlayer);
+                // Debug.Log("dirToPlayer" + dirToPlayer);
                 // might have to change the -transform.Find("pCylinder3/Point Light").right
                 float guardPlayerAngle = Vector3.Angle(-transform.Find("pCylinder3/Point Light").right, dirToPlayer);
-                Debug.Log("guardPlayerAngle" + dirToPlayer);
-                Debug.Log("lightAngle / 2f" + lightAngle / 2f);
+                // Debug.Log("guardPlayerAngle" + dirToPlayer);
+                // Debug.Log("lightAngle / 2f" + lightAngle / 2f);
                 if (guardPlayerAngle < lightAngle / 2f)
                 {
                     Debug.Log("YE MANS IN THE ANGLE STILL");
