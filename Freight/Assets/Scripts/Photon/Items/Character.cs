@@ -98,7 +98,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (Item.tag == "Gun")
             {
                 Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
-                PistolPickUp();
+                // PistolPickUp(); // Calls an event to change the animation layer to 1
             }
 
             photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -148,7 +148,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (Item.tag == "Gun")
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
-            PistolDrop();
+            // PistolDrop(); // Calls an event to change the animation layer back to 0
         }
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
