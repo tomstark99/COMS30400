@@ -20,23 +20,38 @@ public class IkBehaviour : MonoBehaviourPun
         Debug.Log("ANIMATORSETUPXD");
     }
 
+    [PunRPC]
+    void AnimateRPC()
+    {
+        if (lookObj != null)
+        {
+            // animator.SetLookAtWeight(1);
+            // animator.SetLookAtPosition(lookObj.position);
+        }
+        if (handObj != null)
+        {
+            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+            animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+            animator.SetIKPosition(AvatarIKGoal.RightHand, handObj.position);
+            animator.SetIKRotation(AvatarIKGoal.RightHand, handObj.rotation);
+        }
+    }
+
+    [PunRPC]
+    void UnAnimateRPC()
+    {
+        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
+        animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
+    }
+
     void OnAnimatorIK() {
         if(animator) {
             if(ikActive) {
-            Debug.Log("IK CALLBACK ACCCCCC");
-                if(lookObj != null) {
-                    // animator.SetLookAtWeight(1);
-                    // animator.SetLookAtPosition(lookObj.position);
-                }
-                if(handObj != null) {
-                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,handObj.position);
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,handObj.rotation);
-                }
-            } else {
-                animator.SetIKPositionWeight(AvatarIKGoal.RightHand,0);
-                animator.SetIKRotationWeight(AvatarIKGoal.RightHand,0);
+                Debug.Log("IK CALLBACK ACCCCCC");
+                photonView.RPC(nameof(AnimateRPC), RpcTarget.All);
+            } 
+            else {
+                photonView.RPC(nameof(UnAnimateRPC), RpcTarget.All);
                 // animator.SetLookAtWeight(0);
             }
         }
