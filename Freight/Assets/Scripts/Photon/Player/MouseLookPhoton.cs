@@ -35,10 +35,11 @@ public class MouseLookPhoton : MonoBehaviourPun
        
     }
 
+
     // Update is called once per frame
     void Update()
     {
-        if (!photonView.IsMine || onMenu) return;
+        if (!photonView.IsMine) return;
 
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
@@ -50,7 +51,10 @@ public class MouseLookPhoton : MonoBehaviourPun
             cameraTransform.localRotation = oldCameraRot;
             yRotation = 0f;
             freeCam = false;
-        }
+        } 
+
+        if(Input.GetKeyDown(KeyCode.Escape)) 
+            oldCameraRot =  cameraTransform.localRotation;
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -58,20 +62,24 @@ public class MouseLookPhoton : MonoBehaviourPun
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 70f);
 
-        if(onMenu)
-            return;
+        
 
-        if (!freeCam)
-        {
-            cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            playerBody.Rotate(Vector3.up * mouseX);
+        if(!onMenu) {
+            if (!freeCam)
+            {
+                cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+                playerBody.Rotate(Vector3.up * mouseX);
+            }
+            else
+            {
+                yRotation += mouseX;
+                yRotation = Mathf.Clamp(yRotation, -150f, 130f);
+                cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+            }
+        } else {
+            cameraTransform.localRotation = oldCameraRot;
         }
-        else
-        {
-            yRotation += mouseX;
-            yRotation = Mathf.Clamp(yRotation, -150f, 130f);
-            cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        }
+        
             
     }
 }
