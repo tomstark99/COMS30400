@@ -183,7 +183,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             crouching = true;
             controller.height = 1.2f;
         } 
-        else if (Input.GetKeyUp(KeyCode.LeftControl) && crouching)
+        else if (Input.GetKeyDown(KeyCode.LeftControl) && crouching)
         {
             crouching = false;
             controller.height = 1.8f;
