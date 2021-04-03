@@ -84,7 +84,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
-            light.GetComponent<rotateLight>().PlayerInLight += SetAllGuardsToAlerted;
+            
+            light.GetComponent<RotateLight>().PlayerInLight += SetAllGuardsToAlerted;
         }
     }
 
@@ -223,7 +224,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         spotlight.color = Color.red;
     }
 
-    void SetAllGuardsToAlerted()
+    public void SetAllGuardsToAlerted()
     {
         GameObject[] allGuards = GameObject.FindGameObjectsWithTag("Guard");
         Transform closestPlayer = FindClosestPlayer();
