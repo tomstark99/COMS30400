@@ -24,6 +24,8 @@ public class PlayerAnimation : MonoBehaviourPun
     private float runningSpeed;
     private float walkingSpeed;
 
+
+
     public GameObject camera;
     public GameObject head;
 
@@ -151,7 +153,7 @@ public class PlayerAnimation : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched && !isRunning) {
             animator.SetBool(isCrouchedHash, true);
-        } else if (Input.GetKeyUp(KeyCode.LeftControl) && isCrouched) {
+        } else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched) {
             animator.SetBool(isCrouchedHash, false);
         }
 
