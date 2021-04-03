@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -152,10 +152,10 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
         Item.transform.Rotate(50, 50, 0);
-        Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
         GetComponent<IkBehaviour>().ikActive = false;
         if (Item.GetComponent<Shootable>() != null)
         {
+            Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
             Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
         }
         else

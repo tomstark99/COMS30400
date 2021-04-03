@@ -136,8 +136,14 @@ public class ItemInteract : MonoBehaviourPun
                 currentInteractable.PrimaryInteractionOff(character);
                 currentInteractable.GetComponent<Outline>().enabled = true;
                 currentInteractable = null;
-            }
+            } else
 
+            if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Throwable>() != null) 
+            {
+                currentInteractable.GetComponent<Throwable>().ThrowRock(character);
+                currentInteractable.GetComponent<Outline>().enabled = true;
+                currentInteractable = null;
+            } else
             // if item is shootable
             if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Shootable>() != null) 
             {
