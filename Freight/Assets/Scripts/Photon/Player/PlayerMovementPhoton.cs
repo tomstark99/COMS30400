@@ -116,6 +116,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.up * l;
         } 
+        else if(PoseParser.GETGestureAsString().CompareTo("O") == 0){
+            move = transform.forward * speed;
+        }
         else
         {
             move = transform.right * x + transform.forward * z;
@@ -134,10 +137,10 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.right * x + transform.up * z;
         }
-        else
+        /*else
         {
             move = transform.right * x + transform.forward * z;
-        }
+        }*/
 
         // sticks the player onto the train
         if (onTrain)
@@ -195,7 +198,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             // Debug.Log("LADDER COORDS" + (train.transform.position + ladderCentreLine).ToString());
             climbing = true;
             //GetComponent<PlayerAnimation>().setClimbing(climbing);
-            //faceUI.SetActive(false);
             //LeftHandUpUI.SetActive(true);
             //RightHandUpUI.SetActive(true);
         }
@@ -206,10 +208,10 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         else if (other.gameObject.tag == "trainfloor")
         {
-            Debug.Log("stef is aiiiir");
+            //Debug.Log("stef is aiiiir");
             train = other.gameObject;
             climbing = false;
-           // LeftHandUpUI.SetActive(false);
+            //LeftHandUpUI.SetActive(false);
             //RightHandUpUI.SetActive(false);
             onTrain = true;
         }
@@ -232,7 +234,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
-            Debug.Log("stef is NOT aiiiir");
+            //Debug.Log("stef is NOT aiiiir");
             onTrain = false;
           
         }
