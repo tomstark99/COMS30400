@@ -29,6 +29,7 @@ public class VoiceChatConnector : MonoBehaviourPun
     private readonly int lengthSec = 1;
     private readonly int frequency = 44100;
     private float[] _data;
+    private List<float> _buffer;
     private float _delay;
     private int _samplePosition;
 
@@ -59,37 +60,44 @@ public class VoiceChatConnector : MonoBehaviourPun
 
         _microphoneDevice = CustomMicrophone.devices[0];
         audioClip = CustomMicrophone.Start(_microphoneDevice, true, lengthSec, frequency);
+        while (!(CustomMicrophone.GetPosition(null) > 0)) { }
 
         //get instance 
         voiceChat = VoiceChat.Instance;
+
+        _buffer = new List<float>();
 
         //subscribe to events and initialize connection
         voiceChat.OnStatusUpdate += OnStatusupdate;
         voiceChat.OnIDUpdate += OnIDUpdate;
         voiceChat.OnDataReceive += OnReceiveData;
 
-        foreignClip = AudioClip.Create("ForeignClip", frequency * lengthSec, 1, frequency, false);
-        //foreignAudioSource.clip = foreignClip;
-        foreignAudioSource.clip = audioClip;
+        foreignClip = AudioClip.Create("ForeignClip", frequency * lengthSec, 1, frequency, true, ReaderCallback);
+        foreignAudioSource.clip = foreignClip;
+        //foreignAudioSource.clip = audioClip;
 
         _samplePosition = 0;
 
         voiceChat.InitializePeer();
 
+        foreignAudioSource.loop = true;
         foreignAudioSource.Play();
-        InvokeRepeating(nameof(AudioUpdate), 0, lengthSec);
+        //InvokeRepeating(nameof(AudioUpdate), 0, lengthSec);
     }
+
 
     private void AudioUpdate()
     {
-        //var data = new float[frequency * lengthSec];
-        //CustomMicrophone.GetRawData(ref data, audioClip);
+        Debug.Log("fff");
+        var data = new float[frequency * lengthSec];
+        CustomMicrophone.GetRawData(ref data, audioClip);
+        _buffer.AddRange(data);
         //Debug.Log(_samplePosition);
-        //foreignClip.SetData(data, 48000 % foreignClip.samples);
+        //foreignClip.SetData(data, 0);
         //_samplePosition = (_samplePosition + data.Length) % foreignClip.samples;
 
-        foreignAudioSource.Stop();
-        foreignAudioSource.Play();
+        //foreignAudioSource.Stop();
+        //foreignAudioSource.Play();
     }
 
     //void Update()
@@ -144,11 +152,29 @@ public class VoiceChatConnector : MonoBehaviourPun
     //    }
     //}
 
+    public void ReaderCallback(float[] data)
+    {
+        //print(data.Length);
+        var dataLength = data.Length;
+        var bufferlength = _buffer.Count;
+        if (bufferlength > dataLength)
+        {
+            _buffer.GetRange(0, dataLength).CopyTo(data);
+            _buffer.RemoveRange(0, dataLength);
+        }
+        else
+        {
+            _buffer.GetRange(0, bufferlength).CopyTo(data);
+            _buffer.RemoveRange(0, bufferlength);
+        }
+    }
+
     void OnReceiveData(float[] data)
     {
-        Debug.Log(_samplePosition);
-        foreignClip.SetData(data, _samplePosition);
-        _samplePosition = (_samplePosition + data.Length) % (foreignClip.samples);
+        //Debug.Log(_samplePosition);
+        //foreignClip.SetData(data, _samplePosition);
+        //_samplePosition = (_samplePosition + data.Length) % (foreignClip.samples);
+        _buffer.AddRange(data);
     }
 
     void OnStatusupdate(string status)
