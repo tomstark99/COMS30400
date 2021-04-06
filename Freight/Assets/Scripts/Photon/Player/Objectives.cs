@@ -34,11 +34,13 @@ public class Objectives : MonoBehaviour
         bagsPickedUp = 0;
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence += SetBreakFenceToActive;
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += SetFindBackpacksToActive;
+        GameObject.FindGameObjectWithTag("MainTrain").GetComponent<InRange>().InRangeOfTrain += SetEscapeToActive;
         GameObject[] bags = GameObject.FindGameObjectsWithTag("Bag");
         foreach (var bag in bags)
         {
             bag.GetComponent<Grabbable>().BagPickedUp += SetFindTrainToActive;
         }
+        GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().StartEndGame += SetObjectivesComplete;
     }
 
     // Update is called once per frame
@@ -77,5 +79,20 @@ public class Objectives : MonoBehaviour
             findTrain.SetActive(true);
             findTrainDesc.SetActive(true);
         }
+    }
+
+    void SetEscapeToActive()
+    {
+        findTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+        findTrainDesc.SetActive(false);
+        escapeOnTrain.SetActive(true);
+        escapeOnTrainDesc.SetActive(true);
+        //GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
+    }
+
+    void SetObjectivesComplete()
+    {
+        escapeOnTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+        escapeOnTrainDesc.SetActive(false);
     }
 }
