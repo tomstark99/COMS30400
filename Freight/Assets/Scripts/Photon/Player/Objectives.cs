@@ -34,12 +34,13 @@ public class Objectives : MonoBehaviour
         bagsPickedUp = 0;
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence += SetBreakFenceToActive;
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += SetFindBackpacksToActive;
-        GameObject.FindGameObjectWithTag("MainTrain").GetComponent<InRange>().InRangeOfTrain += SetEscapeToActive;
+        
         GameObject[] bags = GameObject.FindGameObjectsWithTag("Bag");
         foreach (var bag in bags)
         {
             bag.GetComponent<Grabbable>().BagPickedUp += SetFindTrainToActive;
         }
+        GameObject.FindGameObjectWithTag("locomotive").GetComponent<InRange>().InRangeOfTrain += SetEscapeToActive;
         GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().StartEndGame += SetObjectivesComplete;
     }
 
@@ -69,6 +70,8 @@ public class Objectives : MonoBehaviour
     void SetFindTrainToActive() 
     {
         bagsPickedUp += 1;
+
+        Debug.Log("picked up bag");
 
         findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/2)";
 
