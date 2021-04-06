@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Mirror;
 using Photon.Pun;
 
 public class SplineWalkerPhoton : MonoBehaviourPun
@@ -15,8 +14,9 @@ public class SplineWalkerPhoton : MonoBehaviourPun
 
     private float progress;
     private bool goingForward = true;
-    // private bool leaveStation = false;
-    private float timeToLeave = 5.0f;
+
+    // if you want to change the time to leave, go to the SyncedTime script and change it there
+    private float timeToLeave;
 
     public Vector3 trainPos;
     public Vector3 prevPos;
@@ -25,6 +25,8 @@ public class SplineWalkerPhoton : MonoBehaviourPun
     {
         if(!PhotonNetwork.IsMasterClient)
             return;
+
+        timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
 
         if (goingForward)
         {
@@ -76,7 +78,8 @@ public class SplineWalkerPhoton : MonoBehaviourPun
     {
         if(!PhotonNetwork.IsMasterClient)
             return;
-            
+
+       // Debug.Log("time to leave:" + timeToLeave);
         timeToLeave -= Time.deltaTime;
         if (timeToLeave < 0)
         {
