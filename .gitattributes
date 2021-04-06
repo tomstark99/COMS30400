@@ -1,12 +1,8 @@
-## Unity ##
+##################################################################
+# LFS tracking patterns.
 
-*.cs diff=csharp text
-*.cginc text
-*.shader text
-
-Assets/Scenes/*.unity filter=lfs diff=lfs merge=lfs -text lockable
-
-# 3D models
+## 3D models
+##
 *.3dm filter=lfs diff=lfs merge=lfs -text
 *.3ds filter=lfs diff=lfs merge=lfs -text
 *.blend filter=lfs diff=lfs merge=lfs -text
@@ -27,7 +23,8 @@ Assets/Scenes/*.unity filter=lfs diff=lfs merge=lfs -text lockable
 *.stl filter=lfs diff=lfs merge=lfs -text
 *.ztl filter=lfs diff=lfs merge=lfs -text
 
-# Audio
+## Audio
+##
 *.aif filter=lfs diff=lfs merge=lfs -text
 *.aiff filter=lfs diff=lfs merge=lfs -text
 *.it filter=lfs diff=lfs merge=lfs -text
@@ -38,11 +35,13 @@ Assets/Scenes/*.unity filter=lfs diff=lfs merge=lfs -text lockable
 *.wav filter=lfs diff=lfs merge=lfs -text
 *.xm filter=lfs diff=lfs merge=lfs -text
 
-# Fonts
+## Fonts
+##
 *.otf filter=lfs diff=lfs merge=lfs -text
 *.ttf filter=lfs diff=lfs merge=lfs -text
 
-# Images
+## Images
+##
 *.bmp filter=lfs diff=lfs merge=lfs -text
 *.exr filter=lfs diff=lfs merge=lfs -text
 *.gif filter=lfs diff=lfs merge=lfs -text
@@ -57,15 +56,44 @@ Assets/Scenes/*.unity filter=lfs diff=lfs merge=lfs -text lockable
 *.tif filter=lfs diff=lfs merge=lfs -text
 *.tiff filter=lfs diff=lfs merge=lfs -text
 
+## Documents
+##
+*.pdf  filter=lfs diff=lfs merge=lfs -text
+
+## Unity files (un-comment to enable)
+ *.cubemap       filter=lfs diff=lfs merge=lfs -text
+ *.unitypackage filter=lfs diff=lfs merge=lfs -text
+#
+## Possible solution to track terrain .asset files (adjust path & uncomment)
+ Freight/Assets/Terrains/*.asset filter=lfs diff=lfs merge=lfs -text
+# #only if subfolders with terrains exist:
+ Freight/Assets/Terrains/**/*.asset filter=lfs diff=lfs merge=lfs -text
+
+##################################################################
+# Unity YAML
+#
+# Use Unity's semantic merge tool "Smart Merge"
+# to assist in merging Unity-specific files.
+
+# Un-comment the following lines to enable.
+#
+ *.anim merge=unityyamlmerge eol=lf
+ *.asset merge=unityyamlmerge eol=lf
+ *.controller merge=unityyamlmerge eol=lf
+ *.mat merge=unityyamlmerge eol=lf
+ *.meta merge=unityyamlmerge eol=lf
+ *.physicsMaterial merge=unityyamlmerge eol=lf
+ *.physicsMaterial2D merge=unityyamlmerge eol=lf
+ *.prefab merge=unityyamlmerge eol=lf
+ *.unity merge=unityyamlmerge eol=lf
+
+##################################################################
 # Collapse Unity-generated files on GitHub
-*.asset linguist-generated
-*.mat linguist-generated
-*.meta linguist-generated
-*.prefab linguist-generated
-*.unity linguist-generated
-
-# Unity packages
-*.unitypackage filter=lfs diff=lfs merge=lfs -text
-
-# Zips
-*.zip filter=lfs diff=lfs merge=lfs -text
+#
+# Un-comment the following lines to enable.
+#
+# *.asset linguist-generated
+# *.mat linguist-generated
+# *.meta linguist-generated
+# *.prefab linguist-generated
+# *.unity linguist-generated
