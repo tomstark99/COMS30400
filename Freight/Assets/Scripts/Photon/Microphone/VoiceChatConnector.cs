@@ -24,7 +24,13 @@ public class VoiceChatConnector : MonoBehaviourPun
     public AudioClip ForeignAudioClip() { return foreignClip; }
 
     public Action OnStatusConnected;
-    // Start is called before the first frame update
+
+
+    private readonly int lengthSec = 1;
+    private readonly int frequency = 44100;
+    private float[] _data;
+    private float _delay;
+    private int _samplePosition;
 
     private void OnDestroy()
     {
@@ -52,7 +58,7 @@ public class VoiceChatConnector : MonoBehaviourPun
         }
 
         _microphoneDevice = CustomMicrophone.devices[0];
-        audioClip = CustomMicrophone.Start(_microphoneDevice, true, 1, 44100);
+        audioClip = CustomMicrophone.Start(_microphoneDevice, true, lengthSec, frequency);
 
         //get instance 
         voiceChat = VoiceChat.Instance;
@@ -60,27 +66,94 @@ public class VoiceChatConnector : MonoBehaviourPun
         //subscribe to events and initialize connection
         voiceChat.OnStatusUpdate += OnStatusupdate;
         voiceChat.OnIDUpdate += OnIDUpdate;
+        voiceChat.OnDataReceive += OnReceiveData;
 
-        foreignClip = voiceChat.GetClip(1, 44100);
-        foreignAudioSource.clip = foreignClip;
+        foreignClip = AudioClip.Create("ForeignClip", frequency * lengthSec, 1, frequency, false);
+        //foreignAudioSource.clip = foreignClip;
+        foreignAudioSource.clip = audioClip;
+        foreignAudioSource.Play();
+
+        _samplePosition = 0;
 
         voiceChat.InitializePeer();
-        //voiceChat.GetPeerId();
+
+        InvokeRepeating(nameof(AudioUpdate), 0, lengthSec);
     }
 
+    private void AudioUpdate()
+    {
+        foreignAudioSource.Stop();
+        foreignAudioSource.Play();
+    }
+
+    //void Update()
+    //{
+    //    try
+    //    {
+    //        var _audioClipReadyToUse = _buffer.Count >= frequency * lengthSec;
+
+    //        if (Playing)
+    //        {
+    //            _delay -= Time.deltaTime;
+
+    //            if (_delay <= 0)
+    //            {
+    //                foreignAudioSource.Stop();
+    //                Playing = false;
+    //            }
+    //        }
+
+    //        if (!Playing)
+    //        {
+    //            if (_audioClipReadyToUse)
+    //            {
+    //                List<float> chunk;
+
+    //                if (_buffer.Count >= frequency)
+    //                {
+    //                    chunk = _buffer.GetRange(0, frequency);
+    //                    _buffer.RemoveRange(0, frequency);
+    //                }
+    //                else
+    //                {
+    //                    chunk = _buffer.GetRange(0, _buffer.Count);
+    //                    _buffer.Clear();
+    //                    for (int i = chunk.Count; i < frequency; i++)
+    //                    {
+    //                        chunk.Add(0);
+    //                    }
+    //                }
+
+    //                foreignClip.SetData(chunk.ToArray(), 0);
+    //                foreignAudioSource.Play();
+
+    //                _delay = (float)frequency / (float)chunk.Count;
+    //                Playing = true;
+    //            }
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Debug.LogException(ex);
+    //    }
+    //}
+
+    void OnReceiveData(float[] data)
+    {
+        foreignClip.SetData(data, _samplePosition);
+        _samplePosition = (_samplePosition + data.Length) % (frequency * lengthSec);
+    }
 
     void OnStatusupdate(string status)
     {
         if(status == "connected")
         {
             Debug.Log("connected to peer");
-            foreignAudioSource.Play();
             OnStatusConnected?.Invoke();
         }
         else if(status == "disconnected")
         {
             Debug.Log("disconnected from the peer");
-            foreignAudioSource.Stop();
             if (PhotonNetwork.IsMasterClient)
                 voiceChat.Connect(_foreignID);
         }
@@ -89,7 +162,6 @@ public class VoiceChatConnector : MonoBehaviourPun
             Debug.Log("peer crashed");
             // if this peer crashes, this should crash the other peer as well
             // so both will be reinitialized
-            foreignAudioSource.Stop();
         }
     }
 
