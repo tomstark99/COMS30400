@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace VoiceChatClass
 {
-//#if UNITY_WEBGL
     public class VoiceChat : UnityEngine.MonoBehaviour
     {
 #region __Internal
@@ -35,19 +34,16 @@ namespace VoiceChatClass
             }
         }
 
-        private UnityEngine.AudioClip _peerClip;
-        private bool _loopRecording = true;
         private string _status = "disconnected";
         private string _peerID = "";
         private string _foreignID = "";
-        private float[] _audioDataArray;
-        private int _samplePosition;
         private CultureInfo _provider;
 
         // Called when the peer receives an id
         public Action<string> OnIDUpdate;
         // Called when the status is updated
         public Action<string> OnStatusUpdate;
+        public Action<float[]> OnDataReceive;
 
         private void Awake()
         {
@@ -55,8 +51,6 @@ namespace VoiceChatClass
             _provider.NumberFormat.NumberDecimalSeparator = ".";
 
         }
-
-        private void Start() { }
 
         private void OnDestroy()
         {
@@ -88,30 +82,6 @@ namespace VoiceChatClass
 #endif
         }
 
-        /// <summary>
-        /// Start a connection.
-        /// </summary>
-        /// <param name="foreignID">Is the ID of the peer you want to connect to.</param>
-        /// <param name="lengthSec">Is the length of the AudioClip produced by the recording.</param>
-        /// <param name="frequency">The sample rate of the AudioClip produced by the recording.</param>
-        /// <returns>The function returns null if the recording fails to start.</returns>
-        public UnityEngine.AudioClip GetClip(int lengthSec, int frequency)
-        {
-
-            if(lengthSec > 120)
-			{
-                UnityEngine.Debug.LogWarning("TOO LONG AUDIO LENGTH! IT WILL CAUSE ISSUES! WAS RESET LENGTH TO 120 seconds");
-                lengthSec = 120; // hardfix for long audio clips of Unity Engine.
-            }
-
-            Cleanup();
-
-            _peerClip = UnityEngine.AudioClip.Create("PeerClip", frequency * lengthSec, 1, frequency, false);
-            _audioDataArray = new float[frequency * lengthSec];
-
-            return _peerClip;
-        }
-
         public void Connect(string foreignID)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -127,26 +97,6 @@ namespace VoiceChatClass
         {
             _foreignID = "";
         }
-//#endif
-
-        /// <summary>
-        /// Get the position in samples of the recording. 
-        /// </summary>
-        /// <param name="deviceName">The name of the device (not uses)</param>
-        /// <returns></returns>
-        public int GetPosition()
-        {
-            return _samplePosition;
-        }
-
-        /// <summary>
-        /// Returns RAW data (samples array) of an AudioClip; This is the full array of samples that could be not filled fully by audio stream.
-        /// </summary>
-        /// <returns></returns>
-        public float[] GetRawData()
-        {
-            return _audioDataArray;
-        }
 
         /// <summary>
         /// Cleanups service
@@ -154,15 +104,6 @@ namespace VoiceChatClass
         public void Dispose()
         {
             _Instance = null;
-            Cleanup();
-        }
-
-        private void Cleanup()
-        {
-            if (_peerClip != null)
-                Destroy(_peerClip);
-            _audioDataArray = null;
-            _samplePosition = 0;
         }
 
         private float[] StringToFloatArray(string value)
@@ -176,28 +117,7 @@ namespace VoiceChatClass
         private void WriteBufferFromMessageHandler(string data)
         {
             float[] array = StringToFloatArray(data);
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (!_loopRecording && _samplePosition == _audioDataArray.Length)
-                    break;
-
-                _audioDataArray[_samplePosition] = array[i];
-
-                if (_loopRecording)
-                {
-                    _samplePosition = (int)UnityEngine.Mathf.Repeat(_samplePosition + 1, _audioDataArray.Length);
-                }
-                else
-                {
-                    _samplePosition++;
-                }
-            }
-
-            if (_peerClip != null && _peerClip)
-            {
-                _peerClip.SetData(_audioDataArray, 0);
-            }
+            OnDataReceive?.Invoke(array);
         }
 
         /// Event handler from JS library
