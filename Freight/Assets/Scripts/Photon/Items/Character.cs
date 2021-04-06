@@ -68,6 +68,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             GetComponent<IkBehaviour>().ikActive = true;
             GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
         }
+        else if (Item.tag == "Rock")
+        {
+            GetComponent<IkBehaviour>().ikActive = true;
+            GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(0).transform.GetChild(2);
+        }
         Item.transform.parent = pickUpDestination;
         Item.transform.Rotate(0, 90, 0);
 
@@ -96,6 +101,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 GetComponent<IkBehaviour>().ikActive = true;
                 GetComponent<IkBehaviour>().handObj = currentHeldItem.transform.GetChild(18);
             }
+            else if (currentHeldItem.tag == "Rock")
+            {
+                GetComponent<IkBehaviour>().ikActive = true;
+                GetComponent<IkBehaviour>().handObj = currentHeldItem.transform.GetChild(0).transform.GetChild(2);
+            }
 
         }
         else
@@ -122,6 +132,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 // PistolPickUp(); // Calls an event to change the animation layer to 1
                 GetComponent<IkBehaviour>().ikActive = true;
                 GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
+            } 
+            else if (Item.tag == "Rock")
+            {
+                GetComponent<IkBehaviour>().ikActive = true;
+                GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(0).transform.GetChild(2);
             }
 
             photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -135,13 +150,14 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void ThrowRPC(int ItemID)
     {
         Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
-
+        GetComponent<IkBehaviour>().ikActive = false;
         Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
     public void Throw(Throwable Item) 
     {
+        GetComponent<IkBehaviour>().ikActive = false;
         currentHeldItem = null;
         Item.ResetItemConditions(this);
         photonView.RPC("ThrowRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -169,11 +185,10 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         currentHeldItem = null;
         Item.ResetItemConditions(this);
-
+        GetComponent<IkBehaviour>().ikActive = false;
         if (Item.tag == "Gun")
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
-            GetComponent<IkBehaviour>().ikActive = false;
             // PistolDrop(); // Calls an event to change the animation layer back to 0
         }
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
