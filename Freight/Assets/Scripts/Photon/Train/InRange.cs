@@ -33,7 +33,9 @@ public class InRange : MonoBehaviourPun
 
     void OnTriggerEnter(Collider other)
     {
-        if (!walkedInRangeOfTrain && other.gameObject.tag == "RangeOfTrain")
+        Debug.Log(other.gameObject.tag);
+        Debug.Log(other);
+        if (!walkedInRangeOfTrain && other.gameObject.tag == "Player")
         {
             photonView.RPC(nameof(InRangeOfTrainRPC), RpcTarget.All);
         }
