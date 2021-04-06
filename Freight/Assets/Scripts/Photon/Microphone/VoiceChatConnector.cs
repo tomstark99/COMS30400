@@ -71,17 +71,23 @@ public class VoiceChatConnector : MonoBehaviourPun
         foreignClip = AudioClip.Create("ForeignClip", frequency * lengthSec, 1, frequency, false);
         //foreignAudioSource.clip = foreignClip;
         foreignAudioSource.clip = audioClip;
-        foreignAudioSource.Play();
 
         _samplePosition = 0;
 
         voiceChat.InitializePeer();
 
+        foreignAudioSource.Play();
         InvokeRepeating(nameof(AudioUpdate), 0, lengthSec);
     }
 
     private void AudioUpdate()
     {
+        //var data = new float[frequency * lengthSec];
+        //CustomMicrophone.GetRawData(ref data, audioClip);
+        //Debug.Log(_samplePosition);
+        //foreignClip.SetData(data, 48000 % foreignClip.samples);
+        //_samplePosition = (_samplePosition + data.Length) % foreignClip.samples;
+
         foreignAudioSource.Stop();
         foreignAudioSource.Play();
     }
@@ -140,8 +146,9 @@ public class VoiceChatConnector : MonoBehaviourPun
 
     void OnReceiveData(float[] data)
     {
+        Debug.Log(_samplePosition);
         foreignClip.SetData(data, _samplePosition);
-        _samplePosition = (_samplePosition + data.Length) % (frequency * lengthSec);
+        _samplePosition = (_samplePosition + data.Length) % (foreignClip.samples);
     }
 
     void OnStatusupdate(string status)
