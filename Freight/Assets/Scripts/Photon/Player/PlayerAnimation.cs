@@ -92,44 +92,49 @@ public class PlayerAnimation : MonoBehaviourPun
         }
 
         if (!isWalking && z > 0.02f) {
-            if (Input.GetKey(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("I")==0)
+            if (Input.GetKey(KeyCode.LeftShift))
             {
                 animator.SetBool(isRunningHash, true);
                 player.setSpeed(runningSpeed);
             }
 
-            else
+            else if (PoseParser.GETGestureAsString().CompareTo("F")==0 || Input.GetKey(KeyCode.W))
             {
                 animator.SetBool(isWalkingHash, true);
                 player.setSpeed(walkingSpeed);
             }
+            // else
+            // {
+            //     animator.SetBool(isWalkingHash, true);
+            //     player.setSpeed(walkingSpeed);
+            // }
                 
         } 
         if(!isRunningBack && z < -0.02f) {
             animator.SetBool(isRunningBackHash, true);
         }
-        if(z <= 0.02f && z >= -0.02f) {
+        if(z <= 0.02f && z >= -0.02f && PoseParser.GETGestureAsString().CompareTo("F")!=0) {
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, false);
             animator.SetBool(isRunningBackHash, false);
         }
-        if (!isRight && x > 0.02f) {
+        if ((!isRight && x > 0.02f) || (!isRight && PoseParser.GETGestureAsString().CompareTo("I")==0)) {
             animator.SetBool(isRightHash, true);
         }
-        if (x <= 0.02f && x >= -0.02f) {
+        if (x <= 0.02f && x >= -0.02f && PoseParser.GETGestureAsString().CompareTo("I")!=0 && PoseParser.GETGestureAsString().CompareTo("O")!=0){
             animator.SetBool(isLeftHash, false);
             animator.SetBool(isRightHash, false);
-        }
-        if (!isLeft && x < -0.02f) {
+        } 
+        if ((!isLeft && x < -0.02f) || (!isLeft && PoseParser.GETGestureAsString().CompareTo("O")==0)) {
             animator.SetBool(isLeftHash, true);
         }
 
-        if ((Input.GetKeyDown(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("I")==0) && (isWalking || z > 0.02f)) {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && (isWalking || z > 0.02f || PoseParser.GETGestureAsString().CompareTo("F")==0)) {
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, true);
             player.setSpeed(runningSpeed);
 
-        } else if (!Input.GetKey(KeyCode.LeftShift) && PoseParser.GETGestureAsString().CompareTo("I")!=0 && isRunning) {
+        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning && PoseParser.GETGestureAsString().CompareTo("F")!=0) {
             animator.SetBool(isWalkingHash, true);
             animator.SetBool(isRunningHash, false);
             player.setSpeed(walkingSpeed);

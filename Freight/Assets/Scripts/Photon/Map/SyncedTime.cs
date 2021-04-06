@@ -14,7 +14,7 @@ public class SyncedTime : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timeToLeave = 10f;
+        timeToLeave = 180f;
     }
 
     // Update is called once per frame

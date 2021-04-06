@@ -145,7 +145,7 @@ namespace UnityTemplateProjects
             var translation = GetInputTranslationDirection() * Time.deltaTime;
 
             // Speed up movement when shift key held
-            if (Input.GetKey(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("I")==0)
+            if (Input.GetKey(KeyCode.LeftShift))
             {
                 translation *= 10.0f;
             }
