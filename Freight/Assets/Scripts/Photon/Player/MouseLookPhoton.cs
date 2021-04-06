@@ -38,7 +38,7 @@ public class MouseLookPhoton : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine || onMenu) return;
 
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {

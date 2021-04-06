@@ -50,7 +50,7 @@ public class CurrentRoomCanvas : MonoBehaviour
         {
             gameObject.transform.GetChild(3).GetComponent<Button>().interactable = false;
             Debug.Log("Starting Game");
-            PhotonNetwork.LoadLevel(1);
+            PhotonNetwork.LoadLevel(3);
         }
     }
 }
