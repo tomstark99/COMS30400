@@ -8,6 +8,14 @@ public class Throwable : PickUpable
     {
         if (isPickedUp)
         {
+            character.Drop(this);
+        }
+    }
+
+    public void ThrowRock(Character character)
+    {
+        if (isPickedUp)
+        {
             character.Throw(this);
         }
     }
