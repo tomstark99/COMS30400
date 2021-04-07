@@ -70,13 +70,24 @@ public class Clock : MonoBehaviour
         {
             double newTime = timeToLeave + (startTime - PhotonNetwork.Time);
             timerIncrementer = Math.Round(newTime, 4);
-            text.text = "Time to leave: " + timerIncrementer.ToString();
-            if (newTime <= 0)
-            {
-                trainLeft = true;
-                text.text = "Train is leaving!";
+            text.text = "Time to leave: " + FormatTime(timerIncrementer);//timerIncrementer.ToString();
+            if(newTime <= 30) {
+                text.fontSize = 18;
+                if (newTime <= 0)
+                {
+                    trainLeft = true;
+                    text.fontSize = 20;
+                    text.text = "Train is leaving!";
+                }
             }
         } 
+    }
+
+    private string FormatTime( double time ) {
+        int min = (int) time / 60;
+        int sec = (int) time - 60 * min;
+        int mil = (int) (1000 * (time - min * 60 - sec));
+        return time < 60 ? string.Format("{0:00}:{1:00}:{2:000}", min, sec, mil) : string.Format("{0:00}:{1:00}", min, sec);
     }
 
     //void updateClock()
