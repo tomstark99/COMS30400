@@ -8,12 +8,18 @@ public class Grabbable : PickUpable
 {
     public event Action BagPickedUp;
 
+    [PunRPC]
+    void BagPickedUpRPC()
+    {
+        BagPickedUp();
+    }
+
     public override void PrimaryInteraction(Character character)
     {
         if (!isPickedUp && !character.HoldingTheBag)
         {
             character.Grab(this);
-            BagPickedUp();
+            gameObject.GetComponent<PhotonView>().RPC(nameof(BagPickedUpRPC), RpcTarget.All);
         }
     }
 

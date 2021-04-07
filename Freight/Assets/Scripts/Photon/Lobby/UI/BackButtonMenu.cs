@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class BackButtonMenu : MonoBehaviour
 {
+    public GameObject optionsCanvas;
     private RoomsCanvases roomsCanvases;
 
     public void Initialise(RoomsCanvases canvases)
@@ -15,10 +16,26 @@ public class BackButtonMenu : MonoBehaviour
         roomsCanvases = canvases;
     }
 
+    private void Update() {
+
+         if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(roomsCanvases.CreateOrJoinRoomCanvas != null) {
+                roomsCanvases.CreateOrJoinRoomCanvas.Show();
+            }
+        }
+    } 
     // when click on create room, create a 2 player room
     public void OnClick_BackButton()
     {
+        optionsCanvas.SetActive(false);
         //roomsCanvases.OptionsMenu.Hide();
-        roomsCanvases.CreateOrJoinRoomCanvas.Show();
+        if(roomsCanvases.CreateOrJoinRoomCanvas != null) {
+            roomsCanvases.CreateOrJoinRoomCanvas.Show();
+        } else {
+            transform.parent.transform.parent.GetComponent<PlayerUI>().closeorOpenMenu();
+        }
+
+        //roomsCanvases.CreateOrJoinRoomCanvas.Show();
     }
 }

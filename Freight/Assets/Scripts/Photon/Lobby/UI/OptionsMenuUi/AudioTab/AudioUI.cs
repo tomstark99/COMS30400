@@ -20,6 +20,11 @@ public class AudioUI : MonoBehaviour
             MasterAudioSlider.value = PlayerPrefs.GetFloat("MasterAudio");
         else
             MasterAudioSlider.value = 1f;
+        Debug.Log("audio Listener volume is " + AudioListener.volume);
+        Debug.Log("Master audio slider is " + MasterAudioSlider.value);
+        AudioListener.volume = MasterAudioSlider.value;
+
+        Debug.Log("acc tho allow still");
    }
     // Start is called before the first frame update
     public void OnMouseOver() {
