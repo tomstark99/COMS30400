@@ -30,9 +30,6 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         return currentHeldItem != null;
     }
 
-    public event Action PistolPickUp;
-    public event Action PistolDrop;
-
     [PunRPC]
     void PickUpRPCLocal(int ItemID)
     {
@@ -129,7 +126,6 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (Item.tag == "Gun")
             {
                 Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
-                // PistolPickUp(); // Calls an event to change the animation layer to 1
                 GetComponent<IkBehaviour>().ikActive = true;
                 GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
             } 
@@ -189,7 +185,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (Item.tag == "Gun")
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
-            // PistolDrop(); // Calls an event to change the animation layer back to 0
+            GetComponent<IkBehaviour>().ikActive = false;
         }
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
@@ -204,14 +200,14 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Vector3 guardPos = killedGuard.transform.position;
         Quaternion guardRot = killedGuard.transform.rotation;
         guardPos.y += 0.5f;
-        if (GameObject.Find("Endgame") != null)
-            GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
+        //if (GameObject.Find("Endgame") != null)
+        //    GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
 
-        GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
-        foreach (var light in lights)
-        {
-            light.GetComponent<RotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
-        }
+        //GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        //foreach (var light in lights)
+        //{
+        //    light.GetComponent<RotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
+        //}
         // remove the guard 
         PhotonNetwork.Destroy(killedGuard);
         // create a dead body that will be draggable (allow new guard model)
