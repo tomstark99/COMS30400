@@ -42,6 +42,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     {
         get { return onTrain; }
     }
+
+    private bool getDistanceToTrain = false;
    
     void Start()
     {
@@ -61,6 +63,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         onMenu = false;
         
+        GameObject[] bags = GameObject.FindGameObjectsWithTag("Bag");
+        foreach (var bag in bags)
+        {
+            bag.GetComponent<Grabbable>().BagPickedUp += SetFindTrainToActive;
+        }
     }
 
     void Update()
@@ -71,9 +78,14 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
 
         // movement function
-        if (photonView.IsMine)
+        if (photonView.IsMine) {
             Movement();
+            if(getDistanceToTrain) {
+                DistanceToTrain();
+            }
+        }
         
+
     }
 
     /*IEnumerator SetFaceActive(){
@@ -86,6 +98,10 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             check = true;
         }
     }*/
+
+    void DistanceToTrain() {
+        // float distance
+    }
 
     void Movement()
     {
@@ -252,6 +268,14 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             onTrain = false;
           
         }
+    }
+
+    private void distanceToTrainActive() {
+        getDistanceToTrain = true;
+    }
+
+    private void distanceToTrainNotActive() {
+        getDistanceToTrain = false;
     }
 
     public bool getGrounded() {
