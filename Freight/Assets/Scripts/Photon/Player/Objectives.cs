@@ -31,6 +31,13 @@ public class Objectives : MonoBehaviour
 
     private int bagsPickedUp;
 
+    public GameObject FindBackpacks{
+        get { return findBackpacks; }
+    }
+    public GameObject FindBackpacksDesc{
+        get { return findBackpacksDesc; }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -81,7 +88,7 @@ public class Objectives : MonoBehaviour
 
         findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/2)";
 
-        if (bagsPickedUp == 1)
+        if (bagsPickedUp == 2)
         {
             findBackpacks.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findBackpacksDesc.SetActive(false);
@@ -93,10 +100,11 @@ public class Objectives : MonoBehaviour
 
     void SetEscapeToActive()
     {
-        Debug.Log("IS BACKPACKS ACTIVE? " + findBackpacks.activeSelf);
-        if(!findBackpacks.activeSelf) {
+        Debug.Log("IS BACKPACKS ACTIVE? " + findBackpacksDesc.activeSelf);
+        if(!findBackpacksDesc.activeSelf && findBackpacks.activeSelf) {
             findTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findTrainDesc.SetActive(false);
+            distanceToTrain.SetActive(false);
             escapeOnTrain.SetActive(true);
             escapeOnTrainDesc.SetActive(true);
             //GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
