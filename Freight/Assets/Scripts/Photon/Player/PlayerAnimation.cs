@@ -54,12 +54,6 @@ public class PlayerAnimation : MonoBehaviourPun
         isRightHash = Animator.StringToHash("walkRight");
         isCrouchedHash = Animator.StringToHash("crouched");
         isClimbingHash = Animator.StringToHash("isClimbing");
-
-        GetComponent<Character>().PistolPickUp += ChangeLayerPistol;
-        GetComponent<Character>().PistolDrop += ChangeLayerDefault;
-
-        Debug.Log(animator.GetLayerName(0));
-        Debug.Log(animator.GetLayerName(1));
     }
 
     // Update is called once per frame
