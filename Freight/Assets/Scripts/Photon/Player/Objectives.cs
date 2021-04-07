@@ -52,9 +52,7 @@ public class Objectives : MonoBehaviour
     {
         if(distanceToTrain.activeSelf) {
             float distance = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position);
-            Debug.Log("XDDDD DIST" + distance);
-
-            distanceToTrain.GetComponent<TextMeshProUGUI>().text = "Nearest train: " + Math.Round(distance, 4) + "m";
+            distanceToTrain.GetComponent<TextMeshProUGUI>().text = "Nearest train: " + Math.Round(distance, 2) + "m";
         }
     }
 
@@ -95,6 +93,7 @@ public class Objectives : MonoBehaviour
 
     void SetEscapeToActive()
     {
+        Debug.Log("IS BACKPACKS ACTIVE? " + findBackpacks.activeSelf);
         if(!findBackpacks.activeSelf) {
             findTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findTrainDesc.SetActive(false);

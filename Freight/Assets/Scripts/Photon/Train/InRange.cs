@@ -16,7 +16,7 @@ public class InRange : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        InRangeOfTrain += setTrainOutline;
+        InRangeOfTrain += TrainOutlineOn;
     }
 
     // Update is called once per frame
@@ -31,19 +31,35 @@ public class InRange : MonoBehaviourPun
         InRangeOfTrain();
     }
 
+    [PunRPC]
+    void WalkedOutOfTrain(){
+        TrainOutlineOff();
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.tag);
-        Debug.Log(other);
         if (!walkedInRangeOfTrain && other.gameObject.tag == "Player")
         {
             photonView.RPC(nameof(InRangeOfTrainRPC), RpcTarget.All);
         }
     }
 
-    void setTrainOutline()
+    void OnTriggerExit(Collider other) {
+        if (walkedInRangeOfTrain && other.gameObject.tag == "Player")
+        {
+            photonView.RPC(nameof(WalkedOutOfTrain), RpcTarget.All);
+        }
+    }
+
+    void TrainOutlineOn()
     {
         walkedInRangeOfTrain = true;
         gameObject.GetComponent<Outline>().enabled = true;
+    }
+
+    void TrainOutlineOff()
+    {
+        walkedInRangeOfTrain = false;
+        gameObject.GetComponent<Outline>().enabled = false;
     }
 }
