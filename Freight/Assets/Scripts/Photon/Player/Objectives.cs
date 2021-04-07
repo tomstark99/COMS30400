@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -10,23 +11,44 @@ public class Objectives : MonoBehaviour
     [SerializeField]
     private GameObject findBrokenFenceDesc;
     [SerializeField]
+    private GameObject findBrokenFenceBackground;
+    [SerializeField]
     private GameObject breakFence;
     [SerializeField]
     private GameObject breakFenceDesc;
+    [SerializeField]
+    private GameObject breakFenceBackground;
     [SerializeField]
     private GameObject findBackpacks;
     [SerializeField]
     private GameObject findBackpacksDesc;
     [SerializeField]
+    private GameObject findBackpacksBackground;
+    [SerializeField]
     private GameObject findTrain;
     [SerializeField]
     private GameObject findTrainDesc;
     [SerializeField]
+    private GameObject findTrainBackground;
+    [SerializeField]
+    private GameObject findTrainDistance;
+    [SerializeField]
     private GameObject escapeOnTrain;
     [SerializeField]
     private GameObject escapeOnTrainDesc;
+    [SerializeField]
+    private GameObject escapeOnTrainBackground;
+    [SerializeField]
+    private GameObject escapeOnTrainCompleteBackground;
 
     private int bagsPickedUp;
+
+    public GameObject FindBackpacks{
+        get { return findBackpacks; }
+    }
+    public GameObject FindBackpacksDesc{
+        get { return findBackpacksDesc; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -47,15 +69,20 @@ public class Objectives : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(findTrainDistance.activeSelf) {
+            float distance = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position);
+            findTrainDistance.GetComponent<TextMeshProUGUI>().text = "Nearest train: " + Math.Round(distance, 2) + "m";
+        }
     }
 
     void SetBreakFenceToActive()
     {
         findBrokenFence.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
         findBrokenFenceDesc.SetActive(false);
+        findBrokenFenceBackground.SetActive(false);
         breakFence.SetActive(true);
         breakFenceDesc.SetActive(true);
+        breakFenceBackground.SetActive(true);
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
     }
 
@@ -63,8 +90,10 @@ public class Objectives : MonoBehaviour
     {
         breakFence.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
         breakFenceDesc.SetActive(false);
+        breakFenceBackground.SetActive(false);
         findBackpacks.SetActive(true);
         findBackpacksDesc.SetActive(true);
+        findBackpacksBackground.SetActive(true);
     }
 
     void SetFindTrainToActive() 
@@ -79,23 +108,34 @@ public class Objectives : MonoBehaviour
         {
             findBackpacks.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findBackpacksDesc.SetActive(false);
+            findBackpacksBackground.SetActive(false);
             findTrain.SetActive(true);
             findTrainDesc.SetActive(true);
+            findTrainBackground.SetActive(true);
+            findTrainDistance.SetActive(true);
         }
     }
 
     void SetEscapeToActive()
     {
-        findTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
-        findTrainDesc.SetActive(false);
-        escapeOnTrain.SetActive(true);
-        escapeOnTrainDesc.SetActive(true);
-        //GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
+        Debug.Log("IS BACKPACKS ACTIVE? " + findBackpacksDesc.activeSelf);
+        if(!findBackpacksDesc.activeSelf && findBackpacks.activeSelf) {
+            findTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+            findTrainDesc.SetActive(false);
+            findTrainDistance.SetActive(false);
+            findTrainBackground.SetActive(false);
+            escapeOnTrain.SetActive(true);
+            escapeOnTrainDesc.SetActive(true);
+            escapeOnTrainBackground.SetActive(true);
+            //GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
+        }
     }
 
     void SetObjectivesComplete()
     {
         escapeOnTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
         escapeOnTrainDesc.SetActive(false);
+        escapeOnTrainBackground.SetActive(false);
+        escapeOnTrainCompleteBackground.SetActive(true);
     }
 }

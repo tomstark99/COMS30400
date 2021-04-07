@@ -60,7 +60,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
 
         onMenu = false;
-        
     }
 
     void Update()
@@ -71,9 +70,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
 
         // movement function
-        if (photonView.IsMine)
+        if (photonView.IsMine) {
             Movement();
+        }
         
+
     }
 
     /*IEnumerator SetFaceActive(){
@@ -86,6 +87,10 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             check = true;
         }
     }*/
+
+    void DistanceToTrain() {
+        // float distance
+    }
 
     void Movement()
     {
