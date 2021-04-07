@@ -189,14 +189,14 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Vector3 guardPos = killedGuard.transform.position;
         Quaternion guardRot = killedGuard.transform.rotation;
         guardPos.y += 0.5f;
-        if (GameObject.Find("Endgame") != null)
-            GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
+        //if (GameObject.Find("Endgame") != null)
+        //    GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
 
-        GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
-        foreach (var light in lights)
-        {
-            light.GetComponent<RotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
-        }
+        //GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        //foreach (var light in lights)
+        //{
+        //    light.GetComponent<RotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
+        //}
         // remove the guard 
         PhotonNetwork.Destroy(killedGuard);
         // create a dead body that will be draggable (allow new guard model)
