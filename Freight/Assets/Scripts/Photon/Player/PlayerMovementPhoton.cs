@@ -72,7 +72,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
 
         // movement function
-        if (photonView.IsMine && !onMenu)
+        if (photonView.IsMine)
             Movement();
         
     }
@@ -90,7 +90,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void Movement()
     {
-
+        if(onMenu && !onTrain)
+            return;
         // Checks if the groundCheck object is within distance to the ground layer
         bool old = isGrounded;
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -161,11 +162,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move += trainMove;
         }
 
-
+        
         controller.Move(move * speed * Time.deltaTime);
 
         // Checks if jump button is pressed and allows user to jump if they are on the ground
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded && !crouching)
         {
             onTrain = false;
             faceUI.SetActive(false);

@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     private bool holdingTheBag;
 
+    public GameObject backPackObject;
+
     public bool HoldingTheBag
     {
         get { return holdingTheBag; }
@@ -26,6 +29,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         return currentHeldItem != null;
     }
+
+    public event Action PistolPickUp;
+    public event Action PistolDrop;
 
     [PunRPC]
     void PickUpRPCLocal(int ItemID)
@@ -57,6 +63,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
+        if (Item.tag == "Gun")
+        {
+            GetComponent<IkBehaviour>().ikActive = true;
+            GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
+        }
         Item.transform.parent = pickUpDestination;
         Item.transform.Rotate(0, 90, 0);
 
@@ -70,15 +81,26 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     public void OnOwnershipTransfered(PhotonView targetView, Photon.Realtime.Player previousOwner)
     {
-        if (targetView.gameObject.GetComponent<Grabbable>() != null)
+        Debug.Log("Is this mine? " + targetView.IsMine);
+        Debug.Log("Current item = " + currentHeldItem);
+        if (!targetView.IsMine)
         {
-            photonView.RPC("GrabRPC", RpcTarget.All, targetView.gameObject.transform.GetComponent<PhotonView>().ViewID);
             return;
         }
-        Debug.Log("ye");
-        if (currentHeldItem.tag == "Gun")
+
+        if (currentHeldItem != null)
         {
-            currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+            if (currentHeldItem.tag == "Gun")
+            {
+                currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+                GetComponent<IkBehaviour>().ikActive = true;
+                GetComponent<IkBehaviour>().handObj = currentHeldItem.transform.GetChild(18);
+            }
+
+        }
+        else
+        {
+            return;
         }
 
         photonView.RPC("PickUpRPC", RpcTarget.Others, currentHeldItem.transform.GetComponent<PhotonView>().ViewID);
@@ -97,6 +119,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (Item.tag == "Gun")
             {
                 Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+                // PistolPickUp(); // Calls an event to change the animation layer to 1
+                GetComponent<IkBehaviour>().ikActive = true;
+                GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
             }
 
             photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -127,8 +152,10 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
         Item.transform.Rotate(50, 50, 0);
+        GetComponent<IkBehaviour>().ikActive = false;
         if (Item.GetComponent<Shootable>() != null)
         {
+            Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
             Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
         }
         else
@@ -146,6 +173,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (Item.tag == "Gun")
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
+            GetComponent<IkBehaviour>().ikActive = false;
+            // PistolDrop(); // Calls an event to change the animation layer back to 0
         }
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
@@ -162,6 +191,12 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         guardPos.y += 0.5f;
         if (GameObject.Find("Endgame") != null)
             GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
+
+        GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        foreach (var light in lights)
+        {
+            light.GetComponent<RotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
+        }
         // remove the guard 
         PhotonNetwork.Destroy(killedGuard);
         // create a dead body that will be draggable (allow new guard model)
@@ -273,25 +308,62 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     }
 
     [PunRPC]
-    void GrabRPC(int ItemID)
+    void DestroyBackpack(int backPackId)
     {
-        Grabbable Item = PhotonView.Find(ItemID).GetComponent<Grabbable>();
-        Item.transform.position = grabDestination.position;
-        Item.transform.parent = grabDestination;
-
-        Item.SetItemPickupConditions();
+        PhotonNetwork.Destroy(PhotonView.Find(backPackId));
+        
     }
-
+    [PunRPC]
+    void ActivateBackPack() 
+    {
+        backPackObject.SetActive(true);
+    }
     public void Grab(Grabbable Item)
     {
         holdingTheBag = true;
 
-        PhotonView view = Item.GetComponent<PhotonView>();
-        if (!view.IsMine)
-            view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        Debug.Log(backPackObject);
+        photonView.RPC(nameof(DestroyBackpack), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(ActivateBackPack), RpcTarget.All);
+
+    }
+
+    [PunRPC]
+    void TurnOffLight(int lightID, int itemID)
+    {
+        GameObject light = PhotonView.Find(lightID).gameObject;
+        GameObject laptop = PhotonView.Find(itemID).gameObject;
+        light.GetComponent<RotateLight>().lightsTurnedOff = !light.GetComponent<RotateLight>().lightsTurnedOff;
+
+        GameObject lightsOff = laptop.transform.GetChild(0).GetChild(1).gameObject;
+        GameObject lightsOn = laptop.transform.GetChild(0).GetChild(0).gameObject;
+        if (light.GetComponent<RotateLight>().lightsTurnedOff)
+        {
+            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+            //gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
+            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(false);
+            lightsOff.SetActive(true);
+            lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
+            lightsOn.SetActive(false);
+        } 
         else
         {
-            photonView.RPC(nameof(GrabRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
+            //gameObject.transform.GetChild(13).GetChild(9).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
+            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(false);
+            lightsOn.SetActive(true);
+            lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
+            lightsOff.SetActive(false);
+        }
+    }
+
+    public void SwitchOff(Switchable Item)
+    {
+        GameObject[] spinningLights = GameObject.FindGameObjectsWithTag("SpinningLight");
+
+        foreach (var light in spinningLights)
+        {
+            photonView.RPC(nameof(TurnOffLight), RpcTarget.All, light.transform.GetComponent<PhotonView>().ViewID, Item.transform.GetComponent<PhotonView>().ViewID);
         }
     }
 }
