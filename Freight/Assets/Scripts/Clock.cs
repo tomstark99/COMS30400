@@ -87,7 +87,7 @@ public class Clock : MonoBehaviour
         int min = (int) time / 60;
         int sec = (int) time - 60 * min;
         int mil = (int) (1000 * (time - min * 60 - sec));
-        return time < 60 ? string.Format("{0:00}:{1:00}:{2:000}", min, sec, mil) : string.Format("{0:00}:{1:00}", min, sec);
+        return time < 60 ? string.Format("{0:00}:{1:00}:{2:00}", min, sec, mil) : string.Format("{0:00}:{1:00}", min, sec);
     }
 
     //void updateClock()
