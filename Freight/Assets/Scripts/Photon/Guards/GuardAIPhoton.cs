@@ -89,6 +89,18 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         }
     }
 
+    public override void OnDisable()
+    {
+        if (GameObject.Find("Endgame") != null)
+            GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= DisableGuards;
+        GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        foreach (var light in lights)
+        {
+            light.GetComponent<RotateLight>().PlayerInLight -= SetAllGuardsToAlerted;
+        }
+
+    }
+
     public void DisableGuards()
     {
         GetComponent<NavMeshAgent>().gameObject.SetActive(false);
