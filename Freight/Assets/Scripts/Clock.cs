@@ -21,6 +21,7 @@ public class Clock : MonoBehaviour
     DateTime currentTime;
 
     float timeToLeave;
+    private float t = 0.0f;
 
     private ExitGames.Client.Photon.Hashtable CustomValue;
 
@@ -71,8 +72,10 @@ public class Clock : MonoBehaviour
             double newTime = timeToLeave + (startTime - PhotonNetwork.Time);
             timerIncrementer = Math.Round(newTime, 4);
             text.text = "Time to leave: " + FormatTime(timerIncrementer);//timerIncrementer.ToString();
-            if(newTime <= 30) {
-                text.fontSize = 18;
+            if(newTime <= 60) {
+
+                text.fontSize = Mathf.Lerp(16,20,t);
+                if (t <= 1) t += Time.deltaTime/60.0f;
                 if (newTime <= 0)
                 {
                     trainLeft = true;
