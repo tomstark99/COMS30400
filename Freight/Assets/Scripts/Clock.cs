@@ -80,7 +80,9 @@ public class Clock : MonoBehaviour
             text.text = "Time to leave: " + FormatTime(timerIncrementer);//timerIncrementer.ToString();
             if(Math.Round(newTime) <= 60) {
                 bool flashing = animator.GetBool(flashHash);
-                if (Mathf.Ceil((float) newTime) % 30 == 0 && !flashing) {
+                if ((Mathf.Ceil((float) newTime) % 30 == 0 && !flashing) || 
+                    (Mathf.Ceil((float) newTime) == 10 && !flashing) || 
+                    (Mathf.Ceil((float) newTime) == 5 && !flashing)) {
                     animator.SetBool(flashHash, true);
                 } else if (flashing) {
                     animator.SetBool(flashHash,false);
