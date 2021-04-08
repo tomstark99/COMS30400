@@ -19,7 +19,7 @@ public class AudioUI : MonoBehaviour
        if (PlayerPrefs.HasKey("MasterAudio"))
             MasterAudioSlider.value = PlayerPrefs.GetFloat("MasterAudio");
         else
-            MasterAudioSlider.value = 1f;
+            MasterAudioSlider.value = 0.3f;
         Debug.Log("audio Listener volume is " + AudioListener.volume);
         Debug.Log("Master audio slider is " + MasterAudioSlider.value);
         AudioListener.volume = MasterAudioSlider.value;

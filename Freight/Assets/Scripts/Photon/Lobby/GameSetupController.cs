@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.IO;
-public class GameSetupController : MonoBehaviourPun
+using Photon.Realtime;
+
+public class GameSetupController : MonoBehaviourPunCallbacks
 {
     /*
      * All this script is doing in the end is creating the player object. The game is told to find this player object under a 
@@ -61,4 +63,9 @@ public class GameSetupController : MonoBehaviourPun
     //    }
 
     //}
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        PhotonNetwork.LoadLevel(0);
+    }
 }
