@@ -18,7 +18,18 @@ namespace VoiceChatClass
         [DllImport("__Internal")]
         private static extern void getId();
 
-#endregion
+        [DllImport("__Internal")]
+        private static extern void startCall(string foreignID);
+
+        [DllImport("__Internal")]
+        private static extern void endCall();
+
+        [DllImport("__Internal")]
+        private static extern void setVolume(float newVolume);
+
+        [DllImport("__Internal")]
+        private static extern void endConnection();
+        #endregion
 
         private const char SEPARATOR = ',';
 
@@ -37,6 +48,8 @@ namespace VoiceChatClass
         private string _status = "disconnected";
         private string _peerID = "";
         private string _foreignID = "";
+        private bool dataConnection = false;
+        private bool mediaConnection = false;
         private CultureInfo _provider;
 
         // Called when the peer receives an id
@@ -84,17 +97,50 @@ namespace VoiceChatClass
 
         public void Connect(string foreignID)
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
             _foreignID = foreignID;
-            if(_peerID != "")
+            dataConnection = true;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if (_peerID != "")
             {
                 startConnection(foreignID);
             }
 #endif
         }
 
+        public void Call(string foreignID)
+        {
+            _foreignID = foreignID;
+            mediaConnection = true;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if (_peerID != "")
+            {
+                startCall(foreignID);
+            }
+#endif
+        }
+
+        public void EndCall()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if(_peerID != "" && _foreignID != "" && mediaConnection)
+                endCall();
+#endif
+            _foreignID = "";
+        }
+
+        public void SetVolumeOfCall(float newVolume)
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            setVolume(newVolume);
+#endif
+        }
+
         public void Disconnect()
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            if (_peerID != "" && _foreignID != "" && dataConnection)
+                endConnection();
+#endif
             _foreignID = "";
         }
 
@@ -144,12 +190,16 @@ namespace VoiceChatClass
             _peerID = ID;
             OnIDUpdate?.Invoke(_peerID);
 
+#if UNITY_WEBGL && !UNITY_EDITOR
             if(_foreignID != "")
             {
-                startConnection(_foreignID);
+                if(dataConnection)
+                    startConnection(_foreignID);
+
+                if(mediaConnection)
+                    startCall(_foreignID);
             }
+#endif
         }
-
     }
-
 }

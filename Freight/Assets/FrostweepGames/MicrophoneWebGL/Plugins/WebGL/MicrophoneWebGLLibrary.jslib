@@ -89,12 +89,44 @@ mergeInto(LibraryManager.library, {
             });
         }
 
+        function setupCall() {
+            if(document.call == null) {
+                console.log("Setup Call called without a call existing");
+                return;
+            }
+    
+            // Receive data
+            document.call.on('stream', function (stream) {
+                console.log('Connected to call');
+                document.connected = true;
+                // Store a global reference of the other user stream
+                document.peer_stream = stream;
+                // Display the stream of the other user in the peer-audio element !
+                var audio = document.getElementById('peer-audio');
+                // Set the given stream as the audio source 
+                audio.srcObject = stream;
+
+                SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "connected");
+            });
+
+            document.call.on('error', function(err) {
+                console.log("create call exception: " + err.name + ": " + err.message + "; " + err.stack);
+                document.call.close();
+                document.call = false;
+                document.call= null;
+
+                SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "disconnected");
+            });
+        }
+
         // Initialise PeerJS variables
         document.peer = null;
         document.connected = false;
         document.hasId = false
         document.connection = null;
+        document.call = null;
         document.setupConnection = setupConnection;
+        document.setupCall = setupCall;
     },
 
     start: function(device, loop, length, frequency) {
@@ -138,6 +170,7 @@ mergeInto(LibraryManager.library, {
 		begin();
 
         function GetUserMediaSuccess(stream) {
+            document.localStream = stream;
             document.microphone_stream = document.audioContext.createMediaStreamSource(stream);
             document.script_processor_node = document.audioContext.createScriptProcessor(0, 1, 1);
             document.script_processor_node.onaudioprocess = MicrophoneProcess;
@@ -170,9 +203,9 @@ mergeInto(LibraryManager.library, {
                 SendMessage('[FG]Microphone', 'WriteBufferFromMicrophoneHandler', stringArray);
 
                 // if we have a connection, also send the microphone buffer to the other connection
-                if(document.connected) {
-                    document.connection.send(stringArray);
-                }
+                // if(document.connected) {
+                //     document.connection.send(stringArray);
+                // }
             } else {
                 Resample(event.inputBuffer, document.microphoneFrequency);  
             }
@@ -208,9 +241,9 @@ mergeInto(LibraryManager.library, {
                 SendMessage('[FG]Microphone', 'WriteBufferFromMicrophoneHandler', stringArray);
 
                 // if we have a connection, also send the microphone buffer to the other connection
-                if(document.connected) {
-                    document.connection.send(stringArray);
-                }
+                // if(document.connected) {
+                //     document.connection.send(stringArray);
+                // }
             }
             offlineCtx.startRendering();
         }
@@ -281,11 +314,13 @@ mergeInto(LibraryManager.library, {
 
             document.connection = conn;
             document.setupConnection();
+        });
 
-            // setTimeout(function() {
-            //     document.connected = true;
-            //     SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "connected");
-            // },5000);
+        document.peer.on('call', function (call) {
+            document.call = call;
+            document.call.answer(document.localStream);
+    
+            document.setupCall();
         });
     },
 
@@ -318,6 +353,59 @@ mergeInto(LibraryManager.library, {
                 document.setupConnection();
             });
         }
+    },
+
+    endConnection: function() {
+        console.log("ending conenction");
+        if(document.connection != null) {
+            document.connection.close();
+        }
+        document.call = null;
+        document.connected = false;
+    },
+
+    startCall: function(receiverIdPointer) {
+        if(document.peer == null){
+            console.log("Start Connection called without a Peer existing");
+            return;
+        }
+
+        receiverId = Pointer_stringify(receiverIdPointer);
+
+        if(document.call != null) {
+            document.call.close();
+            document.call = null;
+        }
+
+        if(document.hasId) {
+            console.log("calling peer with id: " + receiverId);
+        
+            document.call = document.peer.call(receiverId, document.localStream);
+            document.setupCall();
+        } else {
+            console.log('wait for own id');
+            document.peer.on('open', function (id) {
+                console.log("calling peer with id: " + receiverId);
+        
+                document.call = document.peer.call(receiverId, document.localStream);
+                document.setupCall();
+            });
+        }
+    },
+
+    endCall: function() {
+        console.log("ending call");
+        if(document.call != null) {
+            document.call.close();
+        }
+        document.call = null;
+        document.connected = false;
+    },
+
+    setVolume: function(newVolume) {
+        var audio = document.getElementById('peer-audio');
+        // Set the given stream as the audio source 
+        audio.volume = newVolume;
     },
 
     getId: function() {
