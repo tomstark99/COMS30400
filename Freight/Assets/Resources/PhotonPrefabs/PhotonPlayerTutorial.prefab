@@ -2236,6 +2236,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 98304
+  faceUI: {fileID: 0}
   LeftHandUpUI: {fileID: 7792714798955468376}
   RightHandUpUI: {fileID: 8103796942425093227}
   onMenu: 0
@@ -2281,6 +2282,8 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
+  - SynchronizeType: 0
+    LayerIndex: 1
 --- !u!114 &-3980992745740274441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2440,6 +2443,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1122964723992546, guid: 674adf642abf5614aae2995443c8250f,
     type: 3}
   camera: {fileID: 6284304726268656583}
+  backPackObject: {fileID: 0}
 --- !u!114 &7196889297566079213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2496,6 +2500,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: face
+      objectReference: {fileID: 0}
+    - target: {fileID: 6746542027677487804, guid: e7abf47c29e7fe34186811b01810e384,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9205663889112387013, guid: e7abf47c29e7fe34186811b01810e384,
         type: 3}
