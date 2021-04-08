@@ -6,13 +6,15 @@ using FrostweepGames.Plugins.Native;
 using FrostweepGames.WebGLPUNVoice;
 using System.Linq;
 using System;
+using VoiceChatClass;
 
 public class ProximityVoice : MonoBehaviourPun
 {
     public VoiceChatConnector voice;
 
     private GameObject otherPlayer = null;
-    private AudioSource otherPlayerSource;
+    //private AudioSource otherPlayerSource;
+    private VoiceChat voiceChat;
 
     public float minDistance = 1f;
     public float maxDistance = 25f;
@@ -28,8 +30,9 @@ public class ProximityVoice : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        voice.OnStatusConnected += UpdateOtherPlayer;
-        otherPlayerSource = voice.foreignAudioSource;
+        voiceChat = VoiceChat.Instance;
+        voiceChat.OnStatusUpdate += UpdateOtherPlayer;
+        //otherPlayerSource = voice.foreignAudioSource;
 
         b = (minVolume - maxVolume) / (1 / Mathf.Sqrt(maxDistance) - 1 / Mathf.Sqrt(minDistance));
         a = maxVolume - b / Mathf.Sqrt(minDistance);
@@ -52,19 +55,22 @@ public class ProximityVoice : MonoBehaviourPun
         {
             var distance = Vector3.Distance(transform.position, otherPlayer.transform.position);
             var newVolume = VolumeValue(distance);
-            otherPlayerSource.volume = newVolume;
+            voiceChat.SetVolumeOfCall(newVolume);
         }
     }
 
-    private void UpdateOtherPlayer()
+    private void UpdateOtherPlayer(string status)
     {
-        var players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach(GameObject player in players)
+        if (status == "connected")
         {
-            if(!player.GetPhotonView().AmOwner)
+            var players = GameObject.FindGameObjectsWithTag("Player");
+
+            foreach (GameObject player in players)
             {
-                otherPlayer = player;
+                if (!player.GetPhotonView().AmOwner)
+                {
+                    otherPlayer = player;
+                }
             }
         }
     }
