@@ -18,8 +18,8 @@ public class Grabbable : PickUpable
     {
         if (!isPickedUp && !character.HoldingTheBag)
         {
-            character.Grab(this);
             gameObject.GetComponent<PhotonView>().RPC(nameof(BagPickedUpRPC), RpcTarget.All);
+            character.Grab(this);
         }
     }
 
