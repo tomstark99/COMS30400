@@ -23,6 +23,11 @@ public class RotateLight : MonoBehaviour
     [SerializeField]
     private LayerMask obstacleMask;
 
+    [SerializeField]
+    private GameObject actualLight;
+    [SerializeField]
+    private GameObject pointlight;
+
     private GameObject[] players;
 
     public bool lightsTurnedOff;
@@ -45,9 +50,8 @@ public class RotateLight : MonoBehaviour
         if (!lightsTurnedOff)
         {
             Rotate();
+            PlayerSpotted();
         }
-
-        PlayerSpotted();
     }
 
     void Rotate()
@@ -107,6 +111,13 @@ public class RotateLight : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.Find("pCylinder3/Point Light").position, -transform.Find("pCylinder3/Point Light").right * sightRange);
+    }
+
+    public void ToggleLights()
+    {
+        lightsTurnedOff = !lightsTurnedOff;
+        actualLight.SetActive(!actualLight.activeSelf);
+        pointlight.SetActive(!pointlight.activeSelf);
     }
 
 
