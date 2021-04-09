@@ -344,7 +344,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         GameObject light = PhotonView.Find(lightID).gameObject;
         GameObject laptop = PhotonView.Find(itemID).gameObject;
-        light.GetComponent<RotateLight>().lightsTurnedOff = !light.GetComponent<RotateLight>().lightsTurnedOff;
+        light.GetComponent<RotateLight>().ToggleLights();
 
         GameObject lightsOff = laptop.transform.GetChild(0).GetChild(1).gameObject;
         GameObject lightsOn = laptop.transform.GetChild(0).GetChild(0).gameObject;
