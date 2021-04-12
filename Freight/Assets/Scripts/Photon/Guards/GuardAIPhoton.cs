@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
 public class GuardAIPhoton : MonoBehaviourPunCallbacks
@@ -44,6 +45,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public Color spotlightColour;
     public Color alertColour;
 
+    private EndGame endGame;
+
     public State GuardState
     {
         get { return guardState; }
@@ -78,8 +81,13 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         players = GameObject.FindGameObjectsWithTag("Player");
         guard = GetComponent<NavMeshAgent>();
         guardState = State.Patroling;
-        if (GameObject.Find("Endgame") != null) 
-            GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
+        if (GameObject.Find("Endgame") != null)
+        {
+            //GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
+            endGame = GameObject.Find("Endgame").GetComponent<EndGame>();
+            endGame.EndTheGame += DisableGuards;
+        }
+            
 
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
@@ -97,8 +105,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     public override void OnDisable()
     {
-        if (GameObject.FindGameObjectWithTag("Endgame") != null)
-            GameObject.FindGameObjectWithTag("Endgame").GetComponent<EndGame>().EndTheGame -= DisableGuards;
+        if (endGame != null)
+            endGame.EndTheGame += DisableGuards;
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
