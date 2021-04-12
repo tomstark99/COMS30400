@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class GameSettings : MonoBehaviour
+public class GameSettings : MonoBehaviourPun
 {
     private int guardSightRange;
     private int guardAngle;
@@ -50,6 +51,15 @@ public class GameSettings : MonoBehaviour
 
     public void SetGameSettings()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(SetGameSettingsRPC), RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    void SetGameSettingsRPC()
+    {
         GameObject guardDifficulty = GameObject.Find("Canvases/OverlayCanvases/CurrentRoomCanvas/GameSettingsObject/GuardDifficulty/Slider");
         int guardDifficultyVal = (int)guardDifficulty.GetComponent<Slider>().value;
 
@@ -62,7 +72,7 @@ public class GameSettings : MonoBehaviour
             speedPatrolling = 2;
             spotlightsActive = false;
             spotlightsRotating = false;
-        } 
+        }
         // medium
         else if (guardDifficultyVal == 1)
         {
@@ -95,7 +105,7 @@ public class GameSettings : MonoBehaviour
         }
 
         GameObject timeToLeaveObject = GameObject.Find("Canvases/OverlayCanvases/CurrentRoomCanvas/GameSettingsObject/TimeToLeave/Slider");
-        timeToLeave =  (int)timeToLeaveObject.GetComponent<Slider>().value;
+        timeToLeave = (int)timeToLeaveObject.GetComponent<Slider>().value;
 
         Debug.Log("Sight range: " + guardSightRange);
         Debug.Log("Angle: " + guardAngle);
@@ -104,6 +114,5 @@ public class GameSettings : MonoBehaviour
         Debug.Log("Spotlights active? " + spotlightsActive);
         Debug.Log("Spotlights rotating? " + spotlightsRotating);
         Debug.Log("Time to leave " + timeToLeave);
-
     }
 }
