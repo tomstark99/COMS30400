@@ -13,6 +13,36 @@ public class GameSettings : MonoBehaviour
     private bool spotlightsRotating;
     private bool spotlightsActive;
 
+    public int GuardSightRange
+    {
+        get { return guardSightRange; }
+    }
+    public int GuardAngle
+    {
+        get { return guardAngle; }
+    }
+    public int SpeedChasing
+    {
+        get { return speedChasing; }
+    }
+    public int SpeedPatrolling
+    {
+        get { return speedPatrolling; }
+    }
+    public int TimeToLeave
+    {
+        get { return timeToLeave; }
+    }
+    public bool SpotlightsRotating
+    {
+        get { return spotlightsRotating; }
+    }
+    public bool SpotlightsActive
+    {
+        get { return spotlightsActive; }
+    }
+
+
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -74,7 +104,6 @@ public class GameSettings : MonoBehaviour
         Debug.Log("Spotlights active? " + spotlightsActive);
         Debug.Log("Spotlights rotating? " + spotlightsRotating);
         Debug.Log("Time to leave " + timeToLeave);
-
 
     }
 }

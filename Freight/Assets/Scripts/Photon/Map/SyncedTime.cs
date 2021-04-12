@@ -14,7 +14,7 @@ public class SyncedTime : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        timeToLeave = 200f;
+        timeToLeave = GameObject.Find("GameSettings").GetComponent<GameSettings>().TimeToLeave;
     }
 
     // Update is called once per frame
