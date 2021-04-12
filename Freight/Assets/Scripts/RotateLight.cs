@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Photon.Pun;
 
 public class RotateLight : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class RotateLight : MonoBehaviour
         positiveRotation = true;
         players = GameObject.FindGameObjectsWithTag("Player");
         lightsTurnedOff = false;
-        lightsRotating = GameObject.Find("GameSettings").GetComponent<GameSettings>().SpotlightsRotating;
+        lightsRotating = (bool)PhotonNetwork.CurrentRoom.CustomProperties["SpotlightsRotating"];
 
         //angleDifference =  Math.Max(0,transform.rotation.y - 360);
 

@@ -40,7 +40,7 @@ public class SliderToValue : MonoBehaviourPunCallbacks
     {
         text.text = slider.value.ToString();
         ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
-        prop.Add("sliderValue", slider.value.ToString());
+        prop.Add("sliderValue", slider.value);
         PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
     }
 
