@@ -7,6 +7,10 @@ using TMPro;
 public class Objectives : MonoBehaviour
 {
     [SerializeField]
+    public GameObject objectivesTitle;
+    [SerializeField]
+    public GameObject objectivesBackground;
+    [SerializeField]
     private GameObject findBrokenFence;
     [SerializeField]
     private GameObject findBrokenFenceDesc;
@@ -142,6 +146,8 @@ public class Objectives : MonoBehaviour
 
     void ClearObjectives()
     {
+        objectivesTitle.SetActive(false);
+        objectivesBackground.SetActive(false);
         findBrokenFence.SetActive(false);
         breakFence.SetActive(false);
         findBackpacks.SetActive(false);
