@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class DefaultButton : MonoBehaviour
 {
+    [SerializeField]
+    private Slider slider;
+    [SerializeField]
+    private Slider sliderDiff;
+
     void Start()
     {
         if (!PhotonNetwork.IsMasterClient)
@@ -20,6 +25,9 @@ public class DefaultButton : MonoBehaviour
 
         props.Add("sliderValue", 200);
         props.Add("sliderValueDiff", "Hard");
+
+        slider.value = 200;
+        sliderDiff.value = 2;
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(props);
     }
