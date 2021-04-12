@@ -44,6 +44,8 @@ public class Objectives : MonoBehaviour
     private GameObject escapeOnTrainBackground;
     [SerializeField]
     private GameObject escapeOnTrainCompleteBackground;
+    [SerializeField]
+    private TextMeshProUGUI ping;
 
     private int bagsPickedUp;
 
@@ -154,5 +156,10 @@ public class Objectives : MonoBehaviour
         findTrain.SetActive(false);
         escapeOnTrain.SetActive(false);
         escapeOnTrainBackground.SetActive(false);
+    }
+
+    void ClearPing()
+    {
+        ping.enabled = false;
     }
 }
