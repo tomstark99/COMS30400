@@ -113,7 +113,7 @@ public class EndGame : MonoBehaviour
                     
                 }
 
-                //EndTheGame();
+                EndTheGame();
                 
             }
         }
