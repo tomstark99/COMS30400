@@ -84,15 +84,21 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
-            
             light.GetComponent<RotateLight>().PlayerInLight += SetAllGuardsToAlerted;
         }
+
+        sightRange = GameObject.Find("GameSettings").GetComponent<GameSettings>().GuardSightRange;
+        spotlight.range = sightRange;
+        guardAngle = GameObject.Find("GameSettings").GetComponent<GameSettings>().GuardAngle;
+        spotlight.spotAngle = guardAngle;
+        speedChasing = GameObject.Find("GameSettings").GetComponent<GameSettings>().SpeedChasing;
+        speedPatrolling = GameObject.Find("GameSettings").GetComponent<GameSettings>().SpeedPatrolling;
     }
 
     public override void OnDisable()
     {
-        if (GameObject.Find("Endgame") != null)
-            GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= DisableGuards;
+        if (GameObject.FindGameObjectWithTag("Endgame") != null)
+            GameObject.FindGameObjectWithTag("Endgame").GetComponent<EndGame>().EndTheGame -= DisableGuards;
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
