@@ -3042,6 +3042,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1029679819}
   m_CullTransparentMesh: 0
+--- !u!1 &1045175603 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 824887675, guid: d8b1dba73df5c5e49b18032abbb0e23c,
+    type: 3}
+  m_PrefabInstance: {fileID: 21538947741567905}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1045175604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045175603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1068698865
 GameObject:
   m_ObjectHideFlags: 0
@@ -3225,6 +3253,34 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 739934593}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1388098711 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1803675827, guid: d8b1dba73df5c5e49b18032abbb0e23c,
+    type: 3}
+  m_PrefabInstance: {fileID: 21538947741567905}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1388098712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388098711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1414372972
 GameObject:
   m_ObjectHideFlags: 0
@@ -3600,6 +3656,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1447540568}
   - component: {fileID: 1447540567}
+  - component: {fileID: 1447540569}
   m_Layer: 0
   m_Name: GameSettings
   m_TagString: Untagged
@@ -3633,6 +3690,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1447540569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447540566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!224 &1464659479 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6755267366932207373, guid: 8ac2360803604374ab133ec3bc95e71b,

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 // This script can be applied to sliders to get the value of the slider to show up as text on the UI
-public class SliderToValue : MonoBehaviour
+public class SliderToValue : MonoBehaviourPun
 {
     [SerializeField]
     private Slider slider;
@@ -26,13 +27,25 @@ public class SliderToValue : MonoBehaviour
 
     public void UpdateSliderValue()
     {
+        photonView.RPC(nameof(UpdateSliderValueRPC), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void UpdateSliderValueRPC()
+    {
         text.text = slider.value.ToString();
     }
 
     // special case function for easy/med/hard/impossible 
     public void UpdateSliderValueDifficulty()
     {
-        int sliderValue = (int) slider.value;
+        photonView.RPC(nameof(UpdateSliderValueDifficultyRPC), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void UpdateSliderValueDifficultyRPC()
+    {
+        int sliderValue = (int)slider.value;
 
         if (sliderValue == 0)
             text.text = "Easy";
