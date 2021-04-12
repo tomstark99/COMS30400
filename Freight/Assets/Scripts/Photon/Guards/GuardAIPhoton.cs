@@ -87,12 +87,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             light.GetComponent<RotateLight>().PlayerInLight += SetAllGuardsToAlerted;
         }
 
-        sightRange = GameObject.Find("GameSettings").GetComponent<GameSettings>().GuardSightRange;
+        sightRange = (int) PhotonNetwork.CurrentRoom.CustomProperties["GuardSightRange"];
         spotlight.range = sightRange;
-        guardAngle = GameObject.Find("GameSettings").GetComponent<GameSettings>().GuardAngle;
+        guardAngle = (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardAngle"];
         spotlight.spotAngle = guardAngle;
-        speedChasing = GameObject.Find("GameSettings").GetComponent<GameSettings>().SpeedChasing;
-        speedPatrolling = GameObject.Find("GameSettings").GetComponent<GameSettings>().SpeedPatrolling;
+        speedChasing = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"];
+        speedPatrolling = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"];
     }
 
     public override void OnDisable()

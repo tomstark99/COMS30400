@@ -4,115 +4,59 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class GameSettings : MonoBehaviourPun
+public class GameSettings : MonoBehaviour
 {
-    private int guardSightRange;
-    private int guardAngle;
-    private int speedChasing;
-    private int speedPatrolling;
-    private int timeToLeave;
-    private bool spotlightsRotating;
-    private bool spotlightsActive;
 
-    public int GuardSightRange
+    void SetGameSettings()
     {
-        get { return guardSightRange; }
-    }
-    public int GuardAngle
-    {
-        get { return guardAngle; }
-    }
-    public int SpeedChasing
-    {
-        get { return speedChasing; }
-    }
-    public int SpeedPatrolling
-    {
-        get { return speedPatrolling; }
-    }
-    public int TimeToLeave
-    {
-        get { return timeToLeave; }
-    }
-    public bool SpotlightsRotating
-    {
-        get { return spotlightsRotating; }
-    }
-    public bool SpotlightsActive
-    {
-        get { return spotlightsActive; }
-    }
-
-
-    void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
-    }
-
-    public void SetGameSettings()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            photonView.RPC(nameof(SetGameSettingsRPC), RpcTarget.All);
-        }
-    }
-
-    [PunRPC]
-    void SetGameSettingsRPC()
-    {
-        GameObject guardDifficulty = GameObject.Find("Canvases/OverlayCanvases/CurrentRoomCanvas/GameSettingsObject/GuardDifficulty/Slider");
-        int guardDifficultyVal = (int)guardDifficulty.GetComponent<Slider>().value;
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
+        string guardDifficultyVal = PhotonNetwork.CurrentRoom.CustomProperties["sliderValueDiff"].ToString();
+        ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
 
         // easy
-        if (guardDifficultyVal == 0)
+        if (guardDifficultyVal == "Easy")
         {
-            guardSightRange = 10;
-            guardAngle = 50;
-            speedChasing = 4;
-            speedPatrolling = 2;
-            spotlightsActive = false;
-            spotlightsRotating = false;
+            prop.Add("GuardSightRange", 10);
+            prop.Add("GuardAngle", 50);
+            prop.Add("SpeedChasing", 4);
+            prop.Add("SpeedPatrolling", 2);
+            prop.Add("SpotlightsActive", false);
+            prop.Add("SpotlightsRotating", false);
         }
         // medium
-        else if (guardDifficultyVal == 1)
+        else if (guardDifficultyVal == "Medium")
         {
-            guardSightRange = 20;
-            guardAngle = 65;
-            speedChasing = 6;
-            speedPatrolling = 3;
-            spotlightsActive = true;
-            spotlightsRotating = false;
+            prop.Add("GuardSightRange", 20);
+            prop.Add("GuardAngle", 65);
+            prop.Add("SpeedChasing", 6);
+            prop.Add("SpeedPatrolling", 3);
+            prop.Add("SpotlightsActive", true);
+            prop.Add("SpotlightsRotating", false);
         }
         // hard
-        else if (guardDifficultyVal == 2)
+        else if (guardDifficultyVal == "Hard")
         {
-            guardSightRange = 30;
-            guardAngle = 80;
-            speedChasing = 7;
-            speedPatrolling = 4;
-            spotlightsActive = true;
-            spotlightsRotating = true;
+            prop.Add("GuardSightRange", 30);
+            prop.Add("GuardAngle", 80);
+            prop.Add("SpeedChasing", 7);
+            prop.Add("SpeedPatrolling", 4);
+            prop.Add("SpotlightsActive", true);
+            prop.Add("SpotlightsRotating", true);
         }
         // impossible
-        else if (guardDifficultyVal == 3)
+        else if (guardDifficultyVal == "Impossible")
         {
-            guardSightRange = 40;
-            guardAngle = 100;
-            speedChasing = 10;
-            speedPatrolling = 6;
-            spotlightsActive = true;
-            spotlightsRotating = true;
+            prop.Add("GuardSightRange", 40);
+            prop.Add("GuardAngle", 100);
+            prop.Add("SpeedChasing", 10);
+            prop.Add("SpeedPatrolling", 6);
+            prop.Add("SpotlightsActive", true);
+            prop.Add("SpotlightsRotating", true);
         }
 
-        GameObject timeToLeaveObject = GameObject.Find("Canvases/OverlayCanvases/CurrentRoomCanvas/GameSettingsObject/TimeToLeave/Slider");
-        timeToLeave = (int)timeToLeaveObject.GetComponent<Slider>().value;
+        float timeToLeave = (float) PhotonNetwork.CurrentRoom.CustomProperties["sliderValue"];
+        prop.Add("TimeToLeave", timeToLeave);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
 
-        Debug.Log("Sight range: " + guardSightRange);
-        Debug.Log("Angle: " + guardAngle);
-        Debug.Log("Chasing Speed: " + speedChasing);
-        Debug.Log("Patrolling Speed: " + speedPatrolling);
-        Debug.Log("Spotlights active? " + spotlightsActive);
-        Debug.Log("Spotlights rotating? " + spotlightsRotating);
-        Debug.Log("Time to leave " + timeToLeave);
     }
 }
