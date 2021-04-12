@@ -13,11 +13,10 @@ public class ProximityVoice : MonoBehaviourPun
     public VoiceChatConnector voice;
 
     private GameObject otherPlayer = null;
-    //private AudioSource otherPlayerSource;
     private VoiceChat voiceChat;
 
     public float minDistance = 1f;
-    public float maxDistance = 25f;
+    public float maxDistance = 50f;
     private readonly float maxVolume = 1f;
     private readonly float minVolume = 0.01f;
 
@@ -34,17 +33,20 @@ public class ProximityVoice : MonoBehaviourPun
         voiceChat.OnStatusUpdate += UpdateOtherPlayer;
         //otherPlayerSource = voice.foreignAudioSource;
 
-        b = (minVolume - maxVolume) / (1 / Mathf.Sqrt(maxDistance) - 1 / Mathf.Sqrt(minDistance));
-        a = maxVolume - b / Mathf.Sqrt(minDistance);
+        //b = (minVolume - maxVolume) / (1 / Mathf.Sqrt(maxDistance) - 1 / Mathf.Sqrt(minDistance));
+        //a = maxVolume - b / Mathf.Sqrt(minDistance);
+        b = (minVolume - maxVolume) / (minDistance - maxDistance);
+        a = maxVolume + b * minDistance;
 
-        //InvokeRepeating(nameof(UpdateVolume), 0, updateFrequency); // call it 1 / updateFrequency times per second
+        InvokeRepeating(nameof(UpdateVolume), 0, updateFrequency); // call it 1 / updateFrequency times per second
     }
 
     private float VolumeValue(float distance)
     {
         if (distance < minDistance) return 1f; //Max volume
         if (distance > maxDistance) return 0f; //Min volume
-        return a + b / Mathf.Sqrt(distance); // maxVolume in minDistance and minVolume in maxDistance
+        //return a + b / Mathf.Sqrt(distance); // maxVolume in minDistance and minVolume in maxDistance
+        return a - b * distance;
     }
 
     public void UpdateVolume()
