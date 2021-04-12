@@ -34,9 +34,24 @@ public class SliderToValue : MonoBehaviourPunCallbacks
 
         if (!PhotonNetwork.IsMasterClient)
         {
+            if (!difficulty)
+                InitialiseSliderValue();
+            else
+                InitialiseSliderValueDifficulty();
+
             slider.interactable = false;
             sliderDiff.interactable = false;
         }
+    }
+
+    void InitialiseSliderValue()
+    {
+        text.text = PhotonNetwork.CurrentRoom.CustomProperties["sliderValue"].ToString();
+    }
+
+    void InitialiseSliderValueDifficulty()
+    {
+        textDiff.text = PhotonNetwork.CurrentRoom.CustomProperties["sliderValueDiff"].ToString();
     }
 
     public void UpdateSliderValue()
