@@ -4,14 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
+using ExitGames.Client.Photon;
 
 // This script can be applied to sliders to get the value of the slider to show up as text on the UI
-public class SliderToValue : MonoBehaviourPun
+public class SliderToValue : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private Slider slider;
     [SerializeField]
+    private Slider sliderDiff;
+    [SerializeField]
     private TextMeshProUGUI text;
+    [SerializeField]
+    private TextMeshProUGUI textDiff;
 
     [SerializeField]
     private bool difficulty;
@@ -23,37 +28,54 @@ public class SliderToValue : MonoBehaviourPun
             UpdateSliderValue();
         else
             UpdateSliderValueDifficulty();
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            slider.interactable = false;
+            sliderDiff.interactable = false;
+        }
     }
 
     public void UpdateSliderValue()
     {
-        photonView.RPC(nameof(UpdateSliderValueRPC), RpcTarget.All);
-    }
-
-    [PunRPC]
-    void UpdateSliderValueRPC()
-    {
         text.text = slider.value.ToString();
+        ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+        prop.Add("sliderValue", slider.value.ToString());
+        PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
     }
 
     // special case function for easy/med/hard/impossible 
     public void UpdateSliderValueDifficulty()
     {
-        photonView.RPC(nameof(UpdateSliderValueDifficultyRPC), RpcTarget.All);
-    }
+        int sliderValue = (int) sliderDiff.value;
 
-    [PunRPC]
-    void UpdateSliderValueDifficultyRPC()
-    {
-        int sliderValue = (int)slider.value;
+        ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
 
         if (sliderValue == 0)
-            text.text = "Easy";
+            //text.text = "Easy";
+            prop.Add("sliderValueDiff", "Easy");
         else if (sliderValue == 1)
-            text.text = "Medium";
+            //text.text = "Medium";
+            prop.Add("sliderValueDiff", "Medium");
         else if (sliderValue == 2)
-            text.text = "Hard";
+            //text.text = "Hard";
+            prop.Add("sliderValueDiff", "Hard");
         else if (sliderValue == 3)
-            text.text = "Impossible";
+            //text.text = "Impossible";
+            prop.Add("sliderValueDiff", "Impossible");
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+    }
+
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+        if (propertiesThatChanged.ContainsKey("sliderValue"))
+        {
+            text.text = propertiesThatChanged["sliderValue"].ToString();
+        }
+        if (propertiesThatChanged.ContainsKey("sliderValueDiff"))
+        {
+            textDiff.text = propertiesThatChanged["sliderValueDiff"].ToString();
+        }
     }
 }
