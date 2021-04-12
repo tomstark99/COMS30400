@@ -64,6 +64,7 @@ public class Objectives : MonoBehaviour
         }
         GameObject.FindGameObjectWithTag("locomotive").GetComponent<InRange>().InRangeOfTrain += SetEscapeToActive;
         GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().StartEndGame += SetObjectivesComplete;
+        GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += ClearObjectives;
     }
 
     // Update is called once per frame
@@ -137,5 +138,15 @@ public class Objectives : MonoBehaviour
         escapeOnTrainDesc.SetActive(false);
         escapeOnTrainBackground.SetActive(false);
         escapeOnTrainCompleteBackground.SetActive(true);
+    }
+
+    void ClearObjectives()
+    {
+        findBrokenFence.SetActive(false);
+        breakFence.SetActive(false);
+        findBackpacks.SetActive(false);
+        findTrain.SetActive(false);
+        escapeOnTrain.SetActive(false);
+        escapeOnTrainBackground.SetActive(false);
     }
 }
