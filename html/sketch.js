@@ -71,9 +71,9 @@ function modelLoaded() {
 function noseLabel(){
   // normalise nose position e.g. 0<x,y<1
   var normNosePos = createVector(pose1.nose.x/(2 * width), pose1.nose.y/(2 * height));
-  if(normNosePos.x > 0 && normNosePos.x < 1/3 && normNosePos.y > 1/3 && normNosePos.y < 2/3){
+  if(normNosePos.x > 0 && normNosePos.x < 0.37 && normNosePos.y > 1/3 && normNosePos.y < 2/3){
     return 'I';
-  }else if (normNosePos.x > 2/3 && normNosePos.x < 1 && normNosePos.y > 1/3 && normNosePos.y < 2/3) {
+  }else if (normNosePos.x > 0.62 && normNosePos.x < 1 && normNosePos.y > 1/3 && normNosePos.y < 2/3) {
     return 'O';
   }else if (normNosePos.x > 0 && normNosePos.x < 1/3 && normNosePos.y > 2/3 && normNosePos.y < 1) {
     return 'W';
@@ -87,26 +87,31 @@ function noseLabel(){
 }
 
 function handsLabel(){
-  if(pose3.leftWrist.confidence>0.7 && pose3.rightWrist.confidence>0.7){
+  //if(pose3.leftWrist.confidence>0.7 && pose3.rightWrist.confidence>0.7){
     // normalise wrist positions e.g. 0<x,y<1
     var normLeftWristVector = createVector((pose3.leftWrist.x-pose1.leftWrist.x)/(2 * width), (pose3.leftWrist.y-pose1.leftWrist.y)/(2 * height));
     var normRightWristVector = createVector((pose3.rightWrist.x-pose1.rightWrist.x)/(2 * width), (pose3.rightWrist.y-pose1.rightWrist.y)/(2 * width));
+    var normLeftWristPos = createVector(pose1.leftWrist.x/(2 * width), pose1.leftWrist.y/(2 * height));
     if((normLeftWristVector.y>0.1 && normRightWristVector.y<-0.1) || (normLeftWristVector.y<-0.1 && normRightWristVector.y>0.1)){
       // Ladder climb, hands moving in opposite directions
-      poseLag = 12;
+      poseLag = 10;
       return 'L';
     } else if ((normLeftWristVector.x>0.07 && normRightWristVector.x<-0.07)) {
       // Pull apart, both hands moving apart
-      poseLag = 8;
+      poseLag = 5;
       return 'P';
     }else if (normLeftWristVector.y>0.07 && normRightWristVector.y>0.07) {
       // Pull up, both hands moving down
-      poseLag = 8;
+      poseLag = 5;
       return "U";
+  }else if (normLeftWristPos.x>2/3 && normLeftWristPos.x<1 && normLeftWristPos.y>0.2 && normLeftWristPos.y<0.8) {
+      // Move forward, left hand up
+      //poseLag = 5;
+      return "F";
     }else{
       return 'N';
     }
-  }
+  //}
   return 'N';
 }
 
@@ -158,8 +163,11 @@ function gotResult() {
       case 'C':
       poseSentence = "Crouch";
       break;
+      case 'F':
+      poseSentence = "Move Forward";
+      break;
       default:
-      poseSentaence = "";
+      poseSentence = "";
     }
   }
 
