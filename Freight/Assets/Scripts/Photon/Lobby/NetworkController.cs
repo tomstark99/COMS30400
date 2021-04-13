@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using FrostweepGames.Plugins.Native;
+using VoiceChatClass;
+
 public class NetworkController : MonoBehaviourPunCallbacks
 {
     [SerializeField]
@@ -10,6 +13,18 @@ public class NetworkController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        // request microphone permissions at the start of the menu
+        if (!CustomMicrophone.HasMicrophonePermission())
+        {
+            CustomMicrophone.RequestMicrophonePermission();
+        }
+        if (!CustomMicrophone.HasConnectedMicrophoneDevices())
+        {
+            CustomMicrophone.RefreshMicrophoneDevices();
+        }
+        //Debug.Log(CustomMicrophone.devices.Length + " microphone devices found");
+
+
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.Disconnect();

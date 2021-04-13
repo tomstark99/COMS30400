@@ -8,8 +8,8 @@ using System.Linq;
 
 public class SoundRipples : MonoBehaviourPun
 {
+    public VoiceChatConnector voice;
     public ParticleSystem particles;
-    public Recorder recorder;
 
     public float decibelsValue = 0f;
 
@@ -44,10 +44,11 @@ public class SoundRipples : MonoBehaviourPun
         //do the rest of the array and next time start from 0
         if(currentPosition != _lastPosition)
         {
-            int length = Constants.RecordingTime * Constants.SampleRate;
+            int length = 1 * 44100;
             float[] data = new float[length];
 
-            CustomMicrophone.GetRawData(ref data, recorder.AudioClip);
+            // only works if audioClip is the one where this microphone records
+            CustomMicrophone.GetRawData(ref data, voice.SelfAudioClip());
 
             if (currentPosition > _lastPosition)
             {
