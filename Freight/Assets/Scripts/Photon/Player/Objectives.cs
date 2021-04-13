@@ -7,6 +7,10 @@ using TMPro;
 public class Objectives : MonoBehaviour
 {
     [SerializeField]
+    public GameObject objectivesTitle;
+    [SerializeField]
+    public GameObject objectivesBackground;
+    [SerializeField]
     private GameObject findBrokenFence;
     [SerializeField]
     private GameObject findBrokenFenceDesc;
@@ -40,6 +44,8 @@ public class Objectives : MonoBehaviour
     private GameObject escapeOnTrainBackground;
     [SerializeField]
     private GameObject escapeOnTrainCompleteBackground;
+    [SerializeField]
+    private TextMeshProUGUI ping;
 
     private int bagsPickedUp;
 
@@ -64,6 +70,7 @@ public class Objectives : MonoBehaviour
         }
         GameObject.FindGameObjectWithTag("locomotive").GetComponent<InRange>().InRangeOfTrain += SetEscapeToActive;
         GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().StartEndGame += SetObjectivesComplete;
+        GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += ClearObjectives;
     }
 
     // Update is called once per frame
@@ -137,5 +144,22 @@ public class Objectives : MonoBehaviour
         escapeOnTrainDesc.SetActive(false);
         escapeOnTrainBackground.SetActive(false);
         escapeOnTrainCompleteBackground.SetActive(true);
+    }
+
+    void ClearObjectives()
+    {
+        objectivesTitle.SetActive(false);
+        objectivesBackground.SetActive(false);
+        findBrokenFence.SetActive(false);
+        breakFence.SetActive(false);
+        findBackpacks.SetActive(false);
+        findTrain.SetActive(false);
+        escapeOnTrain.SetActive(false);
+        escapeOnTrainBackground.SetActive(false);
+    }
+
+    void ClearPing()
+    {
+        ping.enabled = false;
     }
 }

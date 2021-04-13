@@ -105,7 +105,7 @@ public class EndGame : MonoBehaviour
                         foreach (var player in players)
                         {
                             //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
-                            player.transform.GetChild(13).GetChild(13).gameObject.SetActive(true);
+                            player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
                             player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
                         }
                     }
@@ -113,14 +113,14 @@ public class EndGame : MonoBehaviour
                     
                 }
 
-                //EndTheGame();
+                EndTheGame();
                 
             }
         }
         else if (showingEndScreen)
         {
             endScreen += Time.deltaTime;
-            if (endScreen > 3f)
+            if (endScreen > 6f)
             {
                 PhotonNetwork.LoadLevel(0);
                 showingEndScreen = false;
