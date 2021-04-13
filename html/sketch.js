@@ -276,6 +276,18 @@ function draw() {
   }
   pop();
 
+  // |N|N|N|
+  // |O|N|I|
+  // |Q|C|W|
+  //
+  // if (point.x > 1/3 && point.x < 2/3 && y > 2/3 && y < 1) {
+  //   label = C;
+  // }
+  // ...
+  // else {
+  //   label = N;
+  // }
+
   // fill(255, 0, 255);
   // noStroke();
   // textSize(256);
