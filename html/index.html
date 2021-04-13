@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="TemplateData/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
     <script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
     <script src="sketch.js" async></script>
+    <script src="initvoice.js" async></script>
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
@@ -22,6 +24,7 @@
         <div class="webgl-logo"></div>
         <!--<div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>-->
         <div class="title">Freight</div>
+        <audio id="peer-audio" autoplay="autoplay"></audio>
       </div>
     </div>
   </body>

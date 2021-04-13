@@ -67,10 +67,6 @@ namespace FrostweepGames.WebGLPUNVoice
 		/// </summary>
 		public bool recording = false;
 
-
-		public ProximityVoice proximity;
-		public SoundRipples ripples;
-
 		/// <summary>
 		/// Initializes buffer, refreshes microphones list and selects first microphone device if exists
 		/// </summary>
@@ -147,40 +143,11 @@ namespace FrostweepGames.WebGLPUNVoice
 		/// <param name="samples">list of sampels that will be sent over network</param>
 		private void SendDataToNetwork(List<float> samples)
 		{
-			//skip second with no sound
-			if (!ripples.positiveInLastSecond) return; 
-
 			// data in bytes to send over network
 			byte[] bytes = AudioConverter.FloatToByte(samples);
 
-			List<int> targets = new List<int>();
-
-			var speakers = proximity.listener.Speakers;
-			// skip far away players since they don't hear the sound anyway
-			foreach (int id in speakers.Keys)
-            {
-				//Debug.Log(speakers[id].AudioSource.volume);
-				if(speakers[id].AudioSource.volume > 0)
-                {
-					targets.Add(id);
-                }
-            }
-
-			// add yourself if debugEcho = true 
-			if(debugEcho)
-            {
-				targets.Add(PhotonNetwork.LocalPlayer.ActorNumber);
-			}
-
-            if (targets.Count == 0) {
-                return;
-            }
-
-			//Debug.Log("Send data");
-			// sending data of recorded samples by using raise event feature
-			Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { TargetActors = targets.ToArray() };
-			//Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { Receivers = debugEcho ? Photon.Realtime.ReceiverGroup.All : Photon.Realtime.ReceiverGroup.Others };
-			ExitGames.Client.Photon.SendOptions sendOptions = new ExitGames.Client.Photon.SendOptions { Reliability = reliableTransmission };
+            Photon.Realtime.RaiseEventOptions raiseEventOptions = new Photon.Realtime.RaiseEventOptions { Receivers = debugEcho ? Photon.Realtime.ReceiverGroup.All : Photon.Realtime.ReceiverGroup.Others };
+            ExitGames.Client.Photon.SendOptions sendOptions = new ExitGames.Client.Photon.SendOptions { Reliability = reliableTransmission };
 			Photon.Pun.PhotonNetwork.RaiseEvent(Constants.VoiceEventCode, bytes, raiseEventOptions, sendOptions);
 		}
 

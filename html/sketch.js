@@ -23,8 +23,9 @@ let pose3;
 let brain;
 let poseLabel = "Y";
 let poseSentence = ""
-let poseBufferLength = 5;
+let poseBufferLength = 1;
 let poseBuffer = [];
+let poseLag = 0;
 
 let overlay;
 
@@ -39,7 +40,23 @@ function setup() {
   video.hide();
 
   // init posenet
-  poseNet = ml5.poseNet(video, modelLoaded);
+
+  var optionsPose = {
+  architecture: 'ResNet50',
+  imageScaleFactor: 0.5,
+  outputStride: 16,
+  // flipHorizontal: false,
+  minConfidence: 0.2,
+  maxPoseDetections: 1,
+  scoreThreshold: 0.2,
+  // nmsRadius: 20,
+  // detectionType: 'single',
+  inputResolution: 161,
+  // multiplier: 1,
+  quantBytes: 1,
+};
+
+  poseNet = ml5.poseNet(video, optionsPose, modelLoaded);
   poseNet.on('pose', gotPoses);
 
   // init pose recognition
@@ -75,29 +92,71 @@ function modelLoaded() {
   console.log('poseNet ready');
 }
 
+function noseLabel(){
+  // console.log("IN NOSE LABEL");
+    var normNosePos = createVector(pose1.nose.x/(2 * width), pose1.nose.y/(2 * height));
+    // console.log(normNosePos);
+    if(normNosePos.x > 0 && normNosePos.x < 1/3 && normNosePos.y > 1/3 && normNosePos.y < 2/3){
+        return 'I';
+    }else if (normNosePos.x > 2/3 && normNosePos.x < 1 && normNosePos.y > 1/3 && normNosePos.y < 2/3) {
+        return 'O';
+    }else if (normNosePos.x > 0 && normNosePos.x < 1/3 && normNosePos.y > 2/3 && normNosePos.y < 1) {
+        return 'W';
+    } else if (normNosePos.x > 2/3 && normNosePos.x < 1 && normNosePos.y > 2/3 && normNosePos.y < 1) {
+        return 'Q';
+    }else if (normNosePos.x > 1/3 && normNosePos.x < 2/3 && normNosePos.y > 2/3 && normNosePos.y < 1) {
+        return 'C';
+    }else{
+        return 'N';
+    }
+}
+
+function handsLabel(){
+    if(pose3.leftWrist.confidence>0.7 && pose3.rightWrist.confidence>0.7){
+        var normLeftWristVector = createVector((pose3.leftWrist.x-pose1.leftWrist.x)/(2 * width), (pose3.leftWrist.y-pose1.leftWrist.y)/(2 * height));
+        var normRightWristVector = createVector((pose3.rightWrist.x-pose1.rightWrist.x)/(2 * width), (pose3.rightWrist.y-pose1.rightWrist.y)/(2 * width));
+        //console.log(normLeftWristVector);
+        //console.log(normRightWristVector);
+        if((normLeftWristVector.y>0.1 && normRightWristVector.y<-0.1) || (normLeftWristVector.y<-0.1 && normRightWristVector.y>0.1)){
+          poseLag = 10;
+            return 'L';
+        } else if ((normLeftWristVector.x>0.07 && normRightWristVector.x<-0.07)) {
+          poseLag = 5;
+            return 'P';
+        }else if (normLeftWristVector.y>0.07 && normRightWristVector.y>0.07) {
+          poseLag = 5;
+          return "U";
+        }else{
+            return 'N';
+        }
+    }
+    return 'N';
+}
+
 // Generates classification from previous 3 poses
 // Called by gotPoses
 function classifyPose() {
-  if (pose) {
-      let inputs = [];
-      // Create input ignoreing hips and legs
-      for (let i = 0; i < pose.keypoints.length - 6; i++) {
-        let x1 = pose1.keypoints[i].position.x;
-        let y1 = pose1.keypoints[i].position.y;
-        let x2 = pose2.keypoints[i].position.x;
-        let y2 = pose2.keypoints[i].position.y;
-        let x3 = pose3.keypoints[i].position.x;
-        let y3 = pose3.keypoints[i].position.y;
-        inputs.push(x1);
-        inputs.push(y1);
-        inputs.push(x2);
-        inputs.push(y2);
-        inputs.push(x3);
-        inputs.push(y3);
-      }
-    // Classify pose
-    brain.classify(inputs, gotResult);
-  }
+  gotResult(0, null);
+  // if (pose) {
+  //     let inputs = [];
+  //     // Create input ignoreing hips and legs
+  //     for (let i = 0; i < pose.keypoints.length - 6; i++) {
+  //       let x1 = pose1.keypoints[i].position.x;
+  //       let y1 = pose1.keypoints[i].position.y;
+  //       let x2 = pose2.keypoints[i].position.x;
+  //       let y2 = pose2.keypoints[i].position.y;
+  //       let x3 = pose3.keypoints[i].position.x;
+  //       let y3 = pose3.keypoints[i].position.y;
+  //       inputs.push(x1);
+  //       inputs.push(y1);
+  //       inputs.push(x2);
+  //       inputs.push(y2);
+  //       inputs.push(x3);
+  //       inputs.push(y3);
+  //     }
+  //   // Classify pose
+  //   brain.classify(inputs, gotResult);
+  // }
   // else {
   //   setTimeout(classifyPose, 100);
   // }
@@ -140,18 +199,30 @@ function getMode(array) {
 // buffer is significantly full (over 50%)
 function gotResult(error, results) {
 
+  poseLag--;
+
   var buffPoseLabel;
 
-  if (results[0].confidence > 0.85) {
-    buffPoseLabel = results[0].label.toUpperCase();
-  } else {
-    buffPoseLabel = 'N';
-  }
-  //console.log(results[0].confidence);
-  poseBuffer.push(buffPoseLabel);
-  poseBuffer.shift();
+  // if (results[0].confidence > 0.85) {
+  //   buffPoseLabel = results[0].label.toUpperCase();
+  // } else {
+  //   buffPoseLabel = 'N';
+  // }
 
-  console.log(poseBuffer);
+  if (poseLag < 0) {
+    buffPoseLabel = noseLabel();
+    if (buffPoseLabel == 'N') {
+      buffPoseLabel = handsLabel();
+    }
+    poseBuffer.push(buffPoseLabel);
+    poseBuffer.shift();
+  }
+
+  // console.log(noseLabel());
+  //console.log(results[0].confidence);
+
+
+  // console.log(poseBuffer);
   var tempPoseLabel = getMode(poseBuffer);
 
   // Change displayed pose phrase
@@ -203,7 +274,7 @@ function gotPoses(poses) {
 
     if (!poseSet) {
       pose1 = pose;
-      pose2 = pose;width
+      pose2 = pose;
       pose3 = pose;
       poseSet = true;
     } else {
@@ -293,6 +364,18 @@ function draw() {
   }
   pop();
 
+  // |N|N|N|
+  // |O|N|I|
+  // |Q|C|W|
+  //
+  // if (point.x > 1/3 && point.x < 2/3 && y > 2/3 && y < 1) {
+  //   label = C;
+  // }
+  // ...
+  // else {
+  //   label = N;
+  // }
+
   // fill(255, 0, 255);
   // noStroke();
   // textSize(256);
@@ -308,4 +391,40 @@ function draw() {
   text(poseSentence, 0, 0);
 
   image(overlay, 0, 0, canvas.width, canvas.height);
+}
+
+
+// Move canvas around on mouse click
+let onCanv = false;
+let xOrigin = 0;
+let yOrigin = 0;
+let xCanvOrigin = 0;
+let yCanvOrigin = 0;
+
+// Returns true if mouse is within bounds of canvas
+function mouseOnCanvas(){
+  return mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height;
+}
+
+// Sets all necessary variables when canvas is clicked on
+function mousePressed() {
+  if (mouseOnCanvas()) {
+    onCanv = true;
+    xOrigin = winMouseX;// - bx;
+    yOrigin = winMouseY;// - by;
+    xCanvOrigin = canvas.position().x;
+    yCanvOrigin = canvas.position().y;
+  }
+}
+
+// Updates canvas position by amount the mouse has moved since clicked
+function mouseDragged() {
+  if (onCanv) {
+    canvas.position(xCanvOrigin + (winMouseX - xOrigin), yCanvOrigin + (winMouseY - yOrigin))
+  }
+}
+
+
+function mouseReleased() {
+  onCanv = false;
 }
