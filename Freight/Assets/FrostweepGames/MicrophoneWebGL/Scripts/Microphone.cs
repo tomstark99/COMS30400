@@ -62,6 +62,7 @@ namespace FrostweepGames.Plugins.WebGL
             _microphoneDevices = new string[0];
             _microphoneDeviceInfos = new List<MicrophoneDeviceInfo>();
 
+            UnityEngine.Debug.Log("Initializing the microphone");
 #if UNITY_WEBGL && !UNITY_EDITOR
             init();
 
@@ -106,6 +107,7 @@ namespace FrostweepGames.Plugins.WebGL
             string deviceId = _microphoneDeviceInfos.Find(item => item.label == deviceName)?.deviceId;
 
             start(deviceId, loop ? 1 : 0, lengthSec, _frequency);
+            //start(null, loop ? 1 : 0, lengthSec, _frequency);
 
             return _microphoneClip;
         }
