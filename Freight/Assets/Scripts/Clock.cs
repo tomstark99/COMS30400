@@ -34,6 +34,7 @@ public class Clock : MonoBehaviour
     {
         //startTime = DateTime.Now;
         //InvokeRepeating("updateClock", 1f, 1f);
+        GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += ClearClock;
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -121,5 +122,11 @@ public class Clock : MonoBehaviour
     string leadingZero(int n)
     {
         return n.ToString().PadLeft(2, '0');
+    }
+
+    void ClearClock()
+    {
+        image.SetActive(false);
+        text.enabled = false;
     }
 }
