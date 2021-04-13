@@ -94,19 +94,18 @@ function handsLabel(){
     var normLeftWristPos = createVector(pose1.leftWrist.x/(2 * width), pose1.leftWrist.y/(2 * height));
     if((normLeftWristVector.y>0.1 && normRightWristVector.y<-0.1) || (normLeftWristVector.y<-0.1 && normRightWristVector.y>0.1)){
       // Ladder climb, hands moving in opposite directions
-      poseLag = 10;
+      poseLag = 12;
       return 'L';
     } else if ((normLeftWristVector.x>0.07 && normRightWristVector.x<-0.07)) {
       // Pull apart, both hands moving apart
-      poseLag = 5;
+      poseLag = 8;
       return 'P';
     }else if (normLeftWristVector.y>0.07 && normRightWristVector.y>0.07) {
       // Pull up, both hands moving down
-      poseLag = 5;
+      poseLag = 8;
       return "U";
   }else if (normLeftWristPos.x>2/3 && normLeftWristPos.x<1 && normLeftWristPos.y>0.2 && normLeftWristPos.y<0.8) {
       // Move forward, left hand up
-      //poseLag = 5;
       return "F";
     }else{
       return 'N';
