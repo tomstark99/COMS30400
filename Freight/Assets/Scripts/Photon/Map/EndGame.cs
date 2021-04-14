@@ -66,64 +66,65 @@ public class EndGame : MonoBehaviour
 
     void Update()
     {
-        if (gameEnding)
+        if (PhotonNetwork.IsMasterClient)
         {
-            timeToEnd += Time.deltaTime;
-            if (timeToEnd > 5f)
+            if (gameEnding)
             {
-                gameWon = true;
-                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                foreach (var player in players)
+                timeToEnd += Time.deltaTime;
+                if (timeToEnd > 5f)
                 {
-                    if (!player.GetComponent<PlayerMovementPhoton>().OnTrain)
-                    {
-                        gameWon = false;
-                        break;
-                    }
-                }
-                gameEnding = false;
-
-                if (gameWon == true)
-                {
-                    Debug.Log("you won!");
+                    gameWon = true;
+                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
                     foreach (var player in players)
                     {
-                        player.transform.GetChild(13).GetChild(0).gameObject.SetActive(true);
-                    }
-                } 
-                else
-                {
-                    bool switchCamera = false;
-                    foreach(var player in players)
-                      if(Vector3.Distance(player.transform.position, leavingTrain.transform.position) > 100)
-                        switchCamera = true;
-                    
-                    if(switchCamera)
-                    {
-                        vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
-                        Debug.Log("you lost...");
-                        foreach (var player in players)
+                        // if player not on train or if their backpack is not active, they lose 
+                        if (!player.GetComponent<PlayerMovementPhoton>().OnTrain || !player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf)
                         {
-                            //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
-                            player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
-                            player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+                            gameWon = false;
+                            break;
                         }
                     }
-                    //uncomment for cinemachine transition
-                    
-                }
+                    gameEnding = false;
 
-                EndTheGame();
-                
+                    if (gameWon == true)
+                    {
+                        Debug.Log("you won!");
+                        foreach (var player in players)
+                        {
+                            player.transform.GetChild(13).GetChild(0).gameObject.SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        bool switchCamera = false;
+                        foreach (var player in players)
+                            switchCamera = true;
+
+                        if (switchCamera)
+                        {
+                            vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
+                            Debug.Log("you lost...");
+                            foreach (var player in players)
+                            {
+                                //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
+                                player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+                                player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+                            }
+                        }
+                        //uncomment for cinemachine transition
+
+                    }
+                    EndTheGame();
+                }
             }
-        }
-        else if (showingEndScreen)
-        {
-            endScreen += Time.deltaTime;
-            if (endScreen > 6f)
+            else if (showingEndScreen)
             {
-                PhotonNetwork.LoadLevel(0);
-                showingEndScreen = false;
+                endScreen += Time.deltaTime;
+                if (endScreen > 6f)
+                {
+                    PhotonNetwork.LoadLevel(0);
+                    showingEndScreen = false;
+                }
             }
         }
     }
