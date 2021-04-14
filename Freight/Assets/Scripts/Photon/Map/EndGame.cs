@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
-public class EndGame : MonoBehaviour
+public class EndGame : MonoBehaviourPun
 {
     public GameObject leavingTrain;
     private HashSet<Collider> colliders = new HashSet<Collider>();
@@ -17,7 +17,7 @@ public class EndGame : MonoBehaviour
     private bool showingEndScreen;
     private float endScreen;
     public CinemachineVirtualCamera vcam;
-    
+
     public HashSet<Collider> GetColliders() { return colliders; }
 
     void Start()
@@ -26,10 +26,10 @@ public class EndGame : MonoBehaviour
         StartEndGame += HandleEndGame;
         EndTheGame += ShowEndScreen;
         gameEnding = false;
-        
+
     }
 
-    private void OnTriggerEnter (Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.tag);
         if (other.gameObject.tag == "locomotive")
@@ -43,10 +43,10 @@ public class EndGame : MonoBehaviour
                 StartEndGame();
             }
         }
-        
+
     }
 
-    private void OnTriggerExit (Collider other)
+    private void OnTriggerExit(Collider other)
     {
         colliders.Remove(other);
         Debug.Log(other.gameObject);
@@ -62,6 +62,27 @@ public class EndGame : MonoBehaviour
     {
         endScreen = 0f;
         showingEndScreen = true;
+    }
+
+    [PunRPC]
+    void SetActiveLevelCompleteRPC(int viewID)
+    {
+        GameObject player = PhotonView.Find(viewID).gameObject;
+        player.transform.GetChild(13).GetChild(0).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    void SetCutsceneCameraActiveRPC()
+    {
+        vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
+    }
+
+    [PunRPC]
+    void SetGameLostActiveRPC(int viewID)
+    {
+        GameObject player = PhotonView.Find(viewID).gameObject;
+        player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+        player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
     }
 
     void Update()
@@ -91,7 +112,7 @@ public class EndGame : MonoBehaviour
                         Debug.Log("you won!");
                         foreach (var player in players)
                         {
-                            player.transform.GetChild(13).GetChild(0).gameObject.SetActive(true);
+                            photonView.RPC(nameof(SetActiveLevelCompleteRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                         }
                     }
                     else
@@ -102,13 +123,14 @@ public class EndGame : MonoBehaviour
 
                         if (switchCamera)
                         {
-                            vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
+                            photonView.RPC(nameof(SetCutsceneCameraActiveRPC), RpcTarget.All);
                             Debug.Log("you lost...");
                             foreach (var player in players)
                             {
                                 //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
-                                player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
-                                player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+                                //player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+                                //player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+                                photonView.RPC(nameof(SetGameLostActiveRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                             }
                         }
                         //uncomment for cinemachine transition
