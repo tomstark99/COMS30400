@@ -9,7 +9,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     public CharacterController controller;
     public Transform groundCheck;
     public LayerMask groundMask;
-   
+
     public GameObject LeftHandUpUI;
     public GameObject RightHandUpUI;
     private float gravity = -17f;
@@ -42,7 +42,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     {
         get { return onTrain; }
     }
-   
+
     void Start()
     {
         // activates player's camera if its theirs and disables all others
@@ -73,7 +73,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (photonView.IsMine) {
             Movement();
         }
-        
+
 
     }
 
@@ -94,7 +94,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void Movement()
     {
-        if(onMenu && !onTrain)
+        if (onMenu && !onTrain)
             return;
         // Checks if the groundCheck object is within distance to the ground layer
         bool old = isGrounded;
@@ -114,7 +114,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         // instantiates move with null so that it can be set depending on climb
         Vector3 move;
-        
+
 #if UNITY_WEBGL && !UNITY_EDITOR
 
         if (climbing && PoseParser.GETGestureAsString().CompareTo("L") == 0)
@@ -130,7 +130,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         
 #else
-        
+
         if (climbing && l > 0f)
         {
             move = transform.up * l;
@@ -172,7 +172,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move += trainMove;
         }
 
-        
+
         controller.Move(move * speed * Time.deltaTime);
 
         // Checks if jump button is pressed and allows user to jump if they are on the ground
@@ -187,7 +187,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             crouching = true;
             controller.height = 1.2f;
-        } 
+        }
         else if (Input.GetKeyDown(KeyCode.LeftControl) && crouching)
         {
             crouching = false;
@@ -204,6 +204,17 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     }
 
+    [PunRPC]
+    void ChangeOnTrainToTrue()
+    {
+        onTrain = true;
+    }
+
+    [PunRPC]
+    void ChangeOnTrainToFalse()
+    {
+        onTrain = false;
+    }
 
     // trigger collider for the ladder and the train floor
     void OnTriggerEnter(Collider other)
@@ -230,9 +241,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             Debug.Log("stef is aiiiir");
             train = other.gameObject;
             climbing = false;
-           // LeftHandUpUI.SetActive(false);
+            // LeftHandUpUI.SetActive(false);
             //RightHandUpUI.SetActive(false);
-            onTrain = true;
+            photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
         }
     }
 
@@ -254,8 +265,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
             Debug.Log("stef is NOT aiiiir");
-            onTrain = false;
-          
+            photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
+
         }
     }
 

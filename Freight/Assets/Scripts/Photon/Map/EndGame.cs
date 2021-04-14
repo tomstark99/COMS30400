@@ -98,6 +98,8 @@ public class EndGame : MonoBehaviourPun
                     GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
                     foreach (var player in players)
                     {
+                        Debug.Log(player.GetComponent<PlayerMovementPhoton>().OnTrain);
+                        Debug.Log(player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf);
                         // if player not on train or if their backpack is not active, they lose 
                         if (!player.GetComponent<PlayerMovementPhoton>().OnTrain || !player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf)
                         {
