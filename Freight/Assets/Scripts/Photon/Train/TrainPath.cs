@@ -17,12 +17,13 @@ public class TrainPath : MonoBehaviourPun
     void Start()
     {
         timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
+        StartAnimation();
     }
 
     void Update()
     {
-        timeToLeave -= Time.deltaTime;
-        if (timeToLeave < 0 && !left) StartAnimation();
+        // timeToLeave -= Time.deltaTime;
+        // if (timeToLeave < 0 && !left) StartAnimation();
     }
 
     private void OnDrawGizmos() {
@@ -30,7 +31,12 @@ public class TrainPath : MonoBehaviourPun
     }
 
     private void StartAnimation() {
-        iTween.MoveTo(train, iTween.Hash("path", points, "time", 50.0f, "orientToPath", true, "easetype", iTween.EaseType.easeInOutSine, "axis", "y"));
+        /*  switch between for different movement
+            - iTween.EaseType.easeInOutSine
+            - iTween.EaseType.linear
+        */
+        Debug.Log("mans animating");
+        iTween.MoveTo(train, iTween.Hash("path", points, "speed", 7.0f, "orientToPath", true, "easetype", iTween.EaseType.linear, "lookahead", 0.005f));
         left = true;
     }
 }
