@@ -165,7 +165,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             //StartCoroutine(SetFaceActive());
             //Debug.Log(GameObject.FindGameObjectWithTag("locomotive"));
-            Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) - GameObject.FindGameObjectWithTag("locomotive").transform.position;
+            Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, train.transform.position, Time.deltaTime) - train.transform.position;
             trainMove.x = -trainMove.x;
             trainMove.y = 0f;
             trainMove.z = -trainMove.z;
@@ -241,7 +241,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             Debug.Log("stef is aiiiir");
             train = other.gameObject;
             climbing = false;
-            transform.parent = train.transform;
             // LeftHandUpUI.SetActive(false);
             //RightHandUpUI.SetActive(false);
             photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
@@ -266,7 +265,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
             Debug.Log("stef is NOT aiiiir");
-            transform.parent = null;
+            train = null;
             photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
 
         }
