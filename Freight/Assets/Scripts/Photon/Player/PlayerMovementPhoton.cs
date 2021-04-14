@@ -9,7 +9,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     public CharacterController controller;
     public Transform groundCheck;
     public LayerMask groundMask;
-
+   
+    public GameObject faceUI;
     public GameObject LeftHandUpUI;
     public GameObject RightHandUpUI;
     private float gravity = -17f;
@@ -77,16 +78,16 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     }
 
-    /*IEnumerator SetFaceActive(){
+    IEnumerator SetFaceActive(){
         if(check == false){
             faceUI.SetActive(true);
         }
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         if(Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0){
             faceUI.SetActive(false);
             check = true;
         }
-    }*/
+    }
 
     void DistanceToTrain() {
         // float distance
@@ -115,8 +116,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // instantiates move with null so that it can be set depending on climb
         Vector3 move;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-
         if (climbing && PoseParser.GETGestureAsString().CompareTo("L") == 0)
         {
             move = transform.up * 0.2f;
@@ -124,23 +123,19 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.up * l;
         } 
-        else
-        {
-            move = transform.right * x + transform.forward * z;
+        else if(PoseParser.GETGestureAsString().CompareTo("F") == 0){
+            move = transform.forward * speed/4;
         }
-        
-#else
-
-        if (climbing && l > 0f)
-        {
-            move = transform.up * l;
+        else if(PoseParser.GETGestureAsString().CompareTo("I") == 0){
+            move = transform.right * speed/4 + transform.forward * speed/4;
+        }
+        else if(PoseParser.GETGestureAsString().CompareTo("O") == 0){
+            move = transform.right * (-speed/4) + transform.forward * speed/4;
         }
         else
         {
             move = transform.right * x + transform.forward * z;
         }
-
-#endif
 
         //Sticks player to centreline of ladder
         if (climbing)
@@ -155,16 +150,15 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.right * x + transform.up * z;
         }
-        else
-        {
-            move = transform.right * x + transform.forward * z;
-        }
+        // else
+        // {
+        //     move = transform.right * x + transform.forward * z;
+        // }
 
         // sticks the player onto the train
         if (onTrain)
         {
-            //StartCoroutine(SetFaceActive());
-            //Debug.Log(GameObject.FindGameObjectWithTag("locomotive"));
+            StartCoroutine(SetFaceActive());
             Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, train.transform.position, Time.deltaTime) - train.transform.position;
             trainMove.x = -trainMove.x;
             trainMove.y = 0f;
@@ -179,16 +173,16 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (Input.GetButtonDown("Jump") && isGrounded && !crouching)
         {
             onTrain = false;
-            //faceUI.SetActive(false);
+            faceUI.SetActive(false);
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !crouching)
+        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C")==0) && !crouching)
         {
             crouching = true;
             controller.height = 1.2f;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftControl) && crouching)
+        } 
+        else if (!Input.GetKey(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0 && crouching)
         {
             crouching = false;
             controller.height = 1.8f;
@@ -227,9 +221,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             // Debug.Log("LADDER COORDS" + (train.transform.position + ladderCentreLine).ToString());
             climbing = true;
             //GetComponent<PlayerAnimation>().setClimbing(climbing);
-            //faceUI.SetActive(false);
-            //LeftHandUpUI.SetActive(true);
-            //RightHandUpUI.SetActive(true);
+            LeftHandUpUI.SetActive(true);
+            RightHandUpUI.SetActive(true);
         }
         else if (other.gameObject.tag == "ladder")
         {
@@ -238,11 +231,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         else if (other.gameObject.tag == "trainfloor")
         {
-            Debug.Log("stef is aiiiir");
+            //Debug.Log("stef is aiiiir");
             train = other.gameObject;
             climbing = false;
-            // LeftHandUpUI.SetActive(false);
-            //RightHandUpUI.SetActive(false);
+            LeftHandUpUI.SetActive(false);
+            RightHandUpUI.SetActive(false);
             photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
         }
     }
@@ -254,8 +247,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             // Debug.Log("player stopped climbing");
             climbing = false;
             //GetComponent<PlayerAnimation>().setClimbing(climbing);
-            //LeftHandUpUI.SetActive(false);
-            //RightHandUpUI.SetActive(false);
+            LeftHandUpUI.SetActive(false);
+            RightHandUpUI.SetActive(false);
         }
         else if (climbingBuilding && other.gameObject.tag == "ladder")
         {
@@ -264,10 +257,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
-            Debug.Log("stef is NOT aiiiir");
             train = null;
             photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
-
+            Debug.Log("stef is NOT aiiiir");
         }
     }
 

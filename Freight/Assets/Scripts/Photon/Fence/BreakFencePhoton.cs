@@ -32,8 +32,8 @@ public class BreakFencePhoton : MonoBehaviourPun
     {
         if (!overlayDisplayed) {
             text.SetActive(true);
-            //LeftHand.SetActive(true);
-           // RightHand.SetActive(true);
+            LeftHand.SetActive(true);
+            RightHand.SetActive(true);
             
             Overlay.LoadOverlay("overlays/pull_apart_fence.png");
             overlayDisplayed = true;  
@@ -45,8 +45,8 @@ public class BreakFencePhoton : MonoBehaviourPun
     {
         if (overlayDisplayed) {
             text.SetActive(false);
-            //LeftHand.SetActive(false);
-            //RightHand.SetActive(false);
+            LeftHand.SetActive(false);
+            RightHand.SetActive(false);
             
             Overlay.ClearOverlay();
             overlayDisplayed = false;
