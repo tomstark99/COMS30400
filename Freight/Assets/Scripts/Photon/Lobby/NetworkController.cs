@@ -15,10 +15,8 @@ public class NetworkController : MonoBehaviourPunCallbacks
             PhotonNetwork.Disconnect();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-        }
+        } 
         PhotonNetwork.ConnectUsingSettings();
-        PhotonNetwork.LocalPlayer.NickName = GetRandomName();
-        PhotonNetwork.AutomaticallySyncScene = true;
         Debug.Log(PhotonNetwork.PhotonServerSettings);
     }
 
@@ -41,6 +39,8 @@ public class NetworkController : MonoBehaviourPunCallbacks
         Debug.Log("We are connected to the " + PhotonNetwork.CloudRegion + " server");
         if (!PhotonNetwork.InLobby)
         {
+            PhotonNetwork.LocalPlayer.NickName = GetRandomName();
+            PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.JoinLobby();
         }
     }
