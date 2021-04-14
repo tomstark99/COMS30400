@@ -18,26 +18,28 @@ public class TrainPath : MonoBehaviourPun
     void Start()
     {
         timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
-        StartAnimation();
+        // StartAnimation();
     }
 
     void Update()
     {
-        foreach (var c in carriages) {
-            Debug.Log((c.transform.position - iTween.PointOnPath(points, 0)).sqrMagnitude);
-            float min = float.PositiveInfinity;
-            float min_p = 0.0f;
-            for (float t = 0; t <= 1; t += 0.0005f) {
-                float dist = (c.transform.position - iTween.PointOnPath(points, t)).sqrMagnitude;
-                if (dist < min) {
-                    min = dist;
-                    min_p = t;
-                }
-            }
-            iTween.PutOnPath(c, points, min_p);
+        // foreach (var c in carriages) {
+        //     Debug.Log((c.transform.position - iTween.PointOnPath(points, 0)).sqrMagnitude);
+        //     float min = float.PositiveInfinity;
+        //     float min_p = 0.0f;
+        //     for (float t = 0; t <= 1; t += 0.0005f) {
+        //         float dist = (c.transform.position - iTween.PointOnPath(points, t)).sqrMagnitude;
+        //         if (dist < min) {
+        //             min = dist;
+        //             min_p = t;
+        //         }
+        //     }
+        //     iTween.PutOnPath(c, points, min_p);
+        // }
+        if(PhotonNetwork.IsMasterClient) {
+            timeToLeave -= Time.deltaTime;
+            if (timeToLeave < 0 && !left) StartAnimation();
         }
-        // timeToLeave -= Time.deltaTime;
-        // if (timeToLeave < 0 && !left) StartAnimation();
     }
 
     private void OnDrawGizmos() {
