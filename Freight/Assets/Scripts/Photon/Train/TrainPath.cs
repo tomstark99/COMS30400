@@ -7,6 +7,7 @@ public class TrainPath : MonoBehaviourPun
 {
     public GameObject train;
     public Transform[] points;
+    public GameObject[] carriages;
 
     [Range(0,1)]
     public float position;
@@ -22,6 +23,19 @@ public class TrainPath : MonoBehaviourPun
 
     void Update()
     {
+        foreach (var c in carriages) {
+            Debug.Log((c.transform.position - iTween.PointOnPath(points, 0)).sqrMagnitude);
+            float min = float.PositiveInfinity;
+            float min_p = 0.0f;
+            for (float t = 0; t <= 1; t += 0.0005f) {
+                float dist = (c.transform.position - iTween.PointOnPath(points, t)).sqrMagnitude;
+                if (dist < min) {
+                    min = dist;
+                    min_p = t;
+                }
+            }
+            iTween.PutOnPath(c, points, min_p);
+        }
         // timeToLeave -= Time.deltaTime;
         // if (timeToLeave < 0 && !left) StartAnimation();
     }
