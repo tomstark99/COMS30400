@@ -20,11 +20,16 @@ public class PlayerAnimation : MonoBehaviourPun
 
     private bool isGrounded;
     private bool climbing;
+    private bool isCrouched;
     private float runningSpeed;
     private float walkingSpeed;
 
+
+
     public GameObject camera;
     public GameObject head;
+
+    // public event Action ChangeAnimationLayer;
 
     private PlayerMovementPhoton player;
 
@@ -65,7 +70,7 @@ public class PlayerAnimation : MonoBehaviourPun
             Animate();
             camera.transform.position = head.transform.position;
         }
-        
+
     }
 
     private void Animate() {
@@ -76,7 +81,7 @@ public class PlayerAnimation : MonoBehaviourPun
         bool isRunning = animator.GetBool(isRunningHash);
         bool isLeft = animator.GetBool(isLeftHash);
         bool isRight = animator.GetBool(isRightHash);
-        bool isCrouched = animator.GetBool(isCrouchedHash);
+        isCrouched = animator.GetBool(isCrouchedHash);
         bool isClimbing = animator.GetBool(isClimbingHash);
 
         float x = Input.GetAxis("Horizontal");
@@ -85,7 +90,7 @@ public class PlayerAnimation : MonoBehaviourPun
         // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
 
-        if(climbing && Input.GetKey(KeyCode.W)) {
+        if (climbing && Input.GetKey(KeyCode.W)) {
             animator.SetBool(isClimbingHash, true);
         } else {
             animator.SetBool(isClimbingHash, false);
@@ -98,41 +103,57 @@ public class PlayerAnimation : MonoBehaviourPun
                 player.setSpeed(runningSpeed);
             }
 
-            else
+            else if (PoseParser.GETGestureAsString().CompareTo("F") == 0 || Input.GetKey(KeyCode.W))
             {
                 animator.SetBool(isWalkingHash, true);
                 player.setSpeed(walkingSpeed);
             }
-                
-        } 
-        if(!isRunningBack && z < -0.02f) {
+            // else
+            // {
+            //     animator.SetBool(isWalkingHash, true);
+            //     player.setSpeed(walkingSpeed);
+            // }
+
+        }
+        if (!isRunningBack && z < -0.02f) {
             animator.SetBool(isRunningBackHash, true);
         }
-        if(z <= 0.02f && z >= -0.02f) {
+        if (z <= 0.02f && z >= -0.02f && PoseParser.GETGestureAsString().CompareTo("F") != 0) {
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, false);
             animator.SetBool(isRunningBackHash, false);
         }
-        if (!isRight && x > 0.02f) {
+        if ((!isRight && x > 0.02f) || (!isRight && PoseParser.GETGestureAsString().CompareTo("I") == 0)) {
             animator.SetBool(isRightHash, true);
         }
-        if (x <= 0.02f && x >= -0.02f) {
+        if (x <= 0.02f && x >= -0.02f && PoseParser.GETGestureAsString().CompareTo("I") != 0 && PoseParser.GETGestureAsString().CompareTo("O") != 0) {
             animator.SetBool(isLeftHash, false);
             animator.SetBool(isRightHash, false);
         }
-        if (!isLeft && x < -0.02f) {
+        if ((!isLeft && x < -0.02f) || (!isLeft && PoseParser.GETGestureAsString().CompareTo("O") == 0)) {
             animator.SetBool(isLeftHash, true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && isCrouched) {
+            animator.SetBool(isCrouchedHash, false);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && (isWalking || z > 0.02f)) {
             animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isCrouchedHash, false);
             animator.SetBool(isRunningHash, true);
             player.setSpeed(runningSpeed);
 
-        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning) {
+        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning && PoseParser.GETGestureAsString().CompareTo("F") != 0) {
             animator.SetBool(isWalkingHash, true);
             animator.SetBool(isRunningHash, false);
             player.setSpeed(walkingSpeed);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched && !isRunning) {
+            animator.SetBool(isCrouchedHash, true);
+        } else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched) {
+            animator.SetBool(isCrouchedHash, false);
         }
 
         if (Input.GetButtonDown("Jump") || !isGrounded) {
@@ -142,9 +163,9 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isJumpingHash, false);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched) {
+        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !isCrouched) {
             animator.SetBool(isCrouchedHash, true);
-        } else if (Input.GetKeyUp(KeyCode.LeftControl) && isCrouched) {
+        } else if ((Input.GetKeyDown(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0) && isCrouched) {
             animator.SetBool(isCrouchedHash, false);
         }
 
@@ -156,11 +177,26 @@ public class PlayerAnimation : MonoBehaviourPun
     public bool getClimbing() {
         return this.climbing;
     }
+    public bool getCrouched() {
+        return this.isCrouched;
+    }
 
     public void setGrounded(bool val) {
         this.isGrounded = val;
     }
     public void setClimbing(bool val) {
         this.climbing = val;
+    }
+
+    public void ChangeLayerPistol() {
+        Debug.Log("accc pistol tings");
+        animator.SetLayerWeight(0, 0.0f);
+        animator.SetLayerWeight(1, 1.0f);
+    }
+
+    public void ChangeLayerDefault() {
+        Debug.Log("acc default tings");
+        animator.SetLayerWeight(0, 1.0f);
+        animator.SetLayerWeight(1, 0.0f);
     }
 }

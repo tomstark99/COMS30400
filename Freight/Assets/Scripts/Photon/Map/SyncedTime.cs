@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class SyncedTime : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class SyncedTime : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        timeToLeave = 1000000f;
+        timeToLeave = (float) PhotonNetwork.CurrentRoom.CustomProperties["TimeToLeave"];
     }
 
     // Update is called once per frame
