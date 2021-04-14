@@ -9,6 +9,7 @@ public class StartTutorialUi : MonoBehaviour
   public GameObject text;
     // Start is called before the first frame update
    public void OnMouseOver() {
+        transform.parent.parent.parent.GetComponent<AudioSource>().Play();
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
         //If your mouse hovers over the GameObject with the script attached, output this message
         Debug.Log("Mouse is over GameObject.");

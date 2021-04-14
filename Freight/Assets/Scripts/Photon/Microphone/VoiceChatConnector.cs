@@ -9,7 +9,6 @@ using System;
 public class VoiceChatConnector : MonoBehaviourPun
 {
     public AudioListener audioListener;
-    public AudioSource foreignAudioSource;
 
     VoiceChat voiceChat;
     string _id = "";
@@ -35,7 +34,6 @@ public class VoiceChatConnector : MonoBehaviourPun
         if (!photonView.IsMine) return;
 
         audioListener.enabled = true;
-        foreignAudioSource.enabled = true;
 
         if (!CustomMicrophone.HasConnectedMicrophoneDevices())
         {
