@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,6 +60,16 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
+        if (Item.tag == "Gun")
+        {
+            GetComponent<IkBehaviour>().ikActive = true;
+            GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
+        }
+        else if (Item.tag == "Rock")
+        {
+            GetComponent<IkBehaviour>().ikActive = true;
+            GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(0).transform.GetChild(2);
+        }
         Item.transform.parent = pickUpDestination;
         Item.transform.Rotate(0, 90, 0);
 
@@ -84,6 +95,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (currentHeldItem.tag == "Gun")
             {
                 currentHeldItem.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+                GetComponent<IkBehaviour>().ikActive = true;
+                GetComponent<IkBehaviour>().handObj = currentHeldItem.transform.GetChild(18);
+            }
+            else if (currentHeldItem.tag == "Rock")
+            {
+                GetComponent<IkBehaviour>().ikActive = true;
+                GetComponent<IkBehaviour>().handObj = currentHeldItem.transform.GetChild(0).transform.GetChild(2);
             }
 
         }
@@ -108,6 +126,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (Item.tag == "Gun")
             {
                 Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+                GetComponent<IkBehaviour>().ikActive = true;
+                GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
+            } 
+            else if (Item.tag == "Rock")
+            {
+                GetComponent<IkBehaviour>().ikActive = true;
+                GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(0).transform.GetChild(2);
             }
 
             photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -121,13 +146,14 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void ThrowRPC(int ItemID)
     {
         Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
-
+        GetComponent<IkBehaviour>().ikActive = false;
         Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
     public void Throw(Throwable Item) 
     {
+        GetComponent<IkBehaviour>().ikActive = false;
         currentHeldItem = null;
         Item.ResetItemConditions(this);
         photonView.RPC("ThrowRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -138,8 +164,10 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
         Item.transform.Rotate(50, 50, 0);
+        GetComponent<IkBehaviour>().ikActive = false;
         if (Item.GetComponent<Shootable>() != null)
         {
+            Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
             Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
         }
         else
@@ -153,10 +181,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         currentHeldItem = null;
         Item.ResetItemConditions(this);
-
+        GetComponent<IkBehaviour>().ikActive = false;
         if (Item.tag == "Gun")
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
+            GetComponent<IkBehaviour>().ikActive = false;
         }
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
@@ -171,8 +200,14 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Vector3 guardPos = killedGuard.transform.position;
         Quaternion guardRot = killedGuard.transform.rotation;
         guardPos.y += 0.5f;
-        if (GameObject.Find("Endgame") != null)
-            GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
+        //if (GameObject.Find("Endgame") != null)
+        //    GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
+
+        //GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        //foreach (var light in lights)
+        //{
+        //    light.GetComponent<RotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
+        //}
         // remove the guard 
         PhotonNetwork.Destroy(killedGuard);
         // create a dead body that will be draggable (allow new guard model)
@@ -309,11 +344,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         GameObject light = PhotonView.Find(lightID).gameObject;
         GameObject laptop = PhotonView.Find(itemID).gameObject;
-        light.GetComponent<rotateLight>().lightsTurnedOff = !light.GetComponent<rotateLight>().lightsTurnedOff;
+        light.GetComponent<RotateLight>().ToggleLights();
 
         GameObject lightsOff = laptop.transform.GetChild(0).GetChild(1).gameObject;
         GameObject lightsOn = laptop.transform.GetChild(0).GetChild(0).gameObject;
-        if (light.GetComponent<rotateLight>().lightsTurnedOff)
+        if (light.GetComponent<RotateLight>().lightsTurnedOff)
         {
             //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
             //gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();

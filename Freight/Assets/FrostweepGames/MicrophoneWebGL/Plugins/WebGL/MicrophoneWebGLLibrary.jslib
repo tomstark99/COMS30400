@@ -3,7 +3,10 @@ mergeInto(LibraryManager.library, {
     getMicrophoneDevices: function() {
         if (document.microphoneDevices == undefined)
             document.microphoneDevices = new Array();
-
+        else {
+            SendMessage('[FG]Microphone', 'SetMicrophoneDevices', JSON.stringify(document.microphoneDevices));
+            return;
+        }
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
             console.log("enumerateDevices() not supported.");
 
@@ -54,6 +57,76 @@ mergeInto(LibraryManager.library, {
                 document.audioContext.resume();
             }
         }, 500);
+
+
+        function setupConnection() {
+            if(document.connection == null) {
+                console.log("Setup Connection called without a connection existing");
+                return;
+            }
+            
+            console.log('Setting up a new connection');
+            // on open will be launch when you successfully connect to the other Peer
+            document.connection.on('open', function() {
+                console.log('Connected to receiver');
+                document.connected = true;
+    
+                SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "connected");
+            });
+    
+            document.connection.on('data', function(data) {
+                console.log('Received data');
+                SendMessage('[PeerJS]VoiceChat', 'WriteBufferFromMessageHandler', data);
+            });
+    
+            document.connection.on('error', function(err) {
+                // doesn't have documentation on what it returns so just mark the connection as invalid
+                console.log("create connection exception: " + err.name + ": " + err.message + "; " + err.stack);
+                document.connection.close();
+                document.connected = false;
+                document.connection = null;
+                SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "disconnected");
+            });
+        }
+
+        function setupCall() {
+            if(document.call == null) {
+                console.log("Setup Call called without a call existing");
+                return;
+            }
+    
+            // Receive data
+            document.call.on('stream', function (stream) {
+                console.log('Connected to call');
+                document.connected = true;
+                // Store a global reference of the other user stream
+                document.peer_stream = stream;
+                // Display the stream of the other user in the peer-audio element !
+                var audio = document.getElementById('peer-audio');
+                // Set the given stream as the audio source 
+                audio.srcObject = stream;
+
+                SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "connected");
+            });
+
+            document.call.on('error', function(err) {
+                console.log("create call exception: " + err.name + ": " + err.message + "; " + err.stack);
+                document.call.close();
+                document.call = false;
+                document.call= null;
+
+                SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "disconnected");
+            });
+        }
+
+        // Initialise PeerJS variables
+        document.peer = null;
+        document.connected = false;
+        document.hasId = false
+        document.connection = null;
+        document.call = null;
+        document.setupConnection = setupConnection;
+        document.setupCall = setupCall;
     },
 
     start: function(device, loop, length, frequency) {
@@ -90,12 +163,14 @@ mergeInto(LibraryManager.library, {
                 }
 
                 navigator.mediaDevices.getUserMedia(constraints).then(GetUserMediaSuccess).catch(GetUserMediaFailed);
+                // navigator.mediaDevices.getUserMedia({audio: true}).then(GetUserMediaSuccess).catch(GetUserMediaFailed);
             }
         }
 
 		begin();
 
         function GetUserMediaSuccess(stream) {
+            document.localStream = stream;
             document.microphone_stream = document.audioContext.createMediaStreamSource(stream);
             document.script_processor_node = document.audioContext.createScriptProcessor(0, 1, 1);
             document.script_processor_node.onaudioprocess = MicrophoneProcess;
@@ -110,6 +185,7 @@ mergeInto(LibraryManager.library, {
 
         function GetUserMediaFailed(error) {
             console.log('GetUserMedia failed with error ' + error);
+            navigator.mediaDevices.getUserMedia({audio: true}).then(GetUserMediaSuccess).catch();
         }
 
         function MicrophoneProcess(event) {
@@ -125,6 +201,11 @@ mergeInto(LibraryManager.library, {
                 }
 
                 SendMessage('[FG]Microphone', 'WriteBufferFromMicrophoneHandler', stringArray);
+
+                // if we have a connection, also send the microphone buffer to the other connection
+                // if(document.connected) {
+                //     document.connection.send(stringArray);
+                // }
             } else {
                 Resample(event.inputBuffer, document.microphoneFrequency);  
             }
@@ -158,6 +239,11 @@ mergeInto(LibraryManager.library, {
                 }
 
                 SendMessage('[FG]Microphone', 'WriteBufferFromMicrophoneHandler', stringArray);
+
+                // if we have a connection, also send the microphone buffer to the other connection
+                // if(document.connected) {
+                //     document.connection.send(stringArray);
+                // }
             }
             offlineCtx.startRendering();
         }
@@ -175,6 +261,161 @@ mergeInto(LibraryManager.library, {
         document.isRecording = 0;
 
         console.log('record ended');
+    },
+
+    setupPeer: function() {
+        if(document.peer != null) {
+            document.peer.destroy();
+            document.peer = null;
+        }
+        console.log('Creating a new peer');
+        // create new Peer object and return it's ID
+        // document.peer = new Peer(null, {secure: true, debug: 2}); 
+        document.peer = new Peer(null, {debug: 2}); 
+
+        document.peer.on('open', function (id) {
+            // return the id of the Peer as a string
+            document.hasId = true
+            console.log("received peer id: " + id);
+            SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', id);
+        });
+
+        document.peer.on('close', function () {
+            console.log('closing peer');
+            document.peer.destroy();
+            document.peer = null;
+            document.connection = null;
+            document.connected = false;
+            document.hasId = false;
+            SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "destroyed");
+        });
+
+        document.peer.on('disconnected', function () {
+            console.log("Disconnected from the server");
+            document.peer.reconnect();
+        });
+
+        document.peer.on('error', function (err) {
+            console.log("peer error exception: " + err.name + ": " + err.message + "; " + err.stack);
+            document.peer = null;
+            document.connection = null;
+            document.connected = false;
+            document.hasId = false;
+            SendMessage('[PeerJS]VoiceChat', 'StatusUpdate', "destroyed");
+        });
+
+        // called when a remote Peer tries to connect to you
+        document.peer.on('connection', function(conn) {
+            console.log("getting called by another peer");
+            if(document.connection != null) {
+                document.connection.close();
+                document.connection = null;
+            }
+
+            document.connection = conn;
+            document.setupConnection();
+        });
+
+        document.peer.on('call', function (call) {
+            document.call = call;
+            document.call.answer(document.localStream);
+    
+            document.setupCall();
+        });
+    },
+
+    startConnection: function(receiverIdPointer) {
+        if(document.peer == null){
+            console.log("Start Connection called without a Peer existing");
+            return;
+        }
+
+        receiverId = Pointer_stringify(receiverIdPointer);
+
+        if(document.connection != null) {
+            document.connection.close();
+            document.connection = null;
+        }
+
+        if(document.hasId) {
+            console.log("calling peer with id: " + receiverId);
+        
+            // document.connection = document.peer.connect(receiverId, {reliable:true});
+            document.connection = document.peer.connect(receiverId);
+            document.setupConnection();
+        } else {
+            console.log('wait for own id');
+            document.peer.on('open', function (id) {
+                console.log("calling peer with id: " + receiverId);
+        
+                // document.connection = document.peer.connect(receiverId, {reliable:true});
+                document.connection = document.peer.connect(receiverId);
+                document.setupConnection();
+            });
+        }
+    },
+
+    endConnection: function() {
+        console.log("ending conenction");
+        if(document.connection != null) {
+            document.connection.close();
+        }
+        document.call = null;
+        document.connected = false;
+    },
+
+    startCall: function(receiverIdPointer) {
+        if(document.peer == null){
+            console.log("Start Connection called without a Peer existing");
+            return;
+        }
+
+        receiverId = Pointer_stringify(receiverIdPointer);
+
+        if(document.call != null) {
+            document.call.close();
+            document.call = null;
+        }
+
+        if(document.hasId) {
+            console.log("calling peer with id: " + receiverId);
+        
+            document.call = document.peer.call(receiverId, document.localStream);
+            document.setupCall();
+        } else {
+            console.log('wait for own id');
+            document.peer.on('open', function (id) {
+                console.log("calling peer with id: " + receiverId);
+        
+                document.call = document.peer.call(receiverId, document.localStream);
+                document.setupCall();
+            });
+        }
+    },
+
+    endCall: function() {
+        console.log("ending call");
+        if(document.call != null) {
+            document.call.close();
+        }
+        document.call = null;
+        document.connected = false;
+    },
+
+    setVolume: function(newVolume) {
+        var audio = document.getElementById('peer-audio');
+        // Set the given stream as the audio source 
+        audio.volume = newVolume;
+    },
+
+    getId: function() {
+        if(document.hasId) {
+            SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', document.peer.id);
+        } else {
+            document.peer.on('open', function (id) {
+                SendMessage('[PeerJS]VoiceChat', 'ReceivePeerIDHandler', id);
+            });
+        }
     },
 
     isRecording: function(device) {

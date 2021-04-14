@@ -24,6 +24,8 @@ public class ItemInteract : MonoBehaviourPun
     private GameObject interactableObject;
     private GameObject interactables;
 
+    private int tooltipCount;
+
     private bool tooltip;
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,7 @@ public class ItemInteract : MonoBehaviourPun
         }
 
         character = GetComponent<Character>();
+        tooltipCount = 0;
         tooltip = false;
     }
 
@@ -133,8 +136,14 @@ public class ItemInteract : MonoBehaviourPun
                 currentInteractable.PrimaryInteractionOff(character);
                 currentInteractable.GetComponent<Outline>().enabled = true;
                 currentInteractable = null;
-            }
+            } else
 
+            if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Throwable>() != null) 
+            {
+                currentInteractable.GetComponent<Throwable>().ThrowRock(character);
+                currentInteractable.GetComponent<Outline>().enabled = true;
+                currentInteractable = null;
+            } else
             // if item is shootable
             if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Shootable>() != null) 
             {
@@ -177,13 +186,24 @@ public class ItemInteract : MonoBehaviourPun
                 if(tempDist <= 20f && interact.GetComponent<Outline>() != null) 
                 {
                     interact.GetComponent<Outline>().enabled = true;
-                    if (!tooltip)
+                    if(tooltip) 
                     {
-                        Quaternion objRot = transform.rotation;
-                        GameObject playerTooltip = Instantiate(tooltipObject, new Vector3(interact.position.x, interact.position.y + 5, interact.position.z), Quaternion.Euler(objRot.eulerAngles));
-                        playerTooltip.GetComponent<Tooltip>().Player = gameObject;
-                        tooltip = true;
+                        if (tooltipCount < 2)
+                        { 
+                            tooltipCount ++;
+                        } 
+                        else 
+                        {
+                            if(tooltipCount < 4)
+                            {
+                                Quaternion objRot = transform.rotation;
+                                GameObject playerTooltip = Instantiate(tooltipObject, new Vector3(interact.position.x, interact.position.y + 5, interact.position.z), Quaternion.Euler(objRot.eulerAngles));
+                                playerTooltip.GetComponent<Tooltip>().Player = gameObject;
+                                tooltip = false;
+                            }
+                        }
                     }
+                   
                 } 
                 else 
                 {
