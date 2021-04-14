@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204312800504518732}
   m_LocalRotation: {x: -0.17284887, y: -0.15606444, z: -0.82267314, w: 0.518629}
-  m_LocalPosition: {x: 4.372462, y: 184.98877, z: 5.0060973}
+  m_LocalPosition: {x: -1, y: 144.8, z: -1.9}
   m_LocalScale: {x: 66.66668, y: 66.66668, z: 66.66667}
   m_Children: []
   m_Father: {fileID: 4676302478686930919}
@@ -43,7 +43,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 5
+  m_Intensity: 8
   m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -113,6 +113,8 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
+  actualLight: {fileID: 7995425842603295392}
+  pointlight: {fileID: 1204312800504518732}
   lightsTurnedOff: 0
 --- !u!114 &6243353184861702247
 MonoBehaviour:

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
-public class EndGame : MonoBehaviour
+public class EndGame : MonoBehaviourPun
 {
     public GameObject leavingTrain;
     private HashSet<Collider> colliders = new HashSet<Collider>();
@@ -17,7 +17,7 @@ public class EndGame : MonoBehaviour
     private bool showingEndScreen;
     private float endScreen;
     public CinemachineVirtualCamera vcam;
-    
+
     public HashSet<Collider> GetColliders() { return colliders; }
 
     void Start()
@@ -26,10 +26,10 @@ public class EndGame : MonoBehaviour
         StartEndGame += HandleEndGame;
         EndTheGame += ShowEndScreen;
         gameEnding = false;
-        
+
     }
 
-    private void OnTriggerEnter (Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.tag);
         if (other.gameObject.tag == "locomotive")
@@ -37,16 +37,16 @@ public class EndGame : MonoBehaviour
             colliders.Add(other);
             Debug.Log(other.gameObject);
             Debug.Log(colliders.Count);
-            // 6 box colliders on the train so when all of them are in endgame, start endgame
-            if (colliders.Count == 6)
+            // 11 box colliders on the train so when all of them are in endgame, start endgame
+            if (colliders.Count == 11)
             {
                 StartEndGame();
             }
         }
-        
+
     }
 
-    private void OnTriggerExit (Collider other)
+    private void OnTriggerExit(Collider other)
     {
         colliders.Remove(other);
         Debug.Log(other.gameObject);
@@ -64,66 +64,91 @@ public class EndGame : MonoBehaviour
         showingEndScreen = true;
     }
 
+    [PunRPC]
+    void SetActiveLevelCompleteRPC(int viewID)
+    {
+        GameObject player = PhotonView.Find(viewID).gameObject;
+        player.transform.GetChild(13).GetChild(0).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    void SetCutsceneCameraActiveRPC()
+    {
+        vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
+    }
+
+    [PunRPC]
+    void SetGameLostActiveRPC(int viewID)
+    {
+        GameObject player = PhotonView.Find(viewID).gameObject;
+        player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+        player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+    }
+
     void Update()
     {
-        if (gameEnding)
+        if (PhotonNetwork.IsMasterClient)
         {
-            timeToEnd += Time.deltaTime;
-            if (timeToEnd > 5f)
+            if (gameEnding)
             {
-                gameWon = true;
-                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                foreach (var player in players)
+                timeToEnd += Time.deltaTime;
+                if (timeToEnd > 5f)
                 {
-                    if (!player.GetComponent<PlayerMovementPhoton>().OnTrain)
-                    {
-                        gameWon = false;
-                        break;
-                    }
-                }
-                gameEnding = false;
-
-                if (gameWon == true)
-                {
-                    Debug.Log("you won!");
+                    gameWon = true;
+                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
                     foreach (var player in players)
                     {
-                        player.transform.GetChild(13).GetChild(0).gameObject.SetActive(true);
-                    }
-                } 
-                else
-                {
-                    bool switchCamera = false;
-                    foreach(var player in players)
-                      if(Vector3.Distance(player.transform.position, leavingTrain.transform.position) > 100)
-                        switchCamera = true;
-                    
-                    if(switchCamera)
-                    {
-                        vcam.GetComponent<CinemachineVirtualCamera>().Priority = 99;
-                        Debug.Log("you lost...");
-                        foreach (var player in players)
+                        Debug.Log(player.GetComponent<PlayerMovementPhoton>().OnTrain);
+                        Debug.Log(player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf);
+                        // if player not on train or if their backpack is not active, they lose 
+                        if (!player.GetComponent<PlayerMovementPhoton>().OnTrain || !player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf)
                         {
-                            //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
-                            player.transform.GetChild(13).GetChild(13).gameObject.SetActive(true);
-                            player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+                            gameWon = false;
+                            break;
                         }
                     }
-                    //uncomment for cinemachine transition
-                    
-                }
+                    gameEnding = false;
 
-                //EndTheGame();
-                
+                    if (gameWon == true)
+                    {
+                        Debug.Log("you won!");
+                        foreach (var player in players)
+                        {
+                            photonView.RPC(nameof(SetActiveLevelCompleteRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
+                        }
+                    }
+                    else
+                    {
+                        bool switchCamera = false;
+                        foreach (var player in players)
+                            switchCamera = true;
+
+                        if (switchCamera)
+                        {
+                            photonView.RPC(nameof(SetCutsceneCameraActiveRPC), RpcTarget.All);
+                            Debug.Log("you lost...");
+                            foreach (var player in players)
+                            {
+                                //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
+                                //player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+                                //player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+                                photonView.RPC(nameof(SetGameLostActiveRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
+                            }
+                        }
+                        //uncomment for cinemachine transition
+
+                    }
+                    EndTheGame();
+                }
             }
-        }
-        else if (showingEndScreen)
-        {
-            endScreen += Time.deltaTime;
-            if (endScreen > 3f)
+            else if (showingEndScreen)
             {
-                PhotonNetwork.LoadLevel(0);
-                showingEndScreen = false;
+                endScreen += Time.deltaTime;
+                if (endScreen > 6f)
+                {
+                    PhotonNetwork.LoadLevel(0);
+                    showingEndScreen = false;
+                }
             }
         }
     }

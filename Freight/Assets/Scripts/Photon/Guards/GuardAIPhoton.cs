@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
 public class GuardAIPhoton : MonoBehaviourPunCallbacks
@@ -44,6 +45,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public Color spotlightColour;
     public Color alertColour;
 
+    private EndGame endGame;
+
     public State GuardState
     {
         get { return guardState; }
@@ -78,15 +81,38 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         players = GameObject.FindGameObjectsWithTag("Player");
         guard = GetComponent<NavMeshAgent>();
         guardState = State.Patroling;
-        if (GameObject.Find("Endgame") != null) 
-            GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
+        if (GameObject.Find("Endgame") != null)
+        {
+            //GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
+            endGame = GameObject.Find("Endgame").GetComponent<EndGame>();
+            endGame.EndTheGame += DisableGuards;
+        }
+            
 
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
-            
             light.GetComponent<RotateLight>().PlayerInLight += SetAllGuardsToAlerted;
         }
+
+        sightRange = (int) PhotonNetwork.CurrentRoom.CustomProperties["GuardSightRange"];
+        spotlight.range = sightRange;
+        guardAngle = (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardAngle"];
+        spotlight.spotAngle = guardAngle;
+        speedChasing = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"];
+        speedPatrolling = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"];
+    }
+
+    public override void OnDisable()
+    {
+        if (endGame != null)
+            endGame.EndTheGame += DisableGuards;
+        GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
+        foreach (var light in lights)
+        {
+            light.GetComponent<RotateLight>().PlayerInLight -= SetAllGuardsToAlerted;
+        }
+
     }
 
     public void DisableGuards()

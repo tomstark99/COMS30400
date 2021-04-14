@@ -19,7 +19,7 @@ public class AudioUI : MonoBehaviour
        if (PlayerPrefs.HasKey("MasterAudio"))
             MasterAudioSlider.value = PlayerPrefs.GetFloat("MasterAudio");
         else
-            MasterAudioSlider.value = 1f;
+            MasterAudioSlider.value = 0.3f;
         Debug.Log("audio Listener volume is " + AudioListener.volume);
         Debug.Log("Master audio slider is " + MasterAudioSlider.value);
         AudioListener.volume = MasterAudioSlider.value;
@@ -28,6 +28,7 @@ public class AudioUI : MonoBehaviour
    }
     // Start is called before the first frame update
     public void OnMouseOver() {
+        transform.parent.parent.GetComponent<AudioSource>().Play();
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
         //If your mouse hovers over the GameObject with the script attached, output this message
         Debug.Log("Mouse is over GameObject.");
