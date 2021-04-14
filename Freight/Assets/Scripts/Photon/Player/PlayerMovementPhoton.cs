@@ -241,6 +241,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             Debug.Log("stef is aiiiir");
             train = other.gameObject;
             climbing = false;
+            transform.parent = train.transform;
             // LeftHandUpUI.SetActive(false);
             //RightHandUpUI.SetActive(false);
             photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
@@ -265,6 +266,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
             Debug.Log("stef is NOT aiiiir");
+            transform.parent = null;
             photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
 
         }
