@@ -10,25 +10,27 @@ public class TrainPath : MonoBehaviourPun
 
     [Range(0,1)]
     public float position;
+    private float timeToLeave;
+    private bool left = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        iTween.MoveTo(train, iTween.Hash("path", points, "speed", 5.0f, "orientToPath", true, "easetype", iTween.EaseType.easeInOutSine, "axis", "y", "lookahead", 0.001f));
-        
+        timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (position < 1) {
-            position += Time.deltaTime / 10;
-        }
-        // iTween.PutOnPath(train, points, position);
-
+        timeToLeave -= Time.deltaTime;
+        if (timeToLeave < 0 && !left) StartAnimation();
     }
 
     private void OnDrawGizmos() {
         iTween.DrawPath(points);
+    }
+
+    private void StartAnimation() {
+        iTween.MoveTo(train, iTween.Hash("path", points, "time", 50.0f, "orientToPath", true, "easetype", iTween.EaseType.easeInOutSine, "axis", "y"));
+        left = true;
     }
 }
