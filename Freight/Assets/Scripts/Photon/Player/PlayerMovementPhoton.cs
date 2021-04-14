@@ -164,7 +164,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (onTrain)
         {
             //StartCoroutine(SetFaceActive());
-            Debug.Log(GameObject.FindGameObjectWithTag("locomotive"));
+            //Debug.Log(GameObject.FindGameObjectWithTag("locomotive"));
             Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position, Time.deltaTime) - GameObject.FindGameObjectWithTag("locomotive").transform.position;
             trainMove.x = -trainMove.x;
             trainMove.y = 0f;
