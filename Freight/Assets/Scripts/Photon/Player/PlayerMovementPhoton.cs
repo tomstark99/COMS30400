@@ -9,7 +9,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     public CharacterController controller;
     public Transform groundCheck;
     public LayerMask groundMask;
-   
+
     public GameObject faceUI;
     public GameObject LeftHandUpUI;
     public GameObject RightHandUpUI;
@@ -78,12 +78,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     }
 
-    IEnumerator SetFaceActive(){
-        if(check == false){
+    IEnumerator SetFaceActive() {
+        if (check == false) {
             faceUI.SetActive(true);
         }
         yield return new WaitForSeconds(1);
-        if(Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0){
+        if (Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) {
             faceUI.SetActive(false);
             check = true;
         }
@@ -122,15 +122,15 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         } else if (climbing && l > 0f)
         {
             move = transform.up * l;
-        } 
-        else if(PoseParser.GETGestureAsString().CompareTo("F") == 0){
-            move = transform.forward * speed/4;
         }
-        else if(PoseParser.GETGestureAsString().CompareTo("I") == 0){
-            move = transform.right * speed/4 + transform.forward * speed/4;
+        else if (PoseParser.GETGestureAsString().CompareTo("F") == 0) {
+            move = transform.forward * speed / 3;
         }
-        else if(PoseParser.GETGestureAsString().CompareTo("O") == 0){
-            move = transform.right * (-speed/4) + transform.forward * speed/4;
+        else if (PoseParser.GETGestureAsString().CompareTo("I") == 0) {
+            move = transform.right * speed / 4 + transform.forward * speed / 4;
+        }
+        else if (PoseParser.GETGestureAsString().CompareTo("O") == 0) {
+            move = transform.right * (-speed / 4) + transform.forward * speed / 4;
         }
         else
         {
@@ -177,12 +177,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C")==0) && !crouching)
+        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !crouching)
         {
             crouching = true;
             controller.height = 1.2f;
-        } 
-        else if (!Input.GetKey(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0 && crouching)
+        }
+        else if ((Input.GetKeyDown(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0) && crouching)
         {
             crouching = false;
             controller.height = 1.8f;
