@@ -24,6 +24,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
+    [SerializeField]
     private State guardState;
     private float timeAlerted;
     private float timeChasing;
@@ -134,6 +135,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
         // Get new point, modulo so you cycle back to 0
         destPoint = (destPoint + 1) % points.Length;
+
+        Debug.Log("Destination is: " + guard.destination);
+        Debug.Log("Going to point: " + destPoint);
     }
     
     // finds closest player to the guard so they chase that player
@@ -346,6 +350,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+        if (guard.pathPending)
+            return;
+
         players = GameObject.FindGameObjectsWithTag("Player");
         // Check if player is in guard's sight
         bool old = playerSpotted;
@@ -383,7 +390,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             if (timeAlerted > 15f)
             {
                 guardState = State.Patroling;
-                GotoNextPoint();
+                guard.ResetPath();
+                //GotoNextPoint();
+                guard.destination = points[destPoint].position;
                 ChangeToYellow();
                 timeAlerted = 0f;
             }
@@ -401,7 +410,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             if (timeAlerted > 8f)
             {
                 guardState = State.Patroling;
-                GotoNextPoint();
+                guard.ResetPath();
+                //GotoNextPoint();
+                guard.destination = points[destPoint].position;
                 ChangeToYellow();
                 timeAlerted = 0f;
             }
@@ -424,6 +435,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         // If the player is not spotted and the guard has reached their destination, go to new point
         else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {
+            Debug.Log("why tf is this printing lol");
+            Debug.Log("Guard remaining distance in update: " + guard.remainingDistance);
             guardState = State.Patroling;
             timeChasing = 0f;
             GotoNextPoint();
