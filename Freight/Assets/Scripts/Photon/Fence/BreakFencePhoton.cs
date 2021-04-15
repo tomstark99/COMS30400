@@ -79,7 +79,7 @@ public class BreakFencePhoton : MonoBehaviourPun
             string gesture = player.GetComponent<PhotonPlayer>().gesture;
             bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
             
-            if (tempDist <= 2.5f)
+            if (tempDist <= 4f)
             {
                 photonView.RPC("SetPressPToActive", player.GetComponent<PhotonView>().Owner);
                 if (gesture.CompareTo("P") == 0 || pPressed) 
@@ -96,7 +96,7 @@ public class BreakFencePhoton : MonoBehaviourPun
                     break;
                 }
             }
-            else if (tempDist > 2.5f)
+            else if (tempDist > 4f)
             {
                 photonView.RPC("SetPressPToNotActive", player.GetComponent<PhotonView>().Owner);
             }
