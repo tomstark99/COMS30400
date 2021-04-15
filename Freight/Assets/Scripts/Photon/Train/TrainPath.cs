@@ -13,12 +13,16 @@ public class TrainPath : MonoBehaviourPun
     public float position;
     private float timeToLeave;
     private bool left = false;
+    private Dictionary<GameObject, bool> carriageOnTrack = new Dictionary<GameObject, bool>();
 
     // Start is called before the first frame update
     void Start()
     {
         timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
         // StartAnimation();
+        foreach (var c in carriages) {
+            carriageOnTrack[c] = false;
+        }
     }
 
     void Update()
@@ -28,7 +32,6 @@ public class TrainPath : MonoBehaviourPun
             if (timeToLeave < 0 && !left) StartAnimation();
             if (left) {
                 foreach (var c in carriages) {
-                    Debug.Log((c.transform.position - iTween.PointOnPath(points, 0)).sqrMagnitude);
                     float min = float.PositiveInfinity;
                     float min_p = 0.0f;
                     for (float t = 0; t <= 1; t += 0.0005f) {
@@ -38,7 +41,12 @@ public class TrainPath : MonoBehaviourPun
                             min_p = t;
                         }
                     }
-                    iTween.PutOnPath(c, points, min_p);
+                    if (min < 0.001f && !carriageOnTrack[c]) {
+                        Debug.Log("ONTRACK");
+                        carriageOnTrack[c] = true;
+                    } else if (carriageOnTrack[c]) {
+                        iTween.PutOnPath(c, points, min_p);
+                    }
                 }
             }
         }
