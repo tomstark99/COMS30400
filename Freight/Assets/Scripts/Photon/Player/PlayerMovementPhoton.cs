@@ -236,7 +236,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             climbing = false;
             LeftHandUpUI.SetActive(false);
             RightHandUpUI.SetActive(false);
-            photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
+            onTrain = true;
+            //photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
         }
     }
 
@@ -258,7 +259,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
             train = null;
-            photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
+            onTrain = false;
+            //photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
             Debug.Log("stef is NOT aiiiir");
         }
     }
