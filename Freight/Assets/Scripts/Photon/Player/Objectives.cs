@@ -111,7 +111,7 @@ public class Objectives : MonoBehaviour
 
         findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/2)";
 
-        if (bagsPickedUp == 2)
+        if (bagsPickedUp == 1)
         {
             findBackpacks.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findBackpacksDesc.SetActive(false);
