@@ -17,7 +17,7 @@ public class PlayerLightUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(timeToDisable);
+        //Debug.Log(timeToDisable);
         if (isOn)
         {
             timeToDisable += Time.deltaTime;
