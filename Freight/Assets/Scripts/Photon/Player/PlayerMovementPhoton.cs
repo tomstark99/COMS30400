@@ -158,7 +158,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // sticks the player onto the train
         if (onTrain)
         {
-            StartCoroutine(SetFaceActive());
+            //StartCoroutine(SetFaceActive());
             Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, train.transform.position, Time.deltaTime) - train.transform.position;
             trainMove.x = -trainMove.x;
             trainMove.y = 0f;
@@ -236,8 +236,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             climbing = false;
             LeftHandUpUI.SetActive(false);
             RightHandUpUI.SetActive(false);
+           // photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
             onTrain = true;
-            //photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
         }
     }
 
@@ -259,8 +259,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
             train = null;
+            // photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
             onTrain = false;
-            //photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
             Debug.Log("stef is NOT aiiiir");
         }
     }
