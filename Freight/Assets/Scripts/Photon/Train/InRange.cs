@@ -12,6 +12,7 @@ public class InRange : MonoBehaviourPun
     public event Action InRangeOfTrain;
     private bool overlayDisplayed = false;
     private bool walkedInRangeOfTrain = false;
+    private bool objectiveActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,7 @@ public class InRange : MonoBehaviourPun
             if(other.gameObject.GetComponent<Objectives>().FindBackpacks.activeSelf && !other.gameObject.GetComponent<Objectives>().FindBackpacksDesc.activeSelf) {
                 if (!walkedInRangeOfTrain)
                 {
+                    objectiveActive = true;
                     photonView.RPC(nameof(InRangeOfTrainRPC), RpcTarget.All);
                 }
             }
@@ -49,9 +51,11 @@ public class InRange : MonoBehaviourPun
     }
 
     void OnTriggerExit(Collider other) {
-        if (walkedInRangeOfTrain && other.gameObject.tag == "Player")
-        {
-            photonView.RPC(nameof(WalkedOutOfTrain), RpcTarget.All);
+        if (!objectiveActive) {
+            if (walkedInRangeOfTrain && other.gameObject.tag == "Player")
+            {
+                photonView.RPC(nameof(WalkedOutOfTrain), RpcTarget.All);
+            }
         }
     }
 
