@@ -70,7 +70,7 @@ public class PlayerAnimation : MonoBehaviourPun
             Animate();
             camera.transform.position = head.transform.position;
         }
-        
+
     }
 
     private void Animate() {
@@ -90,7 +90,7 @@ public class PlayerAnimation : MonoBehaviourPun
         // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
 
-        if(climbing && Input.GetKey(KeyCode.W)) {
+        if (climbing && Input.GetKey(KeyCode.W)) {
             animator.SetBool(isClimbingHash, true);
         } else {
             animator.SetBool(isClimbingHash, false);
@@ -103,29 +103,34 @@ public class PlayerAnimation : MonoBehaviourPun
                 player.setSpeed(runningSpeed);
             }
 
-            else
+            else if (PoseParser.GETGestureAsString().CompareTo("F") == 0 || Input.GetKey(KeyCode.W))
             {
                 animator.SetBool(isWalkingHash, true);
                 player.setSpeed(walkingSpeed);
             }
-                
-        } 
-        if(!isRunningBack && z < -0.02f) {
+            // else
+            // {
+            //     animator.SetBool(isWalkingHash, true);
+            //     player.setSpeed(walkingSpeed);
+            // }
+
+        }
+        if (!isRunningBack && z < -0.02f) {
             animator.SetBool(isRunningBackHash, true);
         }
-        if(z <= 0.02f && z >= -0.02f) {
+        if (z <= 0.02f && z >= -0.02f && PoseParser.GETGestureAsString().CompareTo("F") != 0) {
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, false);
             animator.SetBool(isRunningBackHash, false);
         }
-        if (!isRight && x > 0.02f) {
+        if ((!isRight && x > 0.02f) || (!isRight && PoseParser.GETGestureAsString().CompareTo("I") == 0)) {
             animator.SetBool(isRightHash, true);
         }
-        if (x <= 0.02f && x >= -0.02f) {
+        if (x <= 0.02f && x >= -0.02f && PoseParser.GETGestureAsString().CompareTo("I") != 0 && PoseParser.GETGestureAsString().CompareTo("O") != 0) {
             animator.SetBool(isLeftHash, false);
             animator.SetBool(isRightHash, false);
         }
-        if (!isLeft && x < -0.02f) {
+        if ((!isLeft && x < -0.02f) || (!isLeft && PoseParser.GETGestureAsString().CompareTo("O") == 0)) {
             animator.SetBool(isLeftHash, true);
         }
 
@@ -139,7 +144,7 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isRunningHash, true);
             player.setSpeed(runningSpeed);
 
-        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning) {
+        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning && PoseParser.GETGestureAsString().CompareTo("F") != 0) {
             animator.SetBool(isWalkingHash, true);
             animator.SetBool(isRunningHash, false);
             player.setSpeed(walkingSpeed);
@@ -157,6 +162,13 @@ public class PlayerAnimation : MonoBehaviourPun
         } else if (isGrounded) {
             animator.SetBool(isJumpingHash, false);
         }
+
+        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !isCrouched) {
+            animator.SetBool(isCrouchedHash, true);
+        } else if ((Input.GetKeyDown(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0) && isCrouched) {
+            animator.SetBool(isCrouchedHash, false);
+        }
+
     }
 
     public bool getGrounded() {
