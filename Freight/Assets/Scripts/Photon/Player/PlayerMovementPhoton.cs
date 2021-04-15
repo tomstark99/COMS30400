@@ -82,7 +82,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (check == false) {
             faceUI.SetActive(true);
         }
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0);
         if (Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) {
             faceUI.SetActive(false);
             check = true;
@@ -180,6 +180,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !crouching)
         {
             crouching = true;
+            faceUI.SetActive(false);
             controller.height = 1.2f;
         }
         else if ((Input.GetKeyDown(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0) && crouching)
