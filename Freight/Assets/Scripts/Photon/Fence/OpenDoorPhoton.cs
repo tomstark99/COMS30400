@@ -16,7 +16,7 @@ public class OpenDoorPhoton : MonoBehaviourPun
     private bool isBroken;
 
     //public event Action FenceBroke;
-    //public event Action InRangeOfFence;
+    public event Action InRangeOfFence;
     private bool overlayDisplayed = false;
     private bool walkedInRangeOfFence = false;
 
@@ -24,7 +24,7 @@ public class OpenDoorPhoton : MonoBehaviourPun
     void Start()
     {
         isBroken = false;
-        //InRangeOfFence += setFenceOutline;
+        InRangeOfFence += setFenceOutline;
     }
 
     [PunRPC]
@@ -106,19 +106,19 @@ public class OpenDoorPhoton : MonoBehaviourPun
         
     }
 
-    // [PunRPC]
-    // void InRangeOfFenceRPC()
-    // {
-    //     InRangeOfFence();
-    // }
+    [PunRPC]
+    void InRangeOfFenceRPC()
+    {
+        InRangeOfFence();
+    }
 
-    // void OnTriggerEnter(Collider other)
-    // {
-    //     if (!walkedInRangeOfFence)
-    //     {
-    //         photonView.RPC(nameof(InRangeOfFenceRPC), RpcTarget.All);
-    //     }
-    // }
+    void OnTriggerEnter(Collider other)
+    {
+        if (!walkedInRangeOfFence)
+        {
+            photonView.RPC(nameof(InRangeOfFenceRPC), RpcTarget.All);
+        }
+    }
 
     void setFenceOutline()
     {
