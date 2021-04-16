@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Cinemachine;
 
 public class PlayerMovementPhoton : MonoBehaviourPun
 {
@@ -39,6 +40,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private Transform prev;
     private PhotonView PV;
 
+    [SerializeField]
+    private CinemachineVirtualCamera vcam;
+
     public bool onMenu;
     public bool OnTrain
     {
@@ -61,6 +65,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             GetComponent<PlayerMovementPhoton>().enabled = false;
         }
 
+        GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
+
+        foreach (var guard in guards)
+        {
+            guard.GetComponent<GuardAIPhoton>().PlayerCaught += DisablePlayer;
+        }
+
         onMenu = false;
     }
 
@@ -75,8 +86,15 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (photonView.IsMine) {
             Movement();
         }
+    }
 
-
+    void DisablePlayer()
+    {
+        vcam.Priority = 100;
+        gameObject.transform.GetChild(13).GetChild(16).gameObject.SetActive(true);
+        gameObject.GetComponent<PlayerAnimation>().enabled = false;
+        gameObject.GetComponent<MouseLookPhoton>().enabled = false;
+        gameObject.GetComponent<PlayerMovementPhoton>().enabled = false;
     }
 
     IEnumerator SetFaceActive() {

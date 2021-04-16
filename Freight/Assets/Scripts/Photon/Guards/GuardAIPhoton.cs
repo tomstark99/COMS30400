@@ -48,33 +48,13 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     private EndGame endGame;
 
+    public event Action PlayerCaught;
+    private bool playerCaught;
+
     public State GuardState
     {
         get { return guardState; }
     }
-
-    /*
-     IEnumerator SolveStuck() {
-        Vector3 lastPosition = this.transform.position;
- 
-        while (true) {
-            yield return new WaitForSeconds(3f);
- 
-            //Maybe we can also use agent.velocity.sqrMagnitude == 0f or similar
-            if (!agent.pathPending && agent.hasPath && agent.remainingDistance > agent.stoppingDistance) {
-                Vector3 currentPosition = this.transform.position;
-                if (Vector3.Distance(currentPosition, lastPosition) < 1f) {
-                    Vector3 destination = agent.destination;
-                    agent.ResetPath();
-                    agent.SetDestination(destination);
-                    Debug.Log("Agent Is Stuck");
-                }
-                Debug.Log("Current Position " + currentPosition + " Last Position " + lastPosition);
-                lastPosition = currentPosition;
-            }
-        }
-    }
-    */
     
     void Start()
     {
@@ -102,6 +82,15 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         spotlight.spotAngle = guardAngle;
         speedChasing = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"];
         speedPatrolling = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"];
+
+        GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
+
+        foreach (var guard in guards)
+        {
+            guard.GetComponent<GuardAIPhoton>().PlayerCaught += PlayerHasBeenCaught;
+        }
+
+        playerCaught = false;
     }
 
     public override void OnDisable()
@@ -347,10 +336,15 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         return new Vector3(0f, 0f, 0f);
     }
 
+    void PlayerHasBeenCaught()
+    {
+        playerCaught = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (guard.pathPending)
+        if (guard.pathPending || playerCaught)
             return;
 
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -379,6 +373,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         //{
         //    Debug.Log("You lose");
         //}
+        if (playerSpotted && timeChasing > 8f)
+        {
+            PlayerCaught();
+            return;
+        }
+
         if (deadGuardSpotted)
         {
             SetAllGuardsToAlerted();
