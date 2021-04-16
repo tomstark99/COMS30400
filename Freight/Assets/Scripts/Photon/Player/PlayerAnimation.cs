@@ -165,7 +165,7 @@ public class PlayerAnimation : MonoBehaviourPun
 
         if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !isCrouched) {
             animator.SetBool(isCrouchedHash, true);
-        } else if ((Input.GetKeyDown(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0) && isCrouched) {
+        } else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C")!=0) && isCrouched) {
             animator.SetBool(isCrouchedHash, false);
         }
 

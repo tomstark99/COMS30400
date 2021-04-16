@@ -68,8 +68,8 @@ public class OpenDoorPhoton : MonoBehaviourPun
 
     void Update()
     {
-        // if (isBroken)
-        //  return;
+        if (isBroken)
+         return;
         players = GameObject.FindGameObjectsWithTag("Player");
         
         foreach (var player in players)
@@ -90,8 +90,9 @@ public class OpenDoorPhoton : MonoBehaviourPun
                     
                     photonView.RPC(nameof(SetPressPToNotActive), player.GetComponent<PhotonView>().Owner);
 
+                    PhotonNetwork.Instantiate("PhotonPrefabs/warehouse_doors_open Variant", spawnPosition, Quaternion.Euler(0f, 0f, 0f));
                     photonView.RPC(nameof(DestroyFence), RpcTarget.MasterClient);
-                    //PhotonNetwork.Instantiate("PhotonPrefabs/warehouse_doors_open Variant", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
+                    
                     isBroken = true;
                     break;
                 }
