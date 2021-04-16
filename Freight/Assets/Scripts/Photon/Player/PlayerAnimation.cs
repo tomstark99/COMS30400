@@ -73,6 +73,17 @@ public class PlayerAnimation : MonoBehaviourPun
 
     }
 
+    public void SetAllFalse()
+    {
+        animator.SetBool(isClimbingHash, false);
+        animator.SetBool(isWalkingHash, false);
+        animator.SetBool(isRunningHash, false);
+        animator.SetBool(isRunningBackHash, false);
+        animator.SetBool(isLeftHash, false);
+        animator.SetBool(isRightHash, false);
+        animator.SetBool(isCrouchedHash, false);
+    }
+
     private void Animate() {
 
         bool isWalking = animator.GetBool(isWalkingHash);
