@@ -33,6 +33,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private bool climbing;
     private bool climbingBuilding;
     private bool crouching;
+    [SerializeField]
     private bool onTrain;
     private bool check = false;
     private Transform prev;
