@@ -68,8 +68,8 @@ public class BreakFencePhoton : MonoBehaviourPun
 
     void Update()
     {
-        // if (isBroken)
-        //  return;
+        if (isBroken)
+         return;
         players = GameObject.FindGameObjectsWithTag("Player");
         
         foreach (var player in players)
@@ -90,9 +90,9 @@ public class BreakFencePhoton : MonoBehaviourPun
                     
                     photonView.RPC(nameof(SetPressPToNotActive), player.GetComponent<PhotonView>().Owner);
 
-                    photonView.RPC(nameof(DestroyFence), RpcTarget.MasterClient);
                     PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
                     isBroken = true;
+                    photonView.RPC(nameof(DestroyFence), RpcTarget.MasterClient);
                     break;
                 }
             }
