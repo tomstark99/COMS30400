@@ -31,6 +31,13 @@ public class EndGame : MonoBehaviourPun
         totalBags = 0;
         totalOnTrain = 0;
 
+        GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
+
+        foreach (var guard in guards)
+        {
+            guard.GetComponent<GuardAIPhoton>().PlayerCaught += ShowEndScreen;
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -119,6 +126,16 @@ public class EndGame : MonoBehaviourPun
             }
         }
     }
+    
+    void CheckIfGameOver()
+    {
+        endScreen += Time.deltaTime;
+        if (endScreen > 6f)
+        {
+            PhotonNetwork.LoadLevel(0);
+            showingEndScreen = false;
+        }
+    }
 
     void Update()
     {
@@ -169,12 +186,7 @@ public class EndGame : MonoBehaviourPun
             }
             else if (showingEndScreen)
             {
-                endScreen += Time.deltaTime;
-                if (endScreen > 6f)
-                {
-                    PhotonNetwork.LoadLevel(0);
-                    showingEndScreen = false;
-                }
+                CheckIfGameOver();
             }
         }
     }
