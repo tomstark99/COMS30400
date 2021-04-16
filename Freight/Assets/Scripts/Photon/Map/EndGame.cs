@@ -16,6 +16,8 @@ public class EndGame : MonoBehaviourPun
     private bool gameWon;
     private bool showingEndScreen;
     private float endScreen;
+    private int totalBags;
+    private int totalOnTrain;
     public CinemachineVirtualCamera vcam;
 
     public HashSet<Collider> GetColliders() { return colliders; }
@@ -26,6 +28,8 @@ public class EndGame : MonoBehaviourPun
         StartEndGame += HandleEndGame;
         EndTheGame += ShowEndScreen;
         gameEnding = false;
+        totalBags = 0;
+        totalOnTrain = 0;
 
     }
 
@@ -85,6 +89,37 @@ public class EndGame : MonoBehaviourPun
         player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
     }
 
+    [PunRPC]
+    void SetGameLostBagsActiveRPC(int viewID)
+    {
+        GameObject player = PhotonView.Find(viewID).gameObject;
+        player.transform.GetChild(13).GetChild(15).gameObject.SetActive(true);
+        player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+    }
+
+    void CheckGameWinConditions(GameObject[] players)
+    {
+        
+        foreach (var player in players)
+        {
+            Debug.Log(player.GetComponent<PlayerMovementPhoton>().OnTrain);
+            Debug.Log(player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf);
+            bool bagOnBack = player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf;
+            if (player.GetComponent<PlayerMovementPhoton>().OnTrain)
+                totalOnTrain += 1;
+
+            if (bagOnBack)
+                totalBags += 1;
+
+            // if player not on train or if their backpack is not active, they lose 
+            if (!player.GetComponent<PlayerMovementPhoton>().OnTrain || !bagOnBack)
+            {
+                gameWon = false;
+                break;
+            }
+        }
+    }
+
     void Update()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -96,17 +131,8 @@ public class EndGame : MonoBehaviourPun
                 {
                     gameWon = true;
                     GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                    foreach (var player in players)
-                    {
-                        Debug.Log(player.GetComponent<PlayerMovementPhoton>().OnTrain);
-                        Debug.Log(player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf);
-                        // if player not on train or if their backpack is not active, they lose 
-                        if (!player.GetComponent<PlayerMovementPhoton>().OnTrain || !player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf)
-                        {
-                            gameWon = false;
-                            break;
-                        }
-                    }
+                    CheckGameWinConditions(players);
+
                     gameEnding = false;
 
                     if (gameWon == true)
@@ -119,22 +145,22 @@ public class EndGame : MonoBehaviourPun
                     }
                     else
                     {
-                        bool switchCamera = false;
-                        foreach (var player in players)
-                            switchCamera = true;
-
-                        if (switchCamera)
+                        photonView.RPC(nameof(SetCutsceneCameraActiveRPC), RpcTarget.All);
+                        Debug.Log("you lost...");
+                        if (totalOnTrain < players.Length)
                         {
-                            photonView.RPC(nameof(SetCutsceneCameraActiveRPC), RpcTarget.All);
-                            Debug.Log("you lost...");
                             foreach (var player in players)
                             {
-                                //player.transform.GetChild(13).GetChild(1).gameObject.SetActive(true);
-                                //player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
-                                //player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
                                 photonView.RPC(nameof(SetGameLostActiveRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                             }
+                        } else if (totalBags < players.Length)
+                        {
+                            foreach (var player in players)
+                            {
+                                photonView.RPC(nameof(SetGameLostBagsActiveRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
+                            }
                         }
+
                         //uncomment for cinemachine transition
 
                     }
