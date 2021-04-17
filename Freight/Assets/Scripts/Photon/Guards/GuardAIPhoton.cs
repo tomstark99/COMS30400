@@ -380,6 +380,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         if (playerSpotted && timeChasing > 8f)
         {
             PlayerCaught();
+            Transform closestPlayer = FindClosestPlayer();
+            closestPlayer.GetComponent<PlayerMovementPhoton>().EnableVirtualCamera();
             return;
         }
 
