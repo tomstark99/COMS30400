@@ -88,9 +88,19 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
     }
 
-    void DisablePlayer()
+    public void EnableVirtualCamera()
+    {
+        photonView.RPC(nameof(EnableVirtualCameraRPC), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void EnableVirtualCameraRPC()
     {
         vcam.Priority = 100;
+    }
+
+    void DisablePlayer()
+    {
         gameObject.transform.GetChild(13).GetChild(16).gameObject.SetActive(true);
         gameObject.GetComponent<PlayerAnimation>().SetAllFalse();
         gameObject.GetComponent<PlayerAnimation>().enabled = false;
