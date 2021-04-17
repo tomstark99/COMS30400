@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using UnityEngine.UI;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
 public class GuardAIPhoton : MonoBehaviourPunCallbacks
@@ -19,6 +20,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private bool reactsToRocks;
+
+    [SerializeField]
+    private Slider patienceBar;
 
     public NavMeshAgent guard;
     public LayerMask groundMask, playerMask, obstacleMask;
@@ -424,6 +428,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         }
         else if (!playerSpotted && guardState == State.Chasing)
         {
+            patienceBar.value = 0;
+            patienceBar.gameObject.SetActive(false);
             timeAlerted = 0;
             timeChasing = 0;
             guardState = State.Alerted;
@@ -445,7 +451,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         // If player is spotted, guard will chase player and set guards in the same group as him to spotted
         else if (playerSpotted)
         {
+            if (patienceBar.gameObject.activeSelf == false)
+            {
+                patienceBar.gameObject.SetActive(true);
+            }
             timeChasing += Time.deltaTime;
+            patienceBar.value = timeChasing;
             if (timeChasing > 2f)
             {
                 SetGuardsToAlerted();
