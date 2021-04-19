@@ -33,7 +33,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public float speedPatrolling = 3.0f;
     public float speedChasing = 7.0f;
 
-
     // Counter to increment points in path
     private int destPoint = 0;
 
@@ -186,7 +185,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         foreach (var player in players)
         {
             //Debug.Log(player);
-            if (Vector3.Distance(transform.position, player.transform.position) < sightRange)
+            var distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < sightRange)
             {
                 // vector from guard to player
                 Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
@@ -205,6 +205,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                     }
                 }
 
+            }
+            var decibelsValue = player.GetComponent<SoundRipples>().decibelsValue;
+            if(distance < decibelsValue)
+            {
+                guard.speed = speedChasing;
+                return true;
             }
             
             // checks if player is in guard's view range 
