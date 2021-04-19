@@ -92,16 +92,20 @@ public class EndGame : MonoBehaviourPun
     void SetGameLostActiveRPC(int viewID)
     {
         GameObject player = PhotonView.Find(viewID).gameObject;
-        player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
-        player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+        //player.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
+        player.transform.Find("UI 1/TrainLeftWithoutYouLost").gameObject.SetActive(true);
+        //player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+        player.transform.Find("UI 1/ObjectivesWrapper").gameObject.SetActive(false);
     }
 
     [PunRPC]
     void SetGameLostBagsActiveRPC(int viewID)
     {
         GameObject player = PhotonView.Find(viewID).gameObject;
-        player.transform.GetChild(13).GetChild(15).gameObject.SetActive(true);
-        player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+        //player.transform.GetChild(13).GetChild(15).gameObject.SetActive(true);
+        player.transform.Find("UI 1/YouDidntCollectTheBags").gameObject.SetActive(true);
+        //player.transform.GetChild(13).GetChild(7).gameObject.SetActive(false);
+        player.transform.Find("UI 1/ObjectivesWrapper").gameObject.SetActive(false);
     }
 
     void CheckGameWinConditions(GameObject[] players)
