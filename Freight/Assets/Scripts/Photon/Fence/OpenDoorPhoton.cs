@@ -79,7 +79,7 @@ public class OpenDoorPhoton : MonoBehaviourPun
             string gesture = player.GetComponent<PhotonPlayer>().gesture;
             bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
             
-            if (tempDist <= 5f)
+            if (tempDist <= 6f)
             {
                 photonView.RPC("SetPressPToActive", player.GetComponent<PhotonView>().Owner);
                 if (gesture.CompareTo("P") == 0 || pPressed) 
@@ -90,14 +90,14 @@ public class OpenDoorPhoton : MonoBehaviourPun
                     
                     photonView.RPC(nameof(SetPressPToNotActive), player.GetComponent<PhotonView>().Owner);
 
-                    PhotonNetwork.Instantiate("PhotonPrefabs/warehouse_doors_open Variant", spawnPosition, Quaternion.Euler(0f, 0f, 0f));
+                    //PhotonNetwork.Instantiate("PhotonPrefabs/warehouse_doors_open Variant", spawnPosition, Quaternion.Euler(0f, 0f, 0f));
                     photonView.RPC(nameof(DestroyFence), RpcTarget.MasterClient);
                     
                     isBroken = true;
                     break;
                 }
             }
-            else if (tempDist > 5f)
+            else if (tempDist > 6f)
             {
                 photonView.RPC("SetPressPToNotActive", player.GetComponent<PhotonView>().Owner);
             }
