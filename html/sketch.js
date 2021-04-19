@@ -39,17 +39,17 @@ function setup() {
   // init posenet
   var optionsPose = {
     architecture: 'ResNet50',
-    imageScaleFactor: 0.5,
+    imageScaleFactor: 1,
     outputStride: 16,
     // flipHorizontal: false,
     minConfidence: 0.2,
     maxPoseDetections: 1,
     scoreThreshold: 0.2,
-    // nmsRadius: 20,
+    nmsRadius: 1,
     // detectionType: 'single',
-    inputResolution: 161,
-    // multiplier: 1,
-    quantBytes: 1,
+    inputResolution:257,
+    multiplier: 1.0,
+    quantBytes: 4,
   };
 
   poseNet = ml5.poseNet(video, optionsPose, modelLoaded);
@@ -71,11 +71,12 @@ function modelLoaded() {
 function noseLabel(){
   // normalise nose position e.g. 0<x,y<1
   var normNosePos = createVector(pose1.nose.x/(2 * width), pose1.nose.y/(2 * height));
-  if(normNosePos.x > 0 && normNosePos.x < 0.37 && normNosePos.y > 1/3 && normNosePos.y < 2/3){
-    return 'I';
-  }else if (normNosePos.x > 0.62 && normNosePos.x < 1 && normNosePos.y > 1/3 && normNosePos.y < 2/3) {
-    return 'O';
-  }else if (normNosePos.x > 0 && normNosePos.x < 1/3 && normNosePos.y > 2/3 && normNosePos.y < 1) {
+  // if(normNosePos.x > 0 && normNosePos.x < 0.37 && normNosePos.y > 1/3 && normNosePos.y < 2/3){
+  //   return 'I';
+  // }else if (normNosePos.x > 0.62 && normNosePos.x < 1 && normNosePos.y > 1/3 && normNosePos.y < 2/3) {
+  //   return 'O';
+  // }else
+  if (normNosePos.x > 0 && normNosePos.x < 1/3 && normNosePos.y > 2/3 && normNosePos.y < 1) {
     return 'W';
   } else if (normNosePos.x > 2/3 && normNosePos.x < 1 && normNosePos.y > 2/3 && normNosePos.y < 1) {
     return 'Q';
@@ -104,9 +105,11 @@ function handsLabel(){
       // Pull up, both hands moving down
       poseLag = 8;
       return "U";
-  }else if (normLeftWristPos.x>2/3 && normLeftWristPos.x<1 && normLeftWristPos.y>0.2 && normLeftWristPos.y<0.8) {
-      // Move forward, left hand up
-      return "F";
+  // }else if (normLeftWristPos.x>2/3 && normLeftWristPos.x<1 && normLeftWristPos.y>0.2 && normLeftWristPos.y<0.8) {
+  //     // Move forward, left hand up
+  //     return "F";
+} else if (normLeftWristVector.y>0.4) {
+      return "R";
     }else{
       return 'N';
     }
@@ -164,6 +167,9 @@ function gotResult() {
       break;
       case 'F':
       poseSentence = "Move Forward";
+      break;
+      case "R":
+      poseSentence = "Throw";
       break;
       default:
       poseSentence = "";
@@ -250,6 +256,7 @@ function draw() {
   image(video, 0, 0, video.width, video.height);
 
   if (pose) {
+    console.log(pose.leftWrist);
     let eyeR = pose.rightEye;
     let eyeL = pose.leftEye;
     let d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
