@@ -1350,7 +1350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393f8decc95e7a445882235c9a150138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 150
+  mouseSensitivity: 2
   playerBody: {fileID: 8764660026470724062}
   virtualCamera: {fileID: 3335710498440849529}
   onMenu: 0
@@ -1624,12 +1624,12 @@ PrefabInstance:
     - target: {fileID: 1824027417177710462, guid: 84ad571afe4f161498e59ae37dc3993e,
         type: 3}
       propertyPath: m_MaxValue
-      value: 300
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1824027417177710462, guid: 84ad571afe4f161498e59ae37dc3993e,
         type: 3}
       propertyPath: m_MinValue
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1824027417177710462, guid: 84ad571afe4f161498e59ae37dc3993e,
         type: 3}
