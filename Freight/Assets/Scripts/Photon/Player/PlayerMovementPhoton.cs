@@ -321,7 +321,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     public void setSpeed(float val) {
         if(this.speed != val) {
-            Debug.Log("SET SPEED" + val);
             this.speed = val;
         }
     }

@@ -129,8 +129,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         // Get new point, modulo so you cycle back to 0
         destPoint = (destPoint + 1) % points.Length;
 
-        Debug.Log("Destination is: " + guard.destination);
-        Debug.Log("Going to point: " + destPoint);
     }
     
     // finds closest player to the guard so they chase that player
@@ -443,8 +441,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         // If the player is not spotted and the guard has reached their destination, go to new point
         else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {
-            Debug.Log("why tf is this printing lol");
-            Debug.Log("Guard remaining distance in update: " + guard.remainingDistance);
             guardState = State.Patroling;
             timeChasing = 0f;
             GotoNextPoint();
