@@ -101,7 +101,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void DisablePlayer()
     {
-        gameObject.transform.GetChild(13).GetChild(16).gameObject.SetActive(true);
+        transform.Find("UI 1/CaughtByGuards").gameObject.SetActive(true);
         gameObject.GetComponent<PlayerAnimation>().SetAllFalse();
         gameObject.GetComponent<PlayerAnimation>().enabled = false;
         gameObject.GetComponent<MouseLookPhoton>().enabled = false;

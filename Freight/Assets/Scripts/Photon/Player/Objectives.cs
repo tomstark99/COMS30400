@@ -28,6 +28,10 @@ public class Objectives : MonoBehaviour
     [SerializeField]
     private GameObject findBackpacksDesc;
     [SerializeField]
+    private GameObject findBackpacksDescLaptop;
+    [SerializeField]
+    private GameObject findBackpacksLaptopDist;
+    [SerializeField]
     private GameObject findBackpacksBackground;
     [SerializeField]
     private GameObject findTrain;
@@ -80,9 +84,20 @@ public class Objectives : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(findTrainDistance.activeSelf) {
+        if(findTrainDistance.activeSelf) 
+        {
             float distance = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("locomotive").transform.position);
             findTrainDistance.GetComponent<TextMeshProUGUI>().text = "Nearest train: " + Math.Round(distance, 2) + "m";
+        }
+        if(findBackpacksLaptopDist.activeSelf)
+        {
+            float distance = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Laptop").transform.position);
+            findBackpacksLaptopDist.GetComponent<TextMeshProUGUI>().text = "(" + Math.Round(distance, 2) + "m)";
+            if (distance < 3.0f)
+            {
+                findBackpacksLaptopDist.SetActive(false);
+                findBackpacksDescLaptop.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+            }
         }
     }
 
@@ -106,6 +121,8 @@ public class Objectives : MonoBehaviour
         findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/" + playerCount + ")";
         findBackpacksDesc.SetActive(true);
         findBackpacksBackground.SetActive(true);
+        findBackpacksDescLaptop.SetActive(true);
+        findBackpacksLaptopDist.SetActive(true);
     }
 
     void SetFindTrainToActive() 
@@ -121,6 +138,8 @@ public class Objectives : MonoBehaviour
             findBackpacks.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findBackpacksDesc.SetActive(false);
             findBackpacksBackground.SetActive(false);
+            findBackpacksDescLaptop.SetActive(false);
+            findBackpacksLaptopDist.SetActive(false);
             findTrain.SetActive(true);
             findTrainDesc.SetActive(true);
             findTrainBackground.SetActive(true);
@@ -131,7 +150,8 @@ public class Objectives : MonoBehaviour
     void SetEscapeToActive()
     {
         Debug.Log("IS BACKPACKS ACTIVE? " + findBackpacksDesc.activeSelf);
-        if(!findBackpacksDesc.activeSelf && findBackpacks.activeSelf) {
+        if(!findBackpacksDesc.activeSelf && findBackpacks.activeSelf) 
+        {
             findTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findTrainDesc.SetActive(false);
             findTrainDistance.SetActive(false);
