@@ -37,7 +37,7 @@ public class ItemInteract : MonoBehaviourPun
 
         character = GetComponent<Character>();
         tooltipCount = 0;
-        tooltip = false;
+        tooltip = true;
     }
 
     void DisplayTooltip()
