@@ -14,6 +14,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
 
+    public MoveCrosshair crosshair;
+    
     public GameObject camera;
 
     private bool holdingTheBag;
@@ -149,7 +151,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         GetComponent<IkBehaviour>().ikActive = false;
         // Gesture aim
         // Debug.Log("CAMERA POSITION"+ (camera.transform.forward + (camera.transform.rotation * MoveCrosshair.GETCrosshairOffsetFromCentre())));
-        Item.GetComponent<Rigidbody>().AddForce((camera.transform.forward + (camera.transform.rotation * MoveCrosshair.GETCrosshairOffsetFromCentre()) * 0.002f).normalized * 1000);
+        Item.GetComponent<Rigidbody>().AddForce((camera.transform.forward + (camera.transform.rotation * crosshair.GETCrosshairOffsetFromCentre()) * 0.002f).normalized * 1000);
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 

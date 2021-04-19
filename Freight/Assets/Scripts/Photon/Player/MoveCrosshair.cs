@@ -8,9 +8,8 @@ public class MoveCrosshair : MonoBehaviour
     public GameObject crosshair;
     private Vector2 origionalPosition;
 	private RectTransform crosshairTransform;
-	private static RectTransform crosshairStaticTrans;
 
-    // Start is called before the first frame update
+	// Start is called before the first frame update
     void Start()
     {
 		crosshairTransform = crosshair.GetComponent<RectTransform>();
@@ -22,7 +21,7 @@ public class MoveCrosshair : MonoBehaviour
     {
 	    Vector3 handPos = PoseParser.GETLeftHandPositionAsVector();
 	    // if confidence is over 90%
-	    if (handPos.z > 0.85)
+	    if (handPos.z > 0.15)
 	    {
 		    // normalise
 		    // TODO don't hard code values
@@ -34,14 +33,13 @@ public class MoveCrosshair : MonoBehaviour
 	    {
 		    crosshairTransform.anchoredPosition = origionalPosition;
 	    }
-
-	    crosshairStaticTrans = crosshairTransform;
+	    
 	    // Debug.Log("CROSSHAIR = " + crosshairTransform.anchoredPosition.ToString());
     }
 
-    public static Vector3 GETCrosshairOffsetFromCentre()
+    public Vector3 GETCrosshairOffsetFromCentre()
     {
-	    return new Vector3(crosshairStaticTrans.anchoredPosition.x, crosshairStaticTrans.anchoredPosition.y, 0);
+	    return new Vector3(crosshairTransform.anchoredPosition.x, crosshairTransform.anchoredPosition.y, 0);
     }
     
 }
