@@ -30,7 +30,7 @@ public class MouseLookPhoton : MonoBehaviourPun
               if (PlayerPrefs.HasKey("MouseSensibility"))
                 mouseSensitivity = PlayerPrefs.GetFloat("MouseSensibility");
               else
-            mouseSensitivity = 100f;
+            mouseSensitivity = 2f;
         }
        
     }
@@ -56,8 +56,8 @@ public class MouseLookPhoton : MonoBehaviourPun
         if(Input.GetKeyDown(KeyCode.Escape)) 
             oldCameraRot =  cameraTransform.localRotation;
 
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 70f);
