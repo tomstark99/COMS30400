@@ -221,7 +221,7 @@ function getPoseAsString() {
     for (let i = 0; i < pose.keypoints.length; i++) {
       let x = pose.keypoints[i].position.x;
       let y = pose.keypoints[i].position.y;
-      let confidence = pose.keypoints[i].score + 0.7;
+      let confidence = pose.keypoints[i].score;
       poseString = poseString.concat(x, ",", y, ",", confidence, ",");
     }
   }
