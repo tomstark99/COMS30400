@@ -138,7 +138,7 @@ public class ItemInteract : MonoBehaviourPun
                 currentInteractable = null;
             } else
 
-            if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Throwable>() != null) 
+            if ((Input.GetMouseButtonDown(0) || PoseParser.GETGestureAsString().CompareTo("R") ==0) && currentInteractable.GetComponent<Throwable>() != null) 
             {
                 currentInteractable.GetComponent<Throwable>().ThrowRock(character);
                 currentInteractable.GetComponent<Outline>().enabled = true;
