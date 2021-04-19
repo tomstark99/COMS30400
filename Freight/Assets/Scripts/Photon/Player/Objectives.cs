@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Photon.Pun;
 
 public class Objectives : MonoBehaviour
 {
@@ -48,6 +49,7 @@ public class Objectives : MonoBehaviour
     private TextMeshProUGUI ping;
 
     private int bagsPickedUp;
+    private int playerCount;
 
     public GameObject FindBackpacks{
         get { return findBackpacks; }
@@ -71,6 +73,8 @@ public class Objectives : MonoBehaviour
         GameObject.FindGameObjectWithTag("locomotive").GetComponent<InRange>().InRangeOfTrain += SetEscapeToActive;
         GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().StartEndGame += SetObjectivesComplete;
         GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += ClearObjectives;
+
+        playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
     }
 
     // Update is called once per frame
@@ -99,6 +103,7 @@ public class Objectives : MonoBehaviour
         breakFenceDesc.SetActive(false);
         breakFenceBackground.SetActive(false);
         findBackpacks.SetActive(true);
+        findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/" + playerCount + ")";
         findBackpacksDesc.SetActive(true);
         findBackpacksBackground.SetActive(true);
     }
@@ -109,9 +114,9 @@ public class Objectives : MonoBehaviour
 
         Debug.Log("picked up bag");
 
-        findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/2)";
+        findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/" + playerCount + ")";
 
-        if (bagsPickedUp == 1)
+        if (bagsPickedUp == playerCount)
         {
             findBackpacks.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findBackpacksDesc.SetActive(false);
