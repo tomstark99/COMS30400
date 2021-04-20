@@ -12,6 +12,8 @@ public class PlayerAudioClips : MonoBehaviour
     private GameObject intro;
     [SerializeField]
     private GameObject laptop;
+    [SerializeField]
+    private GameObject leave;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +40,19 @@ public class PlayerAudioClips : MonoBehaviour
         subtitle.text = "Bossman: Alright this laptop controls the spotlights, get on the laptop and turn them off";
         laptop.SetActive(true);
         yield return new WaitForSeconds(4f);
+        subtitle.text = "";
+    }
+
+    public void BagsCollected()
+    {
+        StartCoroutine(BagSequence());
+    }
+
+    IEnumerator BagSequence()
+    {
+        subtitle.text = "Bossman: You got everything we need, find the train it should be leaving soon!";
+        leave.SetActive(true);
+        yield return new WaitForSeconds(3f);
         subtitle.text = "";
     }
 }

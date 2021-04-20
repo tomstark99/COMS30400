@@ -145,6 +145,7 @@ public class Objectives : MonoBehaviour
             findTrainDesc.SetActive(true);
             findTrainBackground.SetActive(true);
             findTrainDistance.SetActive(true);
+            GetComponent<PlayerAudioClips>().BagsCollected();
         }
     }
 
