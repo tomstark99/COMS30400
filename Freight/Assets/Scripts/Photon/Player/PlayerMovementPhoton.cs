@@ -39,6 +39,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private bool check = false;
     private Transform prev;
     private PhotonView PV;
+    private AudioSource steps;
+    private AudioSource run;
 
     [SerializeField]
     private CinemachineVirtualCamera vcam;
@@ -73,6 +75,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
 
         onMenu = false;
+        steps = groundCheck.GetChild(0).GetComponent<AudioSource>();
+        run = groundCheck.GetChild(1).GetComponent<AudioSource>();
     }
 
     void Update()
@@ -126,7 +130,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     void Movement()
     {
         if (onMenu && !onTrain)
+        {
+            steps.Stop();
             return;
+        }
+
         // Checks if the groundCheck object is within distance to the ground layer
         bool old = isGrounded;
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -196,7 +204,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move += trainMove;
         }
 
-
         controller.Move(move * speed * Time.deltaTime);
 
         // Checks if jump button is pressed and allows user to jump if they are on the ground
@@ -224,6 +231,25 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
+        }
+
+        if ((move.x != 0 || move.z != 0) && isGrounded)
+        {
+            if (!steps.isPlaying && speed == 4.0f)
+            {
+                steps.Play();
+                run.Stop();
+            }  
+            else if (!run.isPlaying && speed == 8.0f)
+            {
+                run.Play();
+                steps.Stop();
+            }
+        }
+        else
+        {
+            steps.Stop();
+            run.Stop();
         }
 
     }
