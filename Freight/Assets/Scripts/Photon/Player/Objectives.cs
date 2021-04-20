@@ -93,8 +93,9 @@ public class Objectives : MonoBehaviour
         {
             float distance = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Laptop").transform.position);
             findBackpacksLaptopDist.GetComponent<TextMeshProUGUI>().text = "(" + Math.Round(distance, 2) + "m)";
-            if (distance < 3.0f)
+            if (distance < 5.0f)
             {
+                GetComponent<PlayerAudioClips>().LaptopFound();
                 findBackpacksLaptopDist.SetActive(false);
                 findBackpacksDescLaptop.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             }
