@@ -28,6 +28,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
+    public GameObject sounds;
     [SerializeField]
     private State guardState;
     private float timeAlerted;
@@ -54,6 +55,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     public event Action PlayerCaught;
     private bool playerCaught;
+
+    private AudioSource walk;
+    private AudioSource run;
 
     public State GuardState
     {
@@ -95,6 +99,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         }
 
         playerCaught = false;
+        walk = sounds.transform.GetChild(0).GetComponent<AudioSource>();
+        run = sounds.transform.GetChild(1).GetComponent<AudioSource>();
     }
 
     public override void OnDisable()
@@ -369,6 +375,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         {
             rockPos = new Vector3(0f, 0f, 0f);
         }
+
+        if (!walk.isPlaying && guardState != State.Chasing)
+        {
+            walk.Play();
+            run.Stop();
+        }
             
 
         //if (timeChasing > 8f)
@@ -452,6 +464,19 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             if (patienceBar.gameObject.activeSelf == false)
             {
                 patienceBar.gameObject.SetActive(true);
+            }
+            // sound
+            if (guard.velocity != Vector3.zero)
+            {
+                if (!run.isPlaying)
+                {
+                    run.Play();
+                    walk.Stop();
+                }
+            }
+            else
+            {
+                run.Stop();
             }
             timeChasing += Time.deltaTime;
             patienceBar.value = timeChasing;
