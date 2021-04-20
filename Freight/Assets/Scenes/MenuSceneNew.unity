@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &37998560
 RectTransform:
   m_ObjectHideFlags: 0
@@ -155,8 +155,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 41.62, y: 77.5}
-  m_SizeDelta: {x: 500, y: 50}
+  m_AnchoredPosition: {x: 90.95, y: 77.5}
+  m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &37998561
 MonoBehaviour:
@@ -177,7 +177,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: '<size=100%>               Like a ninja:\n <size=70%>   Finish the game
+    without getting spotted '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 403d612a17afa334d88bbb177f85d4b1, type: 2}
   m_sharedMaterial: {fileID: -2086216594102380407, guid: 403d612a17afa334d88bbb177f85d4b1,
@@ -623,6 +624,7 @@ GameObject:
   - component: {fileID: 128112246}
   - component: {fileID: 128112249}
   - component: {fileID: 128112248}
+  - component: {fileID: 128112250}
   m_Layer: 20
   m_Name: Peace
   m_TagString: Untagged
@@ -729,6 +731,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 128112250}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &128112249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -739,6 +756,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &128112250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128112244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aada2ac00a372b43847c40fc56e03b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &181242609
@@ -1184,6 +1213,7 @@ GameObject:
   - component: {fileID: 404675940}
   - component: {fileID: 404675943}
   - component: {fileID: 404675942}
+  - component: {fileID: 404675944}
   m_Layer: 20
   m_Name: PickUp
   m_TagString: Untagged
@@ -1290,6 +1320,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 404675944}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &404675943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1300,6 +1345,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &404675944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404675938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5deeb15968011ac4587fd16477a44208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &464087843
@@ -1315,6 +1372,7 @@ GameObject:
   - component: {fileID: 464087845}
   - component: {fileID: 464087848}
   - component: {fileID: 464087847}
+  - component: {fileID: 464087849}
   m_Layer: 20
   m_Name: KillAGuard
   m_TagString: Untagged
@@ -1421,6 +1479,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 464087849}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &464087848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1431,6 +1504,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &464087849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464087843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bacb51268b9ac6f4e9a7b8e483a1fea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &489714480
@@ -2596,6 +2681,7 @@ GameObject:
   - component: {fileID: 682896074}
   - component: {fileID: 682896077}
   - component: {fileID: 682896076}
+  - component: {fileID: 682896078}
   m_Layer: 20
   m_Name: Ninja
   m_TagString: Untagged
@@ -2702,6 +2788,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 682896078}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &682896077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2712,6 +2813,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &682896078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682896072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2a534bcbe441c4a88190be3b5355c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &695436029
@@ -3620,6 +3733,7 @@ GameObject:
   - component: {fileID: 812329040}
   - component: {fileID: 812329042}
   - component: {fileID: 812329043}
+  - component: {fileID: 812329044}
   m_Layer: 20
   m_Name: ShootAGun
   m_TagString: Untagged
@@ -3726,6 +3840,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 812329044}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &812329043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3736,6 +3865,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &812329044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812329038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42bd9339574b16c48a4f883bd8ae6b0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &839194805
@@ -4932,6 +5073,7 @@ GameObject:
   - component: {fileID: 1313057197}
   - component: {fileID: 1313057200}
   - component: {fileID: 1313057199}
+  - component: {fileID: 1313057201}
   m_Layer: 20
   m_Name: Rock
   m_TagString: Untagged
@@ -5038,6 +5180,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1313057201}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1313057200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5048,6 +5205,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1313057201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313057195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9706e84e1f62ec4f8ccce73ae89b283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &1332775238 stripped
