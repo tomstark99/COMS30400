@@ -31,7 +31,6 @@ public class BagSpawner : MonoBehaviour
     {
         int index = Random.Range(0, spawnPoints.Length-1);
         GameObject bag = PhotonNetwork.Instantiate("PhotonPrefabs/Backpack-20L_i", spawnPoints[index].position, Quaternion.identity);
-
         bag.transform.parent = backpacks;
     }
 
