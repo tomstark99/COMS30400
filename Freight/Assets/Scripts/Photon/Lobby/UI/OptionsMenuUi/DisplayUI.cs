@@ -27,7 +27,6 @@ public class DisplayUI : MonoBehaviour
     public void OnMouseExit() {
         //The mouse is no longer hovering over the GameObject so output this message each frame
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
-        Debug.Log(TextMeshPros);
         
 
         
