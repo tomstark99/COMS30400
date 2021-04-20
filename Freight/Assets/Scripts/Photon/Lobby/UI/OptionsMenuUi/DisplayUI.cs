@@ -35,4 +35,12 @@ public class DisplayUI : MonoBehaviour
         TextMeshPros.color = new Color32(151, 158, 169, 255);
         transform.GetComponent<Image>().enabled = false;
     }
+
+    public void OnMouseClick() 
+    {
+        DisplayTab.SetActive(!DisplayTab.activeSelf);
+        GameplayTab.SetActive(false);
+        ControlsTab.SetActive(false);
+        AudioTab.SetActive(false);
+    }
 }
