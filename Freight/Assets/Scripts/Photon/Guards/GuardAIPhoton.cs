@@ -59,6 +59,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     private AudioSource walk;
     private AudioSource run;
 
+    [SerializeField]
+    private GameObject globalSounds;
+
+    private AudioSource chaseMusic;
+    private AudioSource normalMusic;
+
     public State GuardState
     {
         get { return guardState; }
@@ -101,6 +107,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         playerCaught = false;
         walk = sounds.transform.GetChild(0).GetComponent<AudioSource>();
         run = sounds.transform.GetChild(1).GetComponent<AudioSource>();
+        chaseMusic = globalSounds.transform.GetChild(1).GetComponent<AudioSource>();
+        normalMusic = globalSounds.transform.GetChild(0).GetComponent<AudioSource>();
     }
 
     public override void OnDisable()
@@ -349,6 +357,30 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         playerCaught = true;
     }
 
+    bool CheckIfAllGuardsPatroling()
+    {
+        GameObject[] allGuards = GameObject.FindGameObjectsWithTag("Guard");
+        bool patrolling = true;
+        foreach (var guard in allGuards)
+        {
+            Transform child = guard.transform;
+            GuardAIPhoton temp = child.gameObject.GetComponent<GuardAIPhoton>();
+            // sets the guard to be alerted if they're not chasing
+            if (temp.guardState != State.Patroling)
+            {
+                patrolling = false;
+                break;
+            }
+        }
+        return patrolling;
+    }
+
+    void ResetMusic()
+    {
+        chaseMusic.Stop();
+        normalMusic.Play();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -374,6 +406,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         else
         {
             rockPos = new Vector3(0f, 0f, 0f);
+        }
+
+        if (!chaseMusic.isPlaying && guardState != State.Patroling)
+        {
+            chaseMusic.Play();
+            normalMusic.Stop();
         }
 
         if (!walk.isPlaying && guardState != State.Chasing)
@@ -411,6 +449,11 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 guard.destination = points[destPoint].position;
                 ChangeToYellow();
                 timeAlerted = 0f;
+                bool changeMusicBack = CheckIfAllGuardsPatroling();
+                if (changeMusicBack)
+                {
+                    ResetMusic();
+                }
             }
             else
             {
@@ -431,6 +474,11 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 guard.destination = points[destPoint].position;
                 ChangeToYellow();
                 timeAlerted = 0f;
+                bool changeMusicBack = CheckIfAllGuardsPatroling();
+                if (changeMusicBack)
+                {
+                    ResetMusic();
+                }
             }
             else
             {
