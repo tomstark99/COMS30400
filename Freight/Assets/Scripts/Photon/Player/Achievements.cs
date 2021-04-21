@@ -12,17 +12,24 @@ public class Achievements : MonoBehaviour
     private GameObject achievementsTab;
 
     private GameObject babySteps;
+    private GameObject useNature;
 
     // Start is called before the first frame update
     void Start()
     {
+        var tempColor = achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
+        tempColor.a = 1f;
+
         if (PlayerPrefs.HasKey("BabySteps"))
         {
-            var tempColor = achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
-            tempColor.a = 1f;
             achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
         }
+        if (PlayerPrefs.HasKey("UseNature"))
+        {
+            achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
+        }
         babySteps = achievements.transform.GetChild(0).gameObject;
+        useNature = achievements.transform.GetChild(3).gameObject;
     }
 
     public void BabyStepsCompleted()
@@ -42,9 +49,21 @@ public class Achievements : MonoBehaviour
         babySteps.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UseNatureCompleted()
     {
-        
+        PlayerPrefs.SetInt("UseNature", 1);
+        PlayerPrefs.Save();
+        var tempColor = achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color;
+        tempColor.a = 1f;
+        achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
+        StartCoroutine(UseNatureSequence());
     }
+
+    IEnumerator UseNatureSequence()
+    {
+        useNature.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        useNature.SetActive(false);
+    }
+
 }
