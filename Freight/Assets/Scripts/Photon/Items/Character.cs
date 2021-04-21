@@ -231,6 +231,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         // shoots out a raycast to see what the bullet hits
         Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
 
+        Debug.Log(hitInfo.collider.gameObject);
+
         // if bullet collides with guard, tell masterclient to kill guard
         if(hitInfo.collider != null)
             if(hitInfo.collider.GetComponent<GuardAIPhoton>() != null) {

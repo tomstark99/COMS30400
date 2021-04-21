@@ -80,7 +80,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         steps = groundCheck.GetChild(0).GetComponent<AudioSource>();
         run = groundCheck.GetChild(1).GetComponent<AudioSource>();
 
-        PlayerPrefs.DeleteKey("BabySteps");
+        // achievement checker (deleting for testing purposes)
+        //PlayerPrefs.DeleteKey("BabySteps");
 
         if (PlayerPrefs.HasKey("BabySteps"))
             babySteps = true;
