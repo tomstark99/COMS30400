@@ -65,6 +65,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     private AudioSource chaseMusic;
     private AudioSource normalMusic;
 
+    private bool useNature;
+
     public State GuardState
     {
         get { return guardState; }
@@ -119,6 +121,14 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         run = sounds.transform.GetChild(1).GetComponent<AudioSource>();
         chaseMusic = globalSounds.transform.GetChild(1).GetComponent<AudioSource>();
         normalMusic = globalSounds.transform.GetChild(0).GetComponent<AudioSource>();
+
+
+        //achievement checker
+
+        if (PlayerPrefs.HasKey("UseNature"))
+            useNature = true;
+        else
+            useNature = false;
     }
 
     public override void OnDisable()
@@ -379,6 +389,19 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 if (Vector3.Distance(transform.position, tempRock.transform.position) < 30)
                 {
                     SetGuardsToAlertedItem(tempRock.transform.position);
+                    if (!useNature)
+                    {
+                        // checks which player threw the rock and completes achievement
+                        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                        foreach (var player in players)
+                        {
+                            if (player.GetComponent<PhotonView>().Owner == rock.GetComponent<PhotonView>().Controller)
+                            {
+                                player.GetComponent<Achievements>().UseNatureCompleted();
+                                useNature = true;
+                            }
+                        }
+                    }
                     return;
                 }
             }
