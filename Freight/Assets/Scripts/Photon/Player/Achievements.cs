@@ -16,6 +16,12 @@ public class Achievements : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PlayerPrefs.HasKey("BabySteps"))
+        {
+            var tempColor = achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
+            tempColor.a = 1f;
+            achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
+        }
         babySteps = achievements.transform.GetChild(0).gameObject;
     }
 
