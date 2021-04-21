@@ -23,6 +23,16 @@ public class AchievementsMenu : MonoBehaviour
         }
     }
 
+    public void ResetAchievements()
+    {
+        var tempColor = transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
+        tempColor.a = 0.11764705882f;
+        PlayerPrefs.DeleteKey("BabySteps");
+        PlayerPrefs.DeleteKey("UseNature");
+        transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
+        transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
+    }
+
     // Update is called once per frame
     void Update()
     {
