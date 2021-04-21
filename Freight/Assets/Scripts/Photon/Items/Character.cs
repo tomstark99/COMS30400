@@ -21,6 +21,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public GameObject backPackObject;
 
     private GameObject ObjectToSeeTheLights;
+
+    private GameObject actualCamera;
+
     private CinemachineVirtualCamera sceneViewOfTheLights;
     public bool HoldingTheBag
     {
@@ -37,6 +40,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         sceneViewOfTheLights = ObjectToSeeTheLights.GetComponent<CinemachineVirtualCamera>();
         ObjectToSeeTheLights.SetActive(false);
         Debug.Log(ObjectToSeeTheLights);
+        actualCamera = camera.transform.GetChild(0).gameObject;
     }
 
     [PunRPC]
@@ -156,7 +160,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
         GetComponent<IkBehaviour>().ikActive = false;
-        Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
+        Item.GetComponent<Rigidbody>().AddForce(actualCamera.transform.forward * 1000);
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
@@ -229,7 +233,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
 
         // shoots out a raycast to see what the bullet hits
-        Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
+        Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
 
         Debug.Log(hitInfo.collider.gameObject);
 
@@ -254,7 +258,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         // in case it doesn't hit anything, just add force based on camera transform
         else
         {
-            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1400);
+            bullet.GetComponent<Rigidbody>().AddForce(actualCamera.transform.forward * 1400);
         }
         // so bullet moves
         bullet.GetComponent<Rigidbody>().isKinematic = false;
@@ -265,7 +269,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
 
         // shoots out a raycast to see what the bullet hits
-        Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
+        Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
 
         // instantiate the bullet locally
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(1).transform.GetChild(14).position, pickUpDestination.transform.GetChild(1).rotation);
@@ -282,7 +286,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         // in case it doesn't hit anything, just add force based on camera transform
         else
         {
-            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1400);
+            bullet.GetComponent<Rigidbody>().AddForce(actualCamera.transform.forward * 1400);
         }
         // so bullet moves
         bullet.GetComponent<Rigidbody>().isKinematic = false;
