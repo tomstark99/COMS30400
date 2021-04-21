@@ -22,9 +22,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     private GameObject ObjectToSeeTheLights;
 
-    private GameObject actualCamera;
-
-    private CinemachineVirtualCamera sceneViewOfTheLights;
+    public GameObject actualCamera;
     public bool HoldingTheBag
     {
         get { return holdingTheBag; }
@@ -35,11 +33,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         return currentHeldItem != null;
     }
 
-    void Start() {
-        ObjectToSeeTheLights = GameObject.Find("CameraToSeeTheLights");
-        sceneViewOfTheLights = ObjectToSeeTheLights.GetComponent<CinemachineVirtualCamera>();
-        ObjectToSeeTheLights.SetActive(false);
-        Debug.Log(ObjectToSeeTheLights);
+    void Start() 
+    {
+        //ObjectToSeeTheLights = GameObject.Find("CameraToSeeTheLights");
+        //ObjectToSeeTheLights.SetActive(false);
+        //Debug.Log(ObjectToSeeTheLights);
         actualCamera = camera.transform.GetChild(0).gameObject;
     }
 
