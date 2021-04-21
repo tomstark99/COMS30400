@@ -104,6 +104,16 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             guard.GetComponent<GuardAIPhoton>().PlayerCaught += PlayerHasBeenCaught;
         }
 
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+
+            // gets the rock alert component
+            rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>().RockHitGround += CheckForRock;
+
+        }
+
         playerCaught = false;
         walk = sounds.transform.GetChild(0).GetComponent<AudioSource>();
         run = sounds.transform.GetChild(1).GetComponent<AudioSource>();
@@ -329,10 +339,33 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         guard.SetDestination(closestPlayer.position);
     }
     // guard checks if a rock dropped next to them
-    Vector3 CheckForRock()
+    //Vector3 CheckForRock()
+    //{
+    //    GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+        
+    //    foreach (GameObject rock in rocks)
+    //    {
+
+    //        // gets the rock alert component
+    //        RockHitGroundAlert tempRock = rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>();
+
+    //        // if the rock has hit the ground check whether the distance is close enough for the guard to alert other guards
+    //        if (tempRock.rockHitGround)
+    //        {
+    //            //Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
+    //            if (Vector3.Distance(transform.position, tempRock.transform.position) < 30)
+    //            {
+    //                return tempRock.transform.position;
+    //            }
+    //        }
+    //    }
+    //    return new Vector3(0f, 0f, 0f);
+    //}
+
+    void CheckForRock()
     {
         GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
-        
+
         foreach (GameObject rock in rocks)
         {
 
@@ -345,11 +378,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 //Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
                 if (Vector3.Distance(transform.position, tempRock.transform.position) < 30)
                 {
-                    return tempRock.transform.position;
+                    SetGuardsToAlertedItem(tempRock.transform.position);
+                    return;
                 }
             }
         }
-        return new Vector3(0f, 0f, 0f);
+
     }
 
     void PlayerHasBeenCaught()
@@ -377,8 +411,11 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     void ResetMusic()
     {
-        chaseMusic.Stop();
-        normalMusic.Play();
+        if (!normalMusic.isPlaying)
+        {
+            chaseMusic.Stop();
+            normalMusic.Play();
+        }
     }
 
     // Update is called once per frame
@@ -393,20 +430,21 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         playerSpotted = PlayerSpotted();
         deadGuardSpotted = DeadGuardSpotted();
 
-        if(old != playerSpotted) {
+        if(old != playerSpotted) 
+        {
             GetComponent<GuardAnimation>().setChasing(playerSpotted);
         }
 
-        Vector3 rockPos; 
+        //Vector3 rockPos; 
 
-        if (reactsToRocks)
-        {
-            rockPos = CheckForRock();
-        }
-        else
-        {
-            rockPos = new Vector3(0f, 0f, 0f);
-        }
+        //if (reactsToRocks)
+        //{
+        //    rockPos = CheckForRock();
+        //}
+        //else
+        //{
+        //    rockPos = new Vector3(0f, 0f, 0f);
+        //}
 
         if (!chaseMusic.isPlaying && guardState != State.Patroling)
         {
@@ -494,10 +532,10 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             timeChasing = 0;
             guardState = State.Alerted;
         }
-        else if (rockPos != new Vector3(0f, 0f, 0f))
-        {
-            SetGuardsToAlertedItem(rockPos);
-        }
+        //else if (rockPos != new Vector3(0f, 0f, 0f))
+        //{
+        //    SetGuardsToAlertedItem(rockPos);
+        //}
         // If the player is not spotted and the guard has reached their destination, go to new point
         else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {
