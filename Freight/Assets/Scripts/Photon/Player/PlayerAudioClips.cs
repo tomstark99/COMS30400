@@ -24,7 +24,7 @@ public class PlayerAudioClips : MonoBehaviour
     IEnumerator IntroSequence()
     {
         yield return new WaitForSeconds(1f);
-        subtitle.text = "Bossman: Mission's simple, get in, get the bags, get out, any mean's necessary";
+        subtitle.text = "Bossman: Mission's simple, get in, get the bags, get out, any means necessary";
         intro.SetActive(true);
         yield return new WaitForSeconds(5f);
         subtitle.text = "";
