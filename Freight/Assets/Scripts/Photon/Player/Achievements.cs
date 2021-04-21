@@ -39,12 +39,16 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            PlayerPrefs.SetInt("BabySteps", 1);
-            PlayerPrefs.Save();
-            var tempColor = achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
-            tempColor.a = 1f;
-            achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
-            StartCoroutine(BabyStepsSequence());
+            if (!PlayerPrefs.HasKey("BabySteps"))
+            {
+                PlayerPrefs.SetInt("BabySteps", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
+                StartCoroutine(BabyStepsSequence());
+            }
+
         }
     }
 
