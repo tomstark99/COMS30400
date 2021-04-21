@@ -50,4 +50,11 @@ public class PoseParser : MonoBehaviour
         #endif
     }
     
+    //return left wrist position as (x, y, confidence)
+    public static Vector3 GETLeftHandPositionAsVector()
+    {
+        GETPoseArray();
+        // return new Vector3(300, 100, 0.95f); //new Vector3(773.0f, 300.0f , 0.95f); //crosshair bottom left
+        return new Vector3(poseArray[9 * 3], poseArray[(9 * 3) + 1], poseArray[(9 * 3) + 2]);
+    }
 }
