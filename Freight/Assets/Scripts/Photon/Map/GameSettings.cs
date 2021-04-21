@@ -22,6 +22,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpeedPatrolling", 2);
             prop.Add("SpotlightsActive", false);
             prop.Add("SpotlightsRotating", false);
+            prop.Add("VoiceRangeMultiplier", 0.1f);
         }
         // medium
         else if (guardDifficultyVal == "Medium")
@@ -32,6 +33,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpeedPatrolling", 3);
             prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", false);
+            prop.Add("VoiceRangeMultiplier", 0.5f);
         }
         // hard
         else if (guardDifficultyVal == "Hard")
@@ -42,6 +44,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpeedPatrolling", 4);
             prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", true);
+            prop.Add("VoiceRangeMultiplier", 1f);
         }
         // impossible
         else if (guardDifficultyVal == "Impossible")
@@ -52,6 +55,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpeedPatrolling", 6);
             prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", true);
+            prop.Add("VoiceRangeMultiplier", 2f);
         }
 
         float timeToLeave = (float) PhotonNetwork.CurrentRoom.CustomProperties["sliderValue"];
