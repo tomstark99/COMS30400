@@ -45,6 +45,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     [SerializeField]
     private CinemachineVirtualCamera vcam;
 
+    private bool babySteps;
+
     public bool onMenu;
     public bool OnTrain
     {
@@ -77,6 +79,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         onMenu = false;
         steps = groundCheck.GetChild(0).GetComponent<AudioSource>();
         run = groundCheck.GetChild(1).GetComponent<AudioSource>();
+
+        PlayerPrefs.DeleteKey("BabySteps");
+
+        if (PlayerPrefs.HasKey("BabySteps"))
+            babySteps = true;
+        else
+            babySteps = false;
     }
 
     void Update()
@@ -150,6 +159,15 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         float l = Input.GetAxis("Ladder");
+
+        if (!babySteps) 
+        { 
+            if (x > 0f)
+            {
+                GetComponent<Achievements>().BabyStepsCompleted();
+                babySteps = true;
+            }
+        }   
 
         // instantiates move with null so that it can be set depending on climb
         Vector3 move;
