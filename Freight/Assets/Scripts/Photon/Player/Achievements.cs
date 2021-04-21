@@ -63,12 +63,15 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            PlayerPrefs.SetInt("UseNature", 1);
-            PlayerPrefs.Save();
-            var tempColor = achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color;
-            tempColor.a = 1f;
-            achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
-            StartCoroutine(UseNatureSequence());
+            if (!PlayerPrefs.HasKey("UseNature"))
+            {
+                PlayerPrefs.SetInt("UseNature", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
+                StartCoroutine(UseNatureSequence());
+            }
         }
     }
 

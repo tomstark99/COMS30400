@@ -389,6 +389,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                         if (player.GetComponent<PhotonView>().Owner == rock.GetComponent<PhotonView>().Controller)
                         {
                             player.GetComponent<Achievements>().UseNatureCompleted();
+                            return;
                         }
                     }
                     
