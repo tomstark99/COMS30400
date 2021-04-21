@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &37998560
 RectTransform:
   m_ObjectHideFlags: 0
@@ -177,8 +177,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<size=100%>               Like a ninja:\n <size=70%>   Finish the game
-    without getting spotted '
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 403d612a17afa334d88bbb177f85d4b1, type: 2}
   m_sharedMaterial: {fileID: -2086216594102380407, guid: 403d612a17afa334d88bbb177f85d4b1,
@@ -3938,6 +3937,7 @@ GameObject:
   - component: {fileID: 893895746}
   - component: {fileID: 893895749}
   - component: {fileID: 893895748}
+  - component: {fileID: 893895750}
   m_Layer: 20
   m_Name: DeliverTheBackPacks
   m_TagString: Untagged
@@ -4044,6 +4044,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 893895750}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &893895749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4054,6 +4069,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &893895750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893895744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c68d63982695880488063bbfe650b124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &895182721
@@ -4322,6 +4349,7 @@ GameObject:
   - component: {fileID: 965636883}
   - component: {fileID: 965636886}
   - component: {fileID: 965636885}
+  - component: {fileID: 965636887}
   m_Layer: 20
   m_Name: Light
   m_TagString: Untagged
@@ -4428,6 +4456,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 965636887}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &965636886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4438,6 +4481,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &965636887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965636881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72cd482b0dd44bf418a56c967aaed16d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &985678342 stripped
@@ -4799,6 +4854,7 @@ GameObject:
   - component: {fileID: 1199495463}
   - component: {fileID: 1199495466}
   - component: {fileID: 1199495465}
+  - component: {fileID: 1199495467}
   m_Layer: 20
   m_Name: Hacker
   m_TagString: Untagged
@@ -4905,6 +4961,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1199495467}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1199495466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4915,6 +4986,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1199495467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199495461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44df29f43d67149469663158fc03db30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1210120752 stripped
@@ -4942,6 +5025,7 @@ GameObject:
   - component: {fileID: 1252365910}
   - component: {fileID: 1252365913}
   - component: {fileID: 1252365912}
+  - component: {fileID: 1252365914}
   m_Layer: 20
   m_Name: LoseTheGuardsAfterDetection
   m_TagString: Untagged
@@ -5048,6 +5132,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1252365914}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1252365913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5058,6 +5157,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1252365914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252365908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2969d845e0dd5be40b413bcdc39734e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1313057195
@@ -6923,6 +7034,7 @@ GameObject:
   - component: {fileID: 1742415932}
   - component: {fileID: 1742415935}
   - component: {fileID: 1742415934}
+  - component: {fileID: 1742415936}
   m_Layer: 20
   m_Name: ShootAllGuards
   m_TagString: Untagged
@@ -7029,6 +7141,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1742415936}
+          m_MethodName: onMouseClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1742415935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7039,6 +7166,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f3465be7b541244a1993a5ca66be74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1742415936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742415930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe44badd73eb06b4088133cdfd97c1fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1765799481
