@@ -39,7 +39,7 @@ public class RockHitGroundAlert : MonoBehaviour
         {
             Debug.Log("Rock hit the ground alie");
             rockHitGround = true;
-            //RockHitGround();
+            RockHitGround();
         }
         else
         {
