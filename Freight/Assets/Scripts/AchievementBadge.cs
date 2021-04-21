@@ -5,6 +5,7 @@ using UnityEngine;
 public class AchievementBadge : MonoBehaviour
 {
     // Start is called before the first frame update
+    
     void Start()
     {
         
