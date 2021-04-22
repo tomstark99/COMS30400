@@ -34,6 +34,10 @@ public class AchievementsMenu : MonoBehaviour
             transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
         }
 
+        if (PlayerPrefs.HasKey("LikeANinja"))
+        {
+            transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
+        }
         if (PlayerPrefs.HasKey("Hackerman"))
         {
             transform.GetChild(1).GetChild(1).GetComponent<Image>().color = tempColor;
@@ -63,6 +67,7 @@ public class AchievementsMenu : MonoBehaviour
         PlayerPrefs.DeleteKey("Roadman");
         PlayerPrefs.DeleteKey("TheCompletePicture");
 
+        PlayerPrefs.DeleteKey("LikeANinja");
         PlayerPrefs.DeleteKey("Hackerman");
         PlayerPrefs.DeleteKey("LearnTheHardWay");
         PlayerPrefs.DeleteKey("ChooChoo");
@@ -74,6 +79,7 @@ public class AchievementsMenu : MonoBehaviour
         transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
 
+        transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
         transform.GetChild(1).GetChild(1).GetComponent<Image>().color = tempColor;
         transform.GetChild(1).GetChild(2).GetComponent<Image>().color = tempColor;
         transform.GetChild(1).GetChild(3).GetComponent<Image>().color = tempColor;
