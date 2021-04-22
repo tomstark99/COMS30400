@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class BagSpawner : MonoBehaviour
+public class BagSpawner : MonoBehaviourPun
 {
     [SerializeField]
     private Transform[] spawnPoints;
@@ -34,6 +34,16 @@ public class BagSpawner : MonoBehaviour
         bag.transform.parent = backpacks;
     }
 
+    [PunRPC]
+    void BagParentRPC(int bagID, int bag2ID)
+    {
+        GameObject bag = PhotonView.Find(bagID).gameObject;
+        GameObject bag2 = PhotonView.Find(bag2ID).gameObject;
+
+        bag.transform.parent = backpacks;
+        bag2.transform.parent = backpacks;
+    }
+
     void SpawnTwoBags()
     {
         bool spawned = false;
@@ -48,8 +58,7 @@ public class BagSpawner : MonoBehaviour
                 GameObject bag = PhotonNetwork.Instantiate("PhotonPrefabs/Backpack-20L_i", spawnPoints[index1].position, Quaternion.identity);
                 GameObject bag2 = PhotonNetwork.Instantiate("PhotonPrefabs/Backpack-20L_i", spawnPoints[index2].position, Quaternion.identity);
 
-                bag.transform.parent = backpacks;
-                bag2.transform.parent = backpacks;
+                photonView.RPC(nameof(BagParentRPC), RpcTarget.All, bag.GetComponent<PhotonView>().ViewID, bag2.GetComponent<PhotonView>().ViewID);
 
                 spawned = true;
             }
