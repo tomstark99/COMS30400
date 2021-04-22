@@ -13,6 +13,6 @@ public class Hacker : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%>               Hacker Man:\n <size=70%>       Hack the laptop to deactivate the spotlights");
+        text1.SetText("<size=100%>               Hackerman:\n <size=70%>       Hack the laptop to deactivate the spotlights");
     }
 }
