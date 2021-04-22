@@ -229,7 +229,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
-
+                        player.GetComponent<Achievements>().LearnTheHardWayCompleted();
                         guard.speed = speedChasing;
                         return true;
                     }
@@ -349,29 +349,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         Transform closestPlayer = FindClosestPlayer();
         guard.SetDestination(closestPlayer.position);
     }
-    // guard checks if a rock dropped next to them
-    //Vector3 CheckForRock()
-    //{
-    //    GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
-        
-    //    foreach (GameObject rock in rocks)
-    //    {
-
-    //        // gets the rock alert component
-    //        RockHitGroundAlert tempRock = rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>();
-
-    //        // if the rock has hit the ground check whether the distance is close enough for the guard to alert other guards
-    //        if (tempRock.rockHitGround)
-    //        {
-    //            //Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
-    //            if (Vector3.Distance(transform.position, tempRock.transform.position) < 30)
-    //            {
-    //                return tempRock.transform.position;
-    //            }
-    //        }
-    //    }
-    //    return new Vector3(0f, 0f, 0f);
-    //}
 
     void CheckForRock()
     {
@@ -416,7 +393,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     bool CheckIfAllGuardsPatroling()
     {
         GameObject[] allGuards = GameObject.FindGameObjectsWithTag("Guard");
-        bool patrolling = true;
         foreach (var guard in allGuards)
         {
             Transform child = guard.transform;
@@ -424,11 +400,18 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             // sets the guard to be alerted if they're not chasing
             if (temp.guardState != State.Patroling)
             {
-                patrolling = false;
-                break;
+                return false;
             }
         }
-        return patrolling;
+
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (var player in players)
+        {
+            player.GetComponent<Achievements>().OnTheRunCompleted();
+        }
+
+        return true;
     }
 
     void ResetMusic()
