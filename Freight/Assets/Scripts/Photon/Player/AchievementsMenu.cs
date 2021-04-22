@@ -16,6 +16,10 @@ public class AchievementsMenu : MonoBehaviour
         {
             transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
         }
+        if (PlayerPrefs.HasKey("LetTheHuntBegin"))
+        {
+            transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
+        }
 
         if (PlayerPrefs.HasKey("UseNature"))
         {
@@ -28,8 +32,10 @@ public class AchievementsMenu : MonoBehaviour
         var tempColor = transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
         tempColor.a = 0.11764705882f;
         PlayerPrefs.DeleteKey("BabySteps");
+        PlayerPrefs.DeleteKey("LetTheHuntBegin");
         PlayerPrefs.DeleteKey("UseNature");
         transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
+        transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
     }
 
