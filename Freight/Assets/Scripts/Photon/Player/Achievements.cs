@@ -11,11 +11,21 @@ public class Achievements : MonoBehaviourPun
     [SerializeField]
     private GameObject achievementsTab;
 
+    // first row 
     private GameObject babySteps;
     private GameObject letTheHuntBegin;
+    private GameObject peaceTreaty;
     private GameObject useNature;
     private GameObject roadman;
     private GameObject theCompletePicture;
+
+    // second row
+    private GameObject likeANinja;
+    private GameObject hackerman;
+    private GameObject learnTheHardWay;
+    private GameObject django;
+    private GameObject onTheRun;
+    private GameObject freight;
 
     private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
 
@@ -27,6 +37,7 @@ public class Achievements : MonoBehaviourPun
             var tempColor = achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
             tempColor.a = 1f;
 
+            // first row 
             if (PlayerPrefs.HasKey("BabySteps"))
             {
                 achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
@@ -34,6 +45,10 @@ public class Achievements : MonoBehaviourPun
             if (PlayerPrefs.HasKey("LetTheHuntBegin"))
             {
                 achievementsTab.transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
+            }
+            if (PlayerPrefs.HasKey("PeaceTreaty"))
+            {
+                achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
             }
             if (PlayerPrefs.HasKey("UseNature"))
             {
@@ -47,16 +62,51 @@ public class Achievements : MonoBehaviourPun
             {
                 achievementsTab.transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
             }
+
+            // second row
+            if (PlayerPrefs.HasKey("LikeANinja"))
+            {
+                achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
+            }
+            if (PlayerPrefs.HasKey("Hackerman"))
+            {
+                achievementsTab.transform.GetChild(1).GetChild(1).GetComponent<Image>().color = tempColor;
+            }
+            if (PlayerPrefs.HasKey("LearnTheHardWay"))
+            {
+                achievementsTab.transform.GetChild(1).GetChild(2).GetComponent<Image>().color = tempColor;
+            }
+            if (PlayerPrefs.HasKey("Django"))
+            {
+                achievementsTab.transform.GetChild(1).GetChild(3).GetComponent<Image>().color = tempColor;
+            }
+            if (PlayerPrefs.HasKey("OnTheRun"))
+            {
+                achievementsTab.transform.GetChild(1).GetChild(4).GetComponent<Image>().color = tempColor;
+            }
+            if (PlayerPrefs.HasKey("Freight"))
+            {
+                achievementsTab.transform.GetChild(1).GetChild(5).GetComponent<Image>().color = tempColor;
+            }
             babySteps = achievements.transform.GetChild(0).gameObject;
             letTheHuntBegin = achievements.transform.GetChild(1).gameObject;
+            peaceTreaty = achievements.transform.GetChild(2).gameObject;
             useNature = achievements.transform.GetChild(3).gameObject;
             roadman = achievements.transform.GetChild(4).gameObject;
             theCompletePicture = achievements.transform.GetChild(5).gameObject;
+
+            likeANinja = achievements.transform.GetChild(6).gameObject;
+            hackerman = achievements.transform.GetChild(7).gameObject;
+            learnTheHardWay = achievements.transform.GetChild(8).gameObject;
+            django = achievements.transform.GetChild(9).gameObject;
+            onTheRun = achievements.transform.GetChild(10).gameObject;
+            freight = achievements.transform.GetChild(11).gameObject;
 
             StartCoroutine(CoroutineCoordinator());
         }
     }
 
+    // this function makes sure that achievments appear one after another instead of at the same time
     IEnumerator CoroutineCoordinator()
     {
         while (true)
@@ -187,5 +237,77 @@ public class Achievements : MonoBehaviourPun
         theCompletePicture.SetActive(true);
         yield return new WaitForSeconds(3f);
         theCompletePicture.SetActive(false);
+    }
+
+    public void HackermanCompleted()
+    {
+        if (photonView.IsMine)
+        {
+            if (!PlayerPrefs.HasKey("Hackerman"))
+            {
+                PlayerPrefs.SetInt("Hackerman", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(1).GetChild(1).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(1).GetChild(1).GetComponent<Image>().color = tempColor;
+                //StartCoroutine(RoadmanSequence());
+                coroutineQueue.Enqueue(HackermanSequence());
+            }
+        }
+    }
+
+    IEnumerator HackermanSequence()
+    {
+        hackerman.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        hackerman.SetActive(false);
+    }
+
+    public void LearnTheHardWayCompleted()
+    {
+        if (photonView.IsMine)
+        {
+            if (!PlayerPrefs.HasKey("LearnTheHardWay"))
+            {
+                PlayerPrefs.SetInt("LearnTheHardWay", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(1).GetChild(2).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(1).GetChild(2).GetComponent<Image>().color = tempColor;
+                //StartCoroutine(RoadmanSequence());
+                coroutineQueue.Enqueue(LearnTheHardWaySequence());
+            }
+        }
+    }
+
+    IEnumerator LearnTheHardWaySequence()
+    {
+        learnTheHardWay.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        learnTheHardWay.SetActive(false);
+    }
+
+    public void OnTheRunCompleted()
+    {
+        if (photonView.IsMine)
+        {
+            if (!PlayerPrefs.HasKey("OnTheRun"))
+            {
+                PlayerPrefs.SetInt("OnTheRun", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(1).GetChild(4).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(1).GetChild(4).GetComponent<Image>().color = tempColor;
+                //StartCoroutine(RoadmanSequence());
+                coroutineQueue.Enqueue(OnTheRunSequence());
+            }
+        }
+    }
+
+    IEnumerator OnTheRunSequence()
+    {
+        onTheRun.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        onTheRun.SetActive(false);
     }
 }
