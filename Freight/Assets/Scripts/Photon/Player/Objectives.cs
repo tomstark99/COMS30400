@@ -52,6 +52,8 @@ public class Objectives : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI ping;
 
+    [SerializeField]
+    private GameObject parentTing;
     private int bagsPickedUp;
     private int playerCount;
 
@@ -120,9 +122,17 @@ public class Objectives : MonoBehaviour
         breakFenceBackground.SetActive(false);
         findBackpacks.SetActive(true);
         findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/" + playerCount + ")";
+        findBackpacksDesc.transform.localPosition = findBackpacksDesc.transform.localPosition - parentTing.transform.localPosition;
         findBackpacksDesc.SetActive(true);
+        findBrokenFence.SetActive(false);
+       
+        findBackpacks.transform.localPosition = findBackpacks.transform.localPosition - parentTing.transform.localPosition;
         findBackpacksBackground.SetActive(true);
+        breakFence.transform.localPosition = breakFence.transform.localPosition - parentTing.transform.localPosition;
+        findBackpacksDescLaptop.transform.localPosition = findBackpacksDescLaptop.transform.localPosition - parentTing.transform.localPosition;
         findBackpacksDescLaptop.SetActive(true);
+
+        findBackpacksLaptopDist.transform.transform.localPosition = findBackpacksLaptopDist.transform.localPosition - parentTing.transform.localPosition;
         findBackpacksLaptopDist.SetActive(true);
     }
 
@@ -136,14 +146,21 @@ public class Objectives : MonoBehaviour
 
         if (bagsPickedUp == playerCount)
         {
+            breakFence.SetActive(false);
             findBackpacks.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findBackpacksDesc.SetActive(false);
-            findBackpacksBackground.SetActive(false);
+            //findBackpacksBackground.SetActive(false);
             findBackpacksDescLaptop.SetActive(false);
             findBackpacksLaptopDist.SetActive(false);
+
+
+            findBackpacks.transform.localPosition = findBackpacks.transform.localPosition - parentTing.transform.localPosition- parentTing.transform.localPosition/5;
+            findTrain.transform.localPosition = findTrain.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition ;
+            findTrainDesc.transform.localPosition = findTrainDesc.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition  ;
+            findTrainDistance.transform.localPosition = findTrainDistance.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition ;
             findTrain.SetActive(true);
             findTrainDesc.SetActive(true);
-            findTrainBackground.SetActive(true);
+            //findTrainBackground.SetActive(true);
             findTrainDistance.SetActive(true);
             GetComponent<PlayerAudioClips>().BagsCollected();
         }
