@@ -14,6 +14,6 @@ public class KillAllGuards : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%>               Django:\n <size=70%>    Shoot the 6 bullet round out of the pistol, kill a guard with every shot");
+        text1.SetText("<size=100%>               Django:\n <size=70%>    Get on the train");
     }
 }
