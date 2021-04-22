@@ -134,6 +134,14 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             light.GetComponent<RotateLight>().PlayerInLight -= SetAllGuardsToAlerted;
         }
 
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+            // gets the rock alert component
+            rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>().RockHitGround -= CheckForRock;
+        }
+
     }
 
     public void DisableGuards()
