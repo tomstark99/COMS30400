@@ -149,12 +149,12 @@ public class Objectives : MonoBehaviour
             breakFence.SetActive(false);
             findBackpacks.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findBackpacksDesc.SetActive(false);
-            //findBackpacksBackground.SetActive(false);
+            findBackpacksBackground.SetActive(false);
             findBackpacksDescLaptop.SetActive(false);
             findBackpacksLaptopDist.SetActive(false);
 
 
-            findBackpacks.transform.localPosition = findBackpacks.transform.localPosition - parentTing.transform.localPosition- parentTing.transform.localPosition/5;
+            findBackpacks.transform.localPosition = findBackpacks.transform.localPosition - parentTing.transform.localPosition;
             findTrain.transform.localPosition = findTrain.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition ;
             findTrainDesc.transform.localPosition = findTrainDesc.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition  ;
             findTrainDistance.transform.localPosition = findTrainDistance.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition ;
@@ -175,12 +175,16 @@ public class Objectives : MonoBehaviour
             findTrainDesc.SetActive(false);
             findTrainDistance.SetActive(false);
             findTrainBackground.SetActive(false);
+            findBackpacks.SetActive(false);
+            findTrain.transform.localPosition = findTrain.transform.localPosition - parentTing.transform.localPosition;
+            escapeOnTrain.transform.localPosition = escapeOnTrain.transform.localPosition - parentTing.transform.localPosition*2.3f;
+            escapeOnTrainDesc.transform.localPosition = escapeOnTrainDesc.transform.localPosition - parentTing.transform.localPosition*2.1f;
             escapeOnTrain.SetActive(true);
             escapeOnTrainDesc.SetActive(true);
             escapeOnTrainBackground.SetActive(true);
             //GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
         }
-    }
+    }//escape train desc + 15 //escape train + 20
 
     void SetObjectivesComplete()
     {
