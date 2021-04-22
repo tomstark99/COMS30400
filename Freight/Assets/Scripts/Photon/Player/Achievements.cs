@@ -14,6 +14,7 @@ public class Achievements : MonoBehaviourPun
     private GameObject babySteps;
     private GameObject letTheHuntBegin;
     private GameObject useNature;
+    private GameObject roadman;
 
     // Start is called before the first frame update
     void Start()
@@ -35,9 +36,14 @@ public class Achievements : MonoBehaviourPun
             {
                 achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
             }
+            if (PlayerPrefs.HasKey("Roadman"))
+            {
+                achievementsTab.transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
+            }
             babySteps = achievements.transform.GetChild(0).gameObject;
             letTheHuntBegin = achievements.transform.GetChild(1).gameObject;
             useNature = achievements.transform.GetChild(3).gameObject;
+            roadman = achievements.transform.GetChild(4).gameObject;
         }
     }
 
@@ -112,4 +118,26 @@ public class Achievements : MonoBehaviourPun
         useNature.SetActive(false);
     }
 
+    public void Roadman()
+    {
+        if (photonView.IsMine)
+        {
+            if (!PlayerPrefs.HasKey("Roadman"))
+            {
+                PlayerPrefs.SetInt("Roadman", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(0).GetChild(4).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
+                StartCoroutine(RoadmanSequence());
+            }
+        }
+    }
+
+    IEnumerator RoadmanSequence()
+    {
+        roadman.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        roadman.SetActive(false);
+    }
 }

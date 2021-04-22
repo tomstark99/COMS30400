@@ -25,6 +25,10 @@ public class AchievementsMenu : MonoBehaviour
         {
             transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
         }
+        if (PlayerPrefs.HasKey("Roadman"))
+        {
+            transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
+        }
     }
 
     public void ResetAchievements()
@@ -34,9 +38,11 @@ public class AchievementsMenu : MonoBehaviour
         PlayerPrefs.DeleteKey("BabySteps");
         PlayerPrefs.DeleteKey("LetTheHuntBegin");
         PlayerPrefs.DeleteKey("UseNature");
+        PlayerPrefs.DeleteKey("Roadman");
         transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
+        transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
     }
 
     // Update is called once per frame
