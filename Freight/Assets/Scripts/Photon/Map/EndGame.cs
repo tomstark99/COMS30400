@@ -161,6 +161,7 @@ public class EndGame : MonoBehaviourPun
                         Debug.Log("you won!");
                         foreach (var player in players)
                         {
+                            player.GetComponent<Achievements>().LikeANinjaCompleted();
                             photonView.RPC(nameof(SetActiveLevelCompleteRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                         }
                     }
@@ -174,7 +175,8 @@ public class EndGame : MonoBehaviourPun
                             {
                                 photonView.RPC(nameof(SetGameLostActiveRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                             }
-                        } else if (totalBags < players.Length)
+                        } 
+                        else if (totalBags < players.Length)
                         {
                             foreach (var player in players)
                             {

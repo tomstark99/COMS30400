@@ -29,6 +29,9 @@ public class Achievements : MonoBehaviourPun
 
     private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
 
+    // this is a checker 
+    public bool wasDetectedOnce = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -133,6 +136,12 @@ public class Achievements : MonoBehaviourPun
             }
 
         }
+    }
+
+    public void WasDetected()
+    {
+        if (!wasDetectedOnce)
+            wasDetectedOnce = true;
     }
 
     IEnumerator BabyStepsSequence()
@@ -335,5 +344,27 @@ public class Achievements : MonoBehaviourPun
         onTheRun.SetActive(false);
     }
 
+    public void LikeANinjaCompleted()
+    {
+        if (photonView.IsMine)
+        {
+            if (!PlayerPrefs.HasKey("LikeANinja") && !wasDetectedOnce)
+            {
+                PlayerPrefs.SetInt("LikeANinja", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
+                //StartCoroutine(RoadmanSequence());
+                coroutineQueue.Enqueue(LikeANinjaSequence());
+            }
+        }
+    }
 
+    IEnumerator LikeANinjaSequence()
+    {
+        likeANinja.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        likeANinja.SetActive(false);
+    }
 }
