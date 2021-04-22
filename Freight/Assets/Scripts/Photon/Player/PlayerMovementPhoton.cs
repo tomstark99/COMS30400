@@ -252,7 +252,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             controller.Move(velocity * Time.deltaTime);
         }
 
-        if ((move.x != 0 || move.z != 0) && isGrounded)
+        if ((move.x != 0 || move.z != 0) && isGrounded && !onTrain)
         {
             if (!steps.isPlaying && speed == 4.0f)
             {
