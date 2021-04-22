@@ -16,6 +16,8 @@ public class Achievements : MonoBehaviourPun
     private GameObject useNature;
     private GameObject roadman;
 
+    private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +46,18 @@ public class Achievements : MonoBehaviourPun
             letTheHuntBegin = achievements.transform.GetChild(1).gameObject;
             useNature = achievements.transform.GetChild(3).gameObject;
             roadman = achievements.transform.GetChild(4).gameObject;
+
+            StartCoroutine(CoroutineCoordinator());
+        }
+    }
+
+    IEnumerator CoroutineCoordinator()
+    {
+        while (true)
+        {
+            while (coroutineQueue.Count > 0)
+                yield return StartCoroutine(coroutineQueue.Dequeue());
+            yield return null;
         }
     }
 
@@ -58,7 +72,8 @@ public class Achievements : MonoBehaviourPun
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
                 tempColor.a = 1f;
                 achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
-                StartCoroutine(BabyStepsSequence());
+                //StartCoroutine(BabyStepsSequence());
+                coroutineQueue.Enqueue(BabyStepsSequence());
             }
 
         }
@@ -82,7 +97,8 @@ public class Achievements : MonoBehaviourPun
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(1).GetComponent<Image>().color;
                 tempColor.a = 1f;
                 achievementsTab.transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
-                StartCoroutine(LetTheHuntBeginSequence());
+                //StartCoroutine(LetTheHuntBeginSequence());
+                coroutineQueue.Enqueue(LetTheHuntBeginSequence());
             }
 
         }
@@ -106,7 +122,8 @@ public class Achievements : MonoBehaviourPun
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color;
                 tempColor.a = 1f;
                 achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
-                StartCoroutine(UseNatureSequence());
+                //StartCoroutine(UseNatureSequence());
+                coroutineQueue.Enqueue(UseNatureSequence());
             }
         }
     }
@@ -129,7 +146,8 @@ public class Achievements : MonoBehaviourPun
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(4).GetComponent<Image>().color;
                 tempColor.a = 1f;
                 achievementsTab.transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
-                StartCoroutine(RoadmanSequence());
+                //StartCoroutine(RoadmanSequence());
+                coroutineQueue.Enqueue(RoadmanSequence());
             }
         }
     }
