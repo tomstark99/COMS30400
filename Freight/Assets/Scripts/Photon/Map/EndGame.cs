@@ -162,6 +162,11 @@ public class EndGame : MonoBehaviourPun
                         foreach (var player in players)
                         {
                             player.GetComponent<Achievements>().LikeANinjaCompleted();
+                            GameObject[] deadGuards = GameObject.FindGameObjectsWithTag("DeadGuard");
+                            // checks if there are no dead guards
+                            if (deadGuards == null || deadGuards.Length == 0)
+                                player.GetComponent<Achievements>().PeaceTreatyCompleted();
+
                             photonView.RPC(nameof(SetActiveLevelCompleteRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                         }
                     }

@@ -120,6 +120,12 @@ public class Achievements : MonoBehaviourPun
         }
     }
 
+    public void WasDetected()
+    {
+        if (!wasDetectedOnce)
+            wasDetectedOnce = true;
+    }
+
     public void BabyStepsCompleted()
     {
         if (photonView.IsMine)
@@ -136,12 +142,6 @@ public class Achievements : MonoBehaviourPun
             }
 
         }
-    }
-
-    public void WasDetected()
-    {
-        if (!wasDetectedOnce)
-            wasDetectedOnce = true;
     }
 
     IEnumerator BabyStepsSequence()
@@ -174,6 +174,31 @@ public class Achievements : MonoBehaviourPun
         letTheHuntBegin.SetActive(true);
         yield return new WaitForSeconds(3f);
         letTheHuntBegin.SetActive(false);
+    }
+
+    public void PeaceTreatyCompleted()
+    {
+        if (photonView.IsMine)
+        {
+            if (!PlayerPrefs.HasKey("PeaceTreaty"))
+            {
+                PlayerPrefs.SetInt("PeaceTreaty", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
+                //StartCoroutine(LetTheHuntBeginSequence());
+                coroutineQueue.Enqueue(PeaceTreatySequence());
+            }
+
+        }
+    }
+
+    IEnumerator PeaceTreatySequence()
+    {
+        peaceTreaty.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        peaceTreaty.SetActive(false);
     }
 
     public void UseNatureCompleted()

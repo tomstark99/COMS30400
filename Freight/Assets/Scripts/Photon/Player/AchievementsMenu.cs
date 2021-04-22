@@ -20,7 +20,10 @@ public class AchievementsMenu : MonoBehaviour
         {
             transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
         }
-
+        if (PlayerPrefs.HasKey("PeaceTreaty"))
+        {
+            transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
+        }
         if (PlayerPrefs.HasKey("UseNature"))
         {
             transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
@@ -63,6 +66,7 @@ public class AchievementsMenu : MonoBehaviour
 
         PlayerPrefs.DeleteKey("BabySteps");
         PlayerPrefs.DeleteKey("LetTheHuntBegin");
+        PlayerPrefs.DeleteKey("PeaceTreaty");
         PlayerPrefs.DeleteKey("UseNature");
         PlayerPrefs.DeleteKey("Roadman");
         PlayerPrefs.DeleteKey("TheCompletePicture");
@@ -75,6 +79,7 @@ public class AchievementsMenu : MonoBehaviour
 
         transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
+        transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
