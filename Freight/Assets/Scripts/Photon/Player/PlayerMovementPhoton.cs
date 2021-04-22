@@ -313,6 +313,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             RightHandUpUI.SetActive(false);
            // photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
             onTrain = true;
+            GetComponent<Achievements>().ChooChooCompleted();
         }
     }
 

@@ -23,7 +23,7 @@ public class Achievements : MonoBehaviourPun
     private GameObject likeANinja;
     private GameObject hackerman;
     private GameObject learnTheHardWay;
-    private GameObject django;
+    private GameObject chooChoo;
     private GameObject onTheRun;
     private GameObject freight;
 
@@ -76,7 +76,7 @@ public class Achievements : MonoBehaviourPun
             {
                 achievementsTab.transform.GetChild(1).GetChild(2).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("Django"))
+            if (PlayerPrefs.HasKey("ChooChoo"))
             {
                 achievementsTab.transform.GetChild(1).GetChild(3).GetComponent<Image>().color = tempColor;
             }
@@ -98,7 +98,7 @@ public class Achievements : MonoBehaviourPun
             likeANinja = achievements.transform.GetChild(6).gameObject;
             hackerman = achievements.transform.GetChild(7).gameObject;
             learnTheHardWay = achievements.transform.GetChild(8).gameObject;
-            django = achievements.transform.GetChild(9).gameObject;
+            chooChoo = achievements.transform.GetChild(9).gameObject;
             onTheRun = achievements.transform.GetChild(10).gameObject;
             freight = achievements.transform.GetChild(11).gameObject;
 
@@ -287,6 +287,30 @@ public class Achievements : MonoBehaviourPun
         learnTheHardWay.SetActive(false);
     }
 
+    public void ChooChooCompleted()
+    {
+        if (photonView.IsMine)
+        {
+            if (!PlayerPrefs.HasKey("ChooChoo"))
+            {
+                PlayerPrefs.SetInt("ChooChoo", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(1).GetChild(3).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(1).GetChild(3).GetComponent<Image>().color = tempColor;
+                //StartCoroutine(RoadmanSequence());
+                coroutineQueue.Enqueue(ChooChooSequence());
+            }
+        }
+    }
+
+    IEnumerator ChooChooSequence()
+    {
+        chooChoo.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        chooChoo.SetActive(false);
+    }
+
     public void OnTheRunCompleted()
     {
         if (photonView.IsMine)
@@ -310,4 +334,6 @@ public class Achievements : MonoBehaviourPun
         yield return new WaitForSeconds(3f);
         onTheRun.SetActive(false);
     }
+
+
 }
