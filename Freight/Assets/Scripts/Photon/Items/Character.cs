@@ -44,6 +44,10 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     [PunRPC]
     void PickUpRPCLocal(int ItemID)
     {
+        if (!PlayerPrefs.HasKey("TheCompletePicture"))
+        {
+            GetComponent<Achievements>().TheCompletePictureCompleted();
+        }
         PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
         Debug.Log("LOCAL");
         //PhotonView view = Item.GetComponent<PhotonView>();

@@ -29,6 +29,10 @@ public class AchievementsMenu : MonoBehaviour
         {
             transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
         }
+        if (PlayerPrefs.HasKey("TheCompletePicture"))
+        {
+            transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
+        }
     }
 
     public void ResetAchievements()
@@ -39,15 +43,13 @@ public class AchievementsMenu : MonoBehaviour
         PlayerPrefs.DeleteKey("LetTheHuntBegin");
         PlayerPrefs.DeleteKey("UseNature");
         PlayerPrefs.DeleteKey("Roadman");
+        PlayerPrefs.DeleteKey("TheCompletePicture");
         transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
         transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
+        transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
