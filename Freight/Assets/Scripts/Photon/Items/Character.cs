@@ -233,7 +233,10 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         // shoots out a raycast to see what the bullet hits
         Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
 
-        Debug.Log(hitInfo.collider.gameObject);
+        if (!PlayerPrefs.HasKey("LetTheHuntBegin"))
+        {
+            GetComponent<Achievements>().LetTheHuntBeginCompleted();
+        }
 
         // if bullet collides with guard, tell masterclient to kill guard
         if(hitInfo.collider != null)
