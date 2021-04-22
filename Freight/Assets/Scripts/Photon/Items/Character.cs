@@ -386,7 +386,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
     }
     
-     IEnumerator ExampleCoroutine(Switchable Item)
+    IEnumerator LightsCoroutine(Switchable Item)
     {
         GameObject[] spinningLights = GameObject.FindGameObjectsWithTag("SpinningLight");
         ObjectToSeeTheLights.SetActive(true);
@@ -402,18 +402,15 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         yield return new WaitForSeconds(2);
         camera.transform.GetChild(1).gameObject.SetActive(false);
         //camera.transform.GetChild(0).GetComponent<CinemachineVirtualCamera>().MoveToTopOfPrioritySubqueue();
-         yield break;
+        yield break;
     }
+
     public void SwitchOff(Switchable Item)
     {
-         StartCoroutine(ExampleCoroutine(Item));
-        //CameraToSeeTheLights
-        /*GameObject[] spinningLights = GameObject.FindGameObjectsWithTag("SpinningLight");
-        sceneViewOfTheLights.enabled = true;
-        
-        foreach (var light in spinningLights)
+        if (!PlayerPrefs.HasKey("Hackerman"))
         {
-            photonView.RPC(nameof(TurnOffLight), RpcTarget.All, light.transform.GetComponent<PhotonView>().ViewID, Item.transform.GetComponent<PhotonView>().ViewID);
-        }*/
+            GetComponent<Achievements>().HackermanCompleted();
+        }
+        StartCoroutine(LightsCoroutine(Item));
     }
 }
