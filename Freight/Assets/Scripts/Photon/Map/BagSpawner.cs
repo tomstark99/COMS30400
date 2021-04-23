@@ -47,7 +47,6 @@ public class BagSpawner : MonoBehaviourPun
     IEnumerator SpawnTwoBags()
     {
         bool spawned = false;
-
         while (!spawned)
         {
             int index1 = Random.Range(0, spawnPoints.Length);
@@ -56,10 +55,10 @@ public class BagSpawner : MonoBehaviourPun
             if (index1 != index2)
             {
                 GameObject bag = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index1].position, Quaternion.identity);
-                yield return new WaitForSeconds(1f);
+                
                 GameObject bag2 = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index2].position, Quaternion.identity);
 
-                photonView.RPC(nameof(BagParentRPC), RpcTarget.All, bag.GetComponent<PhotonView>().ViewID, bag2.GetComponent<PhotonView>().ViewID);
+                photonView.RPC(nameof(BagParentRPC), RpcTarget.AllBufferedViaServer, bag.GetComponent<PhotonView>().ViewID, bag2.GetComponent<PhotonView>().ViewID);
 
                 spawned = true;
                 
