@@ -30,7 +30,7 @@ public class BagSpawner : MonoBehaviourPun
     void SpawnOneBag()
     {
         int index = Random.Range(0, spawnPoints.Length-1);
-        GameObject bag = PhotonNetwork.Instantiate("PhotonPrefabs/Backpack-20L_i", spawnPoints[index].position, Quaternion.identity);
+        GameObject bag = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index].position, Quaternion.identity);
         bag.transform.parent = backpacks;
     }
 
@@ -55,8 +55,8 @@ public class BagSpawner : MonoBehaviourPun
             // this is to make sure the spawn points are different
             if (index1 != index2)
             {
-                GameObject bag = PhotonNetwork.Instantiate("PhotonPrefabs/Backpack-20L_i", spawnPoints[index1].position, Quaternion.identity);
-                GameObject bag2 = PhotonNetwork.Instantiate("PhotonPrefabs/Backpack-20L_i", spawnPoints[index2].position, Quaternion.identity);
+                GameObject bag = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index1].position, Quaternion.identity);
+                GameObject bag2 = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index2].position, Quaternion.identity);
 
                 photonView.RPC(nameof(BagParentRPC), RpcTarget.All, bag.GetComponent<PhotonView>().ViewID, bag2.GetComponent<PhotonView>().ViewID);
 
