@@ -97,28 +97,28 @@ public class PlayerAnimation : MonoBehaviourPun
         }
 
         if (!isWalking && z > 0.02f) {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("F") == 0)
             {
                 animator.SetBool(isRunningHash, true);
                 player.setSpeed(runningSpeed);
             }
 
-            else if (PoseParser.GETGestureAsString().CompareTo("F") == 0 || Input.GetKey(KeyCode.W))
-            {
-                animator.SetBool(isWalkingHash, true);
-                player.setSpeed(walkingSpeed);
-            }
-            // else
+            // else if (PoseParser.GETGestureAsString().CompareTo("F") == 0 || Input.GetKey(KeyCode.W))
             // {
             //     animator.SetBool(isWalkingHash, true);
             //     player.setSpeed(walkingSpeed);
             // }
+            else
+            {
+                animator.SetBool(isWalkingHash, true);
+                player.setSpeed(walkingSpeed);
+            }
 
         }
         if (!isRunningBack && z < -0.02f) {
             animator.SetBool(isRunningBackHash, true);
         }
-        if (z <= 0.02f && z >= -0.02f && PoseParser.GETGestureAsString().CompareTo("F") != 0) {
+        if (z <= 0.02f && z >= -0.02f) { // && PoseParser.GETGestureAsString().CompareTo("F") != 0) {
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, false);
             animator.SetBool(isRunningBackHash, false);
