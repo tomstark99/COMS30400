@@ -87,8 +87,6 @@ public class PlayerAnimation : MonoBehaviourPun
 
         // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
-
-        Debug.Log(climbing + "CLIMBING");
         if (climbing && Input.GetButton("Ladder")) {
             animator.SetBool(isClimbingHash, true);
         } else {
@@ -117,7 +115,7 @@ public class PlayerAnimation : MonoBehaviourPun
         if (!isRunningBack && z < -0.02f) {
             animator.SetBool(isRunningBackHash, true);
         }
-        if (z <= 0.02f && z >= -0.02f) { // && PoseParser.GETGestureAsString().CompareTo("F") != 0) {
+        if (z <= 0.02f && z >= -0.02f) {
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, false);
             animator.SetBool(isRunningBackHash, false);
@@ -133,7 +131,7 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isLeftHash, true);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && isCrouched) {
+        if ((Input.GetKeyDown(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("F") == 0) && isCrouched) {
             animator.SetBool(isCrouchedHash, false);
         }
 
@@ -143,17 +141,17 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isRunningHash, true);
             player.setSpeed(runningSpeed);
 
-        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning && PoseParser.GETGestureAsString().CompareTo("F") != 0) {
+        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning) {
             animator.SetBool(isWalkingHash, true);
             animator.SetBool(isRunningHash, false);
             player.setSpeed(walkingSpeed);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched && !isRunning) {
-            animator.SetBool(isCrouchedHash, true);
-        } else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched) {
-            animator.SetBool(isCrouchedHash, false);
-        }
+        // if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched && !isRunning) {
+        //     animator.SetBool(isCrouchedHash, true);
+        // } else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched) {
+        //     animator.SetBool(isCrouchedHash, false);
+        // }
 
         if ((Input.GetButtonDown("Jump") || !isGrounded) && !climbing) {
             animator.SetBool(isJumpingHash, true);
@@ -184,18 +182,17 @@ public class PlayerAnimation : MonoBehaviourPun
         this.isGrounded = val;
     }
     public void setClimbing(bool val) {
-        Debug.Log(val + "eating crisps 1 sec maybe 5");
         this.climbing = val;
     }
 
     public void ChangeLayerPistol() {
-        Debug.Log("accc pistol tings");
+        //Debug.Log("accc pistol tings");
         animator.SetLayerWeight(0, 0.0f);
         animator.SetLayerWeight(1, 1.0f);
     }
 
     public void ChangeLayerDefault() {
-        Debug.Log("acc default tings");
+        //Debug.Log("acc default tings");
         animator.SetLayerWeight(0, 1.0f);
         animator.SetLayerWeight(1, 0.0f);
     }
