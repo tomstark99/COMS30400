@@ -21,7 +21,7 @@ public class BagSpawner : MonoBehaviourPun
             } 
             else
             {
-                SpawnTwoBags();
+                StartCoroutine(SpawnTwoBags());
             }
         }
 
@@ -44,7 +44,7 @@ public class BagSpawner : MonoBehaviourPun
         bag2.transform.parent = backpacks;
     }
 
-    void SpawnTwoBags()
+    IEnumerator SpawnTwoBags()
     {
         bool spawned = false;
 
@@ -56,12 +56,15 @@ public class BagSpawner : MonoBehaviourPun
             if (index1 != index2)
             {
                 GameObject bag = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index1].position, Quaternion.identity);
+                yield return new WaitForSeconds(1f);
                 GameObject bag2 = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index2].position, Quaternion.identity);
 
                 photonView.RPC(nameof(BagParentRPC), RpcTarget.All, bag.GetComponent<PhotonView>().ViewID, bag2.GetComponent<PhotonView>().ViewID);
 
                 spawned = true;
+                
             }
+            yield return null;
         }
     }
 }
