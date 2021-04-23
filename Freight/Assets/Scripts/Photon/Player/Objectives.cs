@@ -160,7 +160,7 @@ public class Objectives : MonoBehaviour
             findTrainDistance.transform.localPosition = findTrainDistance.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition ;
             findTrain.SetActive(true);
             findTrainDesc.SetActive(true);
-            //findTrainBackground.SetActive(true);
+            findTrainBackground.SetActive(true);
             findTrainDistance.SetActive(true);
             GetComponent<PlayerAudioClips>().BagsCollected();
         }
