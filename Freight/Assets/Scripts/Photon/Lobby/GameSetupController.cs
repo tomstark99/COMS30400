@@ -33,6 +33,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        PhotonNetwork.LoadLevel(0);
+        if (newMasterClient != null)
+            PhotonNetwork.LoadLevel(0);
     }
 }
