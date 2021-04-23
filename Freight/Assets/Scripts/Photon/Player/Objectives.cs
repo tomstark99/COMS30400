@@ -5,6 +5,9 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 
+
+//Needs refactoring. Really messy. For some reason updating the position with a new vector3 did not work so i added the transform
+//of an empty game object with transform.position.y = 20;
 public class Objectives : MonoBehaviour
 {
     [SerializeField]
@@ -190,8 +193,8 @@ public class Objectives : MonoBehaviour
     {
         escapeOnTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
         escapeOnTrainDesc.SetActive(false);
-        escapeOnTrainBackground.SetActive(false);
-        escapeOnTrainCompleteBackground.SetActive(true);
+       // escapeOnTrainBackground.SetActive(false);
+        //escapeOnTrainCompleteBackground.SetActive(true);
     }
 
     void ClearObjectives()
