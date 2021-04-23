@@ -36,7 +36,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void Start() 
     {
         ObjectToSeeTheLights = GameObject.Find("CameraToSeeTheLights");
-        ObjectToSeeTheLights.SetActive(false);
+        if (ObjectToSeeTheLights)
+            ObjectToSeeTheLights.SetActive(false);
+
         Debug.Log(ObjectToSeeTheLights);
     }
 
