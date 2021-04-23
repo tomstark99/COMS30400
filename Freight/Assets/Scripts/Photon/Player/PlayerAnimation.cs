@@ -87,9 +87,7 @@ public class PlayerAnimation : MonoBehaviourPun
 
         // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
-
-        Debug.Log(climbing + "CLIMBING");
-        if (climbing && Input.GetButton("Ladder")) {
+        if (climbing && (Input.GetButton("Ladder") || PoseParser.GETGestureAsString().CompareTo("L") == 0)) {
             animator.SetBool(isClimbingHash, true);
         } else {
             animator.SetBool(isClimbingHash, false);
@@ -184,7 +182,6 @@ public class PlayerAnimation : MonoBehaviourPun
         this.isGrounded = val;
     }
     public void setClimbing(bool val) {
-        Debug.Log(val + "eating crisps 1 sec maybe 5");
         this.climbing = val;
     }
 
