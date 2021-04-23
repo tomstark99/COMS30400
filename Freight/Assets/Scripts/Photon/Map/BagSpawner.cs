@@ -50,8 +50,8 @@ public class BagSpawner : MonoBehaviourPun
 
         while (!spawned)
         {
-            int index1 = Random.Range(0, spawnPoints.Length - 1);
-            int index2 = Random.Range(0, spawnPoints.Length - 1);
+            int index1 = Random.Range(0, spawnPoints.Length);
+            int index2 = Random.Range(0, spawnPoints.Length);
             // this is to make sure the spawn points are different
             if (index1 != index2)
             {
