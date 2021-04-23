@@ -65,5 +65,6 @@ public class BagSpawner : MonoBehaviourPun
             }
             yield return null;
         }
+         
     }
 }
