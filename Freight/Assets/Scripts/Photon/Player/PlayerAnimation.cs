@@ -8,7 +8,7 @@ using Photon.Realtime;
 public class PlayerAnimation : MonoBehaviourPun
 {
     // animation variables
-    private Animator animator;
+    public Animator animator;
     private int isWalkingHash;
     private int isRunningHash;
     private int isRunningBackHash;
@@ -23,27 +23,25 @@ public class PlayerAnimation : MonoBehaviourPun
     private bool isCrouched;
     private float runningSpeed;
     private float walkingSpeed;
-
-
-
+    
     public GameObject camera;
     public GameObject head;
 
     // public event Action ChangeAnimationLayer;
 
-    private PlayerMovementPhoton player;
+    public PlayerMovementPhoton player;
 
     // Start is called before the first frame update
     void Start()
     {
         // get grounded state from movement controller
-        player = GetComponent<PlayerMovementPhoton>();
+        // player = GetComponent<PlayerMovementPhoton>();
         isGrounded = player.getGrounded();
         runningSpeed = player.getSpeedRunning();
         walkingSpeed = player.getSpeedWalking();
 
         // Setup animation variables
-        animator = GetComponent<Animator>();
+        // animator = GetComponent<Animator>();
 
         // using StringToHash increases performance by nearly 50%
         isWalkingHash = Animator.StringToHash("isWalking");
@@ -90,7 +88,8 @@ public class PlayerAnimation : MonoBehaviourPun
         // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
 
-        if (climbing && Input.GetKey(KeyCode.W)) {
+        Debug.Log(climbing + "CLIMBING");
+        if (climbing && Input.GetButton("Ladder")) {
             animator.SetBool(isClimbingHash, true);
         } else {
             animator.SetBool(isClimbingHash, false);
@@ -156,7 +155,7 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isCrouchedHash, false);
         }
 
-        if (Input.GetButtonDown("Jump") || !isGrounded) {
+        if ((Input.GetButtonDown("Jump") || !isGrounded) && !climbing) {
             animator.SetBool(isJumpingHash, true);
             // animator.SetBool(isRunningHash, false);
         } else if (isGrounded) {
@@ -185,6 +184,7 @@ public class PlayerAnimation : MonoBehaviourPun
         this.isGrounded = val;
     }
     public void setClimbing(bool val) {
+        Debug.Log(val + "eating crisps 1 sec maybe 5");
         this.climbing = val;
     }
 
