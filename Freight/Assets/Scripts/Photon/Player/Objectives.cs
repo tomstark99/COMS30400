@@ -5,6 +5,9 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 
+
+//Needs refactoring. Really messy. For some reason updating the position with a new vector3 did not work so i added the transform
+//of an empty game object with transform.position.y = 20;
 public class Objectives : MonoBehaviour
 {
     [SerializeField]
@@ -52,6 +55,8 @@ public class Objectives : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI ping;
 
+    [SerializeField]
+    private GameObject parentTing;
     private int bagsPickedUp;
     private int playerCount;
 
@@ -120,9 +125,17 @@ public class Objectives : MonoBehaviour
         breakFenceBackground.SetActive(false);
         findBackpacks.SetActive(true);
         findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/" + playerCount + ")";
+        findBackpacksDesc.transform.localPosition = findBackpacksDesc.transform.localPosition - parentTing.transform.localPosition;
         findBackpacksDesc.SetActive(true);
+        findBrokenFence.SetActive(false);
+       
+        findBackpacks.transform.localPosition = findBackpacks.transform.localPosition - parentTing.transform.localPosition;
         findBackpacksBackground.SetActive(true);
+        breakFence.transform.localPosition = breakFence.transform.localPosition - parentTing.transform.localPosition;
+        findBackpacksDescLaptop.transform.localPosition = findBackpacksDescLaptop.transform.localPosition - parentTing.transform.localPosition;
         findBackpacksDescLaptop.SetActive(true);
+
+        findBackpacksLaptopDist.transform.transform.localPosition = findBackpacksLaptopDist.transform.localPosition - parentTing.transform.localPosition;
         findBackpacksLaptopDist.SetActive(true);
     }
 
@@ -136,11 +149,18 @@ public class Objectives : MonoBehaviour
 
         if (bagsPickedUp == playerCount)
         {
+            breakFence.SetActive(false);
             findBackpacks.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             findBackpacksDesc.SetActive(false);
             findBackpacksBackground.SetActive(false);
             findBackpacksDescLaptop.SetActive(false);
             findBackpacksLaptopDist.SetActive(false);
+
+
+            findBackpacks.transform.localPosition = findBackpacks.transform.localPosition - parentTing.transform.localPosition;
+            findTrain.transform.localPosition = findTrain.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition ;
+            findTrainDesc.transform.localPosition = findTrainDesc.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition  ;
+            findTrainDistance.transform.localPosition = findTrainDistance.transform.localPosition - parentTing.transform.localPosition - parentTing.transform.localPosition ;
             findTrain.SetActive(true);
             findTrainDesc.SetActive(true);
             findTrainBackground.SetActive(true);
@@ -158,19 +178,23 @@ public class Objectives : MonoBehaviour
             findTrainDesc.SetActive(false);
             findTrainDistance.SetActive(false);
             findTrainBackground.SetActive(false);
+            findBackpacks.SetActive(false);
+            findTrain.transform.localPosition = findTrain.transform.localPosition - parentTing.transform.localPosition;
+            escapeOnTrain.transform.localPosition = escapeOnTrain.transform.localPosition - parentTing.transform.localPosition*2.3f;
+            escapeOnTrainDesc.transform.localPosition = escapeOnTrainDesc.transform.localPosition - parentTing.transform.localPosition*2.1f;
             escapeOnTrain.SetActive(true);
             escapeOnTrainDesc.SetActive(true);
             escapeOnTrainBackground.SetActive(true);
             //GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
         }
-    }
+    }//escape train desc + 15 //escape train + 20
 
     void SetObjectivesComplete()
     {
         escapeOnTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
         escapeOnTrainDesc.SetActive(false);
-        escapeOnTrainBackground.SetActive(false);
-        escapeOnTrainCompleteBackground.SetActive(true);
+       // escapeOnTrainBackground.SetActive(false);
+        //escapeOnTrainCompleteBackground.SetActive(true);
     }
 
     void ClearObjectives()

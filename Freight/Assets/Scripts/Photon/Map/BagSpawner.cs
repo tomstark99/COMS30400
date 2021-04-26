@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class BagSpawner : MonoBehaviour
+public class BagSpawner : MonoBehaviourPun
 {
     [SerializeField]
     private Transform[] spawnPoints;
@@ -21,7 +21,7 @@ public class BagSpawner : MonoBehaviour
             } 
             else
             {
-                SpawnTwoBags();
+                StartCoroutine(SpawnTwoBags());
             }
         }
 
@@ -30,29 +30,41 @@ public class BagSpawner : MonoBehaviour
     void SpawnOneBag()
     {
         int index = Random.Range(0, spawnPoints.Length-1);
-        GameObject bag = PhotonNetwork.Instantiate("PhotonPrefabs/Backpack-20L_i", spawnPoints[index].position, Quaternion.identity);
+        GameObject bag = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index].position, Quaternion.identity);
         bag.transform.parent = backpacks;
     }
 
-    void SpawnTwoBags()
+    [PunRPC]
+    void BagParentRPC(int bagID, int bag2ID)
+    {
+        GameObject bag = PhotonView.Find(bagID).gameObject;
+        GameObject bag2 = PhotonView.Find(bag2ID).gameObject;
+
+        bag.transform.parent = backpacks;
+        bag2.transform.parent = backpacks;
+    }
+
+    IEnumerator SpawnTwoBags()
     {
         bool spawned = false;
-
         while (!spawned)
         {
-            int index1 = Random.Range(0, spawnPoints.Length - 1);
-            int index2 = Random.Range(0, spawnPoints.Length - 1);
+            int index1 = Random.Range(0, spawnPoints.Length);
+            int index2 = Random.Range(0, spawnPoints.Length);
             // this is to make sure the spawn points are different
             if (index1 != index2)
             {
-                GameObject bag = PhotonNetwork.Instantiate("PhotonPrefabs/Backpack-20L_i", spawnPoints[index1].position, Quaternion.identity);
-                GameObject bag2 = PhotonNetwork.Instantiate("PhotonPrefabs/Backpack-20L_i", spawnPoints[index2].position, Quaternion.identity);
+                GameObject bag = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index1].position, Quaternion.identity);
+                
+                GameObject bag2 = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index2].position, Quaternion.identity);
 
-                bag.transform.parent = backpacks;
-                bag2.transform.parent = backpacks;
+                photonView.RPC(nameof(BagParentRPC), RpcTarget.AllBufferedViaServer, bag.GetComponent<PhotonView>().ViewID, bag2.GetComponent<PhotonView>().ViewID);
 
                 spawned = true;
+                
             }
+            yield return null;
         }
+         
     }
 }

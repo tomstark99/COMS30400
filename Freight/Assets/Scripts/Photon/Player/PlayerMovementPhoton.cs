@@ -80,7 +80,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         steps = groundCheck.GetChild(0).GetComponent<AudioSource>();
         run = groundCheck.GetChild(1).GetComponent<AudioSource>();
 
-        PlayerPrefs.DeleteKey("BabySteps");
+        // achievement checker (deleting for testing purposes)
+        //PlayerPrefs.DeleteKey("BabySteps");
 
         if (PlayerPrefs.HasKey("BabySteps"))
             babySteps = true;
@@ -162,7 +163,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         if (!babySteps) 
         { 
-            if (x > 0f)
+            if (x > 0f || z > 0f)
             {
                 GetComponent<Achievements>().BabyStepsCompleted();
                 babySteps = true;
@@ -251,7 +252,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             controller.Move(velocity * Time.deltaTime);
         }
 
-        if ((move.x != 0 || move.z != 0) && isGrounded)
+        if ((move.x != 0 || move.z != 0) && isGrounded && !onTrain)
         {
             if (!steps.isPlaying && speed == 4.0f)
             {
@@ -312,6 +313,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             RightHandUpUI.SetActive(false);
            // photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
             onTrain = true;
+            GetComponent<Achievements>().ChooChooCompleted();
         }
     }
 
