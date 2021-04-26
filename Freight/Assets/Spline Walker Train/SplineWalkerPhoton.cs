@@ -14,7 +14,7 @@ public class SplineWalkerPhoton : MonoBehaviourPun
 
     public SplineWalkerMode mode;
 
-    private float progress;
+    private float progress = 0.3f;
     private bool goingForward = true;
 
     // if you want to change the time to leave, go to the SyncedTime script and change it there
@@ -75,7 +75,7 @@ public class SplineWalkerPhoton : MonoBehaviourPun
         }
 
         foreach (var c in carriages) {
-            carriageOnTrack[c] = false;
+            carriageOnTrack[c] = true;
         }
 
         Debug.Log(spline);
