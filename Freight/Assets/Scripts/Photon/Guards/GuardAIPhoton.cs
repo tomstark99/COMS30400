@@ -104,11 +104,24 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             guard.GetComponent<GuardAIPhoton>().PlayerCaught += PlayerHasBeenCaught;
         }
 
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+
+            // gets the rock alert component
+            rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>().RockHitGround += CheckForRock;
+
+        }
+
         playerCaught = false;
         walk = sounds.transform.GetChild(0).GetComponent<AudioSource>();
         run = sounds.transform.GetChild(1).GetComponent<AudioSource>();
         chaseMusic = globalSounds.transform.GetChild(1).GetComponent<AudioSource>();
         normalMusic = globalSounds.transform.GetChild(0).GetComponent<AudioSource>();
+
+
+        //achievement checker
     }
 
     public override void OnDisable()
@@ -119,6 +132,14 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         foreach (var light in lights)
         {
             light.GetComponent<RotateLight>().PlayerInLight -= SetAllGuardsToAlerted;
+        }
+
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+            // gets the rock alert component
+            rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>().RockHitGround -= CheckForRock;
         }
 
     }
@@ -177,8 +198,14 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
         // sets the guard destination to player's position
         transform.LookAt(closestPlayer.transform);
-        // - new Vector3(proximityRange, 0, 0)
-        guard.SetDestination(closestPlayer.position - new Vector3(1f, 0, 0));
+
+        //guard.SetDestination(closestPlayer.position - new Vector3(1f, 0, 0));
+        if (Vector3.Distance(transform.position, closestPlayer.position) > 2f)
+        {
+            NavMesh.FindClosestEdge(closestPlayer.position, out NavMeshHit hit, NavMesh.AllAreas);
+            guard.SetDestination(hit.position);
+        }
+
         // sets the guard's alert position to the player's current position (so when the player goes out of range, the guard will run to the last place they saw the player)
         guard.gameObject.GetComponent<GuardAIPhoton>().alertPosition = closestPlayer.position;
     }
@@ -202,13 +229,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
                 if (guardPlayerAngle < guardAngle / 2f)
                 {
-                    // Debug.Log(Physics.Linecast(transform.position, player.transform.GetChild(11).position, obstacleMask));
-                    // Debug.Log(Physics.Linecast(transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask));
                     // checks if guard line of sight is blocked by an obstacle
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
-
+                        player.GetComponent<Achievements>().LearnTheHardWayCompleted();
+                        player.GetComponent<Achievements>().WasDetected();
                         guard.speed = speedChasing;
                         return true;
                     }
@@ -320,7 +346,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     void GoToSighting()
     {
-        guard.SetDestination(alertPosition);
+        NavMesh.FindClosestEdge(alertPosition, out NavMeshHit hit, NavMesh.AllAreas);
+        //guard.SetDestination(alertPosition);
+        guard.SetDestination(hit.position);
     }
 
     void GoToPlayer()
@@ -328,11 +356,11 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         Transform closestPlayer = FindClosestPlayer();
         guard.SetDestination(closestPlayer.position);
     }
-    // guard checks if a rock dropped next to them
-    Vector3 CheckForRock()
+
+    void CheckForRock()
     {
         GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
-        
+
         foreach (GameObject rock in rocks)
         {
 
@@ -345,11 +373,23 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 //Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
                 if (Vector3.Distance(transform.position, tempRock.transform.position) < 30)
                 {
-                    return tempRock.transform.position;
+                    SetGuardsToAlertedItem(tempRock.transform.position);
+                    // checks which player threw the rock and completes achievement
+                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                    foreach (var player in players)
+                    {
+                        if (player.GetComponent<PhotonView>().Owner == rock.GetComponent<PhotonView>().Controller)
+                        {
+                            player.GetComponent<Achievements>().UseNatureCompleted();
+                            return;
+                        }
+                    }
+                    
+                    return;
                 }
             }
         }
-        return new Vector3(0f, 0f, 0f);
+
     }
 
     void PlayerHasBeenCaught()
@@ -360,7 +400,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     bool CheckIfAllGuardsPatroling()
     {
         GameObject[] allGuards = GameObject.FindGameObjectsWithTag("Guard");
-        bool patrolling = true;
         foreach (var guard in allGuards)
         {
             Transform child = guard.transform;
@@ -368,23 +407,33 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             // sets the guard to be alerted if they're not chasing
             if (temp.guardState != State.Patroling)
             {
-                patrolling = false;
-                break;
+                return false;
             }
         }
-        return patrolling;
+
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (var player in players)
+        {
+            player.GetComponent<Achievements>().OnTheRunCompleted();
+        }
+
+        return true;
     }
 
     void ResetMusic()
     {
-        chaseMusic.Stop();
-        normalMusic.Play();
+        if (!normalMusic.isPlaying)
+        {
+            chaseMusic.Stop();
+            normalMusic.Play();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (guard.pathPending || playerCaught)
+        if ((guard.pathPending && guardState == State.Patroling) || playerCaught)
             return;
 
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -393,20 +442,21 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         playerSpotted = PlayerSpotted();
         deadGuardSpotted = DeadGuardSpotted();
 
-        if(old != playerSpotted) {
+        if(old != playerSpotted) 
+        {
             GetComponent<GuardAnimation>().setChasing(playerSpotted);
         }
 
-        Vector3 rockPos; 
+        //Vector3 rockPos; 
 
-        if (reactsToRocks)
-        {
-            rockPos = CheckForRock();
-        }
-        else
-        {
-            rockPos = new Vector3(0f, 0f, 0f);
-        }
+        //if (reactsToRocks)
+        //{
+        //    rockPos = CheckForRock();
+        //}
+        //else
+        //{
+        //    rockPos = new Vector3(0f, 0f, 0f);
+        //}
 
         if (!chaseMusic.isPlaying && guardState != State.Patroling)
         {
@@ -494,10 +544,10 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             timeChasing = 0;
             guardState = State.Alerted;
         }
-        else if (rockPos != new Vector3(0f, 0f, 0f))
-        {
-            SetGuardsToAlertedItem(rockPos);
-        }
+        //else if (rockPos != new Vector3(0f, 0f, 0f))
+        //{
+        //    SetGuardsToAlertedItem(rockPos);
+        //}
         // If the player is not spotted and the guard has reached their destination, go to new point
         else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {

@@ -239,7 +239,7 @@ MonoBehaviour:
     m_Bits: 256
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 2195456
+    m_Bits: 6389760
   points:
   - {fileID: 0}
   - {fileID: 0}
@@ -253,6 +253,7 @@ MonoBehaviour:
   guardAngle: 80
   spotlightColour: {r: 0.9137255, g: 0.9098039, b: 0.41960785, a: 1}
   alertColour: {r: 0.8862745, g: 0.6392157, b: 0.29803923, a: 1}
+  globalSounds: {fileID: 0}
 --- !u!195 &-5741005676224242585
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -268,7 +269,7 @@ NavMeshAgent:
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 1.7

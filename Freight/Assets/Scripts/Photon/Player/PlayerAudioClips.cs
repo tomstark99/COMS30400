@@ -18,6 +18,7 @@ public class PlayerAudioClips : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += FindTheBags;
         StartCoroutine(IntroSequence());
     }
 
@@ -53,6 +54,18 @@ public class PlayerAudioClips : MonoBehaviour
         subtitle.text = "Bossman: You got everything we need, find the train it should be leaving soon!";
         leave.SetActive(true);
         yield return new WaitForSeconds(3f);
+        subtitle.text = "";
+    }
+
+    public void FindTheBags()
+    {
+        StartCoroutine(FindTheBagsSequence());
+    }
+
+    IEnumerator FindTheBagsSequence()
+    {
+        subtitle.text = "Bossman: Good job on making your way in, the bags should be in the buildings!";
+        yield return new WaitForSeconds(4f);
         subtitle.text = "";
     }
 }

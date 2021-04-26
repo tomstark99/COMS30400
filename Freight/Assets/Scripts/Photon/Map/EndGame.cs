@@ -156,11 +156,17 @@ public class EndGame : MonoBehaviourPun
 
                     gameEnding = false;
 
-                    if (gameWon == true)
+                    if (gameWon)
                     {
                         Debug.Log("you won!");
                         foreach (var player in players)
                         {
+                            player.GetComponent<Achievements>().LikeANinjaCompleted();
+                            GameObject[] deadGuards = GameObject.FindGameObjectsWithTag("DeadGuard");
+                            // checks if there are no dead guards
+                            if (deadGuards == null || deadGuards.Length == 0)
+                                player.GetComponent<Achievements>().PeaceTreatyCompleted();
+
                             photonView.RPC(nameof(SetActiveLevelCompleteRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                         }
                     }
@@ -174,7 +180,8 @@ public class EndGame : MonoBehaviourPun
                             {
                                 photonView.RPC(nameof(SetGameLostActiveRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                             }
-                        } else if (totalBags < players.Length)
+                        } 
+                        else if (totalBags < players.Length)
                         {
                             foreach (var player in players)
                             {

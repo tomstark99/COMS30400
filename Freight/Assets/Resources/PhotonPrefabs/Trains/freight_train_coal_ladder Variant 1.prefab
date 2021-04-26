@@ -5096,8 +5096,26 @@ MonoBehaviour:
   duration: 50
   lookForward: 1
   mode: 0
+  progress: 0.25
   trainPos: {x: 0, y: 0, z: 0}
   prevPos: {x: 0, y: 0, z: 0}
+  carriages: []
+--- !u!114 &616585632932614470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385272616317404168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1001 &5079283267185801561
 PrefabInstance:
   m_ObjectHideFlags: 0
