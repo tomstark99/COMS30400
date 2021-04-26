@@ -107,7 +107,6 @@ public class SliderToValue : MonoBehaviourPunCallbacks
 
     public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        Debug.Log(propertiesThatChanged);
         if (propertiesThatChanged.ContainsKey("sliderValue"))
         {
             text.text = propertiesThatChanged["sliderValue"].ToString();
