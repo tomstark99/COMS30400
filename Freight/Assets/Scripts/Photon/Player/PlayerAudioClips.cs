@@ -61,6 +61,7 @@ public class PlayerAudioClips : MonoBehaviour
     {
         StartCoroutine(FindTheBagsSequence());
     }
+
     IEnumerator FindTheBagsSequence()
     {
         subtitle.text = "Bossman: Good job on making your way in, the bags should be in the buildings!";
