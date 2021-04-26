@@ -49,7 +49,7 @@ public class EndGame : MonoBehaviourPun
             Debug.Log(other.gameObject);
             Debug.Log(colliders.Count);
             // 11 box colliders on the train so when all of them are in endgame, start endgame
-            if (colliders.Count == 6)
+            if (colliders.Count == 11)
             {
                 StartEndGame();
             }
