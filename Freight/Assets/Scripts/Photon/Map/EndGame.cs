@@ -156,7 +156,7 @@ public class EndGame : MonoBehaviourPun
 
                     gameEnding = false;
 
-                    if (gameWon == true)
+                    if (gameWon)
                     {
                         Debug.Log("you won!");
                         foreach (var player in players)
