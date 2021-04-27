@@ -136,7 +136,7 @@ public class EndGame : MonoBehaviourPun
         endScreen += Time.deltaTime;
         if (endScreen > 6f)
         {
-            PhotonNetwork.LoadLevel(0);
+            PhotonNetwork.LoadLevel("Scenes/TrainStationArrive");
             showingEndScreen = false;
         }
     }

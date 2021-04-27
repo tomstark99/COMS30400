@@ -116,5 +116,6 @@ public class SliderToValue : MonoBehaviourPunCallbacks
         {
             textDiff.text = propertiesThatChanged["sliderValueDiff"].ToString();
         }
+
     }
 }
