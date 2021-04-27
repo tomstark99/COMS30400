@@ -15,7 +15,7 @@ public class Droppable : Interactable
 
     public override void PrimaryInteraction(Character character)
     {
-        if (!isDroppedOff)
+        if (!isDroppedOff && !character.BagDroppedOff)
         {
             character.DropOff(this);
             GetComponent<PhotonView>().RPC(nameof(DroppedOffRPC), RpcTarget.All);
