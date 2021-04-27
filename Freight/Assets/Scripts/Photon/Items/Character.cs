@@ -348,6 +348,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         backPackObject.SetActive(true);
     }
+
     public void Grab(Grabbable Item)
     {
         holdingTheBag = true;
@@ -369,18 +370,12 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         GameObject lightsOn = laptop.transform.GetChild(0).GetChild(0).gameObject;
         if (light.GetComponent<RotateLight>().lightsTurnedOff)
         {
-            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
-            //gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
-            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(false);
             lightsOff.SetActive(true);
             lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
             lightsOn.SetActive(false);
         } 
         else
         {
-            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
-            //gameObject.transform.GetChild(13).GetChild(9).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
-            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(false);
             lightsOn.SetActive(true);
             lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
             lightsOff.SetActive(false);
@@ -413,5 +408,24 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             GetComponent<Achievements>().HackermanCompleted();
         }
         StartCoroutine(LightsCoroutine(Item));
+    }
+
+    [PunRPC]
+    void ActivateDropOffBackpack(int itemID)
+    {
+        GameObject drop = PhotonView.Find(itemID).gameObject;
+        drop.transform.GetChild(0).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    void DeactivateBackpack()
+    {
+        backPackObject.SetActive(false);
+    }
+
+    public void DropOff(Droppable Item)
+    {
+        photonView.RPC(nameof(ActivateDropOffBackpack), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(DeactivateBackpack), RpcTarget.All);
     }
 }
