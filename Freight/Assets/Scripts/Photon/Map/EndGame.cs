@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
-public class EndGame : MonoBehaviourPun
+public class EndGame : MonoBehaviourPunCallbacks
 {
     public GameObject leavingTrain;
     private HashSet<Collider> colliders = new HashSet<Collider>();
@@ -136,7 +136,10 @@ public class EndGame : MonoBehaviourPun
         endScreen += Time.deltaTime;
         if (endScreen > 6f)
         {
-            PhotonNetwork.LoadLevel("Scenes/TrainStationArrive");
+            ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+            prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
+            PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+
             showingEndScreen = false;
         }
     }
@@ -199,6 +202,15 @@ public class EndGame : MonoBehaviourPun
             {
                 CheckIfGameOver();
             }
+        }
+    }
+
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+        // loads scene once properties have changed
+        if (propertiesThatChanged.ContainsKey("levelToLoad"))
+        {
+            PhotonNetwork.LoadLevel("Scenes/LoadingScreen");
         }
     }
 }

@@ -61,7 +61,7 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
 
     public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-
+        // loads scene once properties have changed
         if (propertiesThatChanged.ContainsKey("levelToLoad"))
         {
             PhotonNetwork.LoadLevel("Scenes/LoadingScreen");
