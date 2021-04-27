@@ -18,7 +18,8 @@ public class PlayerAudioClips : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += FindTheBags;
+        if (GameObject.FindGameObjectWithTag("BrokenFence") != null)
+            GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += FindTheBags;
         StartCoroutine(IntroSequence());
     }
 
