@@ -29,9 +29,16 @@ public class DropSpots : MonoBehaviourPun
         spawnPoints[0].gameObject.SetActive(true);
     }
 
+    [PunRPC]
+    void ActivateDropSpotsRPC()
+    {
+        spawnPoints[0].gameObject.SetActive(true);
+        spawnPoints[1].gameObject.SetActive(true);
+    }
+
     void ActivateTwoDropSpots()
     {
-
+        photonView.RPC(nameof(ActivateDropSpotsRPC), RpcTarget.All);
     }
 
 }
