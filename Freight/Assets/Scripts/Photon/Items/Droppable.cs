@@ -5,10 +5,10 @@ using Photon.Pun;
 
 public class Droppable : Interactable
 {
-    bool isDroppedOff = false;
+    public bool isDroppedOff = false;
 
     [PunRPC]
-    void SetDroppedOffToTrue()
+    void DroppedOffRPC()
     {
         isDroppedOff = true;
     }
@@ -18,7 +18,7 @@ public class Droppable : Interactable
         if (!isDroppedOff)
         {
             character.DropOff(this);
-            GetComponent<PhotonView>().RPC(nameof(SetDroppedOffToTrue), RpcTarget.All);
+            GetComponent<PhotonView>().RPC(nameof(DroppedOffRPC), RpcTarget.All);
         }
     }
 }
