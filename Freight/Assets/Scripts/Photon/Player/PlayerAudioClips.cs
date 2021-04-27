@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 public class PlayerAudioClips : MonoBehaviour
 {
@@ -20,7 +21,9 @@ public class PlayerAudioClips : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("BrokenFence") != null)
             GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += FindTheBags;
-        StartCoroutine(IntroSequence());
+        
+        if (PhotonNetwork.CurrentRoom.CustomProperties["curScn"].ToString() == "TrainStationPun")
+            StartCoroutine(IntroSequence());
     }
 
     IEnumerator IntroSequence()
