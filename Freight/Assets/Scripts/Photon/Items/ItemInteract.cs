@@ -7,7 +7,10 @@ using Photon.Pun;
 public class ItemInteract : MonoBehaviourPun
 {
     public float maxInteractionDistance = 4f;
-    [SerializeField] private Transform cameraTransform;
+
+    [SerializeField]
+    private Transform cameraTransform;
+
     private Character character;
     private bool interactableInRange = false;
     private bool bagInRange = false;
@@ -18,6 +21,9 @@ public class ItemInteract : MonoBehaviourPun
     private GameObject tooltipObject;
 
     public GameObject text;
+
+    [SerializeField]
+    private GameObject textDrop;
 
     private GameObject rocks;
 
@@ -77,7 +83,7 @@ public class ItemInteract : MonoBehaviourPun
                 //Debug.Log("current interactable has a pick up script");
                 if (Input.GetKeyDown(KeyCode.E)) 
                 {
-                    if (newInteractable.GetComponent<Switchable>() != null)
+                    if (newInteractable.GetComponent<Switchable>() != null || newInteractable.GetComponent<Droppable>() != null)
                     {
                         newInteractable.PrimaryInteraction(character);
                     }
@@ -100,6 +106,7 @@ public class ItemInteract : MonoBehaviourPun
             // check if there is a bag nearby as we can still pickup bags if we are holding an item
             Grabbable newBag = null;
             Switchable newSwitch = null;
+            Droppable dropBag = null;
 
             try
             {
@@ -119,6 +126,15 @@ public class ItemInteract : MonoBehaviourPun
                 Debug.Log("switch is null");
             }
 
+            try
+            {
+                dropBag = interactableObject.GetComponent<Droppable>();
+            }
+            catch
+            {
+                Debug.Log("switch is null");
+            }
+
             if (Input.GetKeyDown(KeyCode.E) && newBag != null)
             {
                 newBag.PrimaryInteraction(character);
@@ -127,6 +143,11 @@ public class ItemInteract : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.E) && newSwitch != null)
             {
                 newSwitch.PrimaryInteraction(character);
+            }
+
+            if (Input.GetKeyDown(KeyCode.E) && dropBag != null)
+            {
+                dropBag.PrimaryInteraction(character);
             }
 
             // press G to drop/throw item
@@ -164,6 +185,19 @@ public class ItemInteract : MonoBehaviourPun
     {
         text.SetActive(false);
     }
+
+    [PunRPC]
+    void SetPressDropToActive()
+    {
+        textDrop.SetActive(true);
+    }
+
+    [PunRPC]
+    void SetPressDropToNotActive()
+    {
+        textDrop.SetActive(false);
+    }
+
     private void FixedUpdate()
     {
 
@@ -183,7 +217,12 @@ public class ItemInteract : MonoBehaviourPun
             {
                 
                 float tempDist = Vector3.Distance(interact.transform.position, transform.position);
-                if(tempDist <= 20f && interact.GetComponent<Outline>() != null) 
+                bool hasOutline = false;
+
+                if (interact.GetComponent<Outline>() != null)
+                    hasOutline = true;
+
+                if(tempDist <= 20f && hasOutline) 
                 {
                     interact.GetComponent<Outline>().enabled = true;
                     if(tooltip) 
@@ -207,25 +246,49 @@ public class ItemInteract : MonoBehaviourPun
                 } 
                 else 
                 {
-                    if(interact.GetComponent<Outline>().enabled == true)
+                    if(hasOutline && interact.GetComponent<Outline>().enabled == true)
                         interact.GetComponent<Outline>().enabled = false;
                 }
-                if (tempDist <= 2.5f)
+                
+                if (interact.GetComponent<Droppable>() != null)
                 {
-                    photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
-                    interactableInRange = true;
-
-                    if(tempDist < minimumDistanceToObject) {
-                        interactableObject = interact.gameObject;
-                        minimumDistanceToObject = tempDist;
+                    if (tempDist <= 10f && interact.GetComponent<Droppable>() != null)
+                    {
+                        photonView.RPC("SetPressDropToActive", GetComponent<PhotonView>().Owner);
+                        interactableInRange = true;
+                        if (tempDist < minimumDistanceToObject)
+                        {
+                            interactableObject = interact.gameObject;
+                            minimumDistanceToObject = tempDist;
+                        }
+                        found = true;
                     }
-                    found = true;
-
+                    else if (tempDist > 10f && found == false)
+                    {
+                        photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
+                        interactableInRange = false;
+                    }
                 }
-                else if (tempDist > 2.5f && found == false)
+                else
                 {
-                    photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
-                    interactableInRange = false;
+                    if (tempDist <= 2.5f)
+                    {
+                        photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
+                        interactableInRange = true;
+
+                        if (tempDist < minimumDistanceToObject)
+                        {
+                            interactableObject = interact.gameObject;
+                            minimumDistanceToObject = tempDist;
+                        }
+                        found = true;
+
+                    }
+                    else if (tempDist > 2.5f && found == false)
+                    {
+                        photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
+                        interactableInRange = false;
+                    }
                 }
 
                 

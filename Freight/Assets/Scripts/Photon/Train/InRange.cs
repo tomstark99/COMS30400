@@ -39,7 +39,8 @@ public class InRange : MonoBehaviourPun
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player") {
+        if(other.gameObject.tag == "Player") 
+        {
             if(other.gameObject.GetComponent<Objectives>().FindBackpacks.activeSelf && !other.gameObject.GetComponent<Objectives>().FindBackpacksDesc.activeSelf) {
                 if (!walkedInRangeOfTrain)
                 {
@@ -50,8 +51,10 @@ public class InRange : MonoBehaviourPun
         }
     }
 
-    void OnTriggerExit(Collider other) {
-        if (!objectiveActive) {
+    void OnTriggerExit(Collider other) 
+    {
+        if (!objectiveActive) 
+        {
             if (walkedInRangeOfTrain && other.gameObject.tag == "Player")
             {
                 photonView.RPC(nameof(WalkedOutOfTrain), RpcTarget.All);

@@ -79,7 +79,12 @@ public class Objectives : MonoBehaviour
         {
             bag.GetComponent<Grabbable>().BagPickedUp += SetFindTrainToActive;
         }
-        GameObject.FindGameObjectWithTag("locomotive").GetComponent<InRange>().InRangeOfTrain += SetEscapeToActive;
+        GameObject[] trains = GameObject.FindGameObjectsWithTag("locomotive");
+        foreach (var train in trains)
+        {
+            train.GetComponent<InRange>().InRangeOfTrain += SetEscapeToActive;
+        }
+        //GameObject.FindGameObjectWithTag("locomotive").GetComponent<InRange>().InRangeOfTrain += SetEscapeToActive;
         GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().StartEndGame += SetObjectivesComplete;
         GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += ClearObjectives;
 
