@@ -6,7 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 
-public class CurrentRoomCanvas : MonoBehaviour
+public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private TextMeshProUGUI roomText;
@@ -52,7 +52,19 @@ public class CurrentRoomCanvas : MonoBehaviour
             Debug.Log("Starting Game");
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
-            PhotonNetwork.LoadLevel(3);
+
+            ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+            prop.Add("levelToLoad", "Assets/Scenes/TrainStationPun.unity");
+            PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+        }
+    }
+
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+
+        if (propertiesThatChanged.ContainsKey("levelToLoad"))
+        {
+            PhotonNetwork.LoadLevel("Scenes/LoadingScreen");
         }
     }
 }
