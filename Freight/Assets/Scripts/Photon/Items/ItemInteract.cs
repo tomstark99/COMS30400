@@ -83,9 +83,14 @@ public class ItemInteract : MonoBehaviourPun
                 //Debug.Log("current interactable has a pick up script");
                 if (Input.GetKeyDown(KeyCode.E)) 
                 {
-                    if (newInteractable.GetComponent<Switchable>() != null || newInteractable.GetComponent<Droppable>() != null)
+                    if (newInteractable.GetComponent<Switchable>() != null)
                     {
                         newInteractable.PrimaryInteraction(character);
+                    }
+                    else if (newInteractable.GetComponent<Droppable>() != null)
+                    {
+                        newInteractable.PrimaryInteraction(character);
+                        photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
                     }
                     else
                     {
@@ -148,6 +153,7 @@ public class ItemInteract : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.E) && dropBag != null)
             {
                 dropBag.PrimaryInteraction(character);
+                photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
             }
 
             // press G to drop/throw item
@@ -215,62 +221,55 @@ public class ItemInteract : MonoBehaviourPun
         {
             foreach (Transform interact in interactable.transform)
             {
-                
                 float tempDist = Vector3.Distance(interact.transform.position, transform.position);
-                bool hasOutline = false;
 
-                if (interact.GetComponent<Outline>() != null)
-                    hasOutline = true;
-
-                if(tempDist <= 20f && hasOutline) 
-                {
-                    interact.GetComponent<Outline>().enabled = true;
-                    if(tooltip) 
-                    {
-                        if (tooltipCount < 2)
-                        { 
-                            tooltipCount ++;
-                        } 
-                        else 
-                        {
-                            if(tooltipCount < 4)
-                            {
-                                Quaternion objRot = transform.rotation;
-                                GameObject playerTooltip = Instantiate(tooltipObject, new Vector3(interact.position.x, interact.position.y + 5, interact.position.z), Quaternion.Euler(objRot.eulerAngles));
-                                playerTooltip.GetComponent<Tooltip>().Player = gameObject;
-                                tooltip = false;
-                            }
-                        }
-                    }
-                   
-                } 
-                else 
-                {
-                    if(hasOutline && interact.GetComponent<Outline>().enabled == true)
-                        interact.GetComponent<Outline>().enabled = false;
-                }
-                
                 if (interact.GetComponent<Droppable>() != null)
                 {
-                    if (tempDist <= 10f && interact.GetComponent<Droppable>() != null)
+                    if (!interact.GetComponent<Droppable>().isDroppedOff)
                     {
-                        photonView.RPC("SetPressDropToActive", GetComponent<PhotonView>().Owner);
-                        interactableInRange = true;
-                        if (tempDist < minimumDistanceToObject)
+                        if (tempDist <= 10f && interact.GetComponent<Droppable>() != null)
                         {
-                            interactableObject = interact.gameObject;
-                            minimumDistanceToObject = tempDist;
+                            photonView.RPC("SetPressDropToActive", GetComponent<PhotonView>().Owner);
+                            interactableInRange = true;
+                            if (tempDist < minimumDistanceToObject)
+                            {
+                                interactableObject = interact.gameObject;
+                                minimumDistanceToObject = tempDist;
+                            }
+                            found = true;
                         }
-                        found = true;
-                    }
-                    else if (tempDist > 10f && found == false)
-                    {
-                        photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
-                        interactableInRange = false;
+                        else if (tempDist > 10f && found == false)
+                        {
+                            photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
+                            interactableInRange = false;
+                        }
                     }
                 }
                 else
                 {
+                    
+                    bool hasOutline = false;
+
+                    if (interact.GetComponent<Outline>() != null)
+                        hasOutline = true;
+
+                    if (tempDist <= 20f && hasOutline)
+                    {
+                        interact.GetComponent<Outline>().enabled = true;
+                        if (tooltip)
+                        {
+                            Quaternion objRot = transform.rotation;
+                            GameObject playerTooltip = Instantiate(tooltipObject, new Vector3(interact.position.x, interact.position.y + 5, interact.position.z), Quaternion.Euler(objRot.eulerAngles));
+                            playerTooltip.GetComponent<Tooltip>().Player = gameObject;
+                            tooltip = false;
+                        }
+                    }
+                    else
+                    {
+                        if (hasOutline && interact.GetComponent<Outline>().enabled == true)
+                            interact.GetComponent<Outline>().enabled = false;
+                    }
+
                     if (tempDist <= 2.5f)
                     {
                         photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
@@ -290,7 +289,6 @@ public class ItemInteract : MonoBehaviourPun
                         interactableInRange = false;
                     }
                 }
-
                 
             }
         }
