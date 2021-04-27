@@ -18,6 +18,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     private bool holdingTheBag;
 
+    private bool bagDroppedOff;
+
     public GameObject backPackObject;
 
     private GameObject ObjectToSeeTheLights;
@@ -27,7 +29,12 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         get { return holdingTheBag; }
     }
-    
+
+    public bool BagDroppedOff
+    {
+        get { return bagDroppedOff; }
+    }
+
     public bool HasItem()
     {
         return currentHeldItem != null;
@@ -425,6 +432,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     public void DropOff(Droppable Item)
     {
+        bagDroppedOff = true;
+
         photonView.RPC(nameof(ActivateDropOffBackpack), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
         photonView.RPC(nameof(DeactivateBackpack), RpcTarget.All);
     }
