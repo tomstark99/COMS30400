@@ -17,7 +17,7 @@ public class EndGame : MonoBehaviourPunCallbacks
     private bool showingEndScreen;
     private float endScreen;
     private int totalBags;
-    private int totalOnTrain;
+    private int totalOnTrain; 
     public CinemachineVirtualCamera vcam;
 
     public HashSet<Collider> GetColliders() { return colliders; }
@@ -49,7 +49,7 @@ public class EndGame : MonoBehaviourPunCallbacks
             Debug.Log(other.gameObject);
             Debug.Log(colliders.Count);
             // 11 box colliders on the train so when all of them are in endgame, start endgame
-            if (colliders.Count == 11)
+            if (colliders.Count == 11 && !gameEnding)
             {
                 StartEndGame();
             }
