@@ -14,6 +14,6 @@ public class Interact : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%> The complete picture:\n <size=70%>   Interact with scene objects");
+        text1.SetText("<size=100%>                     The complete picture:\n <size=70%>                                 Interact with scene objects");
     }
 }

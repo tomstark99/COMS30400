@@ -12,6 +12,6 @@ public class Movement : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text.SetText("<size=100%>           Baby Steps:\n <size=70%>Move your character for the first time");
+        text.SetText("<size=100%>                              Baby Steps:\n <size=70%>                        Move your character for the first time");
     }
 }

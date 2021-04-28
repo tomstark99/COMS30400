@@ -14,6 +14,6 @@ public class Peace : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%>              Peace Treaty:\n <size=70%>Complete the level without killing any guards");
+        text1.SetText("<size=100%>                            Peace Treaty:\n <size=70%>                Complete the level without killing any guards");
     }
 }

@@ -14,6 +14,6 @@ public class LoseTheGuards : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%>               On the run:\n <size=70%>    Lose the guards after you got detected");
+        text1.SetText("<size=100%>                             On the run:\n <size=70%>                       Lose the guards after you got detected");
     }
 }

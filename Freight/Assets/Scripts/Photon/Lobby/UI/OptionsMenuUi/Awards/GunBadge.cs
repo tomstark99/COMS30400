@@ -13,6 +13,6 @@ public class GunBadge : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%>   Let the hunt begin:\n <size=70%> Shoot a gun for the first time");
+        text1.SetText("<size=100%>                        Let the hunt begin:\n <size=70%>                               Shoot a gun for the first time");
     }
 }

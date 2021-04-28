@@ -14,6 +14,6 @@ public class Ninja : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%>               Like a ninja:\n <size=70%>   Finish the game without getting spotted ");
+        text1.SetText("<size=100%>                             Like a ninja:\n <size=70%>                    Finish the game without getting spotted ");
     }
 }
