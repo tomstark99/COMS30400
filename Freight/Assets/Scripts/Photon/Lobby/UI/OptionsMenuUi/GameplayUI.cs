@@ -13,6 +13,7 @@ public class GameplayUI : MonoBehaviour
     public GameObject DisplayTab;
     public Slider mouseSensibilitySlider;
 
+    public GameObject SaveSettings;
     private void Start()
     {
         if (PlayerPrefs.HasKey("MouseSensibility"))
