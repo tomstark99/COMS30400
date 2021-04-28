@@ -57,10 +57,12 @@ public class ObjectivesSecond : MonoBehaviour
         {
             if (drop1.GetComponent<Droppable>().isDroppedOff)
             {
+                dropBagsDistance.GetComponent<TextMeshProUGUI>().text = "-Drop point 1 delivered";
                 dropBagsDistance.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             } 
             else
             {
+                dropBagsDistance2.GetComponent<TextMeshProUGUI>().text = "-Drop point 2 delivered";
                 dropBagsDistance2.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             }
         }
