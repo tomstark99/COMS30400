@@ -14,6 +14,6 @@ public class KillAGuard : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%>               Roadman:\n <size=70%>       Use your pistol to kill a guard");
+        text1.SetText("<size=100%>                               Roadman:\n <size=70%>                               Use your pistol to kill a guard");
     }
 }
