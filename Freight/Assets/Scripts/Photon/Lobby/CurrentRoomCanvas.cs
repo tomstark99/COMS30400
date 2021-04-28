@@ -65,7 +65,8 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
         // loads scene once properties have changed
         if (propertiesThatChanged.ContainsKey("levelToLoad"))
         {
-            PhotonNetwork.LoadLevel("Scenes/LoadingScreen");
+            if (PhotonNetwork.IsMasterClient)
+                PhotonNetwork.LoadLevel("Scenes/LoadingScreen");
         }
     }
 }
