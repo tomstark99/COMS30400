@@ -169,12 +169,12 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     [PunRPC]
     void ThrowRPC(int ItemID)
-    {
+    { 
         Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
         GetComponent<IkBehaviour>().ikActive = false;
         // Gesture aim
         // Debug.Log("CAMERA POSITION"+ (camera.transform.forward + (camera.transform.rotation * MoveCrosshair.GETCrosshairOffsetFromCentre())));
-        Item.GetComponent<Rigidbody>().AddForce((camera.transform.forward + (camera.transform.rotation * crosshair.GETCrosshairOffsetFromCentre()) * 0.002f).normalized * 1000);
+        Item.GetComponent<Rigidbody>().AddForce((actualCamera.transform.forward + (actualCamera.transform.rotation * crosshair.GETCrosshairOffsetFromCentre()) * 0.002f).normalized * 1000);
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
