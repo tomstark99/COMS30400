@@ -244,6 +244,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             var decibelsValue = player.GetComponent<SoundRipples>().decibelsValue;
             if(distance < decibelsValue)
             {
+                player.GetComponent<Achievements>().LearnTheHardWayCompleted();
+                player.GetComponent<Achievements>().WasDetected();
                 guard.speed = speedChasing;
                 return true;
             }

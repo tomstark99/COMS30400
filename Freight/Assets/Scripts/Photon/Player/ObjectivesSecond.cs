@@ -17,6 +17,12 @@ public class ObjectivesSecond : MonoBehaviour
     private GameObject dropBagsDesc;
     [SerializeField]
     private GameObject dropBagsBackground;
+    [SerializeField]
+    private GameObject rendezvous;
+    [SerializeField]
+    private GameObject rendezvousDist;
+
+    private GameObject endGame;
 
     private bool twoPlayers;
 
@@ -41,6 +47,8 @@ public class ObjectivesSecond : MonoBehaviour
             counter = 2;
         }
 
+        endGame = GameObject.FindGameObjectWithTag("EndGame");
+
     }
 
     void DropBags()
@@ -52,6 +60,8 @@ public class ObjectivesSecond : MonoBehaviour
             dropBagsDistance.SetActive(false);
             dropBagsDistance2.SetActive(false);
             dropBagsDesc.SetActive(false);
+            rendezvous.SetActive(true);
+            rendezvousDist.SetActive(true);
         }
         else
         {
@@ -86,6 +96,12 @@ public class ObjectivesSecond : MonoBehaviour
 
                     dropBagsDistance2.GetComponent<TextMeshProUGUI>().text = "-Drop point 2 distance: " + Math.Round(distance, 2) + "m";
                 }
+        }
+        else if (rendezvous.activeSelf)
+        {
+            float distance = Vector3.Distance(transform.position, endGame.transform.position);
+
+            rendezvousDist.GetComponent<TextMeshProUGUI>().text = "-Distance: " + Math.Round(distance, 2) + "m";
         }
     }
 }
