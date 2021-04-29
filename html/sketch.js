@@ -56,7 +56,7 @@ function setup() {
     poseNet.on('pose', gotPoses);
 
     // init overlay
-    overlay = loadImage('overlays/Neutral.png');
+    overlay = loadImage('overlays/new.png');
 }
 
 function modelLoaded() {
