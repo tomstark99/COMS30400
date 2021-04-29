@@ -23,6 +23,7 @@ public class PlayerAnimation : MonoBehaviourPun
     private bool isCrouched;
     private float runningSpeed;
     private float walkingSpeed;
+    private bool crouching;
     
     public GameObject camera;
     public GameObject head;
@@ -39,6 +40,8 @@ public class PlayerAnimation : MonoBehaviourPun
         isGrounded = player.getGrounded();
         runningSpeed = player.getSpeedRunning();
         walkingSpeed = player.getSpeedWalking();
+
+        crouching = false;
 
         // Setup animation variables
         // animator = GetComponent<Animator>();
@@ -79,12 +82,12 @@ public class PlayerAnimation : MonoBehaviourPun
         bool isRunning = animator.GetBool(isRunningHash);
         bool isLeft = animator.GetBool(isLeftHash);
         bool isRight = animator.GetBool(isRightHash);
-        isCrouched = animator.GetBool(isCrouchedHash);
+        bool isCrouched = animator.GetBool(isCrouchedHash);
         bool isClimbing = animator.GetBool(isClimbingHash);
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-
+        //Debug.Log("Initial isCrouched:"+crouching);
         // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
         if (climbing && Input.GetButton("Ladder")) {
@@ -93,20 +96,16 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isClimbingHash, false);
         }
 
-        if (!isWalking && z > 0.02f) {
+        if (!isWalking && (z > 0.02f || PoseParser.GETGestureAsString().CompareTo("F") == 0)) {
             if (Input.GetKey(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("F") == 0)
             {
                 animator.SetBool(isRunningHash, true);
                 player.setSpeed(runningSpeed);
             }
 
-            // else if (PoseParser.GETGestureAsString().CompareTo("F") == 0 || Input.GetKey(KeyCode.W))
-            // {
-            //     animator.SetBool(isWalkingHash, true);
-            //     player.setSpeed(walkingSpeed);
-            // }
-            else
+            else if (!crouching)
             {
+                //Debug.Log(crouching);
                 animator.SetBool(isWalkingHash, true);
                 player.setSpeed(walkingSpeed);
             }
@@ -131,9 +130,9 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isLeftHash, true);
         }
 
-        if ((Input.GetKeyDown(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("F") == 0) && isCrouched) {
-            animator.SetBool(isCrouchedHash, false);
-        }
+        // if ((Input.GetKeyDown(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("F") == 0) && isCrouched) {
+        //     animator.SetBool(isCrouchedHash, false);
+        // }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && (isWalking || z > 0.02f)) {
             animator.SetBool(isWalkingHash, false);
@@ -143,6 +142,11 @@ public class PlayerAnimation : MonoBehaviourPun
 
         } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning) {
             animator.SetBool(isWalkingHash, true);
+            animator.SetBool(isRunningHash, false);
+            player.setSpeed(walkingSpeed);
+
+        } else if(PoseParser.GETGestureAsString().CompareTo("N")==0 && isRunning){
+            animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, false);
             player.setSpeed(walkingSpeed);
         }
@@ -160,10 +164,29 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isJumpingHash, false);
         }
 
-        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !isCrouched) {
+        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !crouching && !isRunning) {
+            crouching = true;
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningHash, false);
             animator.SetBool(isCrouchedHash, true);
-        } else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C")!=0) && isCrouched) {
+            
+        } else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("N") == 0) && crouching) {
+            crouching = false;
+            Debug.Log("uncrouch");
             animator.SetBool(isCrouchedHash, false);
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningHash, false);
+        }
+
+        if(z>=0.02f && crouching){
+            animator.SetBool(isCrouchedHash, true);
+            animator.SetBool(isWalkingHash, true);
+            animator.SetBool(isRunningHash, false);
+
+        } else if((z <= 0.02f && z >= -0.02f) && crouching){
+            animator.SetBool(isCrouchedHash, true);
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningHash, false);
         }
 
     }
