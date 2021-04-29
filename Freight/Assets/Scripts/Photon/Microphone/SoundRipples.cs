@@ -23,6 +23,8 @@ public class SoundRipples : MonoBehaviourPun
     public bool positiveInLastSecond = false;
     private int count = 0;
 
+    private float decibelsMultiplier;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,8 @@ public class SoundRipples : MonoBehaviourPun
         _microphoneDevice = CustomMicrophone.devices[0];
 
         InvokeRepeating(nameof(UpdateRipples), 0, _updateFrequency);
+
+        decibelsMultiplier = (float)PhotonNetwork.CurrentRoom.CustomProperties["VoiceRangeMultiplier"];
     }
 
     private void UpdateRipples()
@@ -50,18 +54,21 @@ public class SoundRipples : MonoBehaviourPun
             // only works if audioClip is the one where this microphone records
             CustomMicrophone.GetRawData(ref data, voice.SelfAudioClip());
 
+            float newDecibelsValue;
             if (currentPosition > _lastPosition)
             {
                 int len = currentPosition - _lastPosition;
-                decibelsValue = ComputeDB(data, _lastPosition, ref len);
+                newDecibelsValue = ComputeDB(data, _lastPosition, ref len);
                 _lastPosition = currentPosition;
             } 
             else
             { 
                 int len = data.Length - _lastPosition;
-                decibelsValue = ComputeDB(data, _lastPosition, ref len);
+                newDecibelsValue = ComputeDB(data, _lastPosition, ref len);
                 _lastPosition = 0;
             }
+
+            decibelsValue = decibelsMultiplier * newDecibelsValue;
 
             //udpate sound ripples animation on all clients
             photonView.RPC(nameof(UpdateSoundRiples), RpcTarget.All, decibelsValue);

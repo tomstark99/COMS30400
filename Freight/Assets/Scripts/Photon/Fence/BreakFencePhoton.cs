@@ -68,8 +68,8 @@ public class BreakFencePhoton : MonoBehaviourPun
 
     void Update()
     {
-        // if (isBroken)
-        //  return;
+        if (isBroken)
+         return;
         players = GameObject.FindGameObjectsWithTag("Player");
         
         foreach (var player in players)
@@ -79,7 +79,7 @@ public class BreakFencePhoton : MonoBehaviourPun
             string gesture = player.GetComponent<PhotonPlayer>().gesture;
             bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
             
-            if (tempDist <= 2.5f)
+            if (tempDist <= 4f)
             {
                 photonView.RPC("SetPressPToActive", player.GetComponent<PhotonView>().Owner);
                 if (gesture.CompareTo("P") == 0 || pPressed) 
@@ -90,13 +90,13 @@ public class BreakFencePhoton : MonoBehaviourPun
                     
                     photonView.RPC(nameof(SetPressPToNotActive), player.GetComponent<PhotonView>().Owner);
 
-                    photonView.RPC(nameof(DestroyFence), RpcTarget.MasterClient);
-                    PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, -45f, 0f));
+                    PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
                     isBroken = true;
+                    photonView.RPC(nameof(DestroyFence), RpcTarget.MasterClient);
                     break;
                 }
             }
-            else if (tempDist > 2.5f)
+            else if (tempDist > 4f)
             {
                 photonView.RPC("SetPressPToNotActive", player.GetComponent<PhotonView>().Owner);
             }
