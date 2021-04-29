@@ -26,7 +26,7 @@ public class ItemPickUpPhoton : MonoBehaviourPun
     {
         rocks = GameObject.Find("Rocks");
 
-        if(Input.GetKeyDown(KeyCode.E) && photonView.IsMine)
+        if((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0) && photonView.IsMine)
         {
             photonView.RPC("PickUpRock", RpcTarget.All);
        

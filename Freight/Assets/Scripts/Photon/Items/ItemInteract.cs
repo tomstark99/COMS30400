@@ -81,7 +81,7 @@ public class ItemInteract : MonoBehaviourPun
 
                 // If we are pressing mouse down then do the interaction
                 //Debug.Log("current interactable has a pick up script");
-                if (Input.GetKeyDown(KeyCode.E)) 
+                if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0)) 
                 {
                     if (newInteractable.GetComponent<Switchable>() != null)
                     {
@@ -140,12 +140,12 @@ public class ItemInteract : MonoBehaviourPun
                 Debug.Log("switch is null");
             }
 
-            if (Input.GetKeyDown(KeyCode.E) && newBag != null)
+            if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0) && newBag != null)
             {
                 newBag.PrimaryInteraction(character);
             }
 
-            if (Input.GetKeyDown(KeyCode.E) && newSwitch != null)
+            if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0) && newSwitch != null)
             {
                 newSwitch.PrimaryInteraction(character);
             }
@@ -165,7 +165,7 @@ public class ItemInteract : MonoBehaviourPun
                 currentInteractable = null;
             } else
 
-            if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Throwable>() != null) 
+            if ((Input.GetMouseButtonDown(0) || PoseParser.GETGestureAsString().CompareTo("R") ==0) && currentInteractable.GetComponent<Throwable>() != null) 
             {
                 currentInteractable.GetComponent<Throwable>().ThrowRock(character);
                 currentInteractable.GetComponent<Outline>().enabled = true;
