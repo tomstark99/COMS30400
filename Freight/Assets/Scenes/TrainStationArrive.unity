@@ -2630,6 +2630,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 162266, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
+      propertyPath: m_TagString
+      value: Car
+      objectReference: {fileID: 0}
     - target: {fileID: 166266, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_Layer
       value: 15
@@ -2644,11 +2648,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 490478, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 490478, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 150
+      value: 149.99998
       objectReference: {fileID: 0}
     - target: {fileID: 490478, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_LocalScale.y
@@ -2656,7 +2660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 490478, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 150
+      value: 150.00002
       objectReference: {fileID: 0}
     - target: {fileID: 490478, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2676,7 +2680,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 490478, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 490478, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2684,7 +2688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 490478, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 490478, guid: eee6dff50f7483b44a4ea8b631baf73e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2726,6 +2730,46 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 685458715}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &685458719 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 166266, guid: eee6dff50f7483b44a4ea8b631baf73e,
+    type: 3}
+  m_PrefabInstance: {fileID: 685458715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &685458720 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 178654, guid: eee6dff50f7483b44a4ea8b631baf73e,
+    type: 3}
+  m_PrefabInstance: {fileID: 685458715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &685458721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 195176, guid: eee6dff50f7483b44a4ea8b631baf73e,
+    type: 3}
+  m_PrefabInstance: {fileID: 685458715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &685458722 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 129622, guid: eee6dff50f7483b44a4ea8b631baf73e,
+    type: 3}
+  m_PrefabInstance: {fileID: 685458715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &685458723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685458716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fcc7b91fcb90f41ab0b26c81514949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontRight: {fileID: 685458719}
+  frontLeft: {fileID: 685458720}
+  backRight: {fileID: 685458721}
+  backLeft: {fileID: 685458722}
 --- !u!1001 &687869136
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5892,7 +5936,7 @@ Transform:
   - {fileID: 1095486401}
   - {fileID: 1857293019}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1519014318
 PrefabInstance:
@@ -6123,7 +6167,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1547298378
 PrefabInstance:
@@ -8513,7 +8557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
+  outlineWidth: 1
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []

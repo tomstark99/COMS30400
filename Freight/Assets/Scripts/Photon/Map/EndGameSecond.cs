@@ -38,6 +38,7 @@ public class EndGameSecond : MonoBehaviourPun
     {
         endGameCamera.GetComponent<CinemachineVirtualCamera>().Priority = 101;
         winningText.SetActive(true);
+        GameObject.FindGameObjectWithTag("Car").GetComponent<CarWheelAnimation>().IsSpinning = true;
     }
 
     public void EndTheGame()
