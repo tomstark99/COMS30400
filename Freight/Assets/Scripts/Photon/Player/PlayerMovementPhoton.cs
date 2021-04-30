@@ -42,6 +42,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private AudioSource steps;
     private AudioSource run;
 
+    private bool gameEnding;
+
     [SerializeField]
     private CinemachineVirtualCamera vcam;
 
@@ -51,6 +53,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     public bool OnTrain
     {
         get { return onTrain; }
+    }
+
+    public bool GameEnding
+    {
+        set { gameEnding = value; }
     }
 
     void Start()
@@ -155,6 +162,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -3f;
+        }
+
+        if (gameEnding)
+        {
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+            return;
         }
 
         float x = Input.GetAxis("Horizontal");

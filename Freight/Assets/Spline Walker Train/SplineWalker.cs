@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using Mirror;
+using Photon.Pun;
 
-public class SplineWalker : NetworkBehaviour {
+public class SplineWalker : MonoBehaviourPun
+{
 
 	public BezierSpline spline;
 
@@ -13,14 +14,18 @@ public class SplineWalker : NetworkBehaviour {
 
 	private float progress;
 	private bool goingForward = true;
-    // private bool leaveStation = false;
-    private float timeToLeave = 120.0f;
 
     public Vector3 trainPos;
     public Vector3 prevPos;
 
-    [ServerCallback]
+    public bool leaving;
+
     private void Start () {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        leaving = true;
+
         if (goingForward) {
                 progress += (Time.deltaTime / duration);
                 if (progress > 1f) {
@@ -55,14 +60,12 @@ public class SplineWalker : NetworkBehaviour {
             Debug.Log(spline);
     }
 
-    // void timer_Tick(object sender, EventArgs e) {
-    //     leaveStation = true;
-    // }
+	private void Update () 
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
 
-    [ServerCallback]
-	private void Update () {
-        timeToLeave -= Time.deltaTime;
-        if(timeToLeave < 0) {
+        if(leaving) {
             if (goingForward) {
                 progress += (Time.deltaTime / duration);
                 if (progress > 1f) {
@@ -90,7 +93,8 @@ public class SplineWalker : NetworkBehaviour {
             prevPos = trainPos;
             trainPos = position;
             transform.localPosition = position;
-            if (lookForward) {
+            if (lookForward) 
+            {
                 transform.LookAt(position + spline.GetDirection(progress));
             }
         }
