@@ -11,6 +11,8 @@ public class EndGameSecond : MonoBehaviourPun
 
     [SerializeField]
     private GameObject endGameCamera;
+    [SerializeField]
+    private GameObject winningText;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +33,16 @@ public class EndGameSecond : MonoBehaviourPun
             PlayerReadyToLeave();
     }
 
-    public void EndTheGame()
+    [PunRPC]
+    void EndTheGameRPC()
     {
         endGameCamera.GetComponent<CinemachineVirtualCamera>().Priority = 101;
+        winningText.SetActive(true);
+    }
+
+    public void EndTheGame()
+    {
+        photonView.RPC(nameof(EndTheGameRPC), RpcTarget.All);
     }
 
     [PunRPC]
