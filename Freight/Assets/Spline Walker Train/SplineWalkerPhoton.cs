@@ -29,6 +29,8 @@ public class SplineWalkerPhoton : MonoBehaviourPun
     private Dictionary<GameObject, bool> carriageOnTrack = new Dictionary<GameObject, bool>();
 
     private bool animationComplete = false;
+    private bool callEvent = false;
+    public event Action TrainLeave;
 
     private void Start()
     {
@@ -96,6 +98,10 @@ public class SplineWalkerPhoton : MonoBehaviourPun
         timeToLeave -= Time.deltaTime;
         if (timeToLeave < 0)
         {
+            if (!callEvent) {
+                TrainLeave();
+                callEvent = true;
+            }
             if (goingForward)
             {
                 progress += (Time.deltaTime / duration);
