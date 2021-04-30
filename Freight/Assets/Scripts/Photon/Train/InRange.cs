@@ -13,11 +13,16 @@ public class InRange : MonoBehaviourPun
     private bool overlayDisplayed = false;
     private bool walkedInRangeOfTrain = false;
     private bool objectiveActive = false;
+    private bool foundTrain = false;
+    public GameObject[] carriages;
 
     // Start is called before the first frame update
     void Start()
     {
         InRangeOfTrain += TrainOutlineOn;
+        if (gameObject.GetComponent<SplineWalkerPhoton>() != null) {
+            
+        }
     }
 
     // Update is called once per frame
@@ -47,7 +52,13 @@ public class InRange : MonoBehaviourPun
                     objectiveActive = true;
                     photonView.RPC(nameof(InRangeOfTrainRPC), RpcTarget.All);
                 }
-            }
+            } 
+            // else if(other.gameObject.GetComponent<Objectives>().FindTrain.activeSelf && !other.gameObject.GetComponent<Objectives>().FindTrainDesc.activeSelf) {
+            //     if (walkedInRangeOfTrain) {
+            //         foundTrain = true;
+            //         photonView.RPC(nameof(WalkedOutOfTrain), RpcTarget.All);
+            //     }
+            // }
         }
     }
 
@@ -57,20 +68,32 @@ public class InRange : MonoBehaviourPun
         {
             if (walkedInRangeOfTrain && other.gameObject.tag == "Player")
             {
-                photonView.RPC(nameof(WalkedOutOfTrain), RpcTarget.All);
+                photonView.RPC(nameof(InRangeOfTrainRPC), RpcTarget.All);
             }
-        }
+        } 
+        // else if (!foundTrain) {
+            
+        //     if (!walkedInRangeOfTrain && other.gameObject.tag == "Player" && foundTrain) {
+        //         photonView.RPC(nameof(InRangeOfTrainRPC), RpcTarget.All)
+        //     }
+        // }
     }
 
     void TrainOutlineOn()
     {
         walkedInRangeOfTrain = true;
         gameObject.GetComponent<Outline>().enabled = true;
+        foreach (var c in carriages) {
+            c.GetComponent<Outline>().enabled = true;
+        }
     }
 
     void TrainOutlineOff()
     {
         walkedInRangeOfTrain = false;
         gameObject.GetComponent<Outline>().enabled = false;
+        foreach (var c in carriages) {
+            c.GetComponent<Outline>().enabled = false;
+        }
     }
 }
