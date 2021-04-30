@@ -5,7 +5,7 @@ using Photon.Pun;
 using TMPro;
 using System;
 
-public class ObjectivesSecond : MonoBehaviour
+public class ObjectivesSecond : MonoBehaviourPun
 {
     [SerializeField]
     private GameObject dropBags;
@@ -21,6 +21,8 @@ public class ObjectivesSecond : MonoBehaviour
     private GameObject rendezvous;
     [SerializeField]
     private GameObject rendezvousDist;
+    [SerializeField]
+    private GameObject waitForOtherPlayer;
 
     private GameObject endGame;
 
@@ -30,6 +32,8 @@ public class ObjectivesSecond : MonoBehaviour
     private GameObject drop2;
 
     private int counter;
+
+    public bool readyToLeave;
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +52,7 @@ public class ObjectivesSecond : MonoBehaviour
         }
 
         endGame = GameObject.FindGameObjectWithTag("EndGame");
-
+        
     }
 
     void DropBags()
@@ -62,6 +66,7 @@ public class ObjectivesSecond : MonoBehaviour
             dropBagsDesc.SetActive(false);
             rendezvous.SetActive(true);
             rendezvousDist.SetActive(true);
+            endGame.GetComponent<EndGameSecond>().PlayerReadyToLeave += EndGameChecker;
         }
         else
         {
@@ -76,6 +81,28 @@ public class ObjectivesSecond : MonoBehaviour
                 dropBagsDistance2.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             }
         }
+    }
+
+    [PunRPC]
+    void SetReadyToLeaveRPC()
+    {
+        readyToLeave = true;
+        endGame.GetComponent<EndGameSecond>().CheckEndGame();
+    } 
+
+    void EndGameChecker()
+    {
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            rendezvousDist.SetActive(false);
+            waitForOtherPlayer.SetActive(true);
+            photonView.RPC(nameof(SetReadyToLeaveRPC), RpcTarget.All);
+        }
+        else
+        {
+            endGame.GetComponent<EndGameSecond>().EndTheGame();
+        }
+
     }
 
     // Update is called once per frame
@@ -97,7 +124,7 @@ public class ObjectivesSecond : MonoBehaviour
                     dropBagsDistance2.GetComponent<TextMeshProUGUI>().text = "-Drop point 2 distance: " + Math.Round(distance, 2) + "m";
                 }
         }
-        else if (rendezvous.activeSelf)
+        else if (rendezvousDist.activeSelf)
         {
             float distance = Vector3.Distance(transform.position, endGame.transform.position);
 
