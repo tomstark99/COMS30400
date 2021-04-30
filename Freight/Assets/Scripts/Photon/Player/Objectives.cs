@@ -63,8 +63,15 @@ public class Objectives : MonoBehaviour
     public GameObject FindBackpacks{
         get { return findBackpacks; }
     }
+    public GameObject FindTrain{
+        get { return findTrain; }
+    }
+    
     public GameObject FindBackpacksDesc{
         get { return findBackpacksDesc; }
+    }
+    public GameObject FindTrainDesc{
+        get { return findTrainDesc; }
     }
 
     // Start is called before the first frame update
