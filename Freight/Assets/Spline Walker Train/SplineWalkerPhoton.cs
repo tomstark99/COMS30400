@@ -99,7 +99,7 @@ public class SplineWalkerPhoton : MonoBehaviourPun
         if (timeToLeave < 0)
         {
             if (!callEvent) {
-                TrainLeave();
+                // TrainLeave();
                 callEvent = true;
             }
             if (goingForward)
