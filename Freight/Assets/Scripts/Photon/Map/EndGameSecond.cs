@@ -36,9 +36,22 @@ public class EndGameSecond : MonoBehaviourPun
     [PunRPC]
     void EndTheGameRPC()
     {
+        GameObject car = GameObject.FindGameObjectWithTag("Car");
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (var player in players)
+        {
+            player.transform.parent = car.transform;
+            player.GetComponent<PlayerMovementPhoton>().GameEnding = true;
+            player.GetComponent<Achievements>().FreightCompleted();
+        }
+
         endGameCamera.GetComponent<CinemachineVirtualCamera>().Priority = 101;
         winningText.SetActive(true);
-        GameObject.FindGameObjectWithTag("Car").GetComponent<CarWheelAnimation>().IsSpinning = true;
+        car.GetComponent<CarWheelAnimation>().IsSpinning = true;
+        car.GetComponent<SplineWalker>().enabled = true;
+        GetComponent<Outline>().enabled = false;
+        
     }
 
     public void EndTheGame()
