@@ -29,6 +29,7 @@ public class EndGameSecond : MonoBehaviourPun
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.tag);
+        
         if (PlayerReadyToLeave != null)
             PlayerReadyToLeave();
     }
