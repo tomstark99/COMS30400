@@ -55,6 +55,7 @@ public class SplineWalker : MonoBehaviourPun
             transform.localPosition = position;
             if (lookForward) {
                 transform.LookAt(position + spline.GetDirection(progress));
+                transform.Rotate(0, -90, 0);
             }
 
             Debug.Log(spline);
@@ -96,6 +97,7 @@ public class SplineWalker : MonoBehaviourPun
             if (lookForward) 
             {
                 transform.LookAt(position + spline.GetDirection(progress));
+                transform.Rotate(0, -90, 0);
             }
         }
 	}
