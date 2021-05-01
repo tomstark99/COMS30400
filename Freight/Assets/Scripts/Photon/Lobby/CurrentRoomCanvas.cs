@@ -34,7 +34,10 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
     // displays the name of the room
     public void SetRoomName(string name)
     {
-        roomText.text = "Room: " + name;
+        if(name.Length > 1)
+            roomText.text = "Room: " + name;
+        else 
+            roomText.text = "";
     }
 
     // hides current room canvas
