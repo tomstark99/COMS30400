@@ -67,7 +67,7 @@ public class ObjectivesSecond : MonoBehaviourPun
             rendezvous.SetActive(true);
             rendezvousDist.SetActive(true);
             endGame.GetComponent<EndGameSecond>().PlayerReadyToLeave += EndGameChecker;
-            endGame.GetComponent<EndGameSecond>().GetComponent<Outline>().enabled = true;
+            endGame.GetComponent<Outline>().enabled = true;
         }
         else
         {
