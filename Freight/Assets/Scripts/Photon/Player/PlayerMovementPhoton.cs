@@ -55,11 +55,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         get { return onTrain; }
     }
 
-    public bool GameEnding
-    {
-        set { gameEnding = value; }
-    }
-
     void Start()
     {
         // activates player's camera if its theirs and disables all others
@@ -142,6 +137,18 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void DistanceToTrain() {
         // float distance
+    }
+
+    public void GameEnding()
+    {
+        gameEnding = true;
+        StartCoroutine(SelfDisable());
+    }
+
+    IEnumerator SelfDisable()
+    {
+        yield return new WaitForSeconds(1f);
+        this.enabled = false;
     }
 
     void Movement()

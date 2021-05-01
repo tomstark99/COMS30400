@@ -43,7 +43,7 @@ public class EndGameSecond : MonoBehaviourPun
         foreach (var player in players)
         {
             player.transform.parent = car.transform;
-            player.GetComponent<PlayerMovementPhoton>().GameEnding = true;
+            player.GetComponent<PlayerMovementPhoton>().GameEnding();
             player.GetComponent<Achievements>().FreightCompleted();
         }
 
