@@ -136,9 +136,19 @@ public class EndGame : MonoBehaviourPunCallbacks
         endScreen += Time.deltaTime;
         if (endScreen > 6f)
         {
-            ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
-            prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
-            PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+            if (gameWon)
+            {
+                ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+                prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
+                PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+            }
+            else
+            {
+                ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+                prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
+                PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+            }
+
 
             showingEndScreen = false;
         }

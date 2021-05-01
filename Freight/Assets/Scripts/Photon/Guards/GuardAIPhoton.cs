@@ -198,12 +198,14 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         // sets the guard destination to player's position
         transform.LookAt(closestPlayer.transform);
 
-        //guard.SetDestination(closestPlayer.position - new Vector3(1f, 0, 0));
-        if (Vector3.Distance(transform.position, closestPlayer.position) > 2f)
-        {
-            NavMesh.FindClosestEdge(closestPlayer.position, out NavMeshHit hit, NavMesh.AllAreas);
-            guard.SetDestination(hit.position);
-        }
+        guard.SetDestination(closestPlayer.position - new Vector3(1f, 0, 0));
+        //if (Vector3.Distance(transform.position, closestPlayer.position) > 0.5f)
+        //{
+        //    NavMesh.FindClosestEdge(closestPlayer.position, out NavMeshHit hit, NavMesh.AllAreas);
+        //    Debug.Log("hit position: " + hit.position);
+        //    Debug.Log("player position: " + closestPlayer.position);
+        //    guard.SetDestination(hit.position);
+        //}
 
         // sets the guard's alert position to the player's current position (so when the player goes out of range, the guard will run to the last place they saw the player)
         guard.gameObject.GetComponent<GuardAIPhoton>().alertPosition = closestPlayer.position;
