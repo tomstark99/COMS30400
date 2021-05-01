@@ -329,7 +329,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
            // photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
             onTrain = true;
             GetComponent<Achievements>().ChooChooCompleted();
-        }
+        } 
     }
 
     void OnTriggerExit(Collider other)
