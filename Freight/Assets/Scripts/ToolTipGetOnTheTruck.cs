@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class ToolTipGetOnTheTruck : MonoBehaviour
 {
+    public GameObject toolTipJumpInTheTruck;
+    bool tooltip = true;
     // Start is called before the first frame update
-    /*private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player") 
             {
-                Quaternion objRot = transform.rotation;
-                GameObject playerTooltip = Instantiate(tooltipObject, new Vector3(interact.position.x, interact.position.y + 5, interact.position.z), Quaternion.Euler(objRot.eulerAngles));
-                playerTooltip.GetComponent<Tooltip>().Player = gameObject;
-                tooltip = false;
+                if(tooltip == true)
+                {
+                    Quaternion objRot = transform.rotation;
+                    GameObject playerTooltip = Instantiate(toolTipJumpInTheTruck, new Vector3(transform.parent.position.x, transform.parent.position.y + 5, transform.parent.position.z), Quaternion.Euler(objRot.eulerAngles));
+                    playerTooltip.GetComponent<Tooltip>().Player = other.gameObject;
+                    tooltip = false;
+                }
             }
         
-    }*/
+    }
    
 }
