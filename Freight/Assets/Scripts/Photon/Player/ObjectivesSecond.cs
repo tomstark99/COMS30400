@@ -110,6 +110,7 @@ public class ObjectivesSecond : MonoBehaviourPun
         {
             rendezvousDist.SetActive(false);
             waitForOtherPlayer.SetActive(true);
+            GetComponent<PlayerMovementPhoton>().GameEnding();
         }
         else
         {
