@@ -57,8 +57,8 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
             ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
-            prop.Add("levelToLoad", "Assets/Scenes/TrainStationPun.unity");
-            //prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
+            //prop.Add("levelToLoad", "Assets/Scenes/TrainStationPun.unity");
+            prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
             PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
         }
     }
