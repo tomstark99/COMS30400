@@ -84,12 +84,12 @@ public class ObjectivesSecond : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
-    void SetReadyToLeaveRPC()
-    {
-        readyToLeave = true;
-        endGame.GetComponent<EndGameSecond>().CheckEndGame();
-    } 
+    //[PunRPC]
+    //void SetReadyToLeaveRPC()
+    //{
+    //    readyToLeave = true;
+    //    endGame.GetComponent<EndGameSecond>().CheckEndGame();
+    //} 
 
     void EndGameChecker()
     {
@@ -97,7 +97,8 @@ public class ObjectivesSecond : MonoBehaviourPun
         {
             rendezvousDist.SetActive(false);
             waitForOtherPlayer.SetActive(true);
-            photonView.RPC(nameof(SetReadyToLeaveRPC), RpcTarget.All);
+            readyToLeave = true;
+            endGame.GetComponent<EndGameSecond>().CheckEndGame();
         }
         else
         {
