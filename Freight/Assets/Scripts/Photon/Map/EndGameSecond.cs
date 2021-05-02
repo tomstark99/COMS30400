@@ -26,12 +26,19 @@ public class EndGameSecond : MonoBehaviourPun
         
     }
 
+    [PunRPC]
+    void CallPlayerReadyToLeave()
+    {
+        PlayerReadyToLeave();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.tag);
-        
+
         if (PlayerReadyToLeave != null)
-            PlayerReadyToLeave();
+            photonView.RPC(nameof(CallPlayerReadyToLeave), other.gameObject.GetComponent<PhotonView>().Owner);
+            
     }
 
     [PunRPC]
