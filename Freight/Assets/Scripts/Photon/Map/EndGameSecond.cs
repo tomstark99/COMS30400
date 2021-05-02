@@ -40,17 +40,19 @@ public class EndGameSecond : MonoBehaviourPun
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.tag);
-
-        if (other.gameObject.tag == "Player")
+        if (PhotonNetwork.IsMasterClient)
         {
-            // checks if player is ready to leave as this event is only subscribed to once both bags have been delivered, masterclient increments player ready to leave count
-            if (PlayerReadyToLeave != null)
+            if (other.gameObject.tag == "Player")
             {
-                photonView.RPC(nameof(CallPlayerReadyToLeave), other.gameObject.GetComponent<PhotonView>().Owner);
+                // checks if player is ready to leave as this event is only subscribed to once both bags have been delivered, masterclient increments player ready to leave count
+                if (PlayerReadyToLeave != null)
+                {
+                    photonView.RPC(nameof(CallPlayerReadyToLeave), other.gameObject.GetComponent<PhotonView>().Owner);
 
-                photonView.RPC(nameof(IncreasePlayerToLeave), RpcTarget.MasterClient);
+                    photonView.RPC(nameof(IncreasePlayerToLeave), RpcTarget.MasterClient);
+                }
+
             }
-
         }
     }
 
