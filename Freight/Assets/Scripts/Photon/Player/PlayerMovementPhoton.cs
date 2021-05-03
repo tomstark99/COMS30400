@@ -228,6 +228,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move += trainMove;
         }
 
+        Debug.Log(speed);
+
         controller.Move(move * speed * Time.deltaTime);
 
         // Checks if jump button is pressed and allows user to jump if they are on the ground
@@ -321,6 +323,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             climbing = false;
             LeftHandUpUI.SetActive(false);
             RightHandUpUI.SetActive(false);
+            GetComponent<PlayerAnimation>().setClimbing(false);
            // photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
             onTrain = true;
             GetComponent<Achievements>().ChooChooCompleted();
@@ -348,6 +351,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
             train = null;
+            GetComponent<PlayerAnimation>().setClimbing(false);
             photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
             // Debug.Log("stef is NOT aiiiir");
         }
