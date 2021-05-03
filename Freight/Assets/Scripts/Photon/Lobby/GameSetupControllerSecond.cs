@@ -28,9 +28,9 @@ public class GameSetupControllerSecond : MonoBehaviourPunCallbacks
     private void CreatePlayer()
     {
         if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna2", new Vector3(141f, 3.1f, 106f), Quaternion.identity);
+            PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna2", new Vector3(141f, 3.2f, 106f), Quaternion.identity);
         else
-            PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna2", new Vector3(141f, 3.1f, 115f), Quaternion.identity);
+            PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna2", new Vector3(141f, 3.2f, 115f), Quaternion.identity);
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)

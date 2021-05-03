@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class MoveCrosshair : MonoBehaviour
+public class MoveCrosshair : MonoBehaviourPun
 {
 
     public GameObject crosshair;
@@ -19,6 +20,9 @@ public class MoveCrosshair : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (!photonView.IsMine)
+			return;
+
 	    Vector3 handPos = PoseParser.GETLeftHandPositionAsVector();
 	    // if confidence is over 90%
 	    if (handPos.z > 0.15)
@@ -39,7 +43,10 @@ public class MoveCrosshair : MonoBehaviour
 
     public Vector3 GETCrosshairOffsetFromCentre()
     {
-	    return new Vector3(crosshairTransform.anchoredPosition.x, crosshairTransform.anchoredPosition.y, 0);
+		if (!photonView.IsMine)
+			return new Vector3(0,0,0);
+		
+		return new Vector3(crosshairTransform.anchoredPosition.x, crosshairTransform.anchoredPosition.y, 0);
     }
     
 }

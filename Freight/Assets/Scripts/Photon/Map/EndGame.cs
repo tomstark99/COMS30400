@@ -42,11 +42,11 @@ public class EndGame : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.tag);
+        //Debug.Log(other.gameObject.tag);
         if (other.gameObject.tag == "locomotive")
         {
             colliders.Add(other);
-            Debug.Log(other.gameObject);
+            //Debug.Log(other.gameObject);
             Debug.Log(colliders.Count);
             // 11 box colliders on the train so when all of them are in endgame, start endgame
             if (colliders.Count == 11 && !gameEnding)
@@ -60,7 +60,7 @@ public class EndGame : MonoBehaviourPunCallbacks
     private void OnTriggerExit(Collider other)
     {
         colliders.Remove(other);
-        Debug.Log(other.gameObject);
+        //Debug.Log(other.gameObject);
     }
 
     private void HandleEndGame()
@@ -116,14 +116,14 @@ public class EndGame : MonoBehaviourPunCallbacks
             Debug.Log(player.GetComponent<PlayerMovementPhoton>().OnTrain);
             Debug.Log(player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf);
             bool bagOnBack = player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf;
-            if (player.GetComponent<PlayerMovementPhoton>().OnTrain)
+            if (player.GetComponent<PlayerOnTrain>().OnTrain)
                 totalOnTrain += 1;
 
             if (bagOnBack)
                 totalBags += 1;
 
             // if player not on train or if their backpack is not active, they lose 
-            if (!player.GetComponent<PlayerMovementPhoton>().OnTrain || !bagOnBack)
+            if (!player.GetComponent<PlayerOnTrain>().OnTrain || !bagOnBack)
             {
                 gameWon = false;
                 break;
@@ -134,14 +134,38 @@ public class EndGame : MonoBehaviourPunCallbacks
     void CheckIfGameOver()
     {
         endScreen += Time.deltaTime;
-        if (endScreen > 6f)
+        if (endScreen > 3f)
         {
-            ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
-            prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
-            PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+            if (gameWon)
+            {
+                ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+                prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
+                PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+            }
+            else
+            {
+                ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+                prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
+                PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+            }
+
 
             showingEndScreen = false;
         }
+    }
+
+    [PunRPC]
+    void CheckLikeANinjaRPC(int viewID)
+    {
+        GameObject player = PhotonView.Find(viewID).gameObject;
+        player.GetComponent<Achievements>().LikeANinjaCompleted();
+    }
+
+    [PunRPC]
+    void CheckPeaceTreatyRPC(int viewID)
+    {
+        GameObject player = PhotonView.Find(viewID).gameObject;
+        player.GetComponent<Achievements>().LikeANinjaCompleted();
     }
 
     void Update()
@@ -162,13 +186,14 @@ public class EndGame : MonoBehaviourPunCallbacks
                     if (gameWon)
                     {
                         Debug.Log("you won!");
+                        GameObject[] deadGuards = GameObject.FindGameObjectsWithTag("DeadGuard");
                         foreach (var player in players)
                         {
-                            player.GetComponent<Achievements>().LikeANinjaCompleted();
-                            GameObject[] deadGuards = GameObject.FindGameObjectsWithTag("DeadGuard");
+                            photonView.RPC(nameof(CheckLikeANinjaRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
+
                             // checks if there are no dead guards
                             if (deadGuards == null || deadGuards.Length == 0)
-                                player.GetComponent<Achievements>().PeaceTreatyCompleted();
+                                photonView.RPC(nameof(CheckPeaceTreatyRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
 
                             photonView.RPC(nameof(SetActiveLevelCompleteRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                         }
@@ -191,8 +216,6 @@ public class EndGame : MonoBehaviourPunCallbacks
                                 photonView.RPC(nameof(SetGameLostBagsActiveRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                             }
                         }
-
-                        //uncomment for cinemachine transition
 
                     }
                     EndTheGame();

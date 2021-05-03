@@ -392,4 +392,28 @@ public class Achievements : MonoBehaviourPun
         yield return new WaitForSeconds(3f);
         likeANinja.SetActive(false);
     }
+
+    public void FreightCompleted()
+    {
+        if (photonView.IsMine)
+        {
+            if (!PlayerPrefs.HasKey("Freight"))
+            {
+                PlayerPrefs.SetInt("Freight", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(1).GetChild(5).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(1).GetChild(5).GetComponent<Image>().color = tempColor;
+                //StartCoroutine(RoadmanSequence());
+                coroutineQueue.Enqueue(FreightSequence());
+            }
+        }
+    }
+
+    IEnumerator FreightSequence()
+    {
+        freight.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        freight.SetActive(false);
+    }
 }
