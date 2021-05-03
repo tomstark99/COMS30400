@@ -182,16 +182,22 @@ public class Achievements : MonoBehaviourPun
         {
             if (!PlayerPrefs.HasKey("PeaceTreaty"))
             {
-                PlayerPrefs.SetInt("PeaceTreaty", 1);
-                PlayerPrefs.Save();
-                var tempColor = achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color;
-                tempColor.a = 1f;
-                achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
-                //StartCoroutine(LetTheHuntBeginSequence());
-                coroutineQueue.Enqueue(PeaceTreatySequence());
+                photonView.RPC(nameof(PeaceTreatyCompletedRPC), photonView.Owner);
             }
 
         }
+    }
+
+    [PunRPC]
+    void PeaceTreatyCompletedRPC()
+    {
+        PlayerPrefs.SetInt("PeaceTreaty", 1);
+        PlayerPrefs.Save();
+        var tempColor = achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color;
+        tempColor.a = 1f;
+        achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
+        //StartCoroutine(LetTheHuntBeginSequence());
+        coroutineQueue.Enqueue(PeaceTreatySequence());
     }
 
     IEnumerator PeaceTreatySequence()
@@ -375,15 +381,21 @@ public class Achievements : MonoBehaviourPun
         {
             if (!PlayerPrefs.HasKey("LikeANinja") && !wasDetectedOnce)
             {
-                PlayerPrefs.SetInt("LikeANinja", 1);
-                PlayerPrefs.Save();
-                var tempColor = achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color;
-                tempColor.a = 1f;
-                achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
-                //StartCoroutine(RoadmanSequence());
-                coroutineQueue.Enqueue(LikeANinjaSequence());
+                photonView.RPC(nameof(LikeANinjaCompletedRPC), photonView.Owner);
             }
         }
+    }
+
+    [PunRPC]
+    void LikeANinjaCompletedRPC()
+    {
+        PlayerPrefs.SetInt("LikeANinja", 1);
+        PlayerPrefs.Save();
+        var tempColor = achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color;
+        tempColor.a = 1f;
+        achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
+        //StartCoroutine(RoadmanSequence());
+        coroutineQueue.Enqueue(LikeANinjaSequence());
     }
 
     IEnumerator LikeANinjaSequence()
