@@ -101,7 +101,7 @@ public class PlayerAnimation : MonoBehaviourPun
         //Debug.Log("Initial isCrouched:"+crouching);
         // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
-        if (climbing && Input.GetButton("Ladder")) {
+        if (climbing && (Input.GetButton("Ladder") || PoseParser.GETGestureAsString().CompareTo("L") == 0)) {
             animator.SetBool(isClimbingHash, true);
         } else {
             animator.SetBool(isClimbingHash, false);
