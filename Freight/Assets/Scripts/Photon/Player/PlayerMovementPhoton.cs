@@ -338,6 +338,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             RightHandUpUI.SetActive(false);
 
             onTrain = true;
+            GetComponent<PlayerOnTrain>().OnTrain = true;
             GetComponent<Achievements>().ChooChooCompleted();
         } 
     }
@@ -362,6 +363,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             train = null;
             // photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
             onTrain = false;
+            GetComponent<PlayerOnTrain>().OnTrain = false;
             Debug.Log("stef is NOT aiiiir");
         }
     }
