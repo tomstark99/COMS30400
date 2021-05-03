@@ -217,8 +217,6 @@ public class EndGame : MonoBehaviourPunCallbacks
                             }
                         }
 
-                        //uncomment for cinemachine transition
-
                     }
                     EndTheGame();
                 }

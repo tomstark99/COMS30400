@@ -336,7 +336,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             climbing = false;
             LeftHandUpUI.SetActive(false);
             RightHandUpUI.SetActive(false);
-           // photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
+
             onTrain = true;
             GetComponent<Achievements>().ChooChooCompleted();
         } 
