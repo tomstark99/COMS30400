@@ -42,11 +42,11 @@ public class EndGame : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.tag);
+        //Debug.Log(other.gameObject.tag);
         if (other.gameObject.tag == "locomotive")
         {
             colliders.Add(other);
-            Debug.Log(other.gameObject);
+            //Debug.Log(other.gameObject);
             Debug.Log(colliders.Count);
             // 11 box colliders on the train so when all of them are in endgame, start endgame
             if (colliders.Count == 11 && !gameEnding)
@@ -60,7 +60,7 @@ public class EndGame : MonoBehaviourPunCallbacks
     private void OnTriggerExit(Collider other)
     {
         colliders.Remove(other);
-        Debug.Log(other.gameObject);
+        //Debug.Log(other.gameObject);
     }
 
     private void HandleEndGame()
@@ -134,7 +134,7 @@ public class EndGame : MonoBehaviourPunCallbacks
     void CheckIfGameOver()
     {
         endScreen += Time.deltaTime;
-        if (endScreen > 6f)
+        if (endScreen > 3f)
         {
             if (gameWon)
             {
