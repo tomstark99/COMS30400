@@ -116,14 +116,14 @@ public class EndGame : MonoBehaviourPunCallbacks
             Debug.Log(player.GetComponent<PlayerMovementPhoton>().OnTrain);
             Debug.Log(player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf);
             bool bagOnBack = player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Backpack/Backpack-20L_i").gameObject.activeSelf;
-            if (player.GetComponent<PlayerMovementPhoton>().OnTrain)
+            if (player.GetComponent<PlayerMovingTrain>().activePlatform.tag == "locomotive")
                 totalOnTrain += 1;
 
             if (bagOnBack)
                 totalBags += 1;
 
             // if player not on train or if their backpack is not active, they lose 
-            if (!player.GetComponent<PlayerMovementPhoton>().OnTrain || !bagOnBack)
+            if (player.GetComponent<PlayerMovingTrain>().activePlatform.tag != "locomotive" || !bagOnBack)
             {
                 gameWon = false;
                 break;
