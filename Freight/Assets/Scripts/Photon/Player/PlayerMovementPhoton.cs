@@ -237,15 +237,15 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // }
 
         // sticks the player onto the train
-        if (onTrain)
-        {
-            //StartCoroutine(SetFaceActive());
-            Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, train.transform.position, Time.deltaTime) - train.transform.position;
-            trainMove.x = -trainMove.x;
-            trainMove.y = 0f;
-            trainMove.z = -trainMove.z;
-            move += trainMove;
-        }
+        //if (onTrain)
+        //{
+        //    //StartCoroutine(SetFaceActive());
+        //    Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, train.transform.position, Time.deltaTime) - train.transform.position;
+        //    trainMove.x = -trainMove.x;
+        //    trainMove.y = 0f;
+        //    trainMove.z = -trainMove.z;
+        //    move += trainMove;
+        //}
 
         controller.Move(move * speed * Time.deltaTime);
 
