@@ -51,6 +51,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public Color alertColour;
 
     private EndGame endGame;
+    private EndGameSecond endGame2;
 
     public event Action PlayerCaught;
     private bool playerCaught;
@@ -77,9 +78,16 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         guardState = State.Patroling;
         if (GameObject.Find("Endgame") != null)
         {
-            //GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
-            endGame = GameObject.Find("Endgame").GetComponent<EndGame>();
-            endGame.EndTheGame += DisableGuards;
+            try
+            {
+                endGame = GameObject.Find("Endgame").GetComponent<EndGame>();
+                endGame.EndTheGame += DisableGuards;
+            }
+            catch
+            {
+                endGame2 = GameObject.Find("Endgame").GetComponent<EndGameSecond>();
+                endGame2.EndTheGameSecond += DisableGuards;
+            }
         }
             
 
@@ -126,7 +134,11 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public override void OnDisable()
     {
         if (endGame != null)
-            endGame.EndTheGame += DisableGuards;
+            endGame.EndTheGame -= DisableGuards;
+
+        if (endGame2 != null)
+            endGame2.EndTheGameSecond -= DisableGuards;
+
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {

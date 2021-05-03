@@ -47,6 +47,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     [SerializeField]
     private CinemachineVirtualCamera vcam;
 
+    [SerializeField]
+    private GameObject caughtByGuardsText;
+
     private bool babySteps;
 
     public bool onMenu;
@@ -117,7 +120,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void DisablePlayer()
     {
-        transform.Find("UI 1/CaughtByGuards").gameObject.SetActive(true);
+        caughtByGuardsText.SetActive(true);
         gameObject.GetComponent<PlayerAnimation>().SetAllFalse();
         gameObject.GetComponent<PlayerAnimation>().enabled = false;
         gameObject.GetComponent<MouseLookPhoton>().enabled = false;
