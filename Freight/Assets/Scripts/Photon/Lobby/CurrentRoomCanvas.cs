@@ -34,7 +34,10 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
     // displays the name of the room
     public void SetRoomName(string name)
     {
-        roomText.text = "Room: " + name;
+        if(name.Length > 1)
+            roomText.text = "Room: " + name;
+        else 
+            roomText.text = "";
     }
 
     // hides current room canvas
@@ -55,7 +58,7 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
 
             ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
             prop.Add("levelToLoad", "Assets/Scenes/TrainStationPun.unity");
-            // prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
+            //prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
             PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
         }
     }

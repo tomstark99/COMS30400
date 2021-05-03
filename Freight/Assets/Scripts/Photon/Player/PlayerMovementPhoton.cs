@@ -42,8 +42,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private AudioSource steps;
     private AudioSource run;
 
+    private bool gameEnding;
+
     [SerializeField]
     private CinemachineVirtualCamera vcam;
+
+    [SerializeField]
+    private GameObject caughtByGuardsText;
 
     private bool babySteps;
 
@@ -115,7 +120,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void DisablePlayer()
     {
-        transform.Find("UI 1/CaughtByGuards").gameObject.SetActive(true);
+        caughtByGuardsText.SetActive(true);
         gameObject.GetComponent<PlayerAnimation>().SetAllFalse();
         gameObject.GetComponent<PlayerAnimation>().enabled = false;
         gameObject.GetComponent<MouseLookPhoton>().enabled = false;
@@ -137,6 +142,18 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // float distance
     }
 
+    public void GameEnding()
+    {
+        gameEnding = true;
+        StartCoroutine(SelfDisable());
+    }
+
+    IEnumerator SelfDisable()
+    {
+        yield return new WaitForSeconds(1f);
+        this.enabled = false;
+    }
+
     void Movement()
     {
         if (onMenu && !onTrain)
@@ -155,6 +172,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -3f;
+        }
+
+        if (gameEnding)
+        {
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+            return;
         }
 
         float x = Input.GetAxis("Horizontal");
@@ -198,6 +222,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (climbing)
         {
             //faceUI.SetActive(false);
+            Debug.Log(train);
+            Debug.Log(ladderCentreLine);
             Vector3 ladderPos = train.transform.position + (train.transform.rotation * ladderCentreLine);
             ladderPos.y = transform.position.y;
             move += ladderPos - transform.position;
@@ -218,17 +244,17 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // }
 
         // sticks the player onto the train
-        if (onTrain)
-        {
-            //StartCoroutine(SetFaceActive());
-            Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, train.transform.position, Time.deltaTime) - train.transform.position;
-            trainMove.x = -trainMove.x;
-            trainMove.y = 0f;
-            trainMove.z = -trainMove.z;
-            move += trainMove;
-        }
+        //if (onTrain)
+        //{
+        //    //StartCoroutine(SetFaceActive());
+        //    Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, train.transform.position, Time.deltaTime) - train.transform.position;
+        //    trainMove.x = -trainMove.x;
+        //    trainMove.y = 0f;
+        //    trainMove.z = -trainMove.z;
+        //    move += trainMove;
+        //}
 
-        Debug.Log(speed);
+        //Debug.Log(speed);
 
         controller.Move(move * speed * Time.deltaTime);
 
@@ -325,9 +351,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             RightHandUpUI.SetActive(false);
             GetComponent<PlayerAnimation>().setClimbing(false);
            // photonView.RPC(nameof(ChangeOnTrainToTrue), RpcTarget.All);
+
             onTrain = true;
+            GetComponent<PlayerOnTrain>().OnTrain = true;
             GetComponent<Achievements>().ChooChooCompleted();
-        }
+        } 
     }
 
     void OnTriggerExit(Collider other)
@@ -350,10 +378,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         else if (onTrain && other.gameObject.tag == "trainfloor")
         {
-            train = null;
-            GetComponent<PlayerAnimation>().setClimbing(false);
-            photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
-            // Debug.Log("stef is NOT aiiiir");
+            //train = null;
+            //photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
+            onTrain = false;
+            GetComponent<PlayerOnTrain>().OnTrain = false;
+            //Debug.Log("stef is NOT aiiiir");
         }
     }
 

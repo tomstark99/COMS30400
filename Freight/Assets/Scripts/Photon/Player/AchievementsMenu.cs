@@ -57,6 +57,10 @@ public class AchievementsMenu : MonoBehaviour
         {
             transform.GetChild(1).GetChild(4).GetComponent<Image>().color = tempColor;
         }
+        if (PlayerPrefs.HasKey("Freight"))
+        {
+            transform.GetChild(1).GetChild(5).GetComponent<Image>().color = tempColor;
+        }
     }
 
     public void ResetAchievements()
@@ -76,19 +80,29 @@ public class AchievementsMenu : MonoBehaviour
         PlayerPrefs.DeleteKey("LearnTheHardWay");
         PlayerPrefs.DeleteKey("ChooChoo");
         PlayerPrefs.DeleteKey("OnTheRun");
+        PlayerPrefs.DeleteKey("Freight");
 
-        transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
-        transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
-        transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
-        transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
-        transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
-        transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                transform.GetChild(i).GetChild(j).GetComponent<Image>().color = tempColor;
+            }
+        }
 
-        transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
-        transform.GetChild(1).GetChild(1).GetComponent<Image>().color = tempColor;
-        transform.GetChild(1).GetChild(2).GetComponent<Image>().color = tempColor;
-        transform.GetChild(1).GetChild(3).GetComponent<Image>().color = tempColor;
-        transform.GetChild(1).GetChild(4).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
+
+        //transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(1).GetChild(1).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(1).GetChild(2).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(1).GetChild(3).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(1).GetChild(4).GetComponent<Image>().color = tempColor;
+        //transform.GetChild(1).GetChild(5).GetComponent<Image>().color = tempColor;
     }
 
 

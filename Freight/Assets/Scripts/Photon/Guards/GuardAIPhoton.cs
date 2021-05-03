@@ -51,6 +51,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public Color alertColour;
 
     private EndGame endGame;
+    private EndGameSecond endGame2;
 
     public event Action PlayerCaught;
     private bool playerCaught;
@@ -77,9 +78,16 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         guardState = State.Patroling;
         if (GameObject.Find("Endgame") != null)
         {
-            //GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
-            endGame = GameObject.Find("Endgame").GetComponent<EndGame>();
-            endGame.EndTheGame += DisableGuards;
+            try
+            {
+                endGame = GameObject.Find("Endgame").GetComponent<EndGame>();
+                endGame.EndTheGame += DisableGuards;
+            }
+            catch
+            {
+                endGame2 = GameObject.Find("Endgame").GetComponent<EndGameSecond>();
+                endGame2.EndTheGameSecond += DisableGuards;
+            }
         }
             
 
@@ -126,7 +134,11 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public override void OnDisable()
     {
         if (endGame != null)
-            endGame.EndTheGame += DisableGuards;
+            endGame.EndTheGame -= DisableGuards;
+
+        if (endGame2 != null)
+            endGame2.EndTheGameSecond -= DisableGuards;
+
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
@@ -198,15 +210,17 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         // sets the guard destination to player's position
         transform.LookAt(closestPlayer.transform);
 
-        //guard.SetDestination(closestPlayer.position - new Vector3(1f, 0, 0));
-        if (Vector3.Distance(transform.position, closestPlayer.position) > 2f)
-        {
-            NavMesh.FindClosestEdge(closestPlayer.position, out NavMeshHit hit, NavMesh.AllAreas);
-            guard.SetDestination(hit.position);
-        }
+        guard.SetDestination(closestPlayer.position - new Vector3(1f, 0, 0));
+        //if (Vector3.Distance(transform.position, closestPlayer.position) > 0.5f)
+        //{
+        //    NavMesh.FindClosestEdge(closestPlayer.position, out NavMeshHit hit, NavMesh.AllAreas);
+        //    Debug.Log("hit position: " + hit.position);
+        //    Debug.Log("player position: " + closestPlayer.position);
+        //    guard.SetDestination(hit.position);
+        //}
 
         // sets the guard's alert position to the player's current position (so when the player goes out of range, the guard will run to the last place they saw the player)
-        guard.gameObject.GetComponent<GuardAIPhoton>().alertPosition = closestPlayer.position;
+        alertPosition = closestPlayer.position;
     }
 
     bool PlayerSpotted()
@@ -354,9 +368,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     void GoToSighting()
     {
-        NavMesh.FindClosestEdge(alertPosition, out NavMeshHit hit, NavMesh.AllAreas);
-        //guard.SetDestination(alertPosition);
-        guard.SetDestination(hit.position);
+        //NavMesh.FindClosestEdge(alertPosition, out NavMeshHit hit, NavMesh.AllAreas);
+        guard.SetDestination(alertPosition);
+        //guard.SetDestination(hit.position);
     }
 
     void GoToPlayer()
@@ -446,7 +460,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
         players = GameObject.FindGameObjectsWithTag("Player");
         // Check if player is in guard's sight
+
         bool old = playerSpotted;
+
         playerSpotted = PlayerSpotted();
         deadGuardSpotted = DeadGuardSpotted();
 
