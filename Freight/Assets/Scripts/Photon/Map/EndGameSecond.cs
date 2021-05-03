@@ -5,9 +5,10 @@ using System;
 using Photon.Pun;
 using Cinemachine;
 
-public class EndGameSecond : MonoBehaviourPun
+public class EndGameSecond : MonoBehaviourPunCallbacks
 {
     public event Action PlayerReadyToLeave;
+    public event Action EndTheGameSecond;
 
     [SerializeField]
     private GameObject endGameCamera;
@@ -16,10 +17,48 @@ public class EndGameSecond : MonoBehaviourPun
 
     private int playersToLeave;
 
+    private bool gameLost;
+    private float endScreen;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameLost = false;
+        
         playersToLeave = 0;
+
+        GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
+
+        foreach (var guard in guards)
+        {
+            guard.GetComponent<GuardAIPhoton>().PlayerCaught += GameLost;
+        }
+    }
+
+    void Update()
+    {
+        if (gameLost)
+        {
+            CheckIfGameOver();
+        }
+    }
+
+    void GameLost()
+    {
+        gameLost = true;
+        endScreen = 0f;
+    }
+
+    void CheckIfGameOver()
+    {
+        endScreen += Time.deltaTime;
+        if (endScreen > 6f)
+        {
+            ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+            prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
+            PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+
+        }
     }
 
     // RPC call only to the master, increases the players to leave
@@ -87,6 +126,7 @@ public class EndGameSecond : MonoBehaviourPun
     public void EndTheGame()
     {
         photonView.RPC(nameof(EndTheGameRPC), RpcTarget.All);
+        EndTheGameSecond();
     }
 
     // checks if both players have jumped on the back of the truck 
@@ -104,6 +144,15 @@ public class EndGameSecond : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             photonView.RPC(nameof(CheckEndGameRPC), RpcTarget.MasterClient);
+        }
+    }
+
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+        // loads scene once properties have changed
+        if (propertiesThatChanged.ContainsKey("levelToLoad"))
+        {
+            PhotonNetwork.LoadLevel("Scenes/LoadingScreen");
         }
     }
 }
