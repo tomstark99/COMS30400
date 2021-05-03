@@ -220,7 +220,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         //}
 
         // sets the guard's alert position to the player's current position (so when the player goes out of range, the guard will run to the last place they saw the player)
-        guard.gameObject.GetComponent<GuardAIPhoton>().alertPosition = closestPlayer.position;
+        alertPosition = closestPlayer.position;
     }
 
     bool PlayerSpotted()
@@ -368,9 +368,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     void GoToSighting()
     {
-        NavMesh.FindClosestEdge(alertPosition, out NavMeshHit hit, NavMesh.AllAreas);
-        //guard.SetDestination(alertPosition);
-        guard.SetDestination(hit.position);
+        //NavMesh.FindClosestEdge(alertPosition, out NavMeshHit hit, NavMesh.AllAreas);
+        guard.SetDestination(alertPosition);
+        //guard.SetDestination(hit.position);
     }
 
     void GoToPlayer()
@@ -460,7 +460,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
         players = GameObject.FindGameObjectsWithTag("Player");
         // Check if player is in guard's sight
+
         bool old = playerSpotted;
+
         playerSpotted = PlayerSpotted();
         deadGuardSpotted = DeadGuardSpotted();
 
