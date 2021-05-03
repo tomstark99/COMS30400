@@ -154,6 +154,20 @@ public class EndGame : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
+    void CheckLikeANinjaRPC(int viewID)
+    {
+        GameObject player = PhotonView.Find(viewID).gameObject;
+        player.GetComponent<Achievements>().LikeANinjaCompleted();
+    }
+
+    [PunRPC]
+    void CheckPeaceTreatyRPC(int viewID)
+    {
+        GameObject player = PhotonView.Find(viewID).gameObject;
+        player.GetComponent<Achievements>().LikeANinjaCompleted();
+    }
+
     void Update()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -172,13 +186,14 @@ public class EndGame : MonoBehaviourPunCallbacks
                     if (gameWon)
                     {
                         Debug.Log("you won!");
+                        GameObject[] deadGuards = GameObject.FindGameObjectsWithTag("DeadGuard");
                         foreach (var player in players)
                         {
-                            player.GetComponent<Achievements>().LikeANinjaCompleted();
-                            GameObject[] deadGuards = GameObject.FindGameObjectsWithTag("DeadGuard");
+                            photonView.RPC(nameof(CheckLikeANinjaRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
+
                             // checks if there are no dead guards
                             if (deadGuards == null || deadGuards.Length == 0)
-                                player.GetComponent<Achievements>().PeaceTreatyCompleted();
+                                photonView.RPC(nameof(CheckPeaceTreatyRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
 
                             photonView.RPC(nameof(SetActiveLevelCompleteRPC), player.GetComponent<PhotonView>().Owner, player.GetComponent<PhotonView>().ViewID);
                         }

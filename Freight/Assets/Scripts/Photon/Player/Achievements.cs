@@ -182,22 +182,16 @@ public class Achievements : MonoBehaviourPun
         {
             if (!PlayerPrefs.HasKey("PeaceTreaty"))
             {
-                photonView.RPC(nameof(PeaceTreatyCompletedRPC), photonView.Owner);
+                PlayerPrefs.SetInt("PeaceTreaty", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
+                //StartCoroutine(LetTheHuntBeginSequence());
+                coroutineQueue.Enqueue(PeaceTreatySequence());
             }
 
         }
-    }
-
-    [PunRPC]
-    void PeaceTreatyCompletedRPC()
-    {
-        PlayerPrefs.SetInt("PeaceTreaty", 1);
-        PlayerPrefs.Save();
-        var tempColor = achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color;
-        tempColor.a = 1f;
-        achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
-        //StartCoroutine(LetTheHuntBeginSequence());
-        coroutineQueue.Enqueue(PeaceTreatySequence());
     }
 
     IEnumerator PeaceTreatySequence()
@@ -381,21 +375,15 @@ public class Achievements : MonoBehaviourPun
         {
             if (!PlayerPrefs.HasKey("LikeANinja") && !wasDetectedOnce)
             {
-                photonView.RPC(nameof(LikeANinjaCompletedRPC), photonView.Owner);
+                PlayerPrefs.SetInt("LikeANinja", 1);
+                PlayerPrefs.Save();
+                var tempColor = achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color;
+                tempColor.a = 1f;
+                achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
+                //StartCoroutine(RoadmanSequence());
+                coroutineQueue.Enqueue(LikeANinjaSequence());
             }
         }
-    }
-
-    [PunRPC]
-    void LikeANinjaCompletedRPC()
-    {
-        PlayerPrefs.SetInt("LikeANinja", 1);
-        PlayerPrefs.Save();
-        var tempColor = achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color;
-        tempColor.a = 1f;
-        achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
-        //StartCoroutine(RoadmanSequence());
-        coroutineQueue.Enqueue(LikeANinjaSequence());
     }
 
     IEnumerator LikeANinjaSequence()
@@ -409,7 +397,7 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("Freight") && !wasDetectedOnce)
+            if (!PlayerPrefs.HasKey("Freight"))
             {
                 PlayerPrefs.SetInt("Freight", 1);
                 PlayerPrefs.Save();
