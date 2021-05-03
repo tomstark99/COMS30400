@@ -87,6 +87,8 @@ public class PlayerAnimation : MonoBehaviourPun
 
     private void Animate() {
 
+        //Debug.Log("____");
+
         bool isWalking = animator.GetBool(isWalkingHash);
         bool isJumping = animator.GetBool(isJumpingHash);
         bool isRunningBack = animator.GetBool(isRunningBackHash);
@@ -110,13 +112,14 @@ public class PlayerAnimation : MonoBehaviourPun
         if (!isWalking && (z > 0.02f || PoseParser.GETGestureAsString().CompareTo("F") == 0)) {
             if (Input.GetKey(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("F") == 0)
             {
+                Debug.Log("running");
                 animator.SetBool(isRunningHash, true);
                 player.setSpeed(runningSpeed);
             }
 
             else if (!crouching)
             {
-                //Debug.Log(crouching);
+                Debug.Log("walking");
                 animator.SetBool(isWalkingHash, true);
                 player.setSpeed(walkingSpeed);
             }
@@ -125,7 +128,7 @@ public class PlayerAnimation : MonoBehaviourPun
         if (!isRunningBack && z < -0.02f) {
             animator.SetBool(isRunningBackHash, true);
         }
-        if (z <= 0.02f && z >= -0.02f) {
+        if ((z <= 0.02f && z >= -0.02f) || PoseParser.GETGestureAsString().CompareTo("N")==0 ) {
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, false);
             animator.SetBool(isRunningBackHash, false);
