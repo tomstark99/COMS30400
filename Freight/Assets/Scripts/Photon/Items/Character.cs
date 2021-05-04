@@ -158,6 +158,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             {
                 GetComponent<IkBehaviour>().ikActive = true;
                 GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(0).transform.GetChild(2);
+                actualCamera.transform.GetChild(0).gameObject.SetActive(true);
             }
 
             photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -183,6 +184,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         GetComponent<IkBehaviour>().ikActive = false;
         currentHeldItem = null;
         Item.ResetItemConditions(this);
+        actualCamera.transform.GetChild(0).gameObject.SetActive(false);
         photonView.RPC("ThrowRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
