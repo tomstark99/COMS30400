@@ -297,16 +297,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         return false;
     }
 
-    void ChangeToYellow()
-    {
-        spotlight.color = spotlightColour;
-    }
-
-    void ChangeToRed()
-    {
-        spotlight.color = Color.red;
-    }
-
     public void SetAllGuardsToAlerted()
     {
         GameObject[] allGuards = GameObject.FindGameObjectsWithTag("Guard");
@@ -361,9 +351,38 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     }
 
-    void ChangeToOrange()
+    [PunRPC]
+    void ChangeToYellowRPC()
+    {
+        spotlight.color = spotlightColour;
+    }
+
+
+    void ChangeToYellow()
+    {
+        photonView.RPC(nameof(ChangeToYellowRPC), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ChangeToRedRPC()
+    {
+        spotlight.color = Color.red;
+    }
+
+    void ChangeToRed()
+    {
+        photonView.RPC(nameof(ChangeToRedRPC), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ChangeToOrangeRPC()
     {
         spotlight.color = alertColour;
+    }
+
+    void ChangeToOrange()
+    {
+        photonView.RPC(nameof(ChangeToOrangeRPC), RpcTarget.All);
     }
 
     void GoToSighting()
@@ -381,6 +400,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     void CheckForRock()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
 
         foreach (GameObject rock in rocks)
@@ -455,6 +477,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         if ((guard.pathPending && guardState == State.Patroling) || playerCaught)
             return;
 
