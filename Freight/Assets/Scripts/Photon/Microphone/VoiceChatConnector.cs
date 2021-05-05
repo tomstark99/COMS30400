@@ -23,12 +23,6 @@ public class VoiceChatConnector : MonoBehaviourPun
     private readonly int frequency = 44100;
     private readonly int samplesPerCall = 44100;
 
-    private void OnDestroy()
-    {
-        CustomMicrophone.End(_microphoneDevice);
-        voiceChat.EndCall();
-    }
-
     void Start()
     {
         if (!photonView.IsMine) return;
