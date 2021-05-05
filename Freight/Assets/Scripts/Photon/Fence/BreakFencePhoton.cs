@@ -20,6 +20,7 @@ public class BreakFencePhoton : MonoBehaviourPun
     private bool overlayDisplayed = false;
     private bool walkedInRangeOfFence = false;
 
+    public GameObject Arrows;
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +67,18 @@ public class BreakFencePhoton : MonoBehaviourPun
         FenceBroke();
     }
 
+    [PunRPC]
+    void DestroyArrows() {
+        Destroy(Arrows);
+        players = GameObject.FindGameObjectsWithTag("Player");
+        
+        foreach (var player in players)
+        {
+            if (!player.GetPhotonView().IsMine) continue;
+            player.GetComponent<ArrowGlowing>().enabled = false;
+        
+        }
+    }
     void Update()
     {
         if (isBroken)
@@ -91,6 +104,7 @@ public class BreakFencePhoton : MonoBehaviourPun
                     photonView.RPC(nameof(SetPressPToNotActive), player.GetComponent<PhotonView>().Owner);
 
                     photonView.RPC(nameof(DestroyFence), RpcTarget.MasterClient);
+                    photonView.RPC(nameof(DestroyArrows), RpcTarget.All);
                     PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, -45f, 0f));
                     isBroken = true;
                     break;
