@@ -17,13 +17,13 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
 
     private int playersToLeave;
 
-    private bool gameLost;
+    private bool gameOver;
     private float endScreen;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameLost = false;
+        gameOver = false;
         
         playersToLeave = 0;
 
@@ -37,29 +37,43 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (gameLost)
+        if (gameOver)
         {
-            CheckIfGameOver();
+            endScreen += Time.deltaTime;
+            Debug.Log("endScreen time: " + endScreen);
+
+            if (endScreen > 6f)
+            {
+                ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+                prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
+                PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+
+                gameOver = false;
+
+            }
         }
     }
 
     void GameLost()
     {
-        gameLost = true;
+        gameOver = true;
         endScreen = 0f;
     }
 
-    void CheckIfGameOver()
-    {
-        endScreen += Time.deltaTime;
-        if (endScreen > 6f)
-        {
-            ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
-            prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
-            PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+    //void CheckIfGameOver()
+    //{
+    //    endScreen += Time.deltaTime;
+    //    Debug.Log("Time Left: " + endScreen);
+    //    if (endScreen > 6f)
+    //    {
+    //        ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+    //        prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
+    //        PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
 
-        }
-    }
+    //        gameOver = false;
+
+    //    }
+    //}
 
     // RPC call only to the master, increases the players to leave
     [PunRPC]
@@ -71,9 +85,11 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
 
     // calls the event only on the client that jumps on the truck
     [PunRPC]
-    void CallPlayerReadyToLeave()
+    void CallPlayerReadyToLeave(int playerID)
     {
-        PlayerReadyToLeave();
+        GameObject player = PhotonView.Find(playerID).gameObject;
+        //PlayerReadyToLeave();
+        player.GetComponent<ObjectivesSecond>().EndGameChecker();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -86,9 +102,10 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
                 // checks if player is ready to leave as this event is only subscribed to once both bags have been delivered, masterclient increments player ready to leave count
                 if (PlayerReadyToLeave != null)
                 {
-                    photonView.RPC(nameof(CallPlayerReadyToLeave), other.gameObject.GetComponent<PhotonView>().Owner);
+                    //photonView.RPC(nameof(CallPlayerReadyToLeave), other.gameObject.GetComponent<PhotonView>().Owner, other.gameObject.GetComponent<PhotonView>().ViewID);
+                    EndTheGame();
 
-                    photonView.RPC(nameof(IncreasePlayerToLeave), RpcTarget.MasterClient);
+                    //photonView.RPC(nameof(IncreasePlayerToLeave), RpcTarget.MasterClient);
                 }
 
             }
@@ -99,34 +116,49 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
     void EndTheGameRPC()
     {
         GameObject car = GameObject.FindGameObjectWithTag("Car");
+        Debug.Log("cars");
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Debug.Log("players");
 
-        // gets each player and sets their movement to inactive and checks if they completed the achievement
+        //// gets each player and sets their movement to inactive and checks if they completed the achievement
         foreach (var player in players)
         {
             player.transform.parent = car.transform;
+            Debug.Log("parent");
             if (player.GetComponent<PlayerMovementPhoton>())
-                player.GetComponent<PlayerMovementPhoton>().GameEnding();
+                player.GetComponent<PlayerMovementPhoton>().enabled = false;
+            Debug.Log("movement disable");
+            //player.GetComponent<PlayerMovementPhoton>().GameEnding();
             player.GetComponent<Achievements>().FreightCompleted();
+            Debug.Log("achievement");
         }
+
+        gameOver = true;
+        endScreen = 0f;
 
         // sets cinemachine camera active
         endGameCamera.GetComponent<CinemachineVirtualCamera>().Priority = 101;
+        Debug.Log("cinemachien ting");
 
         // winning UI text
         winningText.SetActive(true);
+        Debug.Log("text");
 
         // starts moving the car 
         car.GetComponent<CarWheelAnimation>().IsSpinning = true;
+        Debug.Log("carwheel animation");
         car.GetComponent<SplineWalker>().enabled = true;
+        Debug.Log("spline walker");
         GetComponent<Outline>().enabled = false;
-        
+        Debug.Log("outline");
     }
 
     public void EndTheGame()
     {
+        Debug.Log("BEFORE RPC");
         photonView.RPC(nameof(EndTheGameRPC), RpcTarget.All);
-        EndTheGameSecond();
+        Debug.Log("AFTER RPC");
+        //EndTheGameSecond();
     }
 
     // checks if both players have jumped on the back of the truck 

@@ -31,7 +31,6 @@ public class CarWheelAnimation : MonoBehaviour
     {
         if (isSpinning)
         {
-            Debug.Log("spinning");
             frontRight.transform.Rotate(Vector3.back * 100f * Time.deltaTime);
             frontLeft.transform.Rotate(Vector3.back * 100f * Time.deltaTime);
             backRight.transform.Rotate(Vector3.back * 100f * Time.deltaTime);
