@@ -103,14 +103,15 @@ public class ObjectivesSecond : MonoBehaviourPun
     //} 
 
     // function is called when someone jumps in the back of the truck and triggers the collider
-    void EndGameChecker()
+    public void EndGameChecker()
     {
         // if 2 players, disable the distance to truck and activate game object that tells you to wait for other player
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             rendezvousDist.SetActive(false);
             waitForOtherPlayer.SetActive(true);
-            GetComponent<PlayerMovementPhoton>().GameEnding();
+            //GetComponent<PlayerMovementPhoton>().GameEnding();
+            GetComponent<PlayerMovementPhoton>().enabled = false;
         }
         else
         {
