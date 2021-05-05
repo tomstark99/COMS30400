@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 
-public class PlayerAudioClips : MonoBehaviour
+public class PlayerAudioClipsSecond : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI subtitle;
@@ -19,18 +19,15 @@ public class PlayerAudioClips : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (GameObject.FindGameObjectWithTag("BrokenFence") != null)
-            GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += FindTheBags;
-
         StartCoroutine(IntroSequence());
     }
 
     IEnumerator IntroSequence()
     {
         yield return new WaitForSeconds(1f);
-        subtitle.text = "Bossman: Mission's simple, get in, get the bags, get out, any means necessary";
+        subtitle.text = "Bossman: Find the drop points and drop off the bags, the locations should be on your display";
         intro.SetActive(true);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(4f);
         subtitle.text = "";
     }
 
