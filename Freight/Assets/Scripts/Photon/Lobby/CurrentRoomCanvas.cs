@@ -51,7 +51,7 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            gameObject.transform.GetChild(3).GetComponent<Button>().interactable = false;
+            gameObject.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
             Debug.Log("Starting Game");
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
