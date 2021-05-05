@@ -54,6 +54,9 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
         endScreen += Time.deltaTime;
         if (endScreen > 6f)
         {
+            Destroy(GameObject.Find("[FG]Microphone"));
+            Destroy(GameObject.Find("[PeerJS]VoiceChat"));
+
             ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
             prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
             PhotonNetwork.CurrentRoom.SetCustomProperties(prop);

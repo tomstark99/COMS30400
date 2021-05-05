@@ -144,6 +144,9 @@ public class EndGame : MonoBehaviourPunCallbacks
             }
             else
             {
+                Destroy(GameObject.Find("[FG]Microphone"));
+                Destroy(GameObject.Find("[PeerJS]VoiceChat"));
+
                 ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
                 prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
                 PhotonNetwork.CurrentRoom.SetCustomProperties(prop);

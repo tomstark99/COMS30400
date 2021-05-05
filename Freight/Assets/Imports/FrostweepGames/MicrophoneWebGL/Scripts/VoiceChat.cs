@@ -45,6 +45,14 @@ namespace VoiceChatClass
             }
         }
 
+        public string Status
+        {
+            get
+            {
+                return _status;
+            }
+        }
+
         private string _status = "disconnected";
         private string _peerID = "";
         private string _foreignID = "";
@@ -60,6 +68,7 @@ namespace VoiceChatClass
 
         private void Awake()
         {
+            DontDestroyOnLoad(this.gameObject);
             _provider = (CultureInfo)CultureInfo.InvariantCulture.Clone();
             _provider.NumberFormat.NumberDecimalSeparator = ".";
 
@@ -77,7 +86,10 @@ namespace VoiceChatClass
         public void InitializePeer()
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            setupPeer();
+            if(_status != "connected")
+            {
+                setupPeer();
+            }
 #endif
         }
 
@@ -150,6 +162,8 @@ namespace VoiceChatClass
         public void Dispose()
         {
             _Instance = null;
+            Disconnect();
+            EndCall();
         }
 
         private float[] StringToFloatArray(string value)

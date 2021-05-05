@@ -31,6 +31,7 @@ public class ProximityVoice : MonoBehaviourPun
 
         voiceChat = VoiceChat.Instance;
         voiceChat.OnStatusUpdate += UpdateOtherPlayer;
+        UpdateOtherPlayer(voiceChat.Status);
         //otherPlayerSource = voice.foreignAudioSource;
 
         //b = (minVolume - maxVolume) / (1 / Mathf.Sqrt(maxDistance) - 1 / Mathf.Sqrt(minDistance));
