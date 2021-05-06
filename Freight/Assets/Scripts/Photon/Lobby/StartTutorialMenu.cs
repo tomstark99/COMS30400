@@ -10,11 +10,17 @@ public class StartTutorialMenu : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsConnected) return;
 
+        //ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+        //prop.Add("sliderValueDiff", "Tutorial");
+        //if (PhotonNetwork.NetworkClientState != Photon.Realtime.ClientState.Leaving)
+        //    PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+
         RoomOptions options = new RoomOptions();
         options.IsVisible = false;
         options.MaxPlayers = 1;
         string roomName = "Tutorial" + PhotonNetwork.CountOfRooms;
         PhotonNetwork.JoinOrCreateRoom(roomName, options, TypedLobby.Default);
+
     }
 
     public void OnMouseOver() {
@@ -25,4 +31,5 @@ public class StartTutorialMenu : MonoBehaviourPunCallbacks
         //The mouse is no longer hovering over the GameObject so output this message each frame
         Debug.Log("Mouse is no longer on GameObject.");
     }
+
 }

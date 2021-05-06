@@ -75,7 +75,8 @@ public class BreakFencePhoton : MonoBehaviourPun
         foreach (var player in players)
         {
             if (!player.GetPhotonView().IsMine) continue;
-            player.GetComponent<ArrowGlowing>().enabled = false;
+            if (player.GetComponent<ArrowGlowing>())
+                player.GetComponent<ArrowGlowing>().enabled = false;
         
         }
     }

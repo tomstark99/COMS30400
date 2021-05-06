@@ -56,7 +56,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         if (!PlayerPrefs.HasKey("TheCompletePicture"))
         {
-            GetComponent<Achievements>().TheCompletePictureCompleted();
+            GetComponent<Achievements>()?.TheCompletePictureCompleted();
         }
         PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
         Debug.Log("LOCAL");
@@ -226,7 +226,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         if (!PlayerPrefs.HasKey("Roadman"))
         {
-            GetComponent<Achievements>().Roadman();
+            GetComponent<Achievements>()?.Roadman();
         }
 
         // get the guard's photon view
@@ -251,7 +251,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         if (!PlayerPrefs.HasKey("LetTheHuntBegin"))
         {
-            GetComponent<Achievements>().LetTheHuntBeginCompleted();
+            GetComponent<Achievements>()?.LetTheHuntBeginCompleted();
         }
 
         // if bullet collides with guard, tell masterclient to kill guard
@@ -418,7 +418,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         if (!PlayerPrefs.HasKey("Hackerman"))
         {
-            GetComponent<Achievements>().HackermanCompleted();
+            GetComponent<Achievements>()?.HackermanCompleted();
         }
         StartCoroutine(LightsCoroutine(Item));
     }
