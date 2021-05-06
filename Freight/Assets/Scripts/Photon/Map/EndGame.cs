@@ -172,6 +172,10 @@ public class EndGame : MonoBehaviourPunCallbacks
         player.GetComponent<Achievements>().PeaceTreatyCompleted();
     }
 
+    [PunRPC]
+    void EndTheGameRPC() {
+        EndTheGame();
+    }
     void Update()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -222,7 +226,7 @@ public class EndGame : MonoBehaviourPunCallbacks
                         }
 
                     }
-                    EndTheGame();
+                    photonView.RPC(nameof(EndTheGameRPC), RpcTarget.All);
                 }
             }
             else if (showingEndScreen)
