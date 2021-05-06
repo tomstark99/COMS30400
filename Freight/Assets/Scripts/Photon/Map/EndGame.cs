@@ -169,7 +169,7 @@ public class EndGame : MonoBehaviourPunCallbacks
     void CheckPeaceTreatyRPC(int viewID)
     {
         GameObject player = PhotonView.Find(viewID).gameObject;
-        player.GetComponent<Achievements>().LikeANinjaCompleted();
+        player.GetComponent<Achievements>().PeaceTreatyCompleted();
     }
 
     void Update()
