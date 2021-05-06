@@ -224,9 +224,10 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             //faceUI.SetActive(false);
             Debug.Log(train);
             Debug.Log(ladderCentreLine);
-            Vector3 ladderPos = train.transform.position + (train.transform.rotation * ladderCentreLine);
+            /*Vector3 ladderPos = train.transform.position + (train.transform.rotation * ladderCentreLine);
             ladderPos.y = transform.position.y;
-            move += ladderPos - transform.position;
+            move += ladderPos - transform.position;*/
+            transform.Translate(Vector3.up * Input.GetAxis("Vertical") * 2 * Time.deltaTime);
         } else if (climbingBuilding)
         {
             Vector3 ladderPos = ladderCentreLine;
