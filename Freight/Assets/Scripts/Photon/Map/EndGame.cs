@@ -31,13 +31,17 @@ public class EndGame : MonoBehaviourPunCallbacks
         totalBags = 0;
         totalOnTrain = 0;
 
+        Invoke(nameof(SubscribeToGuardEvent), 5f);
+    }
+
+    void SubscribeToGuardEvent()
+    {
         GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
 
         foreach (var guard in guards)
         {
             guard.GetComponent<GuardAIPhoton>().PlayerCaught += ShowEndScreen;
         }
-
     }
 
     private void OnTriggerEnter(Collider other)
