@@ -57,9 +57,9 @@ public class ToggleUiPhoton : MonoBehaviour
 
         int pingVal = PhotonNetwork.GetPing();
 
-        if (pingVal > 100 && !pingWarning.activeSelf)
+        if (pingVal > 80 && !pingWarning.activeSelf)
             pingWarning.SetActive(true);
-        else if (pingVal <= 100 && pingWarning.activeSelf)
+        else if (pingVal <= 80 && pingWarning.activeSelf)
             pingWarning.SetActive(false);
 
         ping.text = "Ping: " + pingVal.ToString();
