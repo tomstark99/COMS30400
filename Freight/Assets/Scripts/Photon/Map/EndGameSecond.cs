@@ -102,10 +102,10 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
                 // checks if player is ready to leave as this event is only subscribed to once both bags have been delivered, masterclient increments player ready to leave count
                 if (PlayerReadyToLeave != null)
                 {
-                    //photonView.RPC(nameof(CallPlayerReadyToLeave), other.gameObject.GetComponent<PhotonView>().Owner, other.gameObject.GetComponent<PhotonView>().ViewID);
-                    EndTheGame();
+                    photonView.RPC(nameof(CallPlayerReadyToLeave), other.gameObject.GetComponent<PhotonView>().Owner, other.gameObject.GetComponent<PhotonView>().ViewID);
+                    //EndTheGame();
 
-                    //photonView.RPC(nameof(IncreasePlayerToLeave), RpcTarget.MasterClient);
+                    photonView.RPC(nameof(IncreasePlayerToLeave), RpcTarget.MasterClient);
                 }
 
             }
@@ -116,21 +116,16 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
     void EndTheGameRPC()
     {
         GameObject car = GameObject.FindGameObjectWithTag("Car");
-        Debug.Log("cars");
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        Debug.Log("players");
 
         //// gets each player and sets their movement to inactive and checks if they completed the achievement
         foreach (var player in players)
         {
             player.transform.parent = car.transform;
-            Debug.Log("parent");
             if (player.GetComponent<PlayerMovementPhoton>())
-                player.GetComponent<PlayerMovementPhoton>().enabled = false;
-            Debug.Log("movement disable");
-            //player.GetComponent<PlayerMovementPhoton>().GameEnding();
+                player.GetComponent<PlayerMovementPhoton>().GameEnding();
+            
             player.GetComponent<Achievements>().FreightCompleted();
-            Debug.Log("achievement");
         }
 
         gameOver = true;
@@ -138,27 +133,20 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
 
         // sets cinemachine camera active
         endGameCamera.GetComponent<CinemachineVirtualCamera>().Priority = 101;
-        Debug.Log("cinemachien ting");
 
         // winning UI text
         winningText.SetActive(true);
-        Debug.Log("text");
 
         // starts moving the car 
         car.GetComponent<CarWheelAnimation>().IsSpinning = true;
-        Debug.Log("carwheel animation");
         car.GetComponent<SplineWalker>().enabled = true;
-        Debug.Log("spline walker");
         GetComponent<Outline>().enabled = false;
-        Debug.Log("outline");
     }
 
     public void EndTheGame()
     {
-        Debug.Log("BEFORE RPC");
         photonView.RPC(nameof(EndTheGameRPC), RpcTarget.All);
-        Debug.Log("AFTER RPC");
-        //EndTheGameSecond();
+        EndTheGameSecond?.Invoke();
     }
 
     // checks if both players have jumped on the back of the truck 

@@ -78,14 +78,14 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         guardState = State.Patroling;
         if (GameObject.Find("Endgame") != null)
         {
-            try
+            if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>() != null)
             {
-                endGame = GameObject.Find("Endgame").GetComponent<EndGame>();
+                endGame = GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>();
                 endGame.EndTheGame += DisableGuards;
             }
-            catch
+            else if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>() != null)
             {
-                endGame2 = GameObject.Find("Endgame").GetComponent<EndGameSecond>();
+                endGame2 = GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>();
                 endGame2.EndTheGameSecond += DisableGuards;
             }
         }
