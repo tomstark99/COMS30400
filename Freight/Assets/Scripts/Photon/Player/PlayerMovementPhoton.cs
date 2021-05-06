@@ -192,7 +192,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         { 
             if (x > 0f || z > 0f)
             {
-                GetComponent<Achievements>().BabyStepsCompleted();
+                GetComponent<Achievements>()?.BabyStepsCompleted();
                 babySteps = true;
             }
         }   

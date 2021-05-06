@@ -38,7 +38,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         Debug.Log("Room created");
         if (PhotonNetwork.CurrentRoom.IsVisible == false)
         {
-            PhotonNetwork.LoadLevel(2);
+            GameObject.FindGameObjectWithTag("GameSettings").GetComponent<GameSettings>().SetGameSettings();
+            PhotonNetwork.LoadLevel("Scenes/TutorialScene");
             roomsCanvases.CurrentRoomCanvas.Hide();
             roomsCanvases.CreateOrJoinRoomCanvas.Hide();
         }
