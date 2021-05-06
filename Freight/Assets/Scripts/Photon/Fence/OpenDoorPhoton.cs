@@ -29,14 +29,13 @@ public class OpenDoorPhoton : MonoBehaviourPun
     [PunRPC]
     void SetPressPToActive()
     {
-        if (!overlayDisplayed) {
+        
             text.SetActive(true);
             LeftHand.SetActive(true);
             RightHand.SetActive(true);
             
             Overlay.LoadOverlay("overlays/pull_apart_fence.png");
             overlayDisplayed = true;  
-        }
     }
 
     [PunRPC]
@@ -68,11 +67,13 @@ public class OpenDoorPhoton : MonoBehaviourPun
             if (!player.GetPhotonView().IsMine) continue;
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
             
-            if (tempDist <= 8f)
+            if (tempDist <= 3.60f)
             {
                 string gesture = player.GetComponent<PhotonPlayer>().gesture;
                 bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
-                photonView.RPC("SetPressPToActive", player.GetComponent<PhotonView>().Owner);
+                if (!overlayDisplayed){
+                    photonView.RPC(nameof(SetPressPToActive), player.GetComponent<PhotonView>().Owner);
+                }
                 if (gesture.CompareTo("P") == 0 || pPressed) 
                 {
                     Vector3 spawnPosition = transform.position;
@@ -81,9 +82,9 @@ public class OpenDoorPhoton : MonoBehaviourPun
                     isBroken = true;
                 }
             }
-            else
+            else if (overlayDisplayed) 
             {
-                photonView.RPC("SetPressPToNotActive", player.GetComponent<PhotonView>().Owner);
+                photonView.RPC(nameof(SetPressPToNotActive), player.GetComponent<PhotonView>().Owner);
             }
         }
 
@@ -105,6 +106,9 @@ public class OpenDoorPhoton : MonoBehaviourPun
     void OnTriggerExit(Collider other){
         if (other.gameObject.tag == "Player")
         {
+            if(overlayDisplayed){
+                photonView.RPC(nameof(SetPressPToNotActive), other.gameObject.GetComponent<PhotonView>().Owner);
+            }
             playersInRange.Remove(other.gameObject);
         }
     }
