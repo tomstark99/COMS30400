@@ -244,9 +244,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             {
                 timerCountDown = 0;
             }
-            Vector3 ladderPos = ladderCentreLine;
-            ladderPos.y = transform.position.y;
-            move += ladderPos - transform.position;
+             transform.Translate(Vector3.up * Input.GetAxis("Vertical") * 2 * Time.deltaTime);
         }
         // if forwards velocity is greater than 0 and inside the climbing collider, add to the vertical height instead of the forward height
         // else if (climbingBuilding && z > 0f)
