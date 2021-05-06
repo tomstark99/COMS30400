@@ -19,7 +19,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
     void Start()
     {
         // https://forum.photonengine.com/discussion/7805/received-onserialization-for-view-id-xxxx-we-have-no-such-photon-view
-        Invoke(nameof(SpawnPlayers), 3f);
+        Invoke(nameof(SpawnPlayers), 5f);
     }
 
     void SpawnPlayers()
