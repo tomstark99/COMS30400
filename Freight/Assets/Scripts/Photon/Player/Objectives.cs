@@ -80,12 +80,9 @@ public class Objectives : MonoBehaviour
         bagsPickedUp = 0;
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence += SetBreakFenceToActive;
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += SetFindBackpacksToActive;
-        
-        GameObject[] bags = GameObject.FindGameObjectsWithTag("Bag");
-        foreach (var bag in bags)
-        {
-            bag.GetComponent<Grabbable>().BagPickedUp += SetFindTrainToActive;
-        }
+
+        Invoke(nameof(SubscribeToBagEvents), 7f);
+
         GameObject[] trains = GameObject.FindGameObjectsWithTag("locomotive");
         foreach (var train in trains)
         {
@@ -96,6 +93,15 @@ public class Objectives : MonoBehaviour
         GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += ClearObjectives;
 
         playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+    }
+
+    void SubscribeToBagEvents()
+    {
+        GameObject[] bags = GameObject.FindGameObjectsWithTag("Bag");
+        foreach (var bag in bags)
+        {
+            bag.GetComponent<Grabbable>().BagPickedUp += SetFindTrainToActive;
+        }
     }
 
     // Update is called once per frame
