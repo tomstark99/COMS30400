@@ -53,6 +53,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private bool babySteps;
 
     public bool onMenu;
+
+    // How long the player needs to stay at location
+    public float timerCountDown = 0.2f;
     public bool OnTrain
     {
         get { return onTrain; }
@@ -221,6 +224,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         //Sticks player to centreline of ladder
         if (climbing)
         {
+            Debug.Log(timerCountDown);
+            timerCountDown -= Time.deltaTime;
+            if (timerCountDown < 0)
+            {
+                timerCountDown = 0;
+            }
             //faceUI.SetActive(false);
             Debug.Log(train);
             Debug.Log(ladderCentreLine);
@@ -230,6 +239,11 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             transform.Translate(Vector3.up * Input.GetAxis("Vertical") * 2 * Time.deltaTime);
         } else if (climbingBuilding)
         {
+            timerCountDown -= Time.deltaTime;
+            if (timerCountDown < 0)
+            {
+                timerCountDown = 0;
+            }
             Vector3 ladderPos = ladderCentreLine;
             ladderPos.y = transform.position.y;
             move += ladderPos - transform.position;
@@ -325,22 +339,22 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     {
         if (other.gameObject.tag == "locomotive")
         {
+            timerCountDown = 0.2f;
             // Debug.Log("PLAYER ENTERED LADDER");
             train = other.gameObject;
             ladderCentreLine = ((BoxCollider) other).center;
             // Debug.Log("LADDER COORDS" + (train.transform.position + ladderCentreLine).ToString());
             climbing = true;
             GetComponent<PlayerAnimation>().setClimbing(true);
-            LeftHandUpUI.SetActive(true);
-            RightHandUpUI.SetActive(true);
+            
         }
         else if (other.gameObject.tag == "ladder")
         {
+            timerCountDown = 0.2f;
             // Debug.Log("ENTER LADDER");
             climbingBuilding = true;
             ladderCentreLine = other.gameObject.transform.position + (other.gameObject.transform.rotation * ((BoxCollider) other).center);
-            LeftHandUpUI.SetActive(true);
-            RightHandUpUI.SetActive(true);
+           
             GetComponent<PlayerAnimation>().setClimbing(true);
         } 
         else if (other.gameObject.tag == "trainfloor")
@@ -359,10 +373,32 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         } 
     }
 
+    void OnTriggerStay(Collider other) {
+        if (other.gameObject.tag == "locomotive")
+        {
+             Debug.Log("PLAYER is on the ladder");
+            if(timerCountDown <= 0)
+            {
+               LeftHandUpUI.SetActive(true);
+               RightHandUpUI.SetActive(true);
+            }
+            
+        }
+        else if (other.gameObject.tag == "ladder")
+        {
+            // Debug.Log("ENTER LADDER");
+           if(timerCountDown <= 0)
+            {
+               LeftHandUpUI.SetActive(true);
+               RightHandUpUI.SetActive(true);
+            }
+        } 
+    }
     void OnTriggerExit(Collider other)
     {
         if (climbing && other.gameObject.tag == "locomotive")
         {
+            timerCountDown = 0.2f;
             // Debug.Log("player stopped climbing");
             climbing = false;
             GetComponent<PlayerAnimation>().setClimbing(false);
@@ -371,6 +407,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         else if (climbingBuilding && other.gameObject.tag == "ladder")
         {
+            timerCountDown = 0.2f;
             // Debug.Log("EXIT LADDER");
             climbingBuilding = false;
             GetComponent<PlayerAnimation>().setClimbing(false);
