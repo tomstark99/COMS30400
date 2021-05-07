@@ -58,7 +58,9 @@ public class ProximityVoice : MonoBehaviourPun
         {
             var distance = Vector3.Distance(transform.position, otherPlayer.transform.position);
             var newVolume = VolumeValue(distance);
-            voiceChat.SetVolumeOfCall(newVolume);
+            if (0f <= newVolume && newVolume <= 1f) {
+                voiceChat.SetVolumeOfCall(newVolume);
+            }
         }
     }
 
