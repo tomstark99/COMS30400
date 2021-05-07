@@ -13,6 +13,7 @@ public class GameplayUI : MonoBehaviour
     public GameObject DisplayTab;
     public Slider mouseSensibilitySlider;
 
+    public Slider ProximityVoiceChatSlider;
     public GameObject SaveSettings;
     private void Start()
     {
@@ -20,6 +21,11 @@ public class GameplayUI : MonoBehaviour
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
         else
             mouseSensibilitySlider.value = 100f;
+
+        if (PlayerPrefs.HasKey("ProximityVoiceChat"))
+            ProximityVoiceChatSlider.value = PlayerPrefs.GetFloat("ProximityVoiceChat");
+        else
+            ProximityVoiceChatSlider.value = 50f;
     }
     // Start is called before the first frame update
     public void OnMouseOver() {
@@ -50,6 +56,7 @@ public class GameplayUI : MonoBehaviour
         //needs changing
         Debug.Log(mouseSensibilitySlider.value);
         PlayerPrefs.SetFloat("MouseSensibility", mouseSensibilitySlider.value);
+        PlayerPrefs.SetFloat("ProximityVoiceChat", ProximityVoiceChatSlider.value);
         PlayerPrefs.Save();
     }
 
@@ -59,4 +66,6 @@ public class GameplayUI : MonoBehaviour
         AudioTab.SetActive(false);
         DisplayTab.SetActive(false);
     }
+
+  
 }
