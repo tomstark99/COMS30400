@@ -13,6 +13,6 @@ public class DeliverBackPack : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%>                               Freight:\n <size=70%>                Succesfully deliver the backpacks to bossman");
+        text1.SetText("<size=100%>                               Freight:\n <size=70%>                Succesfully deliver the backpacks to Bossman");
     }
 }
