@@ -5,10 +5,10 @@ using UnityEngine;
 public class AchievementBadge : MonoBehaviour
 {
     // Start is called before the first frame update
-    
+    private Vector2 scale;    
     void Start()
     {
-        
+        scale = gameObject.GetComponent<RectTransform>().localScale;
     }
 
     // Update is called once per frame
@@ -23,6 +23,6 @@ public class AchievementBadge : MonoBehaviour
     }
 
     public void  OnMouseExit() {
-       gameObject.GetComponent<RectTransform>().localScale = new Vector2(1.0f, 1.0f);
+       gameObject.GetComponent<RectTransform>().localScale = scale;
     }
 }
