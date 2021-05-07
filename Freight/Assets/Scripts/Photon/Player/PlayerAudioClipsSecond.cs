@@ -12,9 +12,9 @@ public class PlayerAudioClipsSecond : MonoBehaviour
     [SerializeField]
     private GameObject intro;
     [SerializeField]
-    private GameObject laptop;
+    private GameObject bagsDropped;
     [SerializeField]
-    private GameObject leave;
+    private GameObject gameFinished;
 
     // Start is called before the first frame update
     void Start()
@@ -31,41 +31,30 @@ public class PlayerAudioClipsSecond : MonoBehaviour
         subtitle.text = "";
     }
 
-    public void LaptopFound()
+    public void BagsDroppedOff()
     {
-        StartCoroutine(LaptopSequence());
+        StartCoroutine(BagsDroppedOffSequence());
     }
 
-    IEnumerator LaptopSequence()
+    IEnumerator BagsDroppedOffSequence()
     {
-        subtitle.text = "Bossman: Alright this laptop controls the spotlights, get on the laptop and turn them off";
-        laptop.SetActive(true);
-        yield return new WaitForSeconds(4f);
+        subtitle.text = "Bossman: Getaway vehicle is waiting on the road";
+        bagsDropped.SetActive(true);
+        yield return new WaitForSeconds(2f);
         subtitle.text = "";
     }
 
-    public void BagsCollected()
+    public void GameFinished()
     {
-        StartCoroutine(BagSequence());
+        StartCoroutine(GameFinishedSequence());
     }
 
-    IEnumerator BagSequence()
+    IEnumerator GameFinishedSequence()
     {
-        subtitle.text = "Bossman: You got everything we need, find the train it should be leaving soon!";
-        leave.SetActive(true);
+        subtitle.text = "Bossman: Alright thats a job well done, get home safe";
+        gameFinished.SetActive(true);
         yield return new WaitForSeconds(3f);
         subtitle.text = "";
     }
 
-    public void FindTheBags()
-    {
-        StartCoroutine(FindTheBagsSequence());
-    }
-
-    IEnumerator FindTheBagsSequence()
-    {
-        subtitle.text = "Bossman: Good job on making your way in, the bags should be in the buildings!";
-        yield return new WaitForSeconds(4f);
-        subtitle.text = "";
-    }
 }

@@ -64,6 +64,8 @@ public class ObjectivesSecond : MonoBehaviourPun
         // once counter hits 0, indicates that there are no more bags to drop thus we can subscribe to end game checking event
         if (counter == 0)
         {
+            GetComponent<PlayerAudioClipsSecond>().BagsDroppedOff();
+
             // disables gameobjects to do with drop spots
             dropBagsDistance.SetActive(false);
             dropBagsDistance2.SetActive(false);
