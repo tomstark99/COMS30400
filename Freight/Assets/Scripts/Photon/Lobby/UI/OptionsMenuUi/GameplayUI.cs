@@ -15,8 +15,11 @@ public class GameplayUI : MonoBehaviour
 
     public Slider ProximityVoiceChatSlider;
     public GameObject SaveSettings;
+
+    public Slider GraphicsSlider;
     private void Start()
     {
+        Debug.Log("game settings is haarad" + PlayerPrefs.GetFloat("GameGraphics"));
         if (PlayerPrefs.HasKey("MouseSensibility"))
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
         else
@@ -26,6 +29,11 @@ public class GameplayUI : MonoBehaviour
             ProximityVoiceChatSlider.value = PlayerPrefs.GetFloat("ProximityVoiceChat");
         else
             ProximityVoiceChatSlider.value = 50f;
+
+        if (PlayerPrefs.HasKey("GameGraphics")) 
+            GraphicsSlider.value = PlayerPrefs.GetFloat("GameGraphics");
+        else
+            GraphicsSlider.value = 0;
     }
     // Start is called before the first frame update
     public void OnMouseOver() {
@@ -57,7 +65,7 @@ public class GameplayUI : MonoBehaviour
         Debug.Log(mouseSensibilitySlider.value);
         PlayerPrefs.SetFloat("MouseSensibility", mouseSensibilitySlider.value);
         PlayerPrefs.SetFloat("ProximityVoiceChat", ProximityVoiceChatSlider.value);
-        PlayerPrefs.Save();
+       
     }
 
     public void OnMouseClick() {
@@ -65,6 +73,14 @@ public class GameplayUI : MonoBehaviour
         ControlsTab.SetActive(false);
         AudioTab.SetActive(false);
         DisplayTab.SetActive(false);
+    }
+    
+    public void ChangeGameGraphics() {
+        
+        if(GraphicsSlider.value >=0 && GraphicsSlider.value<=6)
+            QualitySettings.SetQualityLevel((int)GraphicsSlider.value, true);
+        PlayerPrefs.SetFloat("GameGraphics", GraphicsSlider.value);
+        PlayerPrefs.Save();
     }
 
   
