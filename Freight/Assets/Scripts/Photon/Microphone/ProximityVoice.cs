@@ -29,6 +29,11 @@ public class ProximityVoice : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
+         if (PlayerPrefs.HasKey("ProximityVoiceChat"))
+            maxDistance = PlayerPrefs.GetFloat("ProximityVoiceChat");
+        else
+            maxDistance = 50f;
+
         voiceChat = VoiceChat.Instance;
         voiceChat.OnStatusUpdate += UpdateOtherPlayer;
         //otherPlayerSource = voice.foreignAudioSource;
