@@ -14,6 +14,6 @@ public class KillAllGuards : MonoBehaviour
     }
     // Start is called before the first frame update
     public void onMouseClick() {
-        text1.SetText("<size=100%>                             Choo Choo!\n <size=70%>                            Successfully embarc the trains");
+        text1.SetText("<size=100%>                             Choo Choo!\n <size=70%>                            Successfully get on a train");
     }
 }
