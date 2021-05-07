@@ -17,10 +17,15 @@ mergeInto(LibraryManager.library, {
     },
     
     LoadOverlayPlugin: function (relativePath) {
-    	loadOverlay(Pointer_stringify(relativePath));
+        loadOverlay(Pointer_stringify(relativePath));
     },
-
+    
     ClearOverlayPlugin: function () {
-    	clearOverlay();
+        clearOverlay();
+    },
+    
+    TurnOffPose: function () {
+        turnOffPose();
     }
 });
+
