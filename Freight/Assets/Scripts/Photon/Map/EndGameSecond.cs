@@ -124,6 +124,8 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
             player.transform.parent = car.transform;
             if (player.GetComponent<PlayerMovementPhoton>())
                 player.GetComponent<PlayerMovementPhoton>().GameEnding();
+
+            player.GetComponent<PlayerAudioClipsSecond>().GameFinished();
             
             player.GetComponent<Achievements>().FreightCompleted();
         }
