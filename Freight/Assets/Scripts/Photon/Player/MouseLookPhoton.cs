@@ -27,10 +27,15 @@ public class MouseLookPhoton : MonoBehaviourPun
             cameraTransform = virtualCamera.GetComponent<Transform>();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-              if (PlayerPrefs.HasKey("MouseSensibility"))
+            if (PlayerPrefs.HasKey("MouseSensibility"))
                 mouseSensitivity = PlayerPrefs.GetFloat("MouseSensibility");
-              else
-            mouseSensitivity = 2f;
+            else
+                mouseSensitivity = 2f;
+            if(PlayerPrefs.HasKey("RenderDistance")) 
+                virtualCamera.farClipPlane = PlayerPrefs.GetFloat("RenderDistance");
+            else 
+                virtualCamera.farClipPlane = 100;
+              
         }
        
     }

@@ -17,6 +17,8 @@ public class GameplayUI : MonoBehaviour
     public GameObject SaveSettings;
 
     public Slider GraphicsSlider;
+
+    public Slider RenderDistance;
     private void Start()
     {
         Debug.Log("game settings is haarad" + PlayerPrefs.GetFloat("GameGraphics"));
@@ -34,6 +36,12 @@ public class GameplayUI : MonoBehaviour
             GraphicsSlider.value = PlayerPrefs.GetFloat("GameGraphics");
         else
             GraphicsSlider.value = 0;
+
+        if (PlayerPrefs.HasKey("RenderDistance")) 
+            RenderDistance.value = PlayerPrefs.GetFloat("RenderDistance");
+        else
+            RenderDistance.value = 100;
+        
     }
     // Start is called before the first frame update
     public void OnMouseOver() {
@@ -83,5 +91,9 @@ public class GameplayUI : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void ChangeRenderDistance() {
+        PlayerPrefs.SetFloat("RenderDistance", RenderDistance.value);
+        PlayerPrefs.Save();
+    }
   
 }
