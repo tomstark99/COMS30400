@@ -363,6 +363,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void ActivateBackPack() 
     {
         backPackObject.SetActive(true);
+        backPackObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     public void Grab(Grabbable Item)
