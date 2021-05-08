@@ -10,6 +10,7 @@ public class ToggleUiPhoton : MonoBehaviour
     public GameObject map;
     public TextMeshProUGUI ping;
     public GameObject instructions;
+    public GameObject pingWarning;
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +55,13 @@ public class ToggleUiPhoton : MonoBehaviour
             instructions.SetActive(!instructions.activeSelf);
         }
 
-        ping.text = "Ping: " + PhotonNetwork.GetPing().ToString();
+        int pingVal = PhotonNetwork.GetPing();
+
+        if (pingVal > 120 && !pingWarning.activeSelf)
+            pingWarning.SetActive(true);
+        else if (pingVal <= 120 && pingWarning.activeSelf)
+            pingWarning.SetActive(false);
+
+        ping.text = "Ping: " + pingVal.ToString();
     }
 }

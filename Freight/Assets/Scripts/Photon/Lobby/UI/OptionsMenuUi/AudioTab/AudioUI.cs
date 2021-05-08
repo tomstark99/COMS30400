@@ -15,55 +15,50 @@ public class AudioUI : MonoBehaviour
    public GameObject ControlsTab;
    public GameObject DisplayTab;
 
-   public void Start() {
+   public void Start() 
+   {
        if (PlayerPrefs.HasKey("MasterAudio"))
             MasterAudioSlider.value = PlayerPrefs.GetFloat("MasterAudio");
         else
             MasterAudioSlider.value = 0.3f;
-        Debug.Log("audio Listener volume is " + AudioListener.volume);
-        Debug.Log("Master audio slider is " + MasterAudioSlider.value);
-        AudioListener.volume = MasterAudioSlider.value;
 
-        Debug.Log("acc tho allow still");
+        AudioListener.volume = MasterAudioSlider.value;
    }
     // Start is called before the first frame update
-    public void OnMouseOver() {
+    public void OnMouseOver() 
+    {
         transform.parent.parent.GetComponent<AudioSource>().Play();
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
         //If your mouse hovers over the GameObject with the script attached, output this message
-        Debug.Log("Mouse is over GameObject.");
         transform.GetComponent<Image>().enabled = true;
-        Debug.Log(TextMeshPros);
         TextMeshPros.color  = new Color32(0, 0, 0, 255);
     }
 
     // Update is called once per frame
-    public void OnMouseExit() {
+    public void OnMouseExit() 
+    {
         //The mouse is no longer hovering over the GameObject so output this message each frame
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
-        Debug.Log(TextMeshPros);
-        
 
-        
-        
         TextMeshPros.color = new Color32(151, 158, 169, 255);
         transform.GetComponent<Image>().enabled = false;
     }
 
-    public void AdjustVolume () {
-     
-     AudioListener.volume = MasterAudioSlider.value;
-     Debug.Log(AudioListener.volume);
- }
+    public void AdjustVolume () 
+    {
+        AudioListener.volume = MasterAudioSlider.value;
 
-    public void SaveSettings () {
-        Debug.Log("Saved Audio Settings");
+    }
+
+    public void SaveSettings () 
+    {
         AudioListener.volume = MasterAudioSlider.value;
         PlayerPrefs.SetFloat("MasterAudio", AudioListener.volume);
         PlayerPrefs.Save();
     }
 
-    public void OnMouseClick() {
+    public void OnMouseClick() 
+    {
         audioUIMenu.SetActive(!audioUIMenu.activeSelf);
         GameplayTab.SetActive(false);
         ControlsTab.SetActive(false);
