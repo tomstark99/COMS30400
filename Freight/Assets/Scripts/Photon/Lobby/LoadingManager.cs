@@ -31,7 +31,9 @@ public class LoadingManager : MonoBehaviourPun
     [PunRPC]
     public void LoadLevel()
     {
-        StartCoroutine(LoadSceneAsync("Assets/Scenes/TrainStationPun.unity"));
+        //StartCoroutine(LoadSceneAsync("Assets/Scenes/TrainStationPun.unity"));
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["levelToLoad"].ToString());
+        StartCoroutine(LoadSceneAsync(PhotonNetwork.CurrentRoom.CustomProperties["levelToLoad"].ToString()));
     }
 
     IEnumerator LoadSceneAsync(string levelName)

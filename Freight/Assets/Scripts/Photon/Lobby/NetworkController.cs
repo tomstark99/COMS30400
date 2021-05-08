@@ -54,7 +54,10 @@ public class NetworkController : MonoBehaviourPunCallbacks
         Debug.Log("We are connected to the " + PhotonNetwork.CloudRegion + " server");
         if (!PhotonNetwork.InLobby)
         {
-            PhotonNetwork.LocalPlayer.NickName = GetRandomName();
+            Debug.Log(PhotonNetwork.CurrentRoom);
+            if (PhotonNetwork.LocalPlayer.NickName == "")
+                PhotonNetwork.LocalPlayer.NickName = GetRandomName();
+
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.JoinLobby();
         }

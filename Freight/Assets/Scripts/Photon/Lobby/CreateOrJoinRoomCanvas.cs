@@ -47,7 +47,6 @@ public class CreateOrJoinRoomCanvas : MonoBehaviourPunCallbacks
 
     public void StartTutorial()
     {
-
-        PhotonNetwork.LoadLevel(2);
+        PhotonNetwork.LoadLevel("Scenes/TutorialScene");
     }
 }
