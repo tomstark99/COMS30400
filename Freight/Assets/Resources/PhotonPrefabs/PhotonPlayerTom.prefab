@@ -2074,7 +2074,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8244407940805439368
 Transform:
   m_ObjectHideFlags: 0
@@ -2528,6 +2528,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievements: {fileID: 7597511331055442408}
   achievementsTab: {fileID: 5973828916411428448}
+  mapMask: {fileID: 0}
   wasDetectedOnce: 0
 --- !u!114 &1033348768194828669
 MonoBehaviour:
@@ -2718,6 +2719,7 @@ MonoBehaviour:
   intro: {fileID: 3072570118870995801}
   laptop: {fileID: 5301652669840705400}
   leave: {fileID: 3354459977285075648}
+  spotlightDetected: {fileID: 0}
 --- !u!1001 &2319475516616828052
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6290,7 +6292,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cec5e3f7f0a68354d85d8877e495b03d,
         type: 3}
       propertyPath: m_Name
-      value: PhotonPlayerPruna
+      value: PhotonPlayerTom
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cec5e3f7f0a68354d85d8877e495b03d,
         type: 3}
