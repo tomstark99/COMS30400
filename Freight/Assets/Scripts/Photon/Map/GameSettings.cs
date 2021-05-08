@@ -40,7 +40,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", false);
             prop.Add("VoiceRangeMultiplier", 0.5f);
-            prop.Add("BackPackIcon", false);
+            prop.Add("BackPackIcon", true);
         }
         // hard
         else if (guardDifficultyVal == "Hard")
