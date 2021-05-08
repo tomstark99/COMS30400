@@ -12,32 +12,30 @@ public class OpenDoorPhoton : MonoBehaviourPun
     public GameObject LeftHand;
     public GameObject RightHand;
 
-    private GameObject[] players;
+    private List <GameObject> playersInRange = new List<GameObject>();
     private bool isBroken;
 
-    //public event Action FenceBroke;
-    public event Action InRangeOfFence;
+    public event Action InRangeOfDoor;
     private bool overlayDisplayed = false;
-    private bool walkedInRangeOfFence = false;
+    private bool walkedInRangeOfDoor = false;
 
     // Start is called before the first frame update
     void Start()
     {
         isBroken = false;
-        InRangeOfFence += setFenceOutline;
+        InRangeOfDoor += setDoorOutline;
     }
 
     [PunRPC]
     void SetPressPToActive()
     {
-        if (!overlayDisplayed) {
+        
             text.SetActive(true);
             LeftHand.SetActive(true);
             RightHand.SetActive(true);
             
             Overlay.LoadOverlay("overlays/pull_apart_fence.png");
             overlayDisplayed = true;  
-        }
     }
 
     [PunRPC]
@@ -54,75 +52,76 @@ public class OpenDoorPhoton : MonoBehaviourPun
     }
 
     [PunRPC]
-    void DestroyFence()
+    void DestroyDoor()
     {
         PhotonNetwork.Destroy(transform.gameObject);
     }
-
-    // [PunRPC]
-    // void FenceBrokeRPC()
-    // {
-    //     // event
-    //     FenceBroke();
-    // }
 
     void Update()
     {
         if (isBroken)
          return;
-        players = GameObject.FindGameObjectsWithTag("Player");
-        
-        foreach (var player in players)
+        //Debug.Log(playersInRange.Count);
+        foreach (GameObject player in playersInRange)
         {
             if (!player.GetPhotonView().IsMine) continue;
             float tempDist = Vector3.Distance(player.transform.position, transform.position);
-            string gesture = player.GetComponent<PhotonPlayer>().gesture;
-            bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
             
-            if (tempDist <= 6f)
+            if (tempDist <= 3.60f)
             {
-                photonView.RPC("SetPressPToActive", player.GetComponent<PhotonView>().Owner);
+                string gesture = player.GetComponent<PhotonPlayer>().gesture;
+                bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
+                if (!overlayDisplayed){
+                    photonView.RPC(nameof(SetPressPToActive), player.GetComponent<PhotonView>().Owner);
+                }
                 if (gesture.CompareTo("P") == 0 || pPressed) 
                 {
-
-                    //photonView.RPC(nameof(FenceBrokeRPC), RpcTarget.All);
                     Vector3 spawnPosition = transform.position;
-                    
                     photonView.RPC(nameof(SetPressPToNotActive), player.GetComponent<PhotonView>().Owner);
-
-                    //PhotonNetwork.Instantiate("PhotonPrefabs/warehouse_doors_open Variant", spawnPosition, Quaternion.Euler(0f, 0f, 0f));
-                    photonView.RPC(nameof(DestroyFence), RpcTarget.MasterClient);
-                    
+                    photonView.RPC(nameof(DestroyDoor), RpcTarget.MasterClient);
                     isBroken = true;
-                    break;
                 }
             }
-            else if (tempDist > 6f)
+            else if (overlayDisplayed) 
             {
-                photonView.RPC("SetPressPToNotActive", player.GetComponent<PhotonView>().Owner);
+                photonView.RPC(nameof(SetPressPToNotActive), player.GetComponent<PhotonView>().Owner);
             }
         }
 
         
-    }
-
-    [PunRPC]
-    void InRangeOfFenceRPC()
-    {
-        InRangeOfFence();
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (!walkedInRangeOfFence)
+        if (other.gameObject.tag == "Player")
         {
-            photonView.RPC(nameof(InRangeOfFenceRPC), RpcTarget.All);
+            playersInRange.Add(other.gameObject);
+            if (!walkedInRangeOfDoor)
+            {
+                photonView.RPC(nameof(InRangeOfDoorRPC), RpcTarget.All);
+            }
         }
     }
 
-    void setFenceOutline()
+    void OnTriggerExit(Collider other){
+        if (other.gameObject.tag == "Player")
+        {
+            if(overlayDisplayed){
+                photonView.RPC(nameof(SetPressPToNotActive), other.gameObject.GetComponent<PhotonView>().Owner);
+            }
+            playersInRange.Remove(other.gameObject);
+        }
+    }
+
+    [PunRPC]
+    void InRangeOfDoorRPC()
     {
-        walkedInRangeOfFence = true;
+        InRangeOfDoor?.Invoke();
+    }
+
+    void setDoorOutline()
+    {
+        walkedInRangeOfDoor = true;
         gameObject.GetComponent<Outline>().enabled = true;
     }
 }
