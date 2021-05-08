@@ -6,7 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 
-public class CurrentRoomCanvas : MonoBehaviour
+public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private TextMeshProUGUI roomText;
@@ -34,7 +34,10 @@ public class CurrentRoomCanvas : MonoBehaviour
     // displays the name of the room
     public void SetRoomName(string name)
     {
-        roomText.text = "Room: " + name;
+        if(name.Length > 1)
+            roomText.text = "Room: " + name;
+        else 
+            roomText.text = "";
     }
 
     // hides current room canvas
@@ -48,11 +51,25 @@ public class CurrentRoomCanvas : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            gameObject.transform.GetChild(3).GetComponent<Button>().interactable = false;
+            gameObject.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
             Debug.Log("Starting Game");
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
-            PhotonNetwork.LoadLevel(3);
+
+            ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+            prop.Add("levelToLoad", "Assets/Scenes/TrainStationPun.unity");
+            // prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
+            PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+        }
+    }
+
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+        // loads scene once properties have changed
+        if (propertiesThatChanged.ContainsKey("levelToLoad"))
+        {
+            if (PhotonNetwork.IsMasterClient)
+                PhotonNetwork.LoadLevel("Scenes/LoadingScreen");
         }
     }
 }

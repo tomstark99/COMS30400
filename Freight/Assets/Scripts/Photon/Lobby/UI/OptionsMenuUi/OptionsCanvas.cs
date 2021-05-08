@@ -30,4 +30,10 @@ public class OptionsCanvas : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public void LeaveGame()
+    {
+        PhotonNetwork.Disconnect();
+        PhotonNetwork.LoadLevel(0);
+    }
 }
