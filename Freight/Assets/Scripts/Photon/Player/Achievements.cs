@@ -29,6 +29,8 @@ public class Achievements : MonoBehaviourPun
 
     [SerializeField]
     private GameObject mapMask;
+    [SerializeField]
+    private GameObject border;
 
     private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
 
@@ -151,7 +153,9 @@ public class Achievements : MonoBehaviourPun
     {
         babySteps.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         babySteps.SetActive(false);
     }
@@ -178,7 +182,9 @@ public class Achievements : MonoBehaviourPun
     {
         letTheHuntBegin.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         letTheHuntBegin.SetActive(false);
     }
@@ -205,7 +211,9 @@ public class Achievements : MonoBehaviourPun
     {
         peaceTreaty.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         peaceTreaty.SetActive(false);
     }
@@ -231,7 +239,9 @@ public class Achievements : MonoBehaviourPun
     {
         useNature.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         useNature.SetActive(false);
     }
@@ -257,7 +267,9 @@ public class Achievements : MonoBehaviourPun
     {
         roadman.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         roadman.SetActive(false);
     }
@@ -283,7 +295,9 @@ public class Achievements : MonoBehaviourPun
     {
         theCompletePicture.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         theCompletePicture.SetActive(false);
     }
@@ -309,7 +323,9 @@ public class Achievements : MonoBehaviourPun
     {
         hackerman.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         hackerman.SetActive(false);
     }
@@ -335,7 +351,9 @@ public class Achievements : MonoBehaviourPun
     {
         learnTheHardWay.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         learnTheHardWay.SetActive(false);
     }
@@ -361,7 +379,9 @@ public class Achievements : MonoBehaviourPun
     {
         chooChoo.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         chooChoo.SetActive(false);
     }
@@ -387,7 +407,9 @@ public class Achievements : MonoBehaviourPun
     {
         onTheRun.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         onTheRun.SetActive(false);
     }
@@ -413,7 +435,9 @@ public class Achievements : MonoBehaviourPun
     {
         likeANinja.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         likeANinja.SetActive(false);
     }
@@ -439,7 +463,9 @@ public class Achievements : MonoBehaviourPun
     {
         freight.SetActive(true);
         mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
         mapMask.SetActive(true);
         freight.SetActive(false);
     }
