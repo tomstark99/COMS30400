@@ -70,6 +70,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             transform.Find("Camera/Camera").gameObject.SetActive(true);
             transform.Find("UI 1/Mask").gameObject.SetActive(true);
             transform.Find("UI 1/Border").gameObject.SetActive(true);
+            transform.Find("MinimapCamera").gameObject.SetActive(true);
+
         }
 
         PV = GetComponent<PhotonView>();
