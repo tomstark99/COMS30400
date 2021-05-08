@@ -8,7 +8,7 @@ using Photon.Realtime;
 public class PlayerAnimation : MonoBehaviourPun
 {
     // animation variables
-    private Animator animator;
+    public Animator animator;
     private int isWalkingHash;
     private int isRunningHash;
     private int isRunningBackHash;
@@ -23,27 +23,28 @@ public class PlayerAnimation : MonoBehaviourPun
     private bool isCrouched;
     private float runningSpeed;
     private float walkingSpeed;
-
-
-
+    private bool crouching;
+    
     public GameObject camera;
     public GameObject head;
 
     // public event Action ChangeAnimationLayer;
 
-    private PlayerMovementPhoton player;
+    public PlayerMovementPhoton player;
 
     // Start is called before the first frame update
     void Start()
     {
         // get grounded state from movement controller
-        player = GetComponent<PlayerMovementPhoton>();
+        // player = GetComponent<PlayerMovementPhoton>();
         isGrounded = player.getGrounded();
         runningSpeed = player.getSpeedRunning();
         walkingSpeed = player.getSpeedWalking();
 
+        crouching = false;
+
         // Setup animation variables
-        animator = GetComponent<Animator>();
+        // animator = GetComponent<Animator>();
 
         // using StringToHash increases performance by nearly 50%
         isWalkingHash = Animator.StringToHash("isWalking");
@@ -73,7 +74,20 @@ public class PlayerAnimation : MonoBehaviourPun
 
     }
 
+    public void SetAllFalse()
+    {
+        animator.SetBool(isClimbingHash, false);
+        animator.SetBool(isWalkingHash, false);
+        animator.SetBool(isRunningHash, false);
+        animator.SetBool(isRunningBackHash, false);
+        animator.SetBool(isLeftHash, false);
+        animator.SetBool(isRightHash, false);
+        animator.SetBool(isCrouchedHash, false);
+    }
+
     private void Animate() {
+
+        //Debug.Log("____");
 
         bool isWalking = animator.GetBool(isWalkingHash);
         bool isJumping = animator.GetBool(isJumpingHash);
@@ -81,38 +95,34 @@ public class PlayerAnimation : MonoBehaviourPun
         bool isRunning = animator.GetBool(isRunningHash);
         bool isLeft = animator.GetBool(isLeftHash);
         bool isRight = animator.GetBool(isRightHash);
-        isCrouched = animator.GetBool(isCrouchedHash);
+        bool isCrouched = animator.GetBool(isCrouchedHash);
         bool isClimbing = animator.GetBool(isClimbingHash);
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-
+        //Debug.Log("Initial isCrouched:"+crouching);
         // Debug.Log(climbing + " XDDD " + Input.GetKeyDown(KeyCode.W));
 
-
-        if (climbing && Input.GetKey(KeyCode.W)) {
+        if (climbing && (Input.GetButton("Ladder") || PoseParser.GETGestureAsString().CompareTo("L") == 0)) {
             animator.SetBool(isClimbingHash, true);
         } else {
             animator.SetBool(isClimbingHash, false);
         }
 
-        if (!isWalking && z > 0.02f) {
-            if (Input.GetKey(KeyCode.LeftShift))
+        if (!isWalking && (z > 0.02f || PoseParser.GETGestureAsString().CompareTo("F") == 0)) {
+            if (Input.GetKey(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("F") == 0)
             {
+                //Debug.Log("running");
                 animator.SetBool(isRunningHash, true);
                 player.setSpeed(runningSpeed);
             }
 
-            else if (PoseParser.GETGestureAsString().CompareTo("F") == 0 || Input.GetKey(KeyCode.W))
+            else if (!crouching)
             {
+                //Debug.Log("walking");
                 animator.SetBool(isWalkingHash, true);
                 player.setSpeed(walkingSpeed);
             }
-            // else
-            // {
-            //     animator.SetBool(isWalkingHash, true);
-            //     player.setSpeed(walkingSpeed);
-            // }
 
         }
         if (!isRunningBack && z < -0.02f) {
@@ -134,9 +144,9 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isLeftHash, true);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && isCrouched) {
-            animator.SetBool(isCrouchedHash, false);
-        }
+        // if ((Input.GetKeyDown(KeyCode.LeftShift) || PoseParser.GETGestureAsString().CompareTo("F") == 0) && isCrouched) {
+        //     animator.SetBool(isCrouchedHash, false);
+        // }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && (isWalking || z > 0.02f)) {
             animator.SetBool(isWalkingHash, false);
@@ -144,29 +154,53 @@ public class PlayerAnimation : MonoBehaviourPun
             animator.SetBool(isRunningHash, true);
             player.setSpeed(runningSpeed);
 
-        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning && PoseParser.GETGestureAsString().CompareTo("F") != 0) {
+        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning) {
             animator.SetBool(isWalkingHash, true);
             animator.SetBool(isRunningHash, false);
             player.setSpeed(walkingSpeed);
         }
+        // } else if(PoseParser.GETGestureAsString().CompareTo("N")==0 && isRunning){
+        //     animator.SetBool(isWalkingHash, false);
+        //     animator.SetBool(isRunningHash, false);
+        //     player.setSpeed(walkingSpeed);
+        // }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched && !isRunning) {
-            animator.SetBool(isCrouchedHash, true);
-        } else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched) {
-            animator.SetBool(isCrouchedHash, false);
-        }
+        // if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched && !isRunning) {
+        //     animator.SetBool(isCrouchedHash, true);
+        // } else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched) {
+        //     animator.SetBool(isCrouchedHash, false);
+        // }
 
-        if (Input.GetButtonDown("Jump") || !isGrounded) {
+        if ((Input.GetButtonDown("Jump") || !isGrounded) && !climbing) {
             animator.SetBool(isJumpingHash, true);
             // animator.SetBool(isRunningHash, false);
         } else if (isGrounded) {
             animator.SetBool(isJumpingHash, false);
         }
 
-        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !isCrouched) {
+        if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !crouching && !isRunning) {
+            crouching = true;
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningHash, false);
             animator.SetBool(isCrouchedHash, true);
-        } else if ((Input.GetKeyDown(KeyCode.LeftControl) && PoseParser.GETGestureAsString().CompareTo("C")!=0) && isCrouched) {
+            
+        } else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("N") == 0) && crouching) {
+            crouching = false;
+            Debug.Log("uncrouch");
             animator.SetBool(isCrouchedHash, false);
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningHash, false);
+        }
+
+        if(z>=0.02f && crouching){
+            animator.SetBool(isCrouchedHash, true);
+            animator.SetBool(isWalkingHash, true);
+            animator.SetBool(isRunningHash, false);
+
+        } else if((z <= 0.02f && z >= -0.02f) && crouching){
+            animator.SetBool(isCrouchedHash, true);
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningHash, false);
         }
 
     }
@@ -189,13 +223,13 @@ public class PlayerAnimation : MonoBehaviourPun
     }
 
     public void ChangeLayerPistol() {
-        Debug.Log("accc pistol tings");
+        //Debug.Log("accc pistol tings");
         animator.SetLayerWeight(0, 0.0f);
         animator.SetLayerWeight(1, 1.0f);
     }
 
     public void ChangeLayerDefault() {
-        Debug.Log("acc default tings");
+        //Debug.Log("acc default tings");
         animator.SetLayerWeight(0, 1.0f);
         animator.SetLayerWeight(1, 0.0f);
     }

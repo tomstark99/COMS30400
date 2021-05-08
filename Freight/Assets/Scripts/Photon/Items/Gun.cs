@@ -25,7 +25,7 @@ public class Gun : MonoBehaviourPun
 
     void Start()
     {
-        ammoUI.text = ammo.ToString();
+        ammoUI.text = "Ammo: " + ammo.ToString();
     }
 
     public void EmptyGunShot()
@@ -50,6 +50,6 @@ public class Gun : MonoBehaviourPun
     {
         gunShot.PlayOneShot(gunShot.clip);
         ammo -= 1;
-        ammoUI.text = ammo.ToString();
+        ammoUI.text = "Ammo: " + ammo.ToString();
     }
 }

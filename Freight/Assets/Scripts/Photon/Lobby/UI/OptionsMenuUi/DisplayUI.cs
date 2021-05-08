@@ -27,12 +27,19 @@ public class DisplayUI : MonoBehaviour
     public void OnMouseExit() {
         //The mouse is no longer hovering over the GameObject so output this message each frame
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
-        Debug.Log(TextMeshPros);
         
 
         
         
         TextMeshPros.color = new Color32(151, 158, 169, 255);
         transform.GetComponent<Image>().enabled = false;
+    }
+
+    public void OnMouseClick() 
+    {
+        DisplayTab.SetActive(!DisplayTab.activeSelf);
+        GameplayTab.SetActive(false);
+        ControlsTab.SetActive(false);
+        AudioTab.SetActive(false);
     }
 }

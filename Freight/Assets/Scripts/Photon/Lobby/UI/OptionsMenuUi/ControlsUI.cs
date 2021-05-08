@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,9 +17,9 @@ public class ControlsUI : MonoBehaviour
         transform.parent.parent.GetComponent<AudioSource>().Play();
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
         //If your mouse hovers over the GameObject with the script attached, output this message
-        Debug.Log("Mouse is over GameObject.");
+        //Debug.Log("Mouse is over GameObject.");
         transform.GetComponent<Image>().enabled = true;
-        Debug.Log(TextMeshPros);
+       // Debug.Log(TextMeshPros);
         TextMeshPros.color  = new Color32(0, 0, 0, 255);
     }
 
@@ -27,10 +27,7 @@ public class ControlsUI : MonoBehaviour
     public void OnMouseExit() {
         //The mouse is no longer hovering over the GameObject so output this message each frame
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
-        Debug.Log(TextMeshPros);
-        
-
-        
+        //Debug.Log(TextMeshPros);
         
         TextMeshPros.color = new Color32(151, 158, 169, 255);
         transform.GetComponent<Image>().enabled = false;

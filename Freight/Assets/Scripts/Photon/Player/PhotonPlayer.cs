@@ -11,6 +11,8 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject playerMenu;
 
+    private GameObject soundSources;
+
     public string gesture;
     
     // Start is called before the first frame update
@@ -30,6 +32,9 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
             playerUI.SetActive(false);
             Destroy(playerMenu);
         }
+
+        soundSources = GameObject.FindGameObjectWithTag("Songs");
+        soundSources.transform.GetChild(0).GetComponent<AudioSource>().Play();
     }
 
     // Update is called once per frame

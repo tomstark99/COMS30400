@@ -20,6 +20,7 @@ public class BreakFencePhoton : MonoBehaviourPun
     private bool overlayDisplayed = false;
     private bool walkedInRangeOfFence = false;
 
+    public GameObject Arrows;
     // Start is called before the first frame update
     void Start()
     {
@@ -66,10 +67,23 @@ public class BreakFencePhoton : MonoBehaviourPun
         FenceBroke();
     }
 
+    [PunRPC]
+    void DestroyArrows() {
+        Destroy(Arrows);
+        players = GameObject.FindGameObjectsWithTag("Player");
+        
+        foreach (var player in players)
+        {
+            if (!player.GetPhotonView().IsMine) continue;
+            if (player.GetComponent<ArrowGlowing>())
+                player.GetComponent<ArrowGlowing>().enabled = false;
+        
+        }
+    }
     void Update()
     {
-        // if (isBroken)
-        //  return;
+        if (isBroken)
+         return;
         players = GameObject.FindGameObjectsWithTag("Player");
         
         foreach (var player in players)
@@ -79,7 +93,7 @@ public class BreakFencePhoton : MonoBehaviourPun
             string gesture = player.GetComponent<PhotonPlayer>().gesture;
             bool pPressed = player.GetComponent<PhotonPlayer>().IsPressingP();
             
-            if (tempDist <= 2.5f)
+            if (tempDist <= 4f)
             {
                 photonView.RPC("SetPressPToActive", player.GetComponent<PhotonView>().Owner);
                 if (gesture.CompareTo("P") == 0 || pPressed) 
@@ -91,12 +105,13 @@ public class BreakFencePhoton : MonoBehaviourPun
                     photonView.RPC(nameof(SetPressPToNotActive), player.GetComponent<PhotonView>().Owner);
 
                     photonView.RPC(nameof(DestroyFence), RpcTarget.MasterClient);
-                    PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, 90f, 0f));
+                    photonView.RPC(nameof(DestroyArrows), RpcTarget.All);
+                    PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, -45f, 0f));
                     isBroken = true;
                     break;
                 }
             }
-            else if (tempDist > 2.5f)
+            else if (tempDist > 4f)
             {
                 photonView.RPC("SetPressPToNotActive", player.GetComponent<PhotonView>().Owner);
             }

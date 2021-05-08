@@ -12,10 +12,14 @@ public class GameSetupController : MonoBehaviourPunCallbacks
      * PhotonPrefabs folder and to look for the prefab named PhotonPlayer.
      * Everything is setting the starting position and rotation values.
      * */
+
+    [SerializeField]
+    private GameObject guardGameObject;
+
     void Start()
     {
         // https://forum.photonengine.com/discussion/7805/received-onserialization-for-view-id-xxxx-we-have-no-such-photon-view
-        Invoke(nameof(SpawnPlayers), 3f);
+        Invoke(nameof(SpawnPlayers), 5f);
     }
 
     void SpawnPlayers()
@@ -27,12 +31,15 @@ public class GameSetupController : MonoBehaviourPunCallbacks
     [PunRPC]
     private void CreatePlayer()
     {
-        int z = Random.Range(432,442);
-        PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayer", new Vector3(248, 11, z), Quaternion.identity);
+        int z = Random.Range(294,303);
+        PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna", new Vector3(255, 10, z), Quaternion.identity);
+        guardGameObject.SetActive(true);
+
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        PhotonNetwork.LoadLevel(0);
+        if (newMasterClient != null)
+            PhotonNetwork.LoadLevel(0);
     }
 }
