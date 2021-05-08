@@ -34,9 +34,9 @@ public class PlayerUI : MonoBehaviourPun
         PlayerPrefs.Save();
     }
 
-    public void closeorOpenMenu() {
+    public void closeorOpenMenu() 
+    {
             menuOpened = !menuOpened; 
-            Debug.Log("menu is openend:" + menuOpened);
   
             //ConfigCursor();
             MenuActive(menuOpened);
@@ -51,7 +51,6 @@ public class PlayerUI : MonoBehaviourPun
         //}
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("esc");
             closeorOpenMenu();
         }
     }
@@ -87,19 +86,17 @@ public class PlayerUI : MonoBehaviourPun
     {
         if (menuOpened)
         {
-            Debug.Log("menu is opened here");
-
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
         else
         {
-            Debug.Log("allow");
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
     }
 
+    /*public void QuitRoom()
     /*public void QuitRoom()
     {
         NetworkManager.instance.LeaveRoom();

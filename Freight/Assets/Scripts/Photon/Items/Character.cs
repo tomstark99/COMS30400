@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-
+using Cinemachine;
 public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     public Transform pickUpDestination;
@@ -14,26 +14,53 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public PickUpable currentHeldItem;
     public GameObject bulletPrefab;
 
+    public MoveCrosshair crosshair;
+    
     public GameObject camera;
 
     private bool holdingTheBag;
 
+    private bool bagDroppedOff;
+
     public GameObject backPackObject;
 
+    private GameObject ObjectToSeeTheLights;
+
+    public GameObject actualCamera;
     public bool HoldingTheBag
     {
         get { return holdingTheBag; }
     }
-    
+
+    public bool BagDroppedOff
+    {
+        get { return bagDroppedOff; }
+    }
+
     public bool HasItem()
     {
         return currentHeldItem != null;
+    }
+
+    void Start() 
+    {
+        ObjectToSeeTheLights = GameObject.Find("CameraToSeeTheLights");
+        if (ObjectToSeeTheLights)
+            ObjectToSeeTheLights.SetActive(false);
+
+        Debug.Log(ObjectToSeeTheLights);
     }
 
     [PunRPC]
     void PickUpRPCLocal(int ItemID)
     {
         PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
+        if (!PlayerPrefs.HasKey("TheCompletePicture"))
+        {
+            if(Item.GetComponent<Unachievable>() == null)
+                GetComponent<Achievements>()?.TheCompletePictureCompleted();
+        }
+        
         Debug.Log("LOCAL");
         //PhotonView view = Item.GetComponent<PhotonView>();
         //view.TransferOwnership(PhotonNetwork.LocalPlayer);
@@ -133,6 +160,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             {
                 GetComponent<IkBehaviour>().ikActive = true;
                 GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(0).transform.GetChild(2);
+                actualCamera.transform.GetChild(0).gameObject.SetActive(true);
             }
 
             photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -144,10 +172,12 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     [PunRPC]
     void ThrowRPC(int ItemID)
-    {
+    { 
         Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
         GetComponent<IkBehaviour>().ikActive = false;
-        Item.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1000);
+        // Gesture aim
+        // Debug.Log("CAMERA POSITION"+ (camera.transform.forward + (camera.transform.rotation * MoveCrosshair.GETCrosshairOffsetFromCentre())));
+        Item.GetComponent<Rigidbody>().AddForce((actualCamera.transform.forward + (actualCamera.transform.rotation * crosshair.GETCrosshairOffsetFromCentre()) * 0.002f).normalized * 1000);
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
@@ -156,6 +186,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         GetComponent<IkBehaviour>().ikActive = false;
         currentHeldItem = null;
         Item.ResetItemConditions(this);
+        actualCamera.transform.GetChild(0).gameObject.SetActive(false);
         photonView.RPC("ThrowRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
 
@@ -195,19 +226,17 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     [PunRPC]
     void KillGuard(int guardId)
     {
+        if (!PlayerPrefs.HasKey("Roadman"))
+        {
+            GetComponent<Achievements>()?.Roadman();
+        }
+
         // get the guard's photon view
         PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>();
         Vector3 guardPos = killedGuard.transform.position;
         Quaternion guardRot = killedGuard.transform.rotation;
         guardPos.y += 0.5f;
-        //if (GameObject.Find("Endgame") != null)
-        //    GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame -= killedGuard.GetComponent<GuardAIPhoton>().DisableGuards;
 
-        //GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
-        //foreach (var light in lights)
-        //{
-        //    light.GetComponent<RotateLight>().PlayerInLight -= killedGuard.GetComponent<GuardAIPhoton>().SetAllGuardsToAlerted;
-        //}
         // remove the guard 
         PhotonNetwork.Destroy(killedGuard);
         // create a dead body that will be draggable (allow new guard model)
@@ -220,7 +249,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
 
         // shoots out a raycast to see what the bullet hits
-        Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
+        Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
+
+        if (!PlayerPrefs.HasKey("LetTheHuntBegin"))
+        {
+            if(pickUpDestinationLocal.transform.GetChild(0).GetComponent<Unachievable>() ==  null)
+                GetComponent<Achievements>()?.LetTheHuntBeginCompleted();
+        }
 
         // if bullet collides with guard, tell masterclient to kill guard
         if(hitInfo.collider != null)
@@ -243,7 +278,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         // in case it doesn't hit anything, just add force based on camera transform
         else
         {
-            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1400);
+            bullet.GetComponent<Rigidbody>().AddForce(actualCamera.transform.forward * 1400);
         }
         // so bullet moves
         bullet.GetComponent<Rigidbody>().isKinematic = false;
@@ -254,7 +289,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
 
         // shoots out a raycast to see what the bullet hits
-        Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit hitInfo);
+        Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
 
         // instantiate the bullet locally
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestination.transform.GetChild(1).transform.GetChild(14).position, pickUpDestination.transform.GetChild(1).rotation);
@@ -271,7 +306,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         // in case it doesn't hit anything, just add force based on camera transform
         else
         {
-            bullet.GetComponent<Rigidbody>().AddForce(camera.transform.forward * 1400);
+            bullet.GetComponent<Rigidbody>().AddForce(actualCamera.transform.forward * 1400);
         }
         // so bullet moves
         bullet.GetComponent<Rigidbody>().isKinematic = false;
@@ -329,6 +364,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         backPackObject.SetActive(true);
     }
+
     public void Grab(Grabbable Item)
     {
         holdingTheBag = true;
@@ -350,31 +386,64 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         GameObject lightsOn = laptop.transform.GetChild(0).GetChild(0).gameObject;
         if (light.GetComponent<RotateLight>().lightsTurnedOff)
         {
-            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(true);
-            //gameObject.transform.GetChild(13).GetChild(14).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
-            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(false);
             lightsOff.SetActive(true);
             lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
             lightsOn.SetActive(false);
         } 
         else
         {
-            //gameObject.transform.GetChild(13).GetChild(9).gameObject.SetActive(true);
-            //gameObject.transform.GetChild(13).GetChild(9).gameObject.GetComponent<PlayerLightUI>().LightUITimer();
-            //gameObject.transform.GetChild(13).GetChild(14).gameObject.SetActive(false);
             lightsOn.SetActive(true);
             lightsOn.GetComponent<PlayerLightUI>().LightUITimer();
             lightsOff.SetActive(false);
         }
     }
-
-    public void SwitchOff(Switchable Item)
+    
+    IEnumerator LightsCoroutine(Switchable Item)
     {
         GameObject[] spinningLights = GameObject.FindGameObjectsWithTag("SpinningLight");
-
+        ObjectToSeeTheLights.SetActive(true);
+        yield return new WaitForSeconds(3);
         foreach (var light in spinningLights)
         {
             photonView.RPC(nameof(TurnOffLight), RpcTarget.All, light.transform.GetComponent<PhotonView>().ViewID, Item.transform.GetComponent<PhotonView>().ViewID);
         }
+        yield return new WaitForSeconds(1);
+        ObjectToSeeTheLights.SetActive(false);
+        camera.transform.GetChild(1).gameObject.SetActive(true);
+        Debug.Log(camera.transform.GetChild(1).gameObject);
+        yield return new WaitForSeconds(2);
+        camera.transform.GetChild(1).gameObject.SetActive(false);
+        //camera.transform.GetChild(0).GetComponent<CinemachineVirtualCamera>().MoveToTopOfPrioritySubqueue();
+        yield break;
+    }
+
+    public void SwitchOff(Switchable Item)
+    {
+        if (!PlayerPrefs.HasKey("Hackerman"))
+        {
+            GetComponent<Achievements>()?.HackermanCompleted();
+        }
+        StartCoroutine(LightsCoroutine(Item));
+    }
+
+    [PunRPC]
+    void ActivateDropOffBackpack(int itemID)
+    {
+        GameObject drop = PhotonView.Find(itemID).gameObject;
+        drop.transform.GetChild(0).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    void DeactivateBackpack()
+    {
+        backPackObject.SetActive(false);
+    }
+
+    public void DropOff(Droppable Item)
+    {
+        bagDroppedOff = true;
+
+        photonView.RPC(nameof(ActivateDropOffBackpack), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(DeactivateBackpack), RpcTarget.All);
     }
 }

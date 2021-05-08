@@ -48,6 +48,9 @@ public class RotateLight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         players = GameObject.FindGameObjectsWithTag("Player");
 
         if (!lightsTurnedOff && lightsRotating)
@@ -104,6 +107,7 @@ public class RotateLight : MonoBehaviour
                     if (!Physics.Linecast(transform.Find("pCylinder3/Point Light").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("pCylinder3/Point Light").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
                         Debug.Log("YE MANS GETTING DETECTED STIIIIIIIIIIIIIIIIIIIIIIIIIL");
+                        transform.parent.GetComponent<SpotlightSounds>()?.PlayDetectedSound();
                         PlayerInLight();
                     }
                 }

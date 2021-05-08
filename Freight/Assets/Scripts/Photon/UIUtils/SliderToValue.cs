@@ -18,30 +18,48 @@ public class SliderToValue : MonoBehaviourPunCallbacks
     [SerializeField]
     private TextMeshProUGUI textDiff;
 
-    [SerializeField]
-    private bool difficulty;
-
     // Start is called before the first frame update
-    void Start()
+    //public override void OnEnable()
+    //{
+    //    if (PhotonNetwork.IsMasterClient)
+    //    {
+    //        UpdateSliderValue();
+    //        UpdateSliderValueDifficulty();
+    //    }
+
+    //    if (!PhotonNetwork.IsMasterClient)
+    //    {
+    //        InitialiseSliderValue();
+    //        InitialiseSliderValueDifficulty();
+
+    //        slider.interactable = false;
+    //        sliderDiff.interactable = false;
+    //    }
+    //}
+
+    public override void OnEnable()
     {
+        PhotonNetwork.AddCallbackTarget(this);
         if (PhotonNetwork.IsMasterClient)
         {
-            if (!difficulty)
-                UpdateSliderValue();
-            else
-                UpdateSliderValueDifficulty();
+            UpdateSliderValue();
+            UpdateSliderValueDifficulty();
         }
 
         if (!PhotonNetwork.IsMasterClient)
         {
-            if (!difficulty)
-                InitialiseSliderValue();
-            else
-                InitialiseSliderValueDifficulty();
+            InitialiseSliderValue();
+            InitialiseSliderValueDifficulty();
 
             slider.interactable = false;
             sliderDiff.interactable = false;
         }
+    }
+
+    public override void OnDisable()
+    {
+        slider.value = 200;
+        sliderDiff.value = 2;
     }
 
     void InitialiseSliderValue()
@@ -56,10 +74,11 @@ public class SliderToValue : MonoBehaviourPunCallbacks
 
     public void UpdateSliderValue()
     {
-        text.text = slider.value.ToString();
+        //text.text = slider.value.ToString();
         ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
         prop.Add("sliderValue", slider.value);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+        if (PhotonNetwork.NetworkClientState != Photon.Realtime.ClientState.Leaving)
+            PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
     }
 
     // special case function for easy/med/hard/impossible 
@@ -82,18 +101,22 @@ public class SliderToValue : MonoBehaviourPunCallbacks
             //text.text = "Impossible";
             prop.Add("sliderValueDiff", "Impossible");
 
-        PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+        if (PhotonNetwork.NetworkClientState != Photon.Realtime.ClientState.Leaving)
+            PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
     }
 
     public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
+        
         if (propertiesThatChanged.ContainsKey("sliderValue"))
         {
             text.text = propertiesThatChanged["sliderValue"].ToString();
         }
+
         if (propertiesThatChanged.ContainsKey("sliderValueDiff"))
         {
             textDiff.text = propertiesThatChanged["sliderValueDiff"].ToString();
         }
+
     }
 }

@@ -27,6 +27,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
         PhotonNetwork.JoinOrCreateRoom(roomName.text, options, TypedLobby.Default);
+        //PhotonNetwork.CreateRoom(roomName.text, options, TypedLobby.Default);
         
         roomsCanvases.CurrentRoomCanvas.SetRoomName(roomName.text);
     }
@@ -37,7 +38,8 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         Debug.Log("Room created");
         if (PhotonNetwork.CurrentRoom.IsVisible == false)
         {
-            PhotonNetwork.LoadLevel(2);
+            GameObject.FindGameObjectWithTag("GameSettings").GetComponent<GameSettings>().SetGameSettings();
+            PhotonNetwork.LoadLevel("Scenes/TutorialScene");
             roomsCanvases.CurrentRoomCanvas.Hide();
             roomsCanvases.CreateOrJoinRoomCanvas.Hide();
         }

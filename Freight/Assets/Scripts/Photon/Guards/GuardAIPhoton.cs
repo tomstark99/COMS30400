@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using UnityEngine.UI;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
 public class GuardAIPhoton : MonoBehaviourPunCallbacks
@@ -20,10 +21,15 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     [SerializeField]
     private bool reactsToRocks;
 
+    [SerializeField]
+    private Slider patienceBar;
+
     public NavMeshAgent guard;
     public LayerMask groundMask, playerMask, obstacleMask;
     public Transform[] points;
     public Light spotlight;
+    public GameObject sounds;
+    [SerializeField]
     private State guardState;
     private float timeAlerted;
     private float timeChasing;
@@ -32,7 +38,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     public float speedPatrolling = 3.0f;
     public float speedChasing = 7.0f;
-
 
     // Counter to increment points in path
     private int destPoint = 0;
@@ -46,34 +51,24 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
     public Color alertColour;
 
     private EndGame endGame;
+    private EndGameSecond endGame2;
+
+    public event Action PlayerCaught;
+    private bool playerCaught;
+
+    private AudioSource walk;
+    private AudioSource run;
+
+    [SerializeField]
+    private GameObject globalSounds;
+
+    private AudioSource chaseMusic;
+    private AudioSource normalMusic;
 
     public State GuardState
     {
         get { return guardState; }
     }
-
-    /*
-     IEnumerator SolveStuck() {
-        Vector3 lastPosition = this.transform.position;
- 
-        while (true) {
-            yield return new WaitForSeconds(3f);
- 
-            //Maybe we can also use agent.velocity.sqrMagnitude == 0f or similar
-            if (!agent.pathPending && agent.hasPath && agent.remainingDistance > agent.stoppingDistance) {
-                Vector3 currentPosition = this.transform.position;
-                if (Vector3.Distance(currentPosition, lastPosition) < 1f) {
-                    Vector3 destination = agent.destination;
-                    agent.ResetPath();
-                    agent.SetDestination(destination);
-                    Debug.Log("Agent Is Stuck");
-                }
-                Debug.Log("Current Position " + currentPosition + " Last Position " + lastPosition);
-                lastPosition = currentPosition;
-            }
-        }
-    }
-    */
     
     void Start()
     {
@@ -83,11 +78,19 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         guardState = State.Patroling;
         if (GameObject.Find("Endgame") != null)
         {
-            //GameObject.Find("Endgame").GetComponent<EndGame>().EndTheGame += DisableGuards;
-            endGame = GameObject.Find("Endgame").GetComponent<EndGame>();
-            endGame.EndTheGame += DisableGuards;
+            if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>() != null)
+            {
+                endGame = GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>();
+                endGame.EndTheGame += DisableGuards;
+            }
+            else if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>() != null)
+            {
+                endGame2 = GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>();
+                endGame2.EndTheGameSecond += DisableGuards;
+            }
         }
-            
+
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
 
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
@@ -95,22 +98,72 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             light.GetComponent<RotateLight>().PlayerInLight += SetAllGuardsToAlerted;
         }
 
-        sightRange = (int) PhotonNetwork.CurrentRoom.CustomProperties["GuardSightRange"];
-        spotlight.range = sightRange;
-        guardAngle = (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardAngle"];
-        spotlight.spotAngle = guardAngle;
-        speedChasing = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"];
-        speedPatrolling = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"];
+        if (PhotonNetwork.CurrentRoom.CustomProperties["GuardSightRange"] != null)
+        {
+            sightRange = (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardSightRange"];
+            spotlight.range = sightRange;
+        }
+        if (PhotonNetwork.CurrentRoom.CustomProperties["GuardAngle"] != null)
+        {
+            guardAngle = (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardAngle"];
+            spotlight.spotAngle = guardAngle;
+        }
+        if (PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"] != null)
+        {
+            speedChasing = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"];
+        }
+        if (PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"] != null)
+        {
+            speedPatrolling = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"];
+        }
+
+        GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
+
+        foreach (var guard in guards)
+        {
+            guard.GetComponent<GuardAIPhoton>().PlayerCaught += PlayerHasBeenCaught;
+        }
+
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+
+            // gets the rock alert component
+            rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>().RockHitGround += CheckForRock;
+
+        }
+
+        playerCaught = false;
+        walk = sounds.transform.GetChild(0).GetComponent<AudioSource>();
+        run = sounds.transform.GetChild(1).GetComponent<AudioSource>();
+        chaseMusic = globalSounds.transform.GetChild(1).GetComponent<AudioSource>();
+        normalMusic = globalSounds.transform.GetChild(0).GetComponent<AudioSource>();
+
+
+        //achievement checker
     }
 
     public override void OnDisable()
     {
         if (endGame != null)
-            endGame.EndTheGame += DisableGuards;
+            endGame.EndTheGame -= DisableGuards;
+
+        if (endGame2 != null)
+            endGame2.EndTheGameSecond -= DisableGuards;
+
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
         {
             light.GetComponent<RotateLight>().PlayerInLight -= SetAllGuardsToAlerted;
+        }
+
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+        foreach (GameObject rock in rocks)
+        {
+            // gets the rock alert component
+            rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>().RockHitGround -= CheckForRock;
         }
 
     }
@@ -134,6 +187,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
         // Get new point, modulo so you cycle back to 0
         destPoint = (destPoint + 1) % points.Length;
+
     }
     
     // finds closest player to the guard so they chase that player
@@ -168,10 +222,18 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
         // sets the guard destination to player's position
         transform.LookAt(closestPlayer.transform);
-        // - new Vector3(proximityRange, 0, 0)
+
         guard.SetDestination(closestPlayer.position - new Vector3(1f, 0, 0));
+        //if (Vector3.Distance(transform.position, closestPlayer.position) > 0.5f)
+        //{
+        //    NavMesh.FindClosestEdge(closestPlayer.position, out NavMeshHit hit, NavMesh.AllAreas);
+        //    Debug.Log("hit position: " + hit.position);
+        //    Debug.Log("player position: " + closestPlayer.position);
+        //    guard.SetDestination(hit.position);
+        //}
+
         // sets the guard's alert position to the player's current position (so when the player goes out of range, the guard will run to the last place they saw the player)
-        guard.gameObject.GetComponent<GuardAIPhoton>().alertPosition = closestPlayer.position;
+        alertPosition = closestPlayer.position;
     }
 
     bool PlayerSpotted()
@@ -186,25 +248,33 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         foreach (var player in players)
         {
             //Debug.Log(player);
-            if (Vector3.Distance(transform.position, player.transform.position) < sightRange)
+            var distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < sightRange)
             {
                 // vector from guard to player
                 Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
                 float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
                 if (guardPlayerAngle < guardAngle / 2f)
                 {
-                    // Debug.Log(Physics.Linecast(transform.position, player.transform.GetChild(11).position, obstacleMask));
-                    // Debug.Log(Physics.Linecast(transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask));
                     // checks if guard line of sight is blocked by an obstacle
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
-
+                        player.GetComponent<Achievements>()?.LearnTheHardWayCompleted();
+                        player.GetComponent<Achievements>()?.WasDetected();
                         guard.speed = speedChasing;
                         return true;
                     }
                 }
 
+            }
+            var decibelsValue = player.GetComponent<SoundRipples>().decibelsValue;
+            if(distance < decibelsValue)
+            {
+                player.GetComponent<Achievements>()?.LearnTheHardWayCompleted();
+                player.GetComponent<Achievements>()?.WasDetected();
+                guard.speed = speedChasing;
+                return true;
             }
             
             // checks if player is in guard's view range 
@@ -238,16 +308,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             }
         }
         return false;
-    }
-
-    void ChangeToYellow()
-    {
-        spotlight.color = spotlightColour;
-    }
-
-    void ChangeToRed()
-    {
-        spotlight.color = Color.red;
     }
 
     public void SetAllGuardsToAlerted()
@@ -304,14 +364,45 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     }
 
-    void ChangeToOrange()
+    [PunRPC]
+    void ChangeToYellowRPC()
+    {
+        spotlight.color = spotlightColour;
+    }
+
+
+    void ChangeToYellow()
+    {
+        photonView.RPC(nameof(ChangeToYellowRPC), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ChangeToRedRPC()
+    {
+        spotlight.color = Color.red;
+    }
+
+    void ChangeToRed()
+    {
+        photonView.RPC(nameof(ChangeToRedRPC), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ChangeToOrangeRPC()
     {
         spotlight.color = alertColour;
     }
 
+    void ChangeToOrange()
+    {
+        photonView.RPC(nameof(ChangeToOrangeRPC), RpcTarget.All);
+    }
+
     void GoToSighting()
     {
+        //NavMesh.FindClosestEdge(alertPosition, out NavMeshHit hit, NavMesh.AllAreas);
         guard.SetDestination(alertPosition);
+        //guard.SetDestination(hit.position);
     }
 
     void GoToPlayer()
@@ -319,11 +410,14 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         Transform closestPlayer = FindClosestPlayer();
         guard.SetDestination(closestPlayer.position);
     }
-    // guard checks if a rock dropped next to them
-    Vector3 CheckForRock()
+
+    void CheckForRock()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
-        
+
         foreach (GameObject rock in rocks)
         {
 
@@ -336,35 +430,107 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 //Debug.Log(Vector3.Distance(transform.position, tempRock.transform.position));
                 if (Vector3.Distance(transform.position, tempRock.transform.position) < 30)
                 {
-                    return tempRock.transform.position;
+                    SetGuardsToAlertedItem(tempRock.transform.position);
+                    // checks which player threw the rock and completes achievement
+                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                    foreach (var player in players)
+                    {
+                        if (player.GetComponent<PhotonView>().Owner == rock.GetComponent<PhotonView>().Controller)
+                        {
+                            if(tempRock.GetComponent<Unachievable>() == null)
+                                player.GetComponent<Achievements>()?.UseNatureCompleted();
+                            return;
+                        }
+                    }
+                    
+                    return;
                 }
             }
         }
-        return new Vector3(0f, 0f, 0f);
+
+    }
+
+    void PlayerHasBeenCaught()
+    {
+        playerCaught = true;
+    }
+
+    bool CheckIfAllGuardsPatroling()
+    {
+        GameObject[] allGuards = GameObject.FindGameObjectsWithTag("Guard");
+        foreach (var guard in allGuards)
+        {
+            Transform child = guard.transform;
+            GuardAIPhoton temp = child.gameObject.GetComponent<GuardAIPhoton>();
+            // sets the guard to be alerted if they're not chasing
+            if (temp.guardState != State.Patroling)
+            {
+                return false;
+            }
+        }
+
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (var player in players)
+        {
+            player.GetComponent<Achievements>()?.OnTheRunCompleted();
+        }
+
+        return true;
+    }
+
+    void ResetMusic()
+    {
+        if (!normalMusic.isPlaying)
+        {
+            chaseMusic.Stop();
+            normalMusic.Play();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        if ((guard.pathPending && guardState == State.Patroling) || playerCaught)
+            return;
+
         players = GameObject.FindGameObjectsWithTag("Player");
         // Check if player is in guard's sight
+
         bool old = playerSpotted;
+
         playerSpotted = PlayerSpotted();
         deadGuardSpotted = DeadGuardSpotted();
 
-        if(old != playerSpotted) {
+        if(old != playerSpotted) 
+        {
             GetComponent<GuardAnimation>().setChasing(playerSpotted);
         }
 
-        Vector3 rockPos; 
+        //Vector3 rockPos; 
 
-        if (reactsToRocks)
+        //if (reactsToRocks)
+        //{
+        //    rockPos = CheckForRock();
+        //}
+        //else
+        //{
+        //    rockPos = new Vector3(0f, 0f, 0f);
+        //}
+
+        if (!chaseMusic.isPlaying && guardState != State.Patroling)
         {
-            rockPos = CheckForRock();
+            chaseMusic.Play();
+            normalMusic.Stop();
         }
-        else
+
+        if (!walk.isPlaying && guardState != State.Chasing)
         {
-            rockPos = new Vector3(0f, 0f, 0f);
+            walk.Play();
+            run.Stop();
         }
             
 
@@ -372,6 +538,14 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         //{
         //    Debug.Log("You lose");
         //}
+        if (playerSpotted && timeChasing > 8f)
+        {
+            PlayerCaught();
+            Transform closestPlayer = FindClosestPlayer();
+            closestPlayer.GetComponent<PlayerMovementPhoton>().EnableVirtualCamera();
+            return;
+        }
+
         if (deadGuardSpotted)
         {
             SetAllGuardsToAlerted();
@@ -383,9 +557,16 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             if (timeAlerted > 15f)
             {
                 guardState = State.Patroling;
-                GotoNextPoint();
+                guard.ResetPath();
+                //GotoNextPoint();
+                guard.destination = points[destPoint].position;
                 ChangeToYellow();
                 timeAlerted = 0f;
+                bool changeMusicBack = CheckIfAllGuardsPatroling();
+                if (changeMusicBack)
+                {
+                    ResetMusic();
+                }
             }
             else
             {
@@ -401,9 +582,16 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             if (timeAlerted > 8f)
             {
                 guardState = State.Patroling;
-                GotoNextPoint();
+                guard.ResetPath();
+                //GotoNextPoint();
+                guard.destination = points[destPoint].position;
                 ChangeToYellow();
                 timeAlerted = 0f;
+                bool changeMusicBack = CheckIfAllGuardsPatroling();
+                if (changeMusicBack)
+                {
+                    ResetMusic();
+                }
             }
             else
             {
@@ -413,14 +601,16 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         }
         else if (!playerSpotted && guardState == State.Chasing)
         {
+            patienceBar.value = 0;
+            patienceBar.gameObject.SetActive(false);
             timeAlerted = 0;
             timeChasing = 0;
             guardState = State.Alerted;
         }
-        else if (rockPos != new Vector3(0f, 0f, 0f))
-        {
-            SetGuardsToAlertedItem(rockPos);
-        }
+        //else if (rockPos != new Vector3(0f, 0f, 0f))
+        //{
+        //    SetGuardsToAlertedItem(rockPos);
+        //}
         // If the player is not spotted and the guard has reached their destination, go to new point
         else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {
@@ -432,7 +622,25 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         // If player is spotted, guard will chase player and set guards in the same group as him to spotted
         else if (playerSpotted)
         {
+            if (patienceBar.gameObject.activeSelf == false)
+            {
+                patienceBar.gameObject.SetActive(true);
+            }
+            // sound
+            if (guard.velocity != Vector3.zero)
+            {
+                if (!run.isPlaying)
+                {
+                    run.Play();
+                    walk.Stop();
+                }
+            }
+            else
+            {
+                run.Stop();
+            }
             timeChasing += Time.deltaTime;
+            patienceBar.value = timeChasing;
             if (timeChasing > 2f)
             {
                 SetGuardsToAlerted();
