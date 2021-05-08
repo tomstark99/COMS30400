@@ -94,6 +94,7 @@ public class GameplayUI : MonoBehaviour
     public void ChangeRenderDistance() {
         PlayerPrefs.SetFloat("RenderDistance", RenderDistance.value);
         PlayerPrefs.Save();
+        
     }
   
 }
