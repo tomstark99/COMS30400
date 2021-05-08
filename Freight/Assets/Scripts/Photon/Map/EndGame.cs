@@ -31,7 +31,7 @@ public class EndGame : MonoBehaviourPunCallbacks
         totalBags = 0;
         totalOnTrain = 0;
 
-        Invoke(nameof(SubscribeToGuardEvent), 5f);
+        Invoke(nameof(SubscribeToGuardEvent), 6f);
     }
 
     void SubscribeToGuardEvent()
