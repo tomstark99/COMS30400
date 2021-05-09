@@ -5337,10 +5337,10 @@ Light:
   m_GameObject: {fileID: 1126222089}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 2
+  m_Type: 0
   m_Shape: 0
-  m_Color: {r: 0.6509434, g: 0.44281954, b: 0.31626025, a: 1}
-  m_Intensity: 5
+  m_Color: {r: 0.7264151, g: 0.45239526, b: 0, a: 1}
+  m_Intensity: 10
   m_Range: 1100
   m_SpotAngle: 90
   m_InnerSpotAngle: 21.80208
@@ -7190,6 +7190,10 @@ GameObject:
   - component: {fileID: 1535352231}
   - component: {fileID: 1535352230}
   - component: {fileID: 1535352229}
+  - component: {fileID: 1535352235}
+  - component: {fileID: 1535352234}
+  - component: {fileID: 1535352233}
+  - component: {fileID: 1535352232}
   m_Layer: 16
   m_Name: Terrain
   m_TagString: Untagged
@@ -7255,6 +7259,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1535352232
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535352228}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 300, y: 100, z: 1}
+  m_Center: {x: 150, y: 50, z: 300}
+--- !u!65 &1535352233
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535352228}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 100, z: 300}
+  m_Center: {x: 300, y: 50, z: 150}
+--- !u!65 &1535352234
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535352228}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 100, z: 300}
+  m_Center: {x: 0, y: 50, z: 150}
+--- !u!65 &1535352235
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535352228}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 300, y: 100, z: 1}
+  m_Center: {x: 150, y: 50, z: 0}
 --- !u!1 &1541696242
 GameObject:
   m_ObjectHideFlags: 0
