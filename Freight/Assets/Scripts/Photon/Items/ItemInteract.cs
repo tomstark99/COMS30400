@@ -92,7 +92,7 @@ public class ItemInteract : MonoBehaviourPun
                     }
                 } 
 
-                if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0)) 
+                if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0) && newInteractable.GetComponent<Breakable>() == null && newInteractable.GetComponent<Openable>() == null) 
                 {
                     if (newInteractable.GetComponent<Switchable>() != null)
                     {
