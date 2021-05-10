@@ -14,7 +14,7 @@ public class Openable : Interactable
 
     IEnumerator Moving() {
         isMoving = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         isMoving = false;
     }
    public override void PrimaryInteraction(Character character)
