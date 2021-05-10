@@ -265,13 +265,7 @@ public class ItemInteract : MonoBehaviourPun
                 }
                 else
                 {
-                    
-                    bool hasOutline = false;
-
-                    if (interact.GetComponent<Outline>() != null)
-                        hasOutline = true;
-
-                    if (tempDist <= 20f && hasOutline)
+                    if (tempDist <= 20f && interact.GetComponent<Outline>() != null)
                     {
                         interact.GetComponent<Outline>().enabled = true;
                         if (tooltip)
@@ -284,7 +278,7 @@ public class ItemInteract : MonoBehaviourPun
                     }
                     else
                     {
-                        if (hasOutline && interact.GetComponent<Outline>().enabled == true)
+                        if (interact.GetComponent<Outline>() != null && interact.GetComponent<Outline>().enabled == true)
                             interact.GetComponent<Outline>().enabled = false;
                     }
 
