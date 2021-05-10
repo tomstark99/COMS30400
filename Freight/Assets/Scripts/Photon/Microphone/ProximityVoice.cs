@@ -77,7 +77,7 @@ public class ProximityVoice : MonoBehaviourPun
 
             foreach (GameObject player in players)
             {
-                if (!player.GetPhotonView().AmOwner)
+                if (!player.GetPhotonView().IsMine)
                 {
                     otherPlayer = player;
                 }
