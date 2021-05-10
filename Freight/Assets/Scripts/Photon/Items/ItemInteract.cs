@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using Cinemachine;
 public class ItemInteract : MonoBehaviourPun
 {
+    public GameObject Camera;
+
+    private CinemachineBrain cinemachineBrain;
     public float maxInteractionDistance = 4f;
 
     [SerializeField]
@@ -40,7 +43,7 @@ public class ItemInteract : MonoBehaviourPun
         {
             Destroy(this);
         }
-
+        cinemachineBrain = Camera.GetComponent<CinemachineBrain>();
         character = GetComponent<Character>();
         tooltipCount = 0;
         tooltip = true;
@@ -287,7 +290,8 @@ public class ItemInteract : MonoBehaviourPun
 
                     if (tempDist <= 6f)
                     {
-                        photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
+                        if(cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera == Camera.GetComponent<CinemachineVirtualCamera>())
+                            photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
                         interactableInRange = true;
 
                         if (tempDist < minimumDistanceToObject)
