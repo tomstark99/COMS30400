@@ -330,6 +330,52 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
         
     }
+
+    IEnumerator DoorBreaking(int breakableID)
+    {
+         PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+         while(breakable.transform.localPosition.y < 3.89f && breakable.transform.localScale.y > 0.34f) {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.1f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.18f, breakable.transform.localScale.z);
+            yield return null;
+         }
+
+         while(breakable.transform.localPosition.y < 3.89f) {
+             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.1f, breakable.transform.localPosition.z);
+             yield return null;
+         }
+
+         while(breakable.transform.localScale.y > 0.34f)
+         {
+             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.18f, breakable.transform.localScale.z);
+              yield return null;
+         }
+         yield break;
+    }
+
+    IEnumerator DoorBreakingBig(int breakableID)
+    {
+         PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+         while(breakable.transform.localPosition.y < 3.16f && breakable.transform.localScale.y > 0.15f) {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.18f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.1f, breakable.transform.localScale.z);
+            yield return null;
+         }
+        
+         while(breakable.transform.localScale.y > 0.15f)
+         {
+             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.1f, breakable.transform.localScale.z);
+              yield return null;
+         }
+
+         while(breakable.transform.localPosition.y < 3.16f) {
+             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.18f, breakable.transform.localPosition.z);
+             yield return null;
+         }
+
+        
+         yield break;
+    }
     [PunRPC]
     void DestroyBreakable(int breakableID)
     {
@@ -341,7 +387,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, -45f, 0f));
         } else
         if(breakable.tag == "Door") {
-             PhotonNetwork.Destroy(breakable.transform.gameObject);
+             //PhotonNetwork.Destroy(breakable.transform.gameObject);
+             StartCoroutine(DoorBreaking(breakableID));
+        } else
+        if(breakable.tag == "DoorBig") {
+            StartCoroutine(DoorBreakingBig(breakableID));
         }
         
     }

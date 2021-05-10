@@ -14,7 +14,9 @@ public class Breakable : Interactable
     [PunRPC]
     void FenceBrokeRPC() {
         FenceBroke();
-    }
+    }  
+
+
     public override void PrimaryInteraction(Character character)
     {
         if(isBroken == false) {
