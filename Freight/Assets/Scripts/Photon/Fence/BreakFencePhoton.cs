@@ -28,7 +28,7 @@ public class BreakFencePhoton : MonoBehaviourPun
         InRangeOfFence += setFenceOutline;
     }
 
-    [PunRPC]
+    /*[PunRPC]
     void SetPressPToActive()
     {
         if (!overlayDisplayed) {
@@ -66,8 +66,8 @@ public class BreakFencePhoton : MonoBehaviourPun
         // event
         FenceBroke();
     }
-
-    [PunRPC]
+*/
+    /* [PunRPC]
     void DestroyArrows() {
         Destroy(Arrows);
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -118,7 +118,7 @@ public class BreakFencePhoton : MonoBehaviourPun
         }
 
         
-    }
+    }*/
 
     [PunRPC]
     void InRangeOfFenceRPC()
