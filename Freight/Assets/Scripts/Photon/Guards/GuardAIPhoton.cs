@@ -479,6 +479,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         return true;
     }
 
+    [PunRPC]
     void ResetMusic()
     {
         if (!normalMusic.isPlaying)
@@ -488,9 +489,23 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
+    void StartChaseMusic()
+    {
+        chaseMusic.Play();
+        normalMusic.Stop();
+    }
+
     // Update is called once per frame
     void Update()
     {
+
+        if (!walk.isPlaying && guardState != State.Chasing)
+        {
+            walk.Play();
+            run.Stop();
+        }
+
         if (!PhotonNetwork.IsMasterClient)
             return;
 
@@ -523,14 +538,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
         if (!chaseMusic.isPlaying && guardState != State.Patroling)
         {
-            chaseMusic.Play();
-            normalMusic.Stop();
-        }
-
-        if (!walk.isPlaying && guardState != State.Chasing)
-        {
-            walk.Play();
-            run.Stop();
+            photonView.RPC(nameof(StartChaseMusic), RpcTarget.All);
         }
             
 
@@ -565,7 +573,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 bool changeMusicBack = CheckIfAllGuardsPatroling();
                 if (changeMusicBack)
                 {
-                    ResetMusic();
+                    photonView.RPC(nameof(ResetMusic), RpcTarget.All);
                 }
             }
             else
@@ -590,7 +598,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 bool changeMusicBack = CheckIfAllGuardsPatroling();
                 if (changeMusicBack)
                 {
-                    ResetMusic();
+                    photonView.RPC(nameof(ResetMusic), RpcTarget.All);
                 }
             }
             else
@@ -660,5 +668,18 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     public bool getSpotted() {
         return this.playerSpotted;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            Debug.Log("writing");
+            stream.SendNext(guardState);
+        }
+        else if (stream.IsReading)
+        {
+            guardState = (State) stream.ReceiveNext();
+        }
     }
 }
