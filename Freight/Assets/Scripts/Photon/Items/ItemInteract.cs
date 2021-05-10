@@ -57,7 +57,8 @@ public class ItemInteract : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-
+        if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera != Camera.GetComponent<CinemachineVirtualCamera>())
+            return;
 
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
@@ -290,7 +291,7 @@ public class ItemInteract : MonoBehaviourPun
 
                     if (tempDist <= 6f)
                     {
-                        if(cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera == Camera.GetComponent<CinemachineVirtualCamera>())
+                        if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera == Camera.GetComponent<CinemachineVirtualCamera>())
                             photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
                         interactableInRange = true;
 
