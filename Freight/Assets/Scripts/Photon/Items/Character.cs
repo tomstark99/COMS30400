@@ -217,7 +217,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
             GetComponent<IkBehaviour>().ikActive = false;
-        }
+        } else actualCamera.transform.GetChild(0).gameObject.SetActive(false);
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
         photonView.RPC("DropRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
