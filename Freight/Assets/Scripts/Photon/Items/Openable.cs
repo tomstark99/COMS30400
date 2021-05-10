@@ -5,7 +5,7 @@ using UnityEngine;
 public class Openable : Interactable
 {
    public bool isOpened = false;
-
+   public bool isMoving = false;
    public override void PrimaryInteraction(Character character)
     {
         isOpened = !isOpened;
