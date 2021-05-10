@@ -674,6 +674,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             {
                 stream.SendNext(timeChasing);
             }
+            stream.SendNext(playerSpotted);
         }
         else if (stream.IsReading)
         {
@@ -682,6 +683,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             {
                 patienceBar.value = (float) stream.ReceiveNext();
             }
+            playerSpotted = (bool) stream.ReceiveNext();
         }
     }
 }
