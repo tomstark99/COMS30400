@@ -361,7 +361,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.1f, breakable.transform.localScale.z);
             yield return null;
          }
-        
+        Debug.Log("it got here calm local Scale 2");
          while(breakable.transform.localScale.y > 0.15f)
          {
              breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.1f, breakable.transform.localScale.z);
@@ -369,6 +369,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
          }
 
          while(breakable.transform.localPosition.y < 3.16f) {
+             Debug.Log("it got here calm local Scale 2");
              breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.18f, breakable.transform.localPosition.z);
              yield return null;
          }
@@ -419,12 +420,12 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.18f, breakable.transform.localScale.z);
             yield return null;
          }
-
+         Debug.Log("Closing door got here position");
          while(breakable.transform.localPosition.y > 0.91f) {
              breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.1f, breakable.transform.localPosition.z);
              yield return null;
          }
-
+    Debug.Log("Scale");
          while(breakable.transform.localScale.y < 5.1f)
          {
              breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.18f, breakable.transform.localScale.z);
@@ -448,7 +449,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
               yield return null;
          }
 
-         while(breakable.transform.localPosition.y > 1.0f) {
+         while(breakable.transform.localPosition.y > 1.09f) {
              breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.18f, breakable.transform.localPosition.z);
              yield return null;
          }
