@@ -330,6 +330,16 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
         
     }
+    [PunRPC]
+    void DestroyBreakable(int breakableID)
+    {
+        PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+        PhotonNetwork.Destroy(breakable.transform.gameObject);
+    }
+    public void Break(Breakable Item) {
+        photonView.RPC(nameof(DestroyBreakable), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
+    }
+
 
     [PunRPC]
     void DragRPC(int ItemID)

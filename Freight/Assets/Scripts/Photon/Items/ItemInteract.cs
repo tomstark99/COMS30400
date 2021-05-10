@@ -102,6 +102,12 @@ public class ItemInteract : MonoBehaviourPun
                     }
 
                 }
+
+                if(((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P")==0))) {
+                    if(newInteractable.GetComponent<Breakable>() != null) {
+                        newInteractable.PrimaryInteraction(character);
+                    }
+                }
             }
         }
         // Otherwise if we cant interact with anything but we were previously
@@ -112,7 +118,7 @@ public class ItemInteract : MonoBehaviourPun
             Grabbable newBag = null;
             Switchable newSwitch = null;
             Droppable dropBag = null;
-
+            Breakable breakableObject = null;
             try
             {
                 newBag = interactableObject.GetComponent<Grabbable>();
@@ -140,6 +146,14 @@ public class ItemInteract : MonoBehaviourPun
                 Debug.Log("switch is null");
             }
 
+            try 
+            {
+                breakableObject = interactableObject.GetComponent<Breakable>();
+            }
+            catch 
+            {
+                Debug.Log("breakable is null");
+            }
             if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0) && newBag != null)
             {
                 newBag.PrimaryInteraction(character);
@@ -156,6 +170,10 @@ public class ItemInteract : MonoBehaviourPun
                 photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
             }
 
+            if(Input.GetKeyDown(KeyCode.P) && breakableObject != null) {
+                breakableObject.PrimaryInteraction(character);
+                
+            }
             // press G to drop/throw item
             if (Input.GetKeyDown(KeyCode.G)) 
             {
