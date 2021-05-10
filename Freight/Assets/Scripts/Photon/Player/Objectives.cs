@@ -79,7 +79,7 @@ public class Objectives : MonoBehaviour
     {
         bagsPickedUp = 0;
         GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence += SetBreakFenceToActive;
-        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += SetFindBackpacksToActive;
+        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<Breakable>().FenceBroke += SetFindBackpacksToActive;
 
         Invoke(nameof(SubscribeToBagEvents), 7f);
 
