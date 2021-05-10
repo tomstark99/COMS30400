@@ -32,33 +32,45 @@ public class GuardAnimation : MonoBehaviourPun, IPunObservable
     // Update is called once per frame
     void Update()
     {
-        //// Debug.Log("SPEED ANIM " + guard.speed);
-        //bool isWalking = animator.GetBool(isWalkingHash);
-        //bool isChasing = animator.GetBool(isChasingHash);
-        //bool hasCaught = animator.GetBool(hasCaughtHash);
+        if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
+            return;
 
-        //if ((Mathf.Abs(guard.velocity.z) > 0.2f || Mathf.Abs(guard.velocity.x) > 0.2f) && !chasingPlayer) {
-        //    animator.SetBool(isWalkingHash, true); 
-        //    animator.SetBool(isChasingHash, false);
-        //    animator.SetBool(hasCaughtHash, false);
-        //} else if ((isWalking || isChasing) && (Mathf.Abs(guard.velocity.z) <= 0.2f || Mathf.Abs(guard.velocity.x) <= 0.2f)) {
-        //    animator.SetBool(isWalkingHash, false);
-        //    animator.SetBool(isChasingHash, false);
-        //    animator.SetBool(hasCaughtHash, true);
-        //}
-        //if (chasingPlayer && (Mathf.Abs(guard.velocity.z) > 0.2f || Mathf.Abs(guard.velocity.x) > 0.2f)) {
-        //    animator.SetBool(isChasingHash, true);
-        //    animator.SetBool(isWalkingHash, true);
-        //    animator.SetBool(hasCaughtHash, false);
-        //} else if (isChasing && !chasingPlayer) {
-        //    animator.SetBool(isChasingHash, false);
-        //    animator.SetBool(isWalkingHash, true);
-        //    animator.SetBool(hasCaughtHash, false);
-        //} else if (chasingPlayer && (Mathf.Abs(guard.velocity.z) <= 0.2f || Mathf.Abs(guard.velocity.x) <= 0.2f)) {
-        //    animator.SetBool(isChasingHash, false);
-        //    animator.SetBool(isWalkingHash, false);
-        //    animator.SetBool(hasCaughtHash, true);
-        //}
+        // Debug.Log("SPEED ANIM " + guard.speed);
+        bool isWalking = animator.GetBool(isWalkingHash);
+        bool isChasing = animator.GetBool(isChasingHash);
+        bool hasCaught = animator.GetBool(hasCaughtHash);
+
+        if ((Mathf.Abs(guard.velocity.z) > 0.2f || Mathf.Abs(guard.velocity.x) > 0.2f) && !chasingPlayer)
+        {
+            animator.SetBool(isWalkingHash, true);
+            animator.SetBool(isChasingHash, false);
+            animator.SetBool(hasCaughtHash, false);
+        }
+        else if ((isWalking || isChasing) && (Mathf.Abs(guard.velocity.z) <= 0.2f || Mathf.Abs(guard.velocity.x) <= 0.2f))
+        {
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isChasingHash, false);
+            animator.SetBool(hasCaughtHash, true);
+        }
+
+        if (chasingPlayer && (Mathf.Abs(guard.velocity.z) > 0.2f || Mathf.Abs(guard.velocity.x) > 0.2f))
+        {
+            animator.SetBool(isChasingHash, true);
+            animator.SetBool(isWalkingHash, true);
+            animator.SetBool(hasCaughtHash, false);
+        }
+        else if (isChasing && !chasingPlayer)
+        {
+            animator.SetBool(isChasingHash, false);
+            animator.SetBool(isWalkingHash, true);
+            animator.SetBool(hasCaughtHash, false);
+        }
+        else if (chasingPlayer && (Mathf.Abs(guard.velocity.z) <= 0.2f || Mathf.Abs(guard.velocity.x) <= 0.2f))
+        {
+            animator.SetBool(isChasingHash, false);
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(hasCaughtHash, true);
+        }
     }
 
     public bool getChasing() {
@@ -72,7 +84,7 @@ public class GuardAnimation : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // Debug.Log("SPEED ANIM " + guard.speed);
+            Debug.Log("SPEED ANIM " + guard.speed);
             bool isWalking = animator.GetBool(isWalkingHash);
             bool isChasing = animator.GetBool(isChasingHash);
             bool hasCaught = animator.GetBool(hasCaughtHash);
@@ -95,6 +107,7 @@ public class GuardAnimation : MonoBehaviourPun, IPunObservable
                 animator.SetBool(hasCaughtHash, true);
                 stream.SendNext(true);
             }
+
             if (chasingPlayer && (Mathf.Abs(guard.velocity.z) > 0.2f || Mathf.Abs(guard.velocity.x) > 0.2f))
             {
                 animator.SetBool(isChasingHash, true);
@@ -125,9 +138,18 @@ public class GuardAnimation : MonoBehaviourPun, IPunObservable
         }
         else if (stream.IsReading)
         {
-            animator.SetBool(isChasingHash, (bool) stream.ReceiveNext());
-            animator.SetBool(isWalkingHash, (bool)stream.ReceiveNext());
-            animator.SetBool(hasCaughtHash, (bool)stream.ReceiveNext());
+
+            var chasing = stream.ReceiveNext();
+            if (chasing != null)
+                animator.SetBool(isChasingHash, (bool)chasing);
+
+            var walking = stream.ReceiveNext();
+            if (walking != null)
+                animator.SetBool(isChasingHash, (bool)walking);
+
+            var isCaught = stream.ReceiveNext();
+            if (isCaught != null)
+                animator.SetBool(isChasingHash, (bool)isCaught);
         }
     }
 }
