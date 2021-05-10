@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using Cinemachine;
 public class MouseLookPhoton : MonoBehaviourPun
 {
     public float mouseSensitivity;
@@ -27,10 +27,15 @@ public class MouseLookPhoton : MonoBehaviourPun
             cameraTransform = virtualCamera.GetComponent<Transform>();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-              if (PlayerPrefs.HasKey("MouseSensibility"))
+            if (PlayerPrefs.HasKey("MouseSensibility"))
                 mouseSensitivity = PlayerPrefs.GetFloat("MouseSensibility");
-              else
-            mouseSensitivity = 2f;
+            else
+                mouseSensitivity = 2f;
+            if(PlayerPrefs.HasKey("RenderDistance")) 
+                virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.FarClipPlane = PlayerPrefs.GetFloat("RenderDistance");
+            else 
+                virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.FarClipPlane = 100;
+              
         }
        
     }

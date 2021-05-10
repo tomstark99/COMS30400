@@ -7,10 +7,15 @@ using Photon.Pun;
 public class GameSettings : MonoBehaviour
 {
 
-    void SetGameSettings()
+    public void SetGameSettings()
     {
         Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
-        string guardDifficultyVal = PhotonNetwork.CurrentRoom.CustomProperties["sliderValueDiff"].ToString();
+        string guardDifficultyVal;
+        if (PhotonNetwork.CurrentRoom.CustomProperties["sliderValueDiff"] != null)
+            guardDifficultyVal = PhotonNetwork.CurrentRoom.CustomProperties["sliderValueDiff"].ToString();
+        else
+            guardDifficultyVal = "Tutorial";
+
         ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
 
         // easy
@@ -23,6 +28,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpotlightsActive", false);
             prop.Add("SpotlightsRotating", false);
             prop.Add("VoiceRangeMultiplier", 0.1f);
+            prop.Add("BackPackIcon", true);
         }
         // medium
         else if (guardDifficultyVal == "Medium")
@@ -34,6 +40,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", false);
             prop.Add("VoiceRangeMultiplier", 0.5f);
+            prop.Add("BackPackIcon", true);
         }
         // hard
         else if (guardDifficultyVal == "Hard")
@@ -45,6 +52,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", true);
             prop.Add("VoiceRangeMultiplier", 1f);
+            prop.Add("BackPackIcon", false);
         }
         // impossible
         else if (guardDifficultyVal == "Impossible")
@@ -56,10 +64,27 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", true);
             prop.Add("VoiceRangeMultiplier", 2f);
+            prop.Add("BackPackIcon", false);
+        }
+        // tutorial
+        else if (guardDifficultyVal == "Tutorial")
+        {
+            prop.Add("GuardSightRange", 0);
+            prop.Add("GuardAngle", 80);
+            prop.Add("SpeedChasing", 7);
+            prop.Add("SpeedPatrolling", 4);
+            prop.Add("SpotlightsActive", false);
+            prop.Add("SpotlightsRotating", false);
+            prop.Add("VoiceRangeMultiplier", 0f);
+            prop.Add("BackPackIcon", false);
         }
 
-        float timeToLeave = (float) PhotonNetwork.CurrentRoom.CustomProperties["sliderValue"];
-        prop.Add("TimeToLeave", timeToLeave);
+        if (PhotonNetwork.CurrentRoom.CustomProperties["sliderValue"] != null)
+        {
+            float timeToLeave = (float)PhotonNetwork.CurrentRoom.CustomProperties["sliderValue"];
+            prop.Add("TimeToLeave", timeToLeave);
+        }
+
         PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
 
     }

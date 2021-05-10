@@ -64,6 +64,8 @@ public class ObjectivesSecond : MonoBehaviourPun
         // once counter hits 0, indicates that there are no more bags to drop thus we can subscribe to end game checking event
         if (counter == 0)
         {
+            GetComponent<PlayerAudioClipsSecond>().BagsDroppedOff();
+
             // disables gameobjects to do with drop spots
             dropBagsDistance.SetActive(false);
             dropBagsDistance2.SetActive(false);
@@ -103,14 +105,15 @@ public class ObjectivesSecond : MonoBehaviourPun
     //} 
 
     // function is called when someone jumps in the back of the truck and triggers the collider
-    void EndGameChecker()
+    public void EndGameChecker()
     {
         // if 2 players, disable the distance to truck and activate game object that tells you to wait for other player
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             rendezvousDist.SetActive(false);
             waitForOtherPlayer.SetActive(true);
-            GetComponent<PlayerMovementPhoton>().GameEnding();
+            //GetComponent<PlayerMovementPhoton>().GameEnding();
+            GetComponent<PlayerMovementPhoton>().enabled = false;
         }
         else
         {

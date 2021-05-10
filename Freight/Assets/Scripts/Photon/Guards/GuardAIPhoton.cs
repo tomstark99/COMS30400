@@ -78,18 +78,19 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         guardState = State.Patroling;
         if (GameObject.Find("Endgame") != null)
         {
-            try
+            if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>() != null)
             {
-                endGame = GameObject.Find("Endgame").GetComponent<EndGame>();
+                endGame = GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>();
                 endGame.EndTheGame += DisableGuards;
             }
-            catch
+            else if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>() != null)
             {
-                endGame2 = GameObject.Find("Endgame").GetComponent<EndGameSecond>();
+                endGame2 = GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>();
                 endGame2.EndTheGameSecond += DisableGuards;
             }
         }
-            
+
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
 
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
@@ -97,12 +98,24 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             light.GetComponent<RotateLight>().PlayerInLight += SetAllGuardsToAlerted;
         }
 
-        sightRange = (int) PhotonNetwork.CurrentRoom.CustomProperties["GuardSightRange"];
-        spotlight.range = sightRange;
-        guardAngle = (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardAngle"];
-        spotlight.spotAngle = guardAngle;
-        speedChasing = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"];
-        speedPatrolling = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"];
+        if (PhotonNetwork.CurrentRoom.CustomProperties["GuardSightRange"] != null)
+        {
+            sightRange = (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardSightRange"];
+            spotlight.range = sightRange;
+        }
+        if (PhotonNetwork.CurrentRoom.CustomProperties["GuardAngle"] != null)
+        {
+            guardAngle = (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardAngle"];
+            spotlight.spotAngle = guardAngle;
+        }
+        if (PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"] != null)
+        {
+            speedChasing = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"];
+        }
+        if (PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"] != null)
+        {
+            speedPatrolling = (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"];
+        }
 
         GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
 
@@ -247,8 +260,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
-                        player.GetComponent<Achievements>().LearnTheHardWayCompleted();
-                        player.GetComponent<Achievements>().WasDetected();
+                        player.GetComponent<Achievements>()?.LearnTheHardWayCompleted();
+                        player.GetComponent<Achievements>()?.WasDetected();
                         guard.speed = speedChasing;
                         return true;
                     }
@@ -258,8 +271,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             var decibelsValue = player.GetComponent<SoundRipples>().decibelsValue;
             if(distance < decibelsValue)
             {
-                player.GetComponent<Achievements>().LearnTheHardWayCompleted();
-                player.GetComponent<Achievements>().WasDetected();
+                player.GetComponent<Achievements>()?.LearnTheHardWayCompleted();
+                player.GetComponent<Achievements>()?.WasDetected();
                 guard.speed = speedChasing;
                 return true;
             }
@@ -424,7 +437,8 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                     {
                         if (player.GetComponent<PhotonView>().Owner == rock.GetComponent<PhotonView>().Controller)
                         {
-                            player.GetComponent<Achievements>().UseNatureCompleted();
+                            if(tempRock.GetComponent<Unachievable>() == null)
+                                player.GetComponent<Achievements>()?.UseNatureCompleted();
                             return;
                         }
                     }
@@ -459,7 +473,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
         foreach (var player in players)
         {
-            player.GetComponent<Achievements>().OnTheRunCompleted();
+            player.GetComponent<Achievements>()?.OnTheRunCompleted();
         }
 
         return true;
