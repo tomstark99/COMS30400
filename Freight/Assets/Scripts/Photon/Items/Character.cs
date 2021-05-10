@@ -357,20 +357,20 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
          PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
          while(breakable.transform.localPosition.y < 3.16f && breakable.transform.localScale.y > 0.15f) {
-            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.18f, breakable.transform.localPosition.z);
-            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.1f, breakable.transform.localScale.z);
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.09f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.05f, breakable.transform.localScale.z);
             yield return null;
          }
         Debug.Log("it got here calm local Scale 2");
          while(breakable.transform.localScale.y > 0.15f)
          {
-             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.1f, breakable.transform.localScale.z);
+             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.05f, breakable.transform.localScale.z);
               yield return null;
          }
 
          while(breakable.transform.localPosition.y < 3.16f) {
              Debug.Log("it got here calm local Scale 2");
-             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.18f, breakable.transform.localPosition.z);
+             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.09f, breakable.transform.localPosition.z);
              yield return null;
          }
 
@@ -438,19 +438,19 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
          PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
          while(breakable.transform.localPosition.y > 1.09f && breakable.transform.localScale.y < 1.0f) {
-            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.18f, breakable.transform.localPosition.z);
-            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.1f, breakable.transform.localScale.z);
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.09f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.05f, breakable.transform.localScale.z);
             yield return null;
          }
         
          while(breakable.transform.localScale.y < 1.0f)
          {
-             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.1f, breakable.transform.localScale.z);
+             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.05f, breakable.transform.localScale.z);
               yield return null;
          }
 
          while(breakable.transform.localPosition.y > 1.09f) {
-             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.18f, breakable.transform.localPosition.z);
+             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.09f, breakable.transform.localPosition.z);
              yield return null;
          }
 
