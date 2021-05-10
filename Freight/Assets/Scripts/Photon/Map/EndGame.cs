@@ -31,13 +31,17 @@ public class EndGame : MonoBehaviourPunCallbacks
         totalBags = 0;
         totalOnTrain = 0;
 
+        Invoke(nameof(SubscribeToGuardEvent), 6f);
+    }
+
+    void SubscribeToGuardEvent()
+    {
         GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
 
         foreach (var guard in guards)
         {
             guard.GetComponent<GuardAIPhoton>().PlayerCaught += ShowEndScreen;
         }
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -168,9 +172,13 @@ public class EndGame : MonoBehaviourPunCallbacks
     void CheckPeaceTreatyRPC(int viewID)
     {
         GameObject player = PhotonView.Find(viewID).gameObject;
-        player.GetComponent<Achievements>().LikeANinjaCompleted();
+        player.GetComponent<Achievements>().PeaceTreatyCompleted();
     }
 
+    [PunRPC]
+    void EndTheGameRPC() {
+        EndTheGame();
+    }
     void Update()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -221,7 +229,7 @@ public class EndGame : MonoBehaviourPunCallbacks
                         }
 
                     }
-                    EndTheGame();
+                    photonView.RPC(nameof(EndTheGameRPC), RpcTarget.All);
                 }
             }
             else if (showingEndScreen)

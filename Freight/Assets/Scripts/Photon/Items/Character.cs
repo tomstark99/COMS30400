@@ -54,11 +54,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     [PunRPC]
     void PickUpRPCLocal(int ItemID)
     {
+        PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
         if (!PlayerPrefs.HasKey("TheCompletePicture"))
         {
-            GetComponent<Achievements>().TheCompletePictureCompleted();
+            if(Item.GetComponent<Unachievable>() == null)
+                GetComponent<Achievements>()?.TheCompletePictureCompleted();
         }
-        PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
+        
         Debug.Log("LOCAL");
         //PhotonView view = Item.GetComponent<PhotonView>();
         //view.TransferOwnership(PhotonNetwork.LocalPlayer);
@@ -226,7 +228,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         if (!PlayerPrefs.HasKey("Roadman"))
         {
-            GetComponent<Achievements>().Roadman();
+            GetComponent<Achievements>()?.Roadman();
         }
 
         // get the guard's photon view
@@ -251,7 +253,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         if (!PlayerPrefs.HasKey("LetTheHuntBegin"))
         {
-            GetComponent<Achievements>().LetTheHuntBeginCompleted();
+            if(pickUpDestinationLocal.transform.GetChild(0).GetComponent<Unachievable>() ==  null)
+                GetComponent<Achievements>()?.LetTheHuntBeginCompleted();
         }
 
         // if bullet collides with guard, tell masterclient to kill guard
@@ -360,6 +363,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void ActivateBackPack() 
     {
         backPackObject.SetActive(true);
+        backPackObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     public void Grab(Grabbable Item)
@@ -418,7 +422,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         if (!PlayerPrefs.HasKey("Hackerman"))
         {
-            GetComponent<Achievements>().HackermanCompleted();
+            GetComponent<Achievements>()?.HackermanCompleted();
         }
         StartCoroutine(LightsCoroutine(Item));
     }

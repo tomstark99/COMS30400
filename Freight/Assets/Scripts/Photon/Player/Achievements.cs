@@ -27,6 +27,11 @@ public class Achievements : MonoBehaviourPun
     private GameObject onTheRun;
     private GameObject freight;
 
+    [SerializeField]
+    private GameObject mapMask;
+    [SerializeField]
+    private GameObject border;
+
     private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
 
     // this is a checker 
@@ -147,7 +152,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator BabyStepsSequence()
     {
         babySteps.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         babySteps.SetActive(false);
     }
 
@@ -172,7 +181,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator LetTheHuntBeginSequence()
     {
         letTheHuntBegin.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         letTheHuntBegin.SetActive(false);
     }
 
@@ -197,7 +210,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator PeaceTreatySequence()
     {
         peaceTreaty.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         peaceTreaty.SetActive(false);
     }
 
@@ -221,7 +238,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator UseNatureSequence()
     {
         useNature.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         useNature.SetActive(false);
     }
 
@@ -245,7 +266,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator RoadmanSequence()
     {
         roadman.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         roadman.SetActive(false);
     }
 
@@ -269,7 +294,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator TheCompletePictureSequence()
     {
         theCompletePicture.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         theCompletePicture.SetActive(false);
     }
 
@@ -293,7 +322,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator HackermanSequence()
     {
         hackerman.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         hackerman.SetActive(false);
     }
 
@@ -317,7 +350,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator LearnTheHardWaySequence()
     {
         learnTheHardWay.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         learnTheHardWay.SetActive(false);
     }
 
@@ -341,7 +378,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator ChooChooSequence()
     {
         chooChoo.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         chooChoo.SetActive(false);
     }
 
@@ -365,7 +406,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator OnTheRunSequence()
     {
         onTheRun.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         onTheRun.SetActive(false);
     }
 
@@ -389,7 +434,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator LikeANinjaSequence()
     {
         likeANinja.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         likeANinja.SetActive(false);
     }
 
@@ -413,7 +462,11 @@ public class Achievements : MonoBehaviourPun
     IEnumerator FreightSequence()
     {
         freight.SetActive(true);
+        mapMask.SetActive(false);
+        border.SetActive(false);
         yield return new WaitForSeconds(3f);
+        border.SetActive(true);
+        mapMask.SetActive(true);
         freight.SetActive(false);
     }
 }

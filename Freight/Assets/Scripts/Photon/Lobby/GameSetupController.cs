@@ -19,7 +19,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
     void Start()
     {
         // https://forum.photonengine.com/discussion/7805/received-onserialization-for-view-id-xxxx-we-have-no-such-photon-view
-        Invoke(nameof(SpawnPlayers), 3f);
+        Invoke(nameof(SpawnPlayers), 5f);
     }
 
     void SpawnPlayers()
@@ -32,7 +32,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
     private void CreatePlayer()
     {
         int z = Random.Range(294,303);
-        PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna", new Vector3(255, 8, z), Quaternion.identity);
+        PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna", new Vector3(254, 10, z), Quaternion.identity);
         guardGameObject.SetActive(true);
 
     }

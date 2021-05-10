@@ -15,15 +15,16 @@ public class PlayerAudioClips : MonoBehaviour
     private GameObject laptop;
     [SerializeField]
     private GameObject leave;
+    [SerializeField]
+    private GameObject spotlightDetected;
 
     // Start is called before the first frame update
     void Start()
     {
         if (GameObject.FindGameObjectWithTag("BrokenFence") != null)
             GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += FindTheBags;
-        
-        if (PhotonNetwork.CurrentRoom.CustomProperties["curScn"].ToString() == "TrainStationPun")
-            StartCoroutine(IntroSequence());
+
+        StartCoroutine(IntroSequence());
     }
 
     IEnumerator IntroSequence()
@@ -70,6 +71,19 @@ public class PlayerAudioClips : MonoBehaviour
     {
         subtitle.text = "Bossman: Good job on making your way in, the bags should be in the buildings!";
         yield return new WaitForSeconds(4f);
+        subtitle.text = "";
+    }
+
+    public void SpottedByLights()
+    {
+        StartCoroutine(SpottedByLightsSequence());
+    }
+
+    IEnumerator SpottedByLightsSequence()
+    {
+        subtitle.text = "Bossman: You've been detected by the spotlights, the guards are gonna be after you";
+        spotlightDetected.SetActive(true);
+        yield return new WaitForSeconds(3f);
         subtitle.text = "";
     }
 }

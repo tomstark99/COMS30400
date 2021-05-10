@@ -51,14 +51,14 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            gameObject.transform.GetChild(3).GetComponent<Button>().interactable = false;
+            gameObject.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
             Debug.Log("Starting Game");
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
             ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
             prop.Add("levelToLoad", "Assets/Scenes/TrainStationPun.unity");
-            //prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
+            // prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
             PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
         }
     }

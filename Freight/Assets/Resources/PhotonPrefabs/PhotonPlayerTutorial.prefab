@@ -30,8 +30,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbfdfd54e10afc34499b40e3d1279324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   camera: {fileID: 0}
   head: {fileID: 1324603735270419065}
+  player: {fileID: 0}
 --- !u!114 &-6210127670318762070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,7 +106,9 @@ MonoBehaviour:
   RightHandUpUI: {fileID: 0}
   onTrain: 0
   vcam: {fileID: 0}
+  caughtByGuardsText: {fileID: 0}
   onMenu: 0
+  timerCountDown: 0.2
 --- !u!114 &-4803433454189283141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +258,7 @@ MonoBehaviour:
   currentInteractable: {fileID: 0}
   tooltipObject: {fileID: 0}
   text: {fileID: 0}
+  textDrop: {fileID: 0}
 --- !u!114 &3703237927548553450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,8 +312,10 @@ MonoBehaviour:
   currentHeldItem: {fileID: 0}
   bulletPrefab: {fileID: 1122964723992546, guid: 674adf642abf5614aae2995443c8250f,
     type: 3}
+  crosshair: {fileID: 0}
   camera: {fileID: 0}
   backPackObject: {fileID: 0}
+  actualCamera: {fileID: 0}
 --- !u!114 &7196889297566079213
 MonoBehaviour:
   m_ObjectHideFlags: 0
