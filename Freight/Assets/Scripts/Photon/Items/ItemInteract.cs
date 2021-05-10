@@ -170,7 +170,7 @@ public class ItemInteract : MonoBehaviourPun
                 photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
             }
 
-            if(Input.GetKeyDown(KeyCode.P) && breakableObject != null) {
+            if(Input.GetKeyDown(KeyCode.E) && breakableObject != null) {
                 breakableObject.PrimaryInteraction(character);
                 
             }

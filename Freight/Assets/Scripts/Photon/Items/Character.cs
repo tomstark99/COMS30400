@@ -334,7 +334,16 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void DestroyBreakable(int breakableID)
     {
         PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
-        PhotonNetwork.Destroy(breakable.transform.gameObject);
+
+        if(breakable.tag == "BrokenFence") {
+            Vector3 spawnPosition = breakable.transform.position;
+            PhotonNetwork.Destroy(breakable.transform.gameObject);
+            PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, -45f, 0f));
+        } else
+        if(breakable.tag == "door") {
+             PhotonNetwork.Destroy(breakable.transform.gameObject);
+        }
+        
     }
     public void Break(Breakable Item) {
         photonView.RPC(nameof(DestroyBreakable), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
