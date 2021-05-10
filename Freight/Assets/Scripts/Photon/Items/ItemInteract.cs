@@ -285,7 +285,7 @@ public class ItemInteract : MonoBehaviourPun
                             interact.GetComponent<Outline>().enabled = false;
                     }
 
-                    if (tempDist <= 5f)
+                    if (tempDist <= 6f)
                     {
                         photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
                         interactableInRange = true;
@@ -298,7 +298,7 @@ public class ItemInteract : MonoBehaviourPun
                         found = true;
 
                     }
-                    else if (tempDist > 5f && found == false)
+                    else if (tempDist > 6f && found == false)
                     {
                         photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
                         interactableInRange = false;
