@@ -334,13 +334,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     IEnumerator DoorOpeningSmall(int breakableID)
     {
          PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
-         while(breakable.transform.localPosition.y < 3.89f && breakable.transform.localScale.y > 0.34f) {
+         while(breakable.transform.localPosition.y < 3.1f && breakable.transform.localScale.y > 0.34f) {
             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.1f, breakable.transform.localPosition.z);
             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.18f, breakable.transform.localScale.z);
             yield return null;
          }
 
-         while(breakable.transform.localPosition.y < 3.89f) {
+         while(breakable.transform.localPosition.y < 3.1f) {
              breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.1f, breakable.transform.localPosition.z);
              yield return null;
          }
@@ -410,22 +410,22 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             StartCoroutine(DoorOpeningBig(openable.transform.GetComponent<PhotonView>().ViewID));
         }
     }
-    
+
     IEnumerator DoorClosingSmall(int breakableID)
     {
          PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
-         while(breakable.transform.localPosition.y > 3.89f && breakable.transform.localScale.y < 0.34f) {
+         while(breakable.transform.localPosition.y > 0.91f && breakable.transform.localScale.y < 5.1f) {
             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.1f, breakable.transform.localPosition.z);
             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.18f, breakable.transform.localScale.z);
             yield return null;
          }
 
-         while(breakable.transform.localPosition.y > 3.89f) {
+         while(breakable.transform.localPosition.y > 0.91f) {
              breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.1f, breakable.transform.localPosition.z);
              yield return null;
          }
 
-         while(breakable.transform.localScale.y < 0.34f)
+         while(breakable.transform.localScale.y < 5.1f)
          {
              breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.18f, breakable.transform.localScale.z);
               yield return null;
@@ -436,19 +436,19 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     IEnumerator DoorClosingBig(int breakableID)
     {
          PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
-         while(breakable.transform.localPosition.y > 3.16f && breakable.transform.localScale.y < 0.15f) {
+         while(breakable.transform.localPosition.y > 1.09f && breakable.transform.localScale.y < 1.0f) {
             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.18f, breakable.transform.localPosition.z);
             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.1f, breakable.transform.localScale.z);
             yield return null;
          }
         
-         while(breakable.transform.localScale.y < 0.15f)
+         while(breakable.transform.localScale.y < 1.0f)
          {
              breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.1f, breakable.transform.localScale.z);
               yield return null;
          }
 
-         while(breakable.transform.localPosition.y > 3.16f) {
+         while(breakable.transform.localPosition.y > 1.0f) {
              breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.18f, breakable.transform.localPosition.z);
              yield return null;
          }
