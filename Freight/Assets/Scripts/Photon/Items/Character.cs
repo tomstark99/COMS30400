@@ -340,7 +340,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             PhotonNetwork.Destroy(breakable.transform.gameObject);
             PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, -45f, 0f));
         } else
-        if(breakable.tag == "door") {
+        if(breakable.tag == "Door") {
              PhotonNetwork.Destroy(breakable.transform.gameObject);
         }
         
