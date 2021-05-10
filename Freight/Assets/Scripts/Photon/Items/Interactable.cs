@@ -9,7 +9,7 @@ using Photon.Pun;
 /// in <c>ItemInteract</c>. </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(PhotonView))]
-public abstract class Interactable : MonoBehaviour
+public abstract class Interactable : MonoBehaviourPun
 {
     protected PhotonView view;
     public virtual void PrimaryInteractionOff(Character character) {}
