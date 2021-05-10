@@ -81,6 +81,13 @@ public class ItemInteract : MonoBehaviourPun
 
                 // If we are pressing mouse down then do the interaction
                 //Debug.Log("current interactable has a pick up script");
+                if(((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P")==0))) {
+                    if(newInteractable.GetComponent<Breakable>() != null || newInteractable.GetComponent<Openable>() != null) {
+                        newInteractable.PrimaryInteraction(character);
+                        return;
+                    }
+                } 
+
                 if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0)) 
                 {
                     if (newInteractable.GetComponent<Switchable>() != null)
@@ -103,11 +110,7 @@ public class ItemInteract : MonoBehaviourPun
 
                 }
 
-                if(((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P")==0))) {
-                    if(newInteractable.GetComponent<Breakable>() != null) {
-                        newInteractable.PrimaryInteraction(character);
-                    }
-                }
+                
             }
         }
         // Otherwise if we cant interact with anything but we were previously

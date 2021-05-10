@@ -331,7 +331,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         
     }
 
-    IEnumerator DoorBreaking(int breakableID)
+    IEnumerator DoorOpeningSmall(int breakableID)
     {
          PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
          while(breakable.transform.localPosition.y < 3.89f && breakable.transform.localScale.y > 0.34f) {
@@ -353,7 +353,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
          yield break;
     }
 
-    IEnumerator DoorBreakingBig(int breakableID)
+    IEnumerator DoorOpeningBig(int breakableID)
     {
          PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
          while(breakable.transform.localPosition.y < 3.16f && breakable.transform.localScale.y > 0.15f) {
@@ -376,6 +376,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         
          yield break;
     }
+
+
     [PunRPC]
     void DestroyBreakable(int breakableID)
     {
@@ -385,18 +387,88 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             Vector3 spawnPosition = breakable.transform.position;
             PhotonNetwork.Destroy(breakable.transform.gameObject);
             PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, -45f, 0f));
-        } else
-        if(breakable.tag == "Door") {
-             //PhotonNetwork.Destroy(breakable.transform.gameObject);
-             StartCoroutine(DoorBreaking(breakableID));
-        } else
-        if(breakable.tag == "DoorBig") {
-            StartCoroutine(DoorBreakingBig(breakableID));
-        }
+        } 
+        
         
     }
     public void Break(Breakable Item) {
         photonView.RPC(nameof(DestroyBreakable), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
+    }
+
+    public void Open(Openable Item) {
+        photonView.RPC(nameof(OpenRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+    }
+
+    [PunRPC]
+    public void OpenRPC(int openableID) {
+        PhotonView openable = PhotonView.Find(openableID).GetComponent<PhotonView>();
+
+        if(openable.tag == "Door") {
+            StartCoroutine(DoorOpeningSmall(openable.transform.GetComponent<PhotonView>().ViewID));
+        } else
+        if(openable.tag == "DoorBig") {
+            StartCoroutine(DoorOpeningBig(openable.transform.GetComponent<PhotonView>().ViewID));
+        }
+    }
+    
+    IEnumerator DoorClosingSmall(int breakableID)
+    {
+         PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+         while(breakable.transform.localPosition.y > 3.89f && breakable.transform.localScale.y < 0.34f) {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.1f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.18f, breakable.transform.localScale.z);
+            yield return null;
+         }
+
+         while(breakable.transform.localPosition.y > 3.89f) {
+             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.1f, breakable.transform.localPosition.z);
+             yield return null;
+         }
+
+         while(breakable.transform.localScale.y < 0.34f)
+         {
+             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.18f, breakable.transform.localScale.z);
+              yield return null;
+         }
+         yield break;
+    }
+
+    IEnumerator DoorClosingBig(int breakableID)
+    {
+         PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+         while(breakable.transform.localPosition.y > 3.16f && breakable.transform.localScale.y < 0.15f) {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.18f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.1f, breakable.transform.localScale.z);
+            yield return null;
+         }
+        
+         while(breakable.transform.localScale.y < 0.15f)
+         {
+             breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.1f, breakable.transform.localScale.z);
+              yield return null;
+         }
+
+         while(breakable.transform.localPosition.y > 3.16f) {
+             breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.18f, breakable.transform.localPosition.z);
+             yield return null;
+         }
+
+        
+         yield break;
+    }
+    public void Close(Openable Item) {
+        photonView.RPC(nameof(CloseRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+    }
+
+    [PunRPC]
+    public void CloseRPC(int openableID) {
+        PhotonView openable = PhotonView.Find(openableID).GetComponent<PhotonView>();
+        if(openable.tag == "Door") {
+            StartCoroutine(DoorClosingSmall(openable.transform.GetComponent<PhotonView>().ViewID));
+        } else
+        if(openable.tag == "DoorBig") {
+            StartCoroutine(DoorClosingBig(openable.transform.GetComponent<PhotonView>().ViewID));
+        }
     }
 
 
