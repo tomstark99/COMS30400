@@ -3,27 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-namespace SyncTime
+public class SyncedTime : MonoBehaviour
 {
-    public class SyncedTime : MonoBehaviour
+    private float timeToLeave;
+
+    public float TimeToLeave
     {
-        private float timeToLeave;
+        get { return timeToLeave;  }
+    }
 
-        public float TimeToLeave
-        {
-            get { return timeToLeave;  }
-        }
+    // Start is called before the first frame update
+    void Awake()
+    {
+        timeToLeave = (float) PhotonNetwork.CurrentRoom.CustomProperties["TimeToLeave"];
+    }
 
-        // Start is called before the first frame update
-        void Awake()
-        {
-            timeToLeave = (float) PhotonNetwork.CurrentRoom.CustomProperties["TimeToLeave"];
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
+    // Update is called once per frame
+    void Update()
+    {
             
-        }
     }
 }
