@@ -10,6 +10,7 @@ public class InitialText : MonoBehaviour
     void Start()
     {
         StartCoroutine(SelfDestruct());
+        // StartCoroutine(CameraMove());
     }
 
     IEnumerator SelfDestruct()
@@ -18,4 +19,8 @@ public class InitialText : MonoBehaviour
         Destroy(gameObject);
         camera.SetActive(true);
     }
+
+    // IEnumerator CameraMove()
+    // {
+    // }
 }

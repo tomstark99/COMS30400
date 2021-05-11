@@ -71,6 +71,9 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             {
                 transform.Find("Camera/Camera").gameObject.SetActive(true);
                 transform.Find("MinimapCamera").gameObject.SetActive(true);
+            } else
+            {
+                Destroy(gameObject);
             }
 
         }
