@@ -6,6 +6,7 @@ using Photon.Realtime;
 
 public class StartTutorialMenu : MonoBehaviourPunCallbacks
 {
+    public GameObject optionsCanvas;
     public void OnClick_CreateTutorial()
     {
         if (!PhotonNetwork.IsConnected) return;
@@ -19,6 +20,7 @@ public class StartTutorialMenu : MonoBehaviourPunCallbacks
         options.IsVisible = false;
         options.MaxPlayers = 1;
         string roomName = "Tutorial" + PhotonNetwork.CountOfRooms;
+        optionsCanvas.SetActive(false);
         PhotonNetwork.JoinOrCreateRoom(roomName, options, TypedLobby.Default);
 
     }
