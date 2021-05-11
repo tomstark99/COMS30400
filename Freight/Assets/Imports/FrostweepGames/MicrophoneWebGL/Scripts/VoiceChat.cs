@@ -53,11 +53,11 @@ namespace VoiceChatClass
             }
         }
 
-        private string _status = "disconnected";
-        private string _peerID = "";
-        private string _foreignID = "";
-        private bool dataConnection = false;
-        private bool mediaConnection = false;
+        private string _status;
+        private string _peerID;
+        private string _foreignID;
+        private bool dataConnection;
+        private bool mediaConnection;
         private CultureInfo _provider;
 
         // Called when the peer receives an id
@@ -72,6 +72,11 @@ namespace VoiceChatClass
             _provider = (CultureInfo)CultureInfo.InvariantCulture.Clone();
             _provider.NumberFormat.NumberDecimalSeparator = ".";
 
+            _status = "disconnected";
+            _peerID = "";
+            _foreignID = "";
+            dataConnection = false;
+            mediaConnection = false;
         }
 
         private void OnDestroy()
@@ -135,9 +140,12 @@ namespace VoiceChatClass
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
             if(_peerID != "" && _foreignID != "" && mediaConnection)
+            {
                 endCall();
+                _foreignID = "";
+            }
 #endif
-            _foreignID = "";
+            mediaConnection = false;
         }
 
         public void SetVolumeOfCall(float newVolume)
@@ -151,9 +159,12 @@ namespace VoiceChatClass
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
             if (_peerID != "" && _foreignID != "" && dataConnection)
+            {
                 endConnection();
+                _foreignID = "";
+            }
 #endif
-            _foreignID = "";
+            dataConnection = false;
         }
 
         /// <summary>
@@ -162,8 +173,13 @@ namespace VoiceChatClass
         public void Dispose()
         {
             _Instance = null;
-            Disconnect();
             EndCall();
+            Disconnect();
+            _status = "disconnected";
+            _peerID = "";
+            _foreignID = "";
+            dataConnection = false;
+            mediaConnection = false;
         }
 
         private float[] StringToFloatArray(string value)

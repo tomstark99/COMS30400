@@ -356,11 +356,11 @@ mergeInto(LibraryManager.library, {
     },
 
     endConnection: function() {
-        console.log("ending conenction");
+        console.log("ending connection");
         if(document.connection != null) {
             document.connection.close();
         }
-        document.call = null;
+        document.connection = null;
         document.connected = false;
     },
 
