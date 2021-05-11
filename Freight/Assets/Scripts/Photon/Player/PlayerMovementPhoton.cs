@@ -73,7 +73,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
                 transform.Find("MinimapCamera").gameObject.SetActive(true);
             } else
             {
-                Destroy(gameObject);
+                // Destroy(gameObject);
             }
 
         }
