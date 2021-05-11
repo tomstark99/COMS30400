@@ -15,7 +15,7 @@ public class SyncedTime : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        timeToLeave = (float) PhotonNetwork.CurrentRoom.CustomProperties["TimeToLeave"];
+        timeToLeave = 9999f;//(float) PhotonNetwork.CurrentRoom.CustomProperties["TimeToLeave"];
     }
 
     // Update is called once per frame

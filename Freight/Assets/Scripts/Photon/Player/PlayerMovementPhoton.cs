@@ -67,7 +67,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         if (photonView.IsMine)
         {
             // transform.Find("Camera").gameObject.SetActive(true);
-            if (!PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient)
             {
                 transform.Find("Camera/Camera").gameObject.SetActive(true);
                 transform.Find("MinimapCamera").gameObject.SetActive(true);

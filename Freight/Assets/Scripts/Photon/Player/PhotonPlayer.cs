@@ -23,7 +23,7 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
         // if photon view is player's, sets their local UI to active
         if (photonView.IsMine)
         {
-            if (!PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient)
             {
                 playerUI.SetActive(true);
             }
