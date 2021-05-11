@@ -134,8 +134,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         WallLifts2 = GameObject.Find("Room2").transform.GetChild(1).gameObject;
         WallLifts3 = GameObject.Find("Room3").transform.GetChild(1).gameObject;
         cageGuard = GameObject.Find("Guards").transform.GetChild(0).gameObject;
-        fenceToBreak = GameObject.Find("Fences").transform.GetChild(0).gameObject;
-        fenceToBreak.GetComponent<BreakFencePhoton>().FenceBroke += HandleBrokenFence;
+        fenceToBreak = GameObject.FindGameObjectWithTag("BrokenFence");
+        fenceToBreak.GetComponent<Breakable>().FenceBroke += HandleBrokenFence;
         
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }

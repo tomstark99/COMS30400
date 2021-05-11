@@ -386,8 +386,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         if(breakable.tag == "BrokenFence") {
             Vector3 spawnPosition = breakable.transform.position;
+            Quaternion rotation = breakable.transform.gameObject.transform.rotation;
             PhotonNetwork.Destroy(breakable.transform.gameObject);
-            PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, -45f, 0f));
+            PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, rotation);
         } 
         
         
