@@ -282,7 +282,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         else if (tutorialCounter == 4)
         {
             Debug.Log(camera.transform.GetChild(0).childCount);
-                if(camera.transform.GetChild(0).childCount != 0) {
+                if(camera.transform.GetChild(1).childCount != 0) {
                      throwRock.SetActive(false);
                      pressGtoThrow.SetActive(true);
                      //Destroy(throwRock);
