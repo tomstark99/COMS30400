@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using Photon.Pun;
-using Freight.Scripts.Photon.Map.SyncedTime.SyncedTime;
 
 namespace BezierSolution
 {
