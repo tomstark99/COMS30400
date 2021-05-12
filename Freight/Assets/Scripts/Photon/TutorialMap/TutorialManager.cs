@@ -37,6 +37,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     private GameObject graduatedFreight;
 
     [Header("WASD")]
+
+    [SerializeField]
+    private GameObject shiftPressed;
+
     [SerializeField]
     private GameObject wSprite;
     [SerializeField]
@@ -154,6 +158,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         // checks for when you press all of W A S D
         if (tutorialCounter == 0)
         {
+            shiftPressed.SetActive(true);
             unPressedKeys.SetActive(true);
             pressKeysText.SetActive(true);
             if(wasdMovementSound.activeSelf == false) {
@@ -189,7 +194,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             {
                 if(wasdMovementSound.GetComponent<AudioSource>().isPlaying == false)
                     tutorialCounter++;
-
+                shiftPressed.SetActive(false);
                 wSprite.SetActive(false);
                 aSprite.SetActive(false);
                 sSprite.SetActive(false);
