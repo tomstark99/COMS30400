@@ -43,7 +43,8 @@ namespace BezierSolution
 
 		private double startTime;
 		private bool startTimer;
-		private bool trainLeft;
+
+		private double oldPhotonTime;
 
         private void Start()
         {
@@ -69,6 +70,7 @@ namespace BezierSolution
 				if (PhotonNetwork.CurrentRoom.CustomProperties["StartTime"] != null)
 				{
 					startTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+					oldPhotonTime = startTime;
 					startTimer = true;
 				}
 				else
@@ -79,10 +81,18 @@ namespace BezierSolution
 
 			double newTime = timeToLeave + (startTime - PhotonNetwork.Time);
 			
+			double falo = PhotonNetwork.Time - oldPhotonTime;
+			oldPhotonTime = PhotonNetwork.Time;
 
-            if (newTime < 0)
+
+			Debug.Log(falo);
+
+
+			if (newTime < 0)
             {
-			    Execute( Time.deltaTime );
+				
+
+				Execute((float) falo);
             }
 		}
 
