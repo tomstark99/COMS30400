@@ -80,5 +80,16 @@ public class RotateLightAlarm : MonoBehaviour
         spotLight.SetActive(true);
         pointLight2.SetActive(true);
         spotLight2.SetActive(true);
+        StartCoroutine(StopLight());
+    }
+
+    IEnumerator StopLight() {
+        yield return new WaitForSeconds(20);
+        transform.GetComponent<AudioSource>().Stop();
+        isSpinning = false;
+        pointLight.SetActive(false);
+        spotLight.SetActive(false);
+        pointLight2.SetActive(false);
+        spotLight2.SetActive(false);
     }
 }
