@@ -6,19 +6,19 @@ public class DestroyArrows : MonoBehaviourPun
 {
     public GameObject arrows;
 
-    void Start() {
-        if(!PhotonView.IsMine)
-            Destroy(this);
+    void Start() 
+    {
+
     }
     // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player") {
-            
-            photonView.RPC(nameof(DeactivateArrowsGlowingRPC), photonView.Owner, other.GetComponent<PhotonView>().ViewID);
+            photonView.RPC(nameof(DeactivateArrowsGlowingRPC), other.GetComponent<PhotonView>().Owner, other.GetComponent<PhotonView>().ViewID);
         }
     }
 
+    [PunRPC]
     void DeactivateArrowsGlowingRPC(int playerID)
     {
         Destroy(arrows);
