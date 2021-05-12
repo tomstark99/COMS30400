@@ -17,7 +17,7 @@ const unityContext = new UnityContent(
 
 const Game = () => {
     return (
-      <div>
+      <div id="game-div">
         <Unity unityContent={unityContext} className="falo" />
       </div>
     )
