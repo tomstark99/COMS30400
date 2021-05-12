@@ -259,8 +259,8 @@ public class ItemInteract : MonoBehaviourPun
     {
         if (!handsActive)
         {
-            leftHand.SetActive(true);
-            rightHand.SetActive(true);
+            leftHand?.SetActive(true);
+            rightHand?.SetActive(true);
             handsActive = true;
         }
 
@@ -271,8 +271,10 @@ public class ItemInteract : MonoBehaviourPun
     {
         if (handsActive)
         {
-            leftHand.SetActive(false);
-            rightHand.SetActive(false);
+            Destroy(leftHand);
+            Destroy(rightHand);
+            leftHand?.SetActive(false);
+            rightHand?.SetActive(false);
             handsActive = false;
         }
     }
