@@ -7,6 +7,10 @@ public class Openable : Interactable
    public bool isOpened = false;
    public bool isMoving = false;
     
+    void Awake() {
+        isOpened = false;
+    }
+    
     [PunRPC]
     public void IsMoving() {
         StartCoroutine(Moving());
@@ -26,6 +30,7 @@ public class Openable : Interactable
 
         if(isOpened == false)
             character.Open(this);
+
         else character.Close(this);
         
          
