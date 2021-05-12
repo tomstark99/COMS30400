@@ -146,6 +146,13 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
 
     public override void OnDisable()
     {
+        guardState = State.Patroling;
+        bool changeMusicBack = CheckIfAllGuardsPatroling();
+        if (changeMusicBack)
+        {
+            photonView.RPC(nameof(ResetMusic), RpcTarget.All);
+        }
+
         if (endGame != null)
             endGame.EndTheGame -= DisableGuards;
 
@@ -482,6 +489,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     void ResetMusic()
     {
+        if (chaseMusic == null || normalMusic == null)
+            return;
+
         if (!normalMusic.isPlaying)
         {
             chaseMusic.Stop();
