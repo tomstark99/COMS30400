@@ -74,6 +74,7 @@ public class RotateLightAlarm : MonoBehaviour
 
     void SetToSpinning()
     {
+        transform.GetComponent<AudioSource>().Play();
         isSpinning = true;
         pointLight.SetActive(true);
         spotLight.SetActive(true);
