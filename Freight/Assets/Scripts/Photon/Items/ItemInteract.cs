@@ -25,6 +25,8 @@ public class ItemInteract : MonoBehaviourPun
 
     public GameObject text;
 
+    public GameObject dahands;
+
     [SerializeField]
     private GameObject textDrop;
 
@@ -245,6 +247,19 @@ public class ItemInteract : MonoBehaviourPun
         textDrop.SetActive(false);
     }
 
+    [PunRPC]
+    void SetBreakHandsActive() 
+    {
+        dahands.transform.GetChild(0).gameObject.SetActive(true);
+        dahands.transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    void SetBreakHandsInactive() 
+    {
+        dahands.transform.GetChild(0).gameObject.SetActive(false);
+        dahands.transform.GetChild(1).gameObject.SetActive(false);
+    }
     private void FixedUpdate()
     {
 
@@ -309,6 +324,8 @@ public class ItemInteract : MonoBehaviourPun
                     {
                         if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera == Camera.GetComponent<CinemachineVirtualCamera>())
                             photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
+                        if(interact.GetComponent<Breakable>()!= null) 
+                            photonView.RPC("SetBreakHandsActive", GetComponent<PhotonView>().Owner);
                         interactableInRange = true;
 
                         if (tempDist < minimumDistanceToObject)
@@ -321,6 +338,7 @@ public class ItemInteract : MonoBehaviourPun
                     }
                     else if (tempDist > 6f && found == false)
                     {
+                        photonView.RPC("SetBreakHandsInactive", GetComponent<PhotonView>().Owner);
                         photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
                         interactableInRange = false;
                     }
