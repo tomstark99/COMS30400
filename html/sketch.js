@@ -65,6 +65,7 @@ function modelLoaded() {
 // |O|N|I|
 // |Q|C|W|
 function noseLabel() {
+  if (!poseOff) {
     // normalise nose position e.g. 0<x,y<1
     var normNosePos = createVector(pose1.nose.x / (2 * width), pose1.nose.y / (2 * height));
     if (normNosePos.x > 1 / 3 && normNosePos.x < 2 / 3 && normNosePos.y > 0.2 && normNosePos.y < 0.4) {
@@ -82,9 +83,12 @@ function noseLabel() {
     } else {
         return 'N';
     }
+  }
+  return 'N';
 }
 
 function handsLabel() {
+  if (!poseOff) {
     if (pose1.leftWrist.x < width * 2 && pose1.leftWrist.x > 0 && pose1.leftWrist.y < height * 2 && pose1.leftWrist.y > 0) {
         //if(pose3.leftWrist.confidence>0.7 && pose3.rightWrist.confidence>0.7){
         // normalise wrist positions e.g. 0<x,y<1
@@ -118,6 +122,7 @@ function handsLabel() {
         }
         //}
     }
+  }
     return 'N';
 }
 
@@ -270,7 +275,7 @@ function draw() {
         image(video, 0, 0, video.width, video.height);
 
         if (pose) {
-            console.log(pose.leftWrist);
+            // console.log(pose.leftWrist);
             let eyeR = pose.rightEye;
             let eyeL = pose.leftEye;
             let d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
