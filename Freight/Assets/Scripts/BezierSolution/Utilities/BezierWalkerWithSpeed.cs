@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using Photon.Pun;
+using Photon.Realtime;
 
 namespace BezierSolution
 {
@@ -40,13 +41,21 @@ namespace BezierSolution
 
         private float timeToLeave;
 
+		private double startTime;
+		private bool startTimer;
+		private bool trainLeft;
+
         private void Start()
         {
             if(!PhotonNetwork.IsMasterClient)
             {
                 return;
             }
-            timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
+			if (PhotonNetwork.CurrentRoom.CustomProperties["StartTime"] != null)
+			{
+				startTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+			}
+			timeToLeave = GameObject.FindGameObjectWithTag("time").GetComponent<SyncedTime>().TimeToLeave;
         }
 
 		private void Update()
@@ -55,9 +64,23 @@ namespace BezierSolution
             {
                 return;
             }
+			if (!startTimer)
+			{
+				if (PhotonNetwork.CurrentRoom.CustomProperties["StartTime"] != null)
+				{
+					startTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+					startTimer = true;
+				}
+				else
+				{
+					return;
+				}
+			}
 
-            timeToLeave -= Time.deltaTime;
-            if (timeToLeave < 0)
+			double newTime = timeToLeave + (startTime - PhotonNetwork.Time);
+			
+
+            if (newTime < 0)
             {
 			    Execute( Time.deltaTime );
             }
