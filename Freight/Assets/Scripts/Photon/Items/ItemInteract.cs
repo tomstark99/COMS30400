@@ -25,7 +25,8 @@ public class ItemInteract : MonoBehaviourPun
 
     public GameObject text;
 
-    public GameObject dahands;
+    public GameObject leftHand;
+    public GameObject rightHand;
 
     [SerializeField]
     private GameObject textDrop;
@@ -36,6 +37,8 @@ public class ItemInteract : MonoBehaviourPun
     private GameObject interactables;
 
     private int tooltipCount;
+
+    private bool handsActive = false;
 
     private bool tooltip;
     // Start is called before the first frame update
@@ -89,6 +92,7 @@ public class ItemInteract : MonoBehaviourPun
                 //Debug.Log("current interactable has a pick up script");
                 if(((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P")==0))) {
                     if(newInteractable.GetComponent<Breakable>() != null || newInteractable.GetComponent<Openable>() != null) {
+                        photonView.RPC("SetBreakHandsInactive", GetComponent<PhotonView>().Owner);
                         newInteractable.PrimaryInteraction(character);
                         return;
                     }
@@ -250,15 +254,24 @@ public class ItemInteract : MonoBehaviourPun
     [PunRPC]
     void SetBreakHandsActive() 
     {
-        dahands.transform.GetChild(0).gameObject.SetActive(true);
-        dahands.transform.GetChild(1).gameObject.SetActive(true);
+        if (!handsActive)
+        {
+            leftHand.SetActive(true);
+            rightHand.SetActive(true);
+            handsActive = true;
+        }
+
     }
 
     [PunRPC]
     void SetBreakHandsInactive() 
     {
-        dahands.transform.GetChild(0).gameObject.SetActive(false);
-        dahands.transform.GetChild(1).gameObject.SetActive(false);
+        if (handsActive)
+        {
+            leftHand.SetActive(false);
+            rightHand.SetActive(false);
+            handsActive = false;
+        }
     }
     private void FixedUpdate()
     {
@@ -338,7 +351,8 @@ public class ItemInteract : MonoBehaviourPun
                     }
                     else if (tempDist > 6f && found == false)
                     {
-                        photonView.RPC("SetBreakHandsInactive", GetComponent<PhotonView>().Owner);
+                        if (interact.GetComponent<Breakable>() != null)
+                            photonView.RPC("SetBreakHandsInactive", GetComponent<PhotonView>().Owner);
                         photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
                         interactableInRange = false;
                     }
