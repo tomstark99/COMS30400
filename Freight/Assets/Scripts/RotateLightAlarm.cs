@@ -74,11 +74,14 @@ public class RotateLightAlarm : MonoBehaviourPun
 
     void SetToSpinning()
     {
-        photonView.RPC(nameof(SetToSpinningRPC), RpcTarget.All);
+        if(!transform.GetComponent<AudioSource>().isPlaying)
+            photonView.RPC(nameof(SetToSpinningRPC), RpcTarget.All);
     }
 
     [PunRPC]
-    void SetToSpinningRPC() {
+    void SetToSpinningRPC() 
+    {
+        
         transform.GetComponent<AudioSource>().Play();
         isSpinning = true;
         pointLight.SetActive(true);
