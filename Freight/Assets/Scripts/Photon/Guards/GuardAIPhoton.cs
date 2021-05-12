@@ -146,12 +146,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
 
     public override void OnDisable()
     {
-        guardState = State.Patroling;
-        bool changeMusicBack = CheckIfAllGuardsPatroling();
-        if (changeMusicBack)
-        {
-            photonView.RPC(nameof(ResetMusic), RpcTarget.All);
-        }
 
         if (endGame != null)
             endGame.EndTheGame -= DisableGuards;
@@ -173,6 +167,16 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>().RockHitGround -= CheckForRock;
         }
 
+    }
+
+    public void CheckMusicOnGuardDeath()
+    {
+        guardState = State.Patroling;
+        bool changeMusicBack = CheckIfAllGuardsPatroling();
+        if (changeMusicBack)
+        {
+            photonView.RPC(nameof(ResetMusic), RpcTarget.All);
+        }
     }
 
     public void DisableGuards()

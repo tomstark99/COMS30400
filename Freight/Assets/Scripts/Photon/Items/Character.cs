@@ -233,6 +233,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         // get the guard's photon view
         PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>();
+        GuardAIPhoton killedGuardObject = PhotonView.Find(guardId).GetComponent<GuardAIPhoton>();
+        killedGuardObject.CheckMusicOnGuardDeath();
         Vector3 guardPos = killedGuard.transform.position;
         Quaternion guardRot = killedGuard.transform.rotation;
         guardPos.y += 0.5f;
