@@ -30,7 +30,7 @@ function setup() {
     // init canvas
     canvas = createCanvas(320, 240);
     canvas.parent('root');
-    canvas.position(0, 0);
+    canvas.position(1500, 0);
 
     // init video
     video = createCapture(VIDEO);
