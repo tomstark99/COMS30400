@@ -126,6 +126,7 @@ public class ItemInteract : MonoBehaviourPun
             Switchable newSwitch = null;
             Droppable dropBag = null;
             Breakable breakableObject = null;
+            Openable openableObject = null;
             try
             {
                 newBag = interactableObject.GetComponent<Grabbable>();
@@ -161,6 +162,21 @@ public class ItemInteract : MonoBehaviourPun
             {
                 Debug.Log("breakable is null");
             }
+
+            try 
+            {
+                openableObject = interactableObject.GetComponent<Openable>();
+
+            }
+            catch 
+            {
+                Debug.Log("Opanable is null");
+            }
+            if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P")==0) && openableObject != null)
+            {
+                openableObject.PrimaryInteraction(character);
+            }
+
             if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0) && newBag != null)
             {
                 newBag.PrimaryInteraction(character);
