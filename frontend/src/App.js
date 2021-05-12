@@ -7,7 +7,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { Navbar,Nav,NavDropdown,Form,FormControl,Button } from 'react-bootstrap'
+import { Navbar,Nav } from 'react-bootstrap'
 import "react-bootstrap/dist/react-bootstrap.min.js"
 
 const unityContext = new UnityContent(
@@ -15,21 +15,18 @@ const unityContext = new UnityContent(
   'Build/UnityLoader.js'
 );
 
-class Game extends React.Component {
-  render() {
+const Game = () => {
     return (
       <div>
         <Unity unityContent={unityContext} className="falo" />
       </div>
     )
-  }
 }
 
-class NavBarGame extends React.Component {
-  render() {
+const NavBarGame = () => {
     return(
       <Navbar id="navbar-custom" expand="lg">
-        <Navbar.Brand href="/"><span className="nav-text">Freight</span></Navbar.Brand>
+        <Navbar.Brand href="/"><span className="nav-text-title">Freight</span></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
@@ -40,12 +37,23 @@ class NavBarGame extends React.Component {
         </Navbar.Collapse>
       </Navbar>
     )
-  }
+
 }
 
-class App extends React.Component {
-  // return (<Unity unityContext={unityContext} />);
-  render() {
+const About = () => {
+  return (
+    <div>
+      <p className="abstract"> Freight is a hide `n' fight game in which you and your partner must break into a train station, avoid (or fight) guards, retrieve a high value treasure and escape without being caught!</p>
+      <p className="abstract"> The game starts you and a partner around the outskirts of a train station, with the objective to find a way into the station itself. You and your friend must explore the edges of the train station, attempting to keep quiet and avoid the patrolling guards. As you both explore the edges you will come across a way to break in, a slightly broken fence that looks like you can pull it apart. A new objective pops up to both players, telling them to break open the fence so they can get inside of the station. Using the hinted pose the players can pull the fence open and complete the objective of `Breaking open the fence'.</p>
+    </div>
+  )
+}
+
+const Pose = () => {
+
+}
+
+function App() {
     return (
       <Router>
       <div>
@@ -56,10 +64,11 @@ class App extends React.Component {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
-            <h1>about</h1>
+            <h1 className="title">About</h1>
+            <About />
           </Route>
           <Route path="/pose">
-            <h1>pose</h1>
+            <h1 className="title">Pose Controls</h1>
           </Route>
           <Route path="/">
             <Game />
@@ -68,7 +77,6 @@ class App extends React.Component {
       </div>
     </Router>
     )
-  }
 };
 
 export default App;
