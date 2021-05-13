@@ -64,7 +64,6 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         bagSpawnerGameObject.SetActive(true);
         environmentGameObject.SetActive(true);
         trainsGameObject.SetActive(true);
-
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
