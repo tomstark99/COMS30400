@@ -85,7 +85,7 @@ namespace BezierSolution
 			oldPhotonTime = PhotonNetwork.Time;
 
 
-			Debug.Log(falo);
+			//Debug.Log(falo);
 
 
 			if (newTime < 0)
