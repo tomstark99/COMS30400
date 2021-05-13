@@ -245,11 +245,42 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         GameObject deadGuard = PhotonNetwork.Instantiate("PhotonPrefabs/dead_guard", guardPos, guardRot);
         
     }
+    IEnumerator GunRecoil() {
+        /*Debug.Log("omars haaard");
+        pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, 1.0f, Space.Self);
+        Debug.Log("initianl rotation" + pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z);
+        while(pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z > 340) 
+        {
+             Debug.Log("the while loop is haaard" + pickUpDestinationLocal.transform.GetChild(0).transform.localRotation.eulerAngles.z);
+            pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, 1.0f, Space.Self);
+            yield return null;
+        }
+
+        while(pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z <359) 
+        {
+             Debug.Log("the while loop is haaard" + pickUpDestinationLocal.transform.GetChild(0).transform.localRotation.eulerAngles.z);
+            pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, -1.0f, Space.Self);
+            yield return null;
+        }
+        pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, -1.0f, Space.Self);*/
+        while(pickUpDestinationLocal.transform.localPosition.z > 0.2f) {
+            pickUpDestinationLocal.transform.localPosition = new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, pickUpDestinationLocal.transform.localPosition.z - 0.01f);
+             yield return null;
+        }
+
+        while(pickUpDestinationLocal.transform.localPosition.z < 0.26f) {
+            pickUpDestinationLocal.transform.localPosition = new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, pickUpDestinationLocal.transform.localPosition.z + 0.01f);
+             yield return null;
+        }
+        pickUpDestinationLocal.transform.localPosition= new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, 0.26f);
+        yield break;
+    }
 
     [PunRPC]
     void CreateBulletLocal()
     {
-
+        StartCoroutine("GunRecoil");
+        Debug.Log("don t think coroutine startedt stillll");
         // shoots out a raycast to see what the bullet hits
         Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
 
