@@ -66,7 +66,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         //view.TransferOwnership(PhotonNetwork.LocalPlayer);
         // Move to players pickup destination.
         Item.transform.position = pickUpDestinationLocal.position;
-
+        if(Item.GetComponent<Shootable>() != null)
+            Item.transform.Find("Canvas").gameObject.SetActive(true);
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
         Item.transform.parent = pickUpDestinationLocal;
@@ -200,6 +201,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
             Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
+            Item.transform.Find("Canvas").gameObject.SetActive(false);
         }
         else
         {
