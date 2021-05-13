@@ -33,7 +33,7 @@ public class OptionsCanvas : MonoBehaviour
 
     public void LeaveGame()
     {
-        PhotonNetwork.Disconnect();
+        //PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel(0);
     }
 }
