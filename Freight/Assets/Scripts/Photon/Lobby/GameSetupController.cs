@@ -15,14 +15,20 @@ public class GameSetupController : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private GameObject guardGameObject;
+    [SerializeField]
+    private GameObject bagSpawnerGameObject;
 
-    private int playerCount;
     private bool spawnCalled = false;
+
+    private GameTracker gameTracker;
 
     void Start()
     {
         // https://forum.photonengine.com/discussion/7805/received-onserialization-for-view-id-xxxx-we-have-no-such-photon-view
-        photonView.RPC(nameof(PlayerLoaded), RpcTarget.AllBufferedViaServer);
+        //photonView.RPC(nameof(PlayerLoaded), RpcTarget.AllBuffered);
+        gameTracker = GameObject.FindGameObjectWithTag("GameTracker").GetComponent<GameTracker>();
+
+        gameTracker.PlayerLoadedFirstLevel();
         //Invoke(nameof(SpawnPlayers), 5f);
     }
 
@@ -31,19 +37,13 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-        if (!spawnCalled && playerCount >= PhotonNetwork.CurrentRoom.PlayerCount)
+        if (!spawnCalled && gameTracker.PlayerCountFirst >= PhotonNetwork.CurrentRoom.PlayerCount)
         {
             spawnCalled = true;
             SpawnPlayers();
         }
     }
-    
-    [PunRPC]
-    void PlayerLoaded()
-    {
-        Debug.Log("player in scene");
-        playerCount += 1;
-    }
+   
 
     void SpawnPlayers()
     {
@@ -57,6 +57,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         int z = Random.Range(294,303);
         PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna", new Vector3(254, 10, z), Quaternion.identity);
         guardGameObject.SetActive(true);
+        bagSpawnerGameObject.SetActive(true);
 
     }
 

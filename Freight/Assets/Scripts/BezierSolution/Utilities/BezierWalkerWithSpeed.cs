@@ -90,8 +90,6 @@ namespace BezierSolution
 
 			if (newTime < 0)
             {
-				
-
 				Execute((float) falo);
             }
 		}
