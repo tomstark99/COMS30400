@@ -16,10 +16,33 @@ public class GameSetupController : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject guardGameObject;
 
+    private int playerCount;
+    private bool spawnCalled = false;
+
     void Start()
     {
         // https://forum.photonengine.com/discussion/7805/received-onserialization-for-view-id-xxxx-we-have-no-such-photon-view
-        Invoke(nameof(SpawnPlayers), 5f);
+        photonView.RPC(nameof(PlayerLoaded), RpcTarget.AllBufferedViaServer);
+        //Invoke(nameof(SpawnPlayers), 5f);
+    }
+
+    void Update()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        if (!spawnCalled && playerCount >= PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            spawnCalled = true;
+            SpawnPlayers();
+        }
+    }
+    
+    [PunRPC]
+    void PlayerLoaded()
+    {
+        Debug.Log("player in scene");
+        playerCount += 1;
     }
 
     void SpawnPlayers()
