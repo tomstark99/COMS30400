@@ -25,7 +25,8 @@ public class GameTracker : MonoBehaviourPun
     void Start()
     {
         DontDestroyOnLoad(this);
-
+        
+        // checks if it already exists, if it does we destroy it
         if (gameTrackerInstance == null)
         {
             gameTrackerInstance = this;
@@ -34,8 +35,6 @@ public class GameTracker : MonoBehaviourPun
         {
             Destroy(gameObject);
         }
-
-        gameObject.AddComponent<PhotonView>();
 
         playerCountFirst = 0;
         playerCountSecond = 0;
@@ -51,5 +50,17 @@ public class GameTracker : MonoBehaviourPun
     public void PlayerLoadedFirstLevel()
     {
         photonView.RPC(nameof(PlayerLoadedFirstLevelRPC), RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    void PlayerLoadedSecondLevelRPC()
+    {
+        Debug.Log("player loaded second scene");
+        playerCountSecond += 1;
+    }
+
+    public void PlayerLoadedSecondLevel()
+    {
+        photonView.RPC(nameof(PlayerLoadedSecondLevelRPC), RpcTarget.AllBuffered);
     }
 }

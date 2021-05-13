@@ -34,6 +34,7 @@ public class OptionsCanvas : MonoBehaviour
     public void LeaveGame()
     {
         //PhotonNetwork.Disconnect();
+        //Destroy(GameObject.FindGameObjectWithTag("GameTracker"));
         PhotonNetwork.LoadLevel(0);
     }
 }
