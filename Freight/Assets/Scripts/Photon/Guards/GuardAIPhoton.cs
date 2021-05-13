@@ -146,6 +146,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
 
     public override void OnDisable()
     {
+
         if (endGame != null)
             endGame.EndTheGame -= DisableGuards;
 
@@ -166,6 +167,16 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>().RockHitGround -= CheckForRock;
         }
 
+    }
+
+    public void CheckMusicOnGuardDeath()
+    {
+        guardState = State.Patroling;
+        bool changeMusicBack = CheckIfAllGuardsPatroling();
+        if (changeMusicBack)
+        {
+            photonView.RPC(nameof(ResetMusic), RpcTarget.All);
+        }
     }
 
     public void DisableGuards()
@@ -482,6 +493,9 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     void ResetMusic()
     {
+        if (chaseMusic == null || normalMusic == null)
+            return;
+
         if (!normalMusic.isPlaying)
         {
             chaseMusic.Stop();
@@ -674,6 +688,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             {
                 stream.SendNext(timeChasing);
             }
+            stream.SendNext(playerSpotted);
         }
         else if (stream.IsReading)
         {
@@ -682,6 +697,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             {
                 patienceBar.value = (float) stream.ReceiveNext();
             }
+            playerSpotted = (bool) stream.ReceiveNext();
         }
     }
 }

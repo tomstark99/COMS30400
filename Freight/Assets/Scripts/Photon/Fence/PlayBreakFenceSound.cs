@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayBreakFenceSound : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class PlayBreakFenceSound : MonoBehaviour
     {
         fenceBreak = fenceBreakSound.GetComponent<AudioSource>();
         fenceBreak.Play();
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
+        if (PhotonNetwork.CurrentRoom.CustomProperties["curScn"].ToString() == "Scenes/TutorialScene")
+            return;
+
         findTheBags = findTheBagsSound.GetComponent<AudioSource>();
         findTheBags.Play();
     }

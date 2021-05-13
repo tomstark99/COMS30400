@@ -66,7 +66,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         //view.TransferOwnership(PhotonNetwork.LocalPlayer);
         // Move to players pickup destination.
         Item.transform.position = pickUpDestinationLocal.position;
-
+        if(Item.GetComponent<Shootable>() != null)
+            Item.transform.Find("Canvas").gameObject.SetActive(true);
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
         Item.transform.parent = pickUpDestinationLocal;
@@ -200,6 +201,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
             Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
+            Item.transform.Find("Canvas").gameObject.SetActive(false);
         }
         else
         {
@@ -217,7 +219,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
             GetComponent<IkBehaviour>().ikActive = false;
-        }
+        } else actualCamera.transform.GetChild(0).gameObject.SetActive(false);
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
         photonView.RPC("DropRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -233,6 +235,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         // get the guard's photon view
         PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>();
+        GuardAIPhoton killedGuardObject = PhotonView.Find(guardId).GetComponent<GuardAIPhoton>();
+        killedGuardObject.CheckMusicOnGuardDeath();
         Vector3 guardPos = killedGuard.transform.position;
         Quaternion guardRot = killedGuard.transform.rotation;
         guardPos.y += 0.5f;
@@ -243,11 +247,42 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         GameObject deadGuard = PhotonNetwork.Instantiate("PhotonPrefabs/dead_guard", guardPos, guardRot);
         
     }
+    IEnumerator GunRecoil() {
+        /*Debug.Log("omars haaard");
+        pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, 1.0f, Space.Self);
+        Debug.Log("initianl rotation" + pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z);
+        while(pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z > 340) 
+        {
+             Debug.Log("the while loop is haaard" + pickUpDestinationLocal.transform.GetChild(0).transform.localRotation.eulerAngles.z);
+            pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, 1.0f, Space.Self);
+            yield return null;
+        }
+
+        while(pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z <359) 
+        {
+             Debug.Log("the while loop is haaard" + pickUpDestinationLocal.transform.GetChild(0).transform.localRotation.eulerAngles.z);
+            pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, -1.0f, Space.Self);
+            yield return null;
+        }
+        pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, -1.0f, Space.Self);*/
+        while(pickUpDestinationLocal.transform.localPosition.z > 0.2f) {
+            pickUpDestinationLocal.transform.localPosition = new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, pickUpDestinationLocal.transform.localPosition.z - 0.01f);
+             yield return null;
+        }
+
+        while(pickUpDestinationLocal.transform.localPosition.z < 0.26f) {
+            pickUpDestinationLocal.transform.localPosition = new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, pickUpDestinationLocal.transform.localPosition.z + 0.01f);
+             yield return null;
+        }
+        pickUpDestinationLocal.transform.localPosition= new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, 0.26f);
+        yield break;
+    }
 
     [PunRPC]
     void CreateBulletLocal()
     {
-
+        StartCoroutine("GunRecoil");
+        Debug.Log("don t think coroutine startedt stillll");
         // shoots out a raycast to see what the bullet hits
         Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
 
@@ -386,8 +421,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         if(breakable.tag == "BrokenFence") {
             Vector3 spawnPosition = breakable.transform.position;
+            Quaternion rotation = breakable.transform.gameObject.transform.rotation;
             PhotonNetwork.Destroy(breakable.transform.gameObject);
-            PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, Quaternion.Euler(0f, -45f, 0f));
+            PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, rotation);
         } 
         
         

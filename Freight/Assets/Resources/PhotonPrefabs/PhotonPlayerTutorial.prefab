@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d924f5899626bc49a1ebde605e7bac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Camera: {fileID: 0}
   maxInteractionDistance: 10
   cameraTransform: {fileID: 0}
   currentInteractable: {fileID: 0}
@@ -338,6 +339,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8764660026470724062}
     m_Modifications:
+    - target: {fileID: 3353846078169414164, guid: 710d7a3f6d3768543bbaaebe227079f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084427922535370808, guid: 710d7a3f6d3768543bbaaebe227079f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730226823318999015, guid: 710d7a3f6d3768543bbaaebe227079f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6182315992054742256, guid: 710d7a3f6d3768543bbaaebe227079f3,
         type: 3}
       propertyPath: m_Name
