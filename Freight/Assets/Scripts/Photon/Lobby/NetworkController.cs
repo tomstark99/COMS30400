@@ -24,6 +24,9 @@ public class NetworkController : MonoBehaviourPunCallbacks
         }
         //Debug.Log(CustomMicrophone.devices.Length + " microphone devices found");
 
+        // destroys game tracker from previous game 
+        if (GameObject.FindGameObjectWithTag("GameTracker") != null)
+            Destroy(GameObject.FindGameObjectWithTag("GameTracker"));
 
         if (PhotonNetwork.IsConnected)
         {

@@ -12,10 +12,31 @@ public class GameSetupControllerSecond : MonoBehaviourPunCallbacks
      * PhotonPrefabs folder and to look for the prefab named PhotonPlayer.
      * Everything is setting the starting position and rotation values.
      * */
+
+    private bool spawnCalled = false;
+
+    private GameTracker gameTracker;
+
     void Start()
     {
         // https://forum.photonengine.com/discussion/7805/received-onserialization-for-view-id-xxxx-we-have-no-such-photon-view
-        Invoke(nameof(SpawnPlayers), 3f);
+        //Invoke(nameof(SpawnPlayers), 3f);
+
+        gameTracker = GameObject.FindGameObjectWithTag("GameTracker").GetComponent<GameTracker>();
+
+        gameTracker.PlayerLoadedSecondLevel();
+    }
+
+    void Update()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        if (!spawnCalled && gameTracker.PlayerCountSecond >= PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            spawnCalled = true;
+            Invoke(nameof(SpawnPlayers), 3f);
+        }
     }
 
     void SpawnPlayers()
