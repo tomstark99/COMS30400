@@ -17,6 +17,10 @@ public class GameSetupController : MonoBehaviourPunCallbacks
     private GameObject guardGameObject;
     [SerializeField]
     private GameObject bagSpawnerGameObject;
+    [SerializeField]
+    private GameObject environmentGameObject;
+    [SerializeField]
+    private GameObject trainsGameObject;
 
     private bool spawnCalled = false;
 
@@ -58,6 +62,8 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna", new Vector3(254, 10, z), Quaternion.identity);
         guardGameObject.SetActive(true);
         bagSpawnerGameObject.SetActive(true);
+        environmentGameObject.SetActive(true);
+        trainsGameObject.SetActive(true);
 
     }
 
