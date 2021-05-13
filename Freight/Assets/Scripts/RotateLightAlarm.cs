@@ -24,11 +24,12 @@ public class RotateLightAlarm : MonoBehaviourPun
     private GameObject spotLight2;
 
     
-
+    public bool hasSpinned;
     public bool isSpinning;
     // Start is called before the first frame update
     void Start()
     {
+        hasSpinned = false;
         positiveRotation = true;
         isSpinning = false;
 
@@ -81,8 +82,10 @@ public class RotateLightAlarm : MonoBehaviourPun
     [PunRPC]
     void SetToSpinningRPC() 
     {
-        
-        transform.GetComponent<AudioSource>().Play();
+         if(hasSpinned == false)
+            transform.GetComponent<AudioSource>().Play();
+
+        hasSpinned = true;
         isSpinning = true;
         pointLight.SetActive(true);
         spotLight.SetActive(true);
@@ -98,5 +101,6 @@ public class RotateLightAlarm : MonoBehaviourPun
         spotLight.SetActive(false);
         pointLight2.SetActive(false);
         spotLight2.SetActive(false);
+        
     }
 }
