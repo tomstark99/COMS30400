@@ -24,7 +24,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
     void Start()
     {
         gameOver = false;
-        
+
         playersToLeave = 0;
 
         GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
@@ -126,7 +126,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
                 player.GetComponent<PlayerMovementPhoton>().GameEnding();
 
             player.GetComponent<PlayerAudioClipsSecond>().GameFinished();
-            
+
             player.GetComponent<Achievements>().FreightCompleted();
         }
 
@@ -139,7 +139,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
         // winning UI text
         winningText.SetActive(true);
 
-        // starts moving the car 
+        // starts moving the car
         car.GetComponent<CarWheelAnimation>().IsSpinning = true;
         car.GetComponent<SplineWalker>().enabled = true;
         GetComponent<Outline>().enabled = false;
@@ -151,7 +151,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
         EndTheGameSecond?.Invoke();
     }
 
-    // checks if both players have jumped on the back of the truck 
+    // checks if both players have jumped on the back of the truck
     [PunRPC]
     void CheckEndGameRPC()
     {
