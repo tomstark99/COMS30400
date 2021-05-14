@@ -13,6 +13,24 @@ public class NetworkController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        var voice = GameObject.Find("[PeerJS]VoiceChat");
+        if (voice != null)
+        {
+            Destroy(voice);
+        }
+
+        var microphone = GameObject.Find("[FG]Microphone");
+        if (microphone != null)
+        {
+            if(CustomMicrophone.IsRecording(CustomMicrophone.devices[0]))
+            {
+                CustomMicrophone.End(CustomMicrophone.devices[0]);
+            }
+            Destroy(microphone);
+        }
+
+
+
         // request microphone permissions at the start of the menu
         if (!CustomMicrophone.HasMicrophonePermission())
         {

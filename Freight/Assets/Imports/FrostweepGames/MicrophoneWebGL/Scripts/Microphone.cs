@@ -57,6 +57,7 @@ namespace FrostweepGames.Plugins.WebGL
 
         private void Awake()
         {
+            DontDestroyOnLoad(this.gameObject);
             _provider = (CultureInfo)CultureInfo.InvariantCulture.Clone();
             _provider.NumberFormat.NumberDecimalSeparator = ".";
             _microphoneDevices = new string[0];
