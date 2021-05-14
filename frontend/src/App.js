@@ -11,6 +11,7 @@ import { Navbar,Nav } from 'react-bootstrap'
 import "react-bootstrap/dist/react-bootstrap.min.js"
 import useScript from './hooks/useScript';
 import ReactPlayer from "react-player"
+import SinglePose from './components/singlePose';
 
 const unityContext = new UnityContent(
   'Build/webstef4.json',
@@ -56,8 +57,22 @@ const About = () => {
 }
 
 const Pose = () => {
-  
-}
+  return(
+    <div>
+      <SinglePose picture={"move_forward"} pose_title={"Move Forward"}/>
+      <SinglePose picture={"move_left"} pose_title={"Move Left"}/>
+      <SinglePose picture={"move_right"} pose_title={"Move Right"}/>
+      <SinglePose picture={"crouch"} pose_title={"Crouch"}/>
+      <SinglePose picture={"pull_apart"} pose_title={"Pull Apart"}/>
+      <SinglePose picture={"open_door"} pose_title={"Open Door"}/>
+      <SinglePose picture={"close_door"} pose_title={"Close Door"}/>
+      <SinglePose picture={"pick_up"} pose_title={"Pick Up"}/>
+      <SinglePose picture={"throw"} pose_title={"Throw"}/>
+      <SinglePose picture={"ladder_climb"} pose_title={"Ladder Climb"}/>
+    </div>
+    
+  )
+} 
 
 function App() {
     
@@ -76,7 +91,7 @@ function App() {
             <About />
           </Route>
           <Route path="/pose">
-            <h1 className="title">Pose Controls</h1>
+            <Pose />
           </Route>
           <Route path="/">
             <Game />
