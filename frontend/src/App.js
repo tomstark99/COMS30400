@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Unity, { UnityContent } from "react-unity-webgl";
 import './App.css';
 import {
@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { Navbar,Nav } from 'react-bootstrap'
 import "react-bootstrap/dist/react-bootstrap.min.js"
+import useScript from './hooks/useScript';
 
 const unityContext = new UnityContent(
   'Build/webstef4.json',
@@ -16,6 +17,7 @@ const unityContext = new UnityContent(
 );
 
 const Game = () => {
+  useScript('sketch.js');
     return (
       <div id="game-div">
         <Unity unityContent={unityContext} className="falo" />
@@ -50,10 +52,12 @@ const About = () => {
 }
 
 const Pose = () => {
-
+  
 }
 
 function App() {
+    
+
     return (
       <Router>
       <div>
