@@ -24,6 +24,7 @@ public class GameTracker : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        // this is done so the object is not destroyed on scene change
         DontDestroyOnLoad(this);
         
         // checks if it already exists, if it does we destroy it
@@ -47,6 +48,7 @@ public class GameTracker : MonoBehaviourPun
         playerCountFirst += 1;
     }
 
+    // this is called in GameSetupController as a sort of callback to let the master client know you have loaded the scene fully
     public void PlayerLoadedFirstLevel()
     {
         photonView.RPC(nameof(PlayerLoadedFirstLevelRPC), RpcTarget.AllBuffered);
@@ -59,6 +61,7 @@ public class GameTracker : MonoBehaviourPun
         playerCountSecond += 1;
     }
 
+    // this is called in GameSetupControllerSecond as a sort of callback to let the master client know you have loaded the scene fully
     public void PlayerLoadedSecondLevel()
     {
         photonView.RPC(nameof(PlayerLoadedSecondLevelRPC), RpcTarget.AllBuffered);

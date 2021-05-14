@@ -32,6 +32,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         //photonView.RPC(nameof(PlayerLoaded), RpcTarget.AllBuffered);
         gameTracker = GameObject.FindGameObjectWithTag("GameTracker").GetComponent<GameTracker>();
 
+        // Start method will only be called once scene is loaded, thus each player sends an RPC to confirm that they have loaded the scene and are ready to be spawned in
         gameTracker.PlayerLoadedFirstLevel();
         //Invoke(nameof(SpawnPlayers), 5f);
     }
@@ -40,7 +41,8 @@ public class GameSetupController : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsMasterClient)
             return;
-
+        
+        // master client checks GameTracker class for count of players spawned in and only spawns them in once it is equal to the amount of players in room
         if (!spawnCalled && gameTracker.PlayerCountFirst >= PhotonNetwork.CurrentRoom.PlayerCount)
         {
             spawnCalled = true;
