@@ -10,6 +10,7 @@ import {
 import { Navbar,Nav } from 'react-bootstrap'
 import "react-bootstrap/dist/react-bootstrap.min.js"
 import useScript from './hooks/useScript';
+import ReactPlayer from "react-player"
 
 const unityContext = new UnityContent(
   'Build/webstef4.json',
@@ -44,7 +45,10 @@ const NavBarGame = () => {
 
 const About = () => {
   return (
-    <div>
+      <div>
+          <ReactPlayer
+              url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          />
       <p className="abstract"> Freight is a hide `n' fight game in which you and your partner must break into a train station, avoid (or fight) guards, retrieve a high value treasure and escape without being caught!</p>
       <p className="abstract"> The game starts you and a partner around the outskirts of a train station, with the objective to find a way into the station itself. You and your friend must explore the edges of the train station, attempting to keep quiet and avoid the patrolling guards. As you both explore the edges you will come across a way to break in, a slightly broken fence that looks like you can pull it apart. A new objective pops up to both players, telling them to break open the fence so they can get inside of the station. Using the hinted pose the players can pull the fence open and complete the objective of `Breaking open the fence'.</p>
     </div>
