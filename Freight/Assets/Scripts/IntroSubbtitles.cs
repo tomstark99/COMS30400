@@ -14,7 +14,7 @@ public class IntroSubbtitles : MonoBehaviour
     IEnumerator Subbtitles() 
     {
         subb.text = "The year is 2057. You are part of an anti-government group who steal and sell private intelligence";
-        yield return new WaitForSeconds(4.2f);
+        yield return new WaitForSeconds(5f);
         subb.text = "Your mission is to infiltrate a military train station and steal backpacks containing government secrets.";
         yield return new WaitForSeconds(5.5f);
         subb.text = "The backpacks are placed in some of the buildings, we’re not sure where yet.";
@@ -26,7 +26,7 @@ public class IntroSubbtitles : MonoBehaviour
         subb.text = " If you don’t mind getting your hands dirty, you can find a gun, execute the guards and hide their bodies so you don’t get caught.";
         yield return new WaitForSeconds(6);
         subb.text = "Watch out for the spotlights though, if you step in them you’ll set off the alarm and the guards will know your location.";
-        yield return new WaitForSeconds(4.2f);
+        yield return new WaitForSeconds(5f);
         subb.text = "There should be a laptop somewhere that turns the spotlights off, should make your job a whole lot easier.";
         yield return new WaitForSeconds(5);
         subb.text = "There will be a train leaving the station very soon, we will update you with its time to leave. Good luck out there…";
