@@ -9,7 +9,7 @@ public class AudioUI : MonoBehaviour
    public GameObject text;
 
    public Slider MasterAudioSlider;
-
+   
    public GameObject audioUIMenu;
    public GameObject GameplayTab;
    public GameObject ControlsTab;

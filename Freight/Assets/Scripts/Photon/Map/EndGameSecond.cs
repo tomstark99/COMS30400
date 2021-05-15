@@ -46,6 +46,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
             {
                 ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
                 prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
+                //Destroy(GameObject.FindGameObjectWithTag("GameTracker"));
                 PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
 
                 gameOver = false;

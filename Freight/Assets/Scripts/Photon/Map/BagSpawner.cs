@@ -57,7 +57,7 @@ public class BagSpawner : MonoBehaviourPun
 
     IEnumerator SpawnTwoBags()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(5f);
         bool spawned = false;
         while (!spawned)
         {

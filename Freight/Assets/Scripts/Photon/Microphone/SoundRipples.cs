@@ -34,7 +34,10 @@ public class SoundRipples : MonoBehaviourPun
 
         InvokeRepeating(nameof(UpdateRipples), 0, _updateFrequency);
 
-        decibelsMultiplier = (float)PhotonNetwork.CurrentRoom.CustomProperties["VoiceRangeMultiplier"];
+        if (PhotonNetwork.CurrentRoom.CustomProperties["VoiceRangeMultiplier"] != null)
+            decibelsMultiplier = (float)PhotonNetwork.CurrentRoom.CustomProperties["VoiceRangeMultiplier"];
+        else
+            decibelsMultiplier = 0f;
     }
 
     private void UpdateRipples()
