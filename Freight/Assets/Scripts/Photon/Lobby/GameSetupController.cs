@@ -37,6 +37,9 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         // Start method will only be called once scene is loaded, thus each player sends an RPC to confirm that they have loaded the scene and are ready to be spawned in
         gameTracker.PlayerLoadedFirstLevel();
         //Invoke(nameof(SpawnPlayers), 5f);
+        if(PhotonNetwork.CurrentRoom.PlayerCount <= 2) {
+            cameraObject.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+        }
     }
 
     void Update()
@@ -48,8 +51,8 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         if (!spawnCalled && gameTracker.PlayerCountFirst >= PhotonNetwork.CurrentRoom.PlayerCount)
         {
             spawnCalled = true;
-            Invoke(nameof(StartCamera), 3f);
-            Invoke(nameof(SpawnPlayers), 4f);
+            Invoke(nameof(StartCamera), 1f);
+            Invoke(nameof(SpawnPlayers), 45.5f);
         }
     }
    
@@ -65,6 +68,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         cameraObject.GetComponent<Animator>().enabled = true;
         cameraObject.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
         cameraObject.GetComponent<AudioSource>().enabled = true;
+        cameraObject.GetComponent<IntroSubbtitles>().enabled = true;
         guardGameObject.SetActive(true);
         environmentGameObject.SetActive(true);
         trainsGameObject.SetActive(true);
