@@ -209,14 +209,14 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.up * l;
         }
-        else if (PoseParser.GETGestureAsString().CompareTo("F") == 0) {
-            move = transform.forward * speed / 4;
+        else if (PoseParser.GETGestureAsString().CompareTo("F") == 0 || Input.GetKey(KeyCode.Alpha0)) {
+            move = transform.forward; 
         }
-        else if (PoseParser.GETGestureAsString().CompareTo("I") == 0) {
-            move = transform.right * speed / 4 + transform.forward * speed / 4;
+        else if (PoseParser.GETGestureAsString().CompareTo("I") == 0 || Input.GetKey(KeyCode.Alpha1)) {
+            move = transform.right + transform.forward;
         }
-        else if (PoseParser.GETGestureAsString().CompareTo("O") == 0) {
-            move = transform.right * (-speed / 4) + transform.forward * speed / 4;
+        else if (PoseParser.GETGestureAsString().CompareTo("O") == 0 || Input.GetKey(KeyCode.Alpha2)) {
+            move = transform.right * -1 + transform.forward;
         }
         else
         {
