@@ -25,7 +25,7 @@ public class BreakFencePhoton : MonoBehaviourPun
     void Start()
     {
         isBroken = false;
-        InRangeOfFence += setFenceOutline;
+       // InRangeOfFence += setFenceOutline;
     }
 
     
@@ -44,9 +44,9 @@ public class BreakFencePhoton : MonoBehaviourPun
         }
     }
 
-    void setFenceOutline()
-    {
-        walkedInRangeOfFence = true;
-        gameObject.GetComponent<Outline>().enabled = true;
-    }
+    //void setFenceOutline()
+    //{
+    //    walkedInRangeOfFence = true;
+    //    gameObject.GetComponent<Outline>().enabled = true;
+    //}
 }

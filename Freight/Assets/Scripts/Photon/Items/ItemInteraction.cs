@@ -165,9 +165,16 @@ public class ItemInteraction : MonoBehaviourPun
         GameObject closestInteractable = null;
         float lastDistance = float.MaxValue;
 
+        bool nullFound = false;
+
         foreach (var interactable in interactablesInRange)
         {
-
+            // if object was destroyed
+            if (interactable == null)
+            {
+                nullFound = true;
+                continue;
+            }
             float tempDist = Vector3.Distance(interactable.transform.position, transform.position);
 
             if (closestInteractable == null || tempDist < lastDistance)
@@ -177,6 +184,9 @@ public class ItemInteraction : MonoBehaviourPun
             }
 
         }
+
+        if (nullFound)
+            interactablesInRange.RemoveAll(item => item == null);
 
         return closestInteractable;
     }
@@ -223,8 +233,8 @@ public class ItemInteraction : MonoBehaviourPun
                 {
                     if (newInteractable.GetComponent<Breakable>() != null)
                     {
-                        interactablesInRange.Remove(interactableObject);
                         //photonView.RPC("SetBreakHandsInactive", GetComponent<PhotonView>().Owner);
+                        SetPressEToNotActive();
                         SetBreakHandsInactive();
                         newInteractable.PrimaryInteraction(character);
                         return;
@@ -365,9 +375,9 @@ public class ItemInteraction : MonoBehaviourPun
 
             if (Input.GetKeyDown(KeyCode.E) && breakableObject != null)
             {
-                interactablesInRange.Remove(interactableObject);
                 breakableObject.PrimaryInteraction(character);
                 SetPressEToNotActive();
+                SetBreakHandsInactive();
             }
             // press G to drop/throw item
             if (Input.GetKeyDown(KeyCode.G))
