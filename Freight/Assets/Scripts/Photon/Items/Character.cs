@@ -27,6 +27,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     private GameObject ObjectToSeeTheLights;
 
     public GameObject actualCamera;
+
+    public LayerMask gunLayerMask;
+
     public bool HoldingTheBag
     {
         get { return holdingTheBag; }
@@ -284,6 +287,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         StartCoroutine("GunRecoil");
         Debug.Log("don t think coroutine startedt stillll");
         // shoots out a raycast to see what the bullet hits
+
         Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
 
         if (!PlayerPrefs.HasKey("LetTheHuntBegin"))
@@ -293,6 +297,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
 
         // if bullet collides with guard, tell masterclient to kill guard
+        Debug.Log(hitInfo.collider);
+
         if(hitInfo.collider != null)
             if(hitInfo.collider.GetComponent<GuardAIPhoton>() != null) {
                 Debug.Log("Guard was hit acc");
