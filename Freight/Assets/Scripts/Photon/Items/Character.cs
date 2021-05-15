@@ -385,6 +385,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
              breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.18f, breakable.transform.localScale.z);
               yield return null;
          }
+
+         breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 30, breakable.GetComponent<BoxCollider>().size.y);
          yield break;
     }
 
@@ -467,7 +469,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
              breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.18f, breakable.transform.localScale.z);
               yield return null;
          }
-         yield break;
+        breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 1, breakable.GetComponent<BoxCollider>().size.y);
+        yield break;
     }
 
     IEnumerator DoorClosingBig(int breakableID)

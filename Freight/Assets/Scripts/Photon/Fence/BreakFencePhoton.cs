@@ -32,7 +32,7 @@ public class BreakFencePhoton : MonoBehaviourPun
     [PunRPC]
     void InRangeOfFenceRPC()
     {
-        InRangeOfFence();
+        InRangeOfFence?.Invoke();
     }
 
     void OnTriggerEnter(Collider other)
