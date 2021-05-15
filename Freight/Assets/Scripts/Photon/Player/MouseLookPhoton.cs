@@ -46,7 +46,7 @@ public class MouseLookPhoton : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        /*if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             oldCameraRot = cameraTransform.localRotation;
             freeCam = true;
@@ -56,7 +56,7 @@ public class MouseLookPhoton : MonoBehaviourPun
             cameraTransform.localRotation = oldCameraRot;
             yRotation = 0f;
             freeCam = false;
-        } 
+        } */
 
         if(Input.GetKeyDown(KeyCode.Escape)) 
             oldCameraRot =  cameraTransform.localRotation;
@@ -70,17 +70,17 @@ public class MouseLookPhoton : MonoBehaviourPun
         
 
         if(!onMenu) {
-            if (!freeCam)
-            {
+            //if (!freeCam)
+            //{
                 cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
                 playerBody.Rotate(Vector3.up * mouseX);
-            }
-            else
-            {
+           // }
+            //else
+            //{
                 yRotation += mouseX;
                 yRotation = Mathf.Clamp(yRotation, -150f, 130f);
                 cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-            }
+           // }
         } else {
             cameraTransform.localRotation = oldCameraRot;
         }
