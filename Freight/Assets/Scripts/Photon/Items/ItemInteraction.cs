@@ -167,6 +167,8 @@ public class ItemInteraction : MonoBehaviourPun
 
         bool nullFound = false;
 
+        GameObject pickedUpItem = null;
+
         foreach (var interactable in interactablesInRange)
         {
             // if object was destroyed
@@ -174,6 +176,13 @@ public class ItemInteraction : MonoBehaviourPun
             {
                 nullFound = true;
                 continue;
+            }
+            if (interactable?.GetComponent<PickUpable>())
+            {
+                if (interactable.GetComponent<PickUpable>().isPickedUp)
+                {
+                    pickedUpItem = interactable;
+                }
             }
             float tempDist = Vector3.Distance(interactable.transform.position, transform.position);
 
@@ -187,6 +196,9 @@ public class ItemInteraction : MonoBehaviourPun
 
         if (nullFound)
             interactablesInRange.RemoveAll(item => item == null);
+
+        if (pickedUpItem != null)
+            interactablesInRange.Remove(pickedUpItem);
 
         return closestInteractable;
     }
