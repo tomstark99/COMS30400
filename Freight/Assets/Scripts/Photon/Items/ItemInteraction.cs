@@ -191,6 +191,11 @@ public class ItemInteraction : MonoBehaviourPun
         // not currently holding an item.
         bool canInteract = (interactablesInRange.Count > 0) && !character.HasItem();
 
+        foreach (var inte in interactablesInRange)
+        {
+            Debug.Log(inte);
+        }
+
         interactableObject = GetClosestInteractable();
 
         if (canInteract)
@@ -218,6 +223,7 @@ public class ItemInteraction : MonoBehaviourPun
                 {
                     if (newInteractable.GetComponent<Breakable>() != null)
                     {
+                        interactablesInRange.Remove(interactableObject);
                         //photonView.RPC("SetBreakHandsInactive", GetComponent<PhotonView>().Owner);
                         SetBreakHandsInactive();
                         newInteractable.PrimaryInteraction(character);
@@ -359,7 +365,7 @@ public class ItemInteraction : MonoBehaviourPun
 
             if (Input.GetKeyDown(KeyCode.E) && breakableObject != null)
             {
-                interactablesInRange.Remove(breakableObject.gameObject);
+                interactablesInRange.Remove(interactableObject);
                 breakableObject.PrimaryInteraction(character);
                 SetPressEToNotActive();
             }
