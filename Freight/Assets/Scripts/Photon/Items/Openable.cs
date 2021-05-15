@@ -18,7 +18,7 @@ public class Openable : Interactable
 
     IEnumerator Moving() {
         isMoving = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         isMoving = false;
         isOpened = !isOpened;
     }

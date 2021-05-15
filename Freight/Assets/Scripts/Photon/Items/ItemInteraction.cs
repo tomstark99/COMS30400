@@ -25,12 +25,7 @@ public class ItemInteraction : MonoBehaviourPun
     [SerializeField]
     private GameObject textDrop;
 
-    private GameObject rocks;
-
     private GameObject interactableObject;
-    private GameObject interactables;
-
-    private int tooltipCount;
 
     private bool handsActive = false;
 
@@ -47,7 +42,6 @@ public class ItemInteraction : MonoBehaviourPun
         }
         cinemachineBrain = Camera.GetComponent<CinemachineBrain>();
         character = GetComponent<Character>();
-        tooltipCount = 0;
         tooltip = true;
     }
 
@@ -81,7 +75,7 @@ public class ItemInteraction : MonoBehaviourPun
                     else if (other.gameObject.GetComponent<PickUpable>() == null)
                         SetPressEToActive();
                 }
-                    
+
                 if (other.gameObject.GetComponent<Breakable>() != null)
                     SetBreakHandsActive();
             }
@@ -91,6 +85,17 @@ public class ItemInteraction : MonoBehaviourPun
         if (other.tag == "Outline")
         {
             other.transform.parent.GetComponent<Outline>().enabled = true;
+            if (other.transform.parent.gameObject?.GetComponent<PickUpable>())
+            {
+                if (tooltip)
+                {
+                    Quaternion objRot = transform.rotation;
+                    GameObject playerTooltip = Instantiate(tooltipObject, new Vector3(other.transform.position.x, other.transform.position.y + 5, other.transform.position.z), Quaternion.Euler(objRot.eulerAngles));
+                    playerTooltip.GetComponent<Tooltip>().Player = gameObject;
+                    tooltip = false;
+                }
+            }
+
         }
     }
 
@@ -108,12 +113,12 @@ public class ItemInteraction : MonoBehaviourPun
             }
             else
             {
-                
+
                 SetPressEToNotActive();
                 if (other.gameObject.GetComponent<Breakable>() != null)
                     SetBreakHandsInactive();
             }
-           
+
 
             interactablesInRange.Remove(collision.gameObject);
         }
@@ -217,7 +222,7 @@ public class ItemInteraction : MonoBehaviourPun
             SetBreakHandsInactive();
             SetPressEToNotActive();
         }
-            
+
 
         if (pickedUpItem != null)
             interactablesInRange.Remove(pickedUpItem);
@@ -230,7 +235,6 @@ public class ItemInteraction : MonoBehaviourPun
     {
         if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera != Camera.GetComponent<CinemachineVirtualCamera>())
             return;
-
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
         bool canInteract = (interactablesInRange.Count > 0) && !character.HasItem();
@@ -394,11 +398,13 @@ public class ItemInteraction : MonoBehaviourPun
             if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B") == 0) && newBag != null)
             {
                 newBag.PrimaryInteraction(character);
+                SetPressEToNotActive();
             }
 
             if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B") == 0) && newSwitch != null)
             {
                 newSwitch.PrimaryInteraction(character);
+                SetPressEToNotActive();
             }
 
             if (Input.GetKeyDown(KeyCode.E) && dropBag != null)
@@ -420,7 +426,9 @@ public class ItemInteraction : MonoBehaviourPun
                 currentInteractable.PrimaryInteractionOff(character);
                 currentInteractable.GetComponent<Outline>().enabled = true;
                 SetPressEToActive();
+                interactablesInRange.Add(currentInteractable.gameObject);
                 currentInteractable = null;
+
             }
             else
 
