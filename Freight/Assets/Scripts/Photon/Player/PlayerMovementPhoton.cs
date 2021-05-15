@@ -93,7 +93,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // achievement checker (deleting for testing purposes)
         //PlayerPrefs.DeleteKey("BabySteps");
 
-        if (PlayerPrefs.HasKey("BabySteps"))
+        if (PlayerPrefs.HasKey("BabySteps1"))
             babySteps = true;
         else
             babySteps = false;
