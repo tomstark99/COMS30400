@@ -67,7 +67,7 @@ public class GameplayUI : MonoBehaviour
         //needs changing
         Debug.Log(mouseSensibilitySlider.value);
         PlayerPrefs.SetFloat("MouseSensibility", mouseSensibilitySlider.value);
-        PlayerPrefs.SetFloat("ProximityVoiceChat", ProximityVoiceChatSlider.value);
+        //PlayerPrefs.SetFloat("ProximityVoiceChat", ProximityVoiceChatSlider.value);
        
     }
 
