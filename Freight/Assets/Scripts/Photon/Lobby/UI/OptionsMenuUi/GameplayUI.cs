@@ -13,7 +13,6 @@ public class GameplayUI : MonoBehaviour
     public GameObject DisplayTab;
     public Slider mouseSensibilitySlider;
 
-    public Slider ProximityVoiceChatSlider;
     public GameObject SaveSettings;
 
     public Slider GraphicsSlider;
@@ -26,11 +25,6 @@ public class GameplayUI : MonoBehaviour
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
         else
             mouseSensibilitySlider.value = 100f;
-
-        if (PlayerPrefs.HasKey("ProximityVoiceChat"))
-            ProximityVoiceChatSlider.value = PlayerPrefs.GetFloat("ProximityVoiceChat");
-        else
-            ProximityVoiceChatSlider.value = 50f;
 
         if (PlayerPrefs.HasKey("GameGraphics")) 
             GraphicsSlider.value = PlayerPrefs.GetFloat("GameGraphics");
@@ -72,7 +66,7 @@ public class GameplayUI : MonoBehaviour
         //needs changing
         Debug.Log(mouseSensibilitySlider.value);
         PlayerPrefs.SetFloat("MouseSensibility", mouseSensibilitySlider.value);
-        PlayerPrefs.SetFloat("ProximityVoiceChat", ProximityVoiceChatSlider.value);
+        //PlayerPrefs.SetFloat("ProximityVoiceChat", ProximityVoiceChatSlider.value);
        
     }
 

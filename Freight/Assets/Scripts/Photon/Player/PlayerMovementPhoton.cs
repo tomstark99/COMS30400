@@ -93,7 +93,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // achievement checker (deleting for testing purposes)
         //PlayerPrefs.DeleteKey("BabySteps");
 
-        if (PlayerPrefs.HasKey("BabySteps"))
+        if (PlayerPrefs.HasKey("BabySteps1"))
             babySteps = true;
         else
             babySteps = false;
@@ -123,13 +123,19 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         vcam.Priority = 100;
     }
 
-    void DisablePlayer()
+    [PunRPC]
+    void DisablePlayerRPC()
     {
         caughtByGuardsText.SetActive(true);
         gameObject.GetComponent<PlayerAnimation>().SetAllFalse();
         gameObject.GetComponent<PlayerAnimation>().enabled = false;
         gameObject.GetComponent<MouseLookPhoton>().enabled = false;
         gameObject.GetComponent<PlayerMovementPhoton>().enabled = false;
+    }
+
+    void DisablePlayer()
+    {
+        photonView.RPC(nameof(DisablePlayerRPC), RpcTarget.All);
     }
 
     IEnumerator SetFaceActive() {

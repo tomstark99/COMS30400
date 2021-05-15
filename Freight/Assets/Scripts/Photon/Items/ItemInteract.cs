@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using Cinemachine;
 public class ItemInteract : MonoBehaviourPun
 {
+    public GameObject Camera;
+
+    private CinemachineBrain cinemachineBrain;
     public float maxInteractionDistance = 4f;
 
     [SerializeField]
@@ -22,6 +25,9 @@ public class ItemInteract : MonoBehaviourPun
 
     public GameObject text;
 
+    public GameObject leftHand;
+    public GameObject rightHand;
+
     [SerializeField]
     private GameObject textDrop;
 
@@ -32,6 +38,8 @@ public class ItemInteract : MonoBehaviourPun
 
     private int tooltipCount;
 
+    private bool handsActive = false;
+
     private bool tooltip;
     // Start is called before the first frame update
     void Start()
@@ -40,21 +48,17 @@ public class ItemInteract : MonoBehaviourPun
         {
             Destroy(this);
         }
-
+        cinemachineBrain = Camera.GetComponent<CinemachineBrain>();
         character = GetComponent<Character>();
         tooltipCount = 0;
         tooltip = true;
     }
 
-    void DisplayTooltip()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
-
+        if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera != Camera.GetComponent<CinemachineVirtualCamera>())
+            return;
 
         // We can only interact with an item if the item is in reach and we are
         // not currently holding an item.
@@ -81,7 +85,41 @@ public class ItemInteract : MonoBehaviourPun
 
                 // If we are pressing mouse down then do the interaction
                 //Debug.Log("current interactable has a pick up script");
-                if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0)) 
+                if(((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P")==0))) {
+                    if(newInteractable.GetComponent<Breakable>() != null) {
+                        //photonView.RPC("SetBreakHandsInactive", GetComponent<PhotonView>().Owner);
+                        SetBreakHandsInactive();
+                        newInteractable.PrimaryInteraction(character);
+                        return;
+                    }
+                } 
+            //d is for opening 
+            //u is closing
+
+                if (Input.GetKeyDown(KeyCode.E)) 
+                {
+                    if(newInteractable.GetComponent<Openable>() != null)
+                    {
+                        newInteractable.PrimaryInteraction(character);
+                        return;
+                    }
+                } 
+
+                if(PoseParser.GETGestureAsString().CompareTo("D") == 0) {
+                    if(newInteractable.GetComponent<Openable>() != null  && newInteractable.GetComponent<Openable>().isOpened == false) {
+                        newInteractable.PrimaryInteraction(character);
+                        return;
+                    }
+                } 
+
+                if(PoseParser.GETGestureAsString().CompareTo("U") == 0) {
+                    if(newInteractable.GetComponent<Openable>() != null  && newInteractable.GetComponent<Openable>().isOpened == true) {
+                        newInteractable.PrimaryInteraction(character);
+                        return;
+                    }
+                }
+
+                if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0) && newInteractable.GetComponent<Breakable>() == null && newInteractable.GetComponent<Openable>() == null) 
                 {
                     if (newInteractable.GetComponent<Switchable>() != null)
                     {
@@ -90,7 +128,8 @@ public class ItemInteract : MonoBehaviourPun
                     else if (newInteractable.GetComponent<Droppable>() != null)
                     {
                         newInteractable.PrimaryInteraction(character);
-                        photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
+                        //photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
+                        SetPressDropToNotActive();
                     }
                     else
                     {
@@ -102,6 +141,8 @@ public class ItemInteract : MonoBehaviourPun
                     }
 
                 }
+
+                
             }
         }
         // Otherwise if we cant interact with anything but we were previously
@@ -112,7 +153,8 @@ public class ItemInteract : MonoBehaviourPun
             Grabbable newBag = null;
             Switchable newSwitch = null;
             Droppable dropBag = null;
-
+            Breakable breakableObject = null;
+            Openable openableObject = null;
             try
             {
                 newBag = interactableObject.GetComponent<Grabbable>();
@@ -140,6 +182,29 @@ public class ItemInteract : MonoBehaviourPun
                 Debug.Log("switch is null");
             }
 
+            try 
+            {
+                breakableObject = interactableObject.GetComponent<Breakable>();
+            }
+            catch 
+            {
+                Debug.Log("breakable is null");
+            }
+
+            try 
+            {
+                openableObject = interactableObject.GetComponent<Openable>();
+
+            }
+            catch 
+            {
+                Debug.Log("Opanable is null");
+            }
+            if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P")==0) && openableObject != null)
+            {
+                openableObject.PrimaryInteraction(character);
+            }
+
             if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B")==0) && newBag != null)
             {
                 newBag.PrimaryInteraction(character);
@@ -153,9 +218,14 @@ public class ItemInteract : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.E) && dropBag != null)
             {
                 dropBag.PrimaryInteraction(character);
-                photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
+                //photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
+                SetPressDropToNotActive();
             }
 
+            if(Input.GetKeyDown(KeyCode.E) && breakableObject != null) {
+                breakableObject.PrimaryInteraction(character);
+                
+            }
             // press G to drop/throw item
             if (Input.GetKeyDown(KeyCode.G)) 
             {
@@ -180,30 +250,58 @@ public class ItemInteract : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
+    //[PunRPC]
     void SetPressEToActive()
     {
         text.SetActive(true);
     }
 
-    [PunRPC]
+    //[PunRPC]
     void SetPressEToNotActive()
     {
         text.SetActive(false);
     }
 
-    [PunRPC]
+    //[PunRPC]
     void SetPressDropToActive()
     {
         textDrop.SetActive(true);
     }
 
-    [PunRPC]
+    //[PunRPC]
     void SetPressDropToNotActive()
     {
         textDrop.SetActive(false);
     }
 
+    //[PunRPC]
+    void SetBreakHandsActive() 
+    {
+        if (!handsActive)
+        {
+            if(leftHand ?? false)
+                leftHand.SetActive(true);
+            if(rightHand ?? false)
+                rightHand.SetActive(true);
+            handsActive = true;
+        }
+
+    }
+
+    //[PunRPC]
+    void SetBreakHandsInactive() 
+    {
+        if (handsActive)
+        {
+            if(leftHand ?? false)
+                leftHand.SetActive(false);
+            if(rightHand ?? false)
+                rightHand.SetActive(false);
+            Destroy(leftHand);
+            Destroy(rightHand);
+            handsActive = false;
+        }
+    }
     private void FixedUpdate()
     {
 
@@ -229,7 +327,7 @@ public class ItemInteract : MonoBehaviourPun
                     {
                         if (tempDist <= 10f && interact.GetComponent<Droppable>() != null)
                         {
-                            photonView.RPC("SetPressDropToActive", GetComponent<PhotonView>().Owner);
+                            SetPressDropToActive();
                             interactableInRange = true;
                             if (tempDist < minimumDistanceToObject)
                             {
@@ -240,20 +338,14 @@ public class ItemInteract : MonoBehaviourPun
                         }
                         else if (tempDist > 10f && found == false)
                         {
-                            photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
+                            SetPressDropToNotActive();
                             interactableInRange = false;
                         }
                     }
                 }
                 else
                 {
-                    
-                    bool hasOutline = false;
-
-                    if (interact.GetComponent<Outline>() != null)
-                        hasOutline = true;
-
-                    if (tempDist <= 20f && hasOutline)
+                    if (tempDist <= 20f && interact.GetComponent<Outline>() != null)
                     {
                         interact.GetComponent<Outline>().enabled = true;
                         if (tooltip)
@@ -266,13 +358,16 @@ public class ItemInteract : MonoBehaviourPun
                     }
                     else
                     {
-                        if (hasOutline && interact.GetComponent<Outline>().enabled == true)
+                        if (interact.GetComponent<Outline>() != null && interact.GetComponent<Outline>().enabled == true)
                             interact.GetComponent<Outline>().enabled = false;
                     }
 
-                    if (tempDist <= 2.5f)
+                    if (tempDist <= 6f)
                     {
-                        photonView.RPC("SetPressEToActive", GetComponent<PhotonView>().Owner);
+                        if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera == Camera.GetComponent<CinemachineVirtualCamera>())
+                            SetPressEToActive();
+                        if (interact.GetComponent<Breakable>() != null)
+                            SetBreakHandsActive();
                         interactableInRange = true;
 
                         if (tempDist < minimumDistanceToObject)
@@ -283,9 +378,12 @@ public class ItemInteract : MonoBehaviourPun
                         found = true;
 
                     }
-                    else if (tempDist > 2.5f && found == false)
+                    else if (tempDist > 6f && found == false)
                     {
-                        photonView.RPC("SetPressEToNotActive", GetComponent<PhotonView>().Owner);
+                        if (interact.GetComponent<Breakable>() != null)
+                            SetBreakHandsInactive();
+
+                        SetPressEToNotActive();
                         interactableInRange = false;
                     }
                 }

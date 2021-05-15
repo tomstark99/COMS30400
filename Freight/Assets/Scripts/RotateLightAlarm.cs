@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class RotateLightAlarm : MonoBehaviour
+using Photon.Pun;
+public class RotateLightAlarm : MonoBehaviourPun
 {
     [SerializeField]
     private GameObject spotlight;
@@ -24,11 +24,12 @@ public class RotateLightAlarm : MonoBehaviour
     private GameObject spotLight2;
 
     
-
+    public bool hasSpinned;
     public bool isSpinning;
     // Start is called before the first frame update
     void Start()
     {
+        hasSpinned = false;
         positiveRotation = true;
         isSpinning = false;
 
@@ -74,10 +75,32 @@ public class RotateLightAlarm : MonoBehaviour
 
     void SetToSpinning()
     {
+        if(!transform.GetComponent<AudioSource>().isPlaying)
+            photonView.RPC(nameof(SetToSpinningRPC), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void SetToSpinningRPC() 
+    {
+         if(hasSpinned == false)
+            transform.GetComponent<AudioSource>().Play();
+
+        hasSpinned = true;
         isSpinning = true;
         pointLight.SetActive(true);
         spotLight.SetActive(true);
         pointLight2.SetActive(true);
         spotLight2.SetActive(true);
+        StartCoroutine(StopLight());
+    }
+    IEnumerator StopLight() {
+        yield return new WaitForSeconds(20);
+        transform.GetComponent<AudioSource>().Stop();
+        isSpinning = false;
+        pointLight.SetActive(false);
+        spotLight.SetActive(false);
+        pointLight2.SetActive(false);
+        spotLight2.SetActive(false);
+        
     }
 }
