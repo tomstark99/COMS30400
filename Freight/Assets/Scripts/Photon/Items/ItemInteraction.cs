@@ -202,8 +202,14 @@ public class ItemInteraction : MonoBehaviourPun
 
         }
 
+        // fence broken
         if (nullFound)
+        {
             interactablesInRange.RemoveAll(item => item == null);
+            SetBreakHandsInactive();
+            SetPressEToNotActive();
+        }
+            
 
         if (pickedUpItem != null)
             interactablesInRange.Remove(pickedUpItem);
