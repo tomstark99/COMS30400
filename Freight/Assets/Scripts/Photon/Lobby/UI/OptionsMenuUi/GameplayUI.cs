@@ -13,7 +13,6 @@ public class GameplayUI : MonoBehaviour
     public GameObject DisplayTab;
     public Slider mouseSensibilitySlider;
 
-    public Slider ProximityVoiceChatSlider;
     public GameObject SaveSettings;
 
     public Slider GraphicsSlider;
