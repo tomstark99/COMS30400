@@ -72,8 +72,16 @@ public class ItemInteraction : MonoBehaviourPun
             }
             else
             {
-                if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera == Camera.GetComponent<CinemachineVirtualCamera>() || currentInteractable == null)
-                    SetPressEToActive();
+                if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera == Camera.GetComponent<CinemachineVirtualCamera>())
+                {
+                    // if you don't have an interactable
+                    if (currentInteractable == null)
+                        SetPressEToActive();
+                    // if you have an interactable and the new interactable is not a pickupable
+                    else if (other.gameObject.GetComponent<PickUpable>() == null)
+                        SetPressEToActive();
+                }
+                    
                 if (other.gameObject.GetComponent<Breakable>() != null)
                     SetBreakHandsActive();
             }
