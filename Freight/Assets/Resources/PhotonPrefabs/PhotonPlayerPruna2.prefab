@@ -1733,7 +1733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1754675153178402208
 Transform:
   m_ObjectHideFlags: 0
@@ -2885,6 +2885,9 @@ MonoBehaviour:
   camera: {fileID: 2162424349316909490}
   backPackObject: {fileID: 3742954348990797034}
   actualCamera: {fileID: 342801625237742658}
+  gunLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &5433125596424552718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4104,6 +4107,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UI 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6182315992054742256, guid: 41ae6826d0f3d0948ae3f19dc7c583b7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6182315992054742260, guid: 41ae6826d0f3d0948ae3f19dc7c583b7,
         type: 3}
