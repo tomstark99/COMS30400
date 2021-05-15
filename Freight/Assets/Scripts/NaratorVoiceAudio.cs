@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class NaratorVoiceAudio : MonoBehaviour
 {
+    float naratorAudioVolume;
     // Start is called before the first frame update
-    void Start()
+    void Start() 
     {
-        
-    }
+        if(PlayerPrefs.HasKey("naratorAudio")) {
+            naratorAudioVolume = PlayerPrefs.GetFloat("narratorAudio");
+        } else 
+        naratorAudioVolume = 1;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        foreach (Transform child in transform)
+        {
+            child.GetComponent<AudioSource>().volume = naratorAudioVolume;
+        }
     }
 }
