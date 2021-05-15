@@ -387,7 +387,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
          }
 
          breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 30, breakable.GetComponent<BoxCollider>().size.y);
-         yield break;
+        breakable.transform.GetChild(2).GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 200, breakable.GetComponent<BoxCollider>().size.y);
+        yield break;
     }
 
     IEnumerator DoorOpeningBig(int breakableID)
@@ -411,8 +412,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
              yield return null;
          }
 
-        
-         yield break;
+        breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 50, breakable.GetComponent<BoxCollider>().size.y);
+        breakable.transform.GetChild(3).GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 40, breakable.GetComponent<BoxCollider>().size.y);
+        yield break;
     }
 
 
@@ -470,6 +472,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
               yield return null;
          }
         breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 1, breakable.GetComponent<BoxCollider>().size.y);
+        breakable.transform.GetChild(2).GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 20, breakable.GetComponent<BoxCollider>().size.y);
         yield break;
     }
 
@@ -493,8 +496,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
              yield return null;
          }
 
-        
-         yield break;
+        breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 6, breakable.GetComponent<BoxCollider>().size.y);
+        breakable.transform.GetChild(3).GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 20, breakable.GetComponent<BoxCollider>().size.y);
+        yield break;
     }
     public void Close(Openable Item) {
         photonView.RPC(nameof(CloseRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
