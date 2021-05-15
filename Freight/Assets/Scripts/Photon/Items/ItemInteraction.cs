@@ -274,6 +274,7 @@ public class ItemInteraction : MonoBehaviourPun
                 {
                     if (newInteractable.GetComponent<Switchable>() != null)
                     {
+                        SetPressEToNotActive();
                         newInteractable.PrimaryInteraction(character);
                     }
                     else if (newInteractable.GetComponent<Droppable>() != null)
@@ -369,7 +370,6 @@ public class ItemInteraction : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.E) && dropBag != null)
             {
                 dropBag.PrimaryInteraction(character);
-                //photonView.RPC("SetPressDropToNotActive", GetComponent<PhotonView>().Owner);
                 SetPressDropToNotActive();
             }
 
