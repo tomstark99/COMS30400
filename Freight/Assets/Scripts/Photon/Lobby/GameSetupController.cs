@@ -65,6 +65,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         cameraObject.GetComponent<Animator>().enabled = true;
         cameraObject.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
         cameraObject.GetComponent<AudioSource>().enabled = true;
+        cameraObject.GetComponent<IntroSubbtitles>().enabled = true;
         guardGameObject.SetActive(true);
         environmentGameObject.SetActive(true);
         trainsGameObject.SetActive(true);
