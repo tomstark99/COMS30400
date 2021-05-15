@@ -77,9 +77,9 @@ public class MouseLookPhoton : MonoBehaviourPun
            // }
             //else
             //{
-                yRotation += mouseX;
-                yRotation = Mathf.Clamp(yRotation, -150f, 130f);
-                cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+               // yRotation += mouseX;
+                //yRotation = Mathf.Clamp(yRotation, -150f, 130f);
+               // cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
            // }
         } else {
             cameraTransform.localRotation = oldCameraRot;
