@@ -54,6 +54,13 @@ public class ItemInteraction : MonoBehaviourPun
     void OnTriggerEnter(Collider other)
     {
         Interactable collision = other.gameObject?.GetComponent<Interactable>();
+
+        if (other.gameObject?.GetComponent<PickUpable>())
+        {
+            if (other.gameObject.GetComponent<PickUpable>().isPickedUp)
+                return;
+        }
+
         if (collision != null)
         {
             if (collision.gameObject.GetComponent<Droppable>() != null)
