@@ -20,7 +20,7 @@ public class BackButtonMenu : MonoBehaviour
 
          if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(roomsCanvases.CreateOrJoinRoomCanvas != null) {
+            if(roomsCanvases != null && roomsCanvases.CreateOrJoinRoomCanvas != null) {
                 roomsCanvases.CreateOrJoinRoomCanvas.Show();
             }
         }
@@ -30,7 +30,7 @@ public class BackButtonMenu : MonoBehaviour
     {
         optionsCanvas.SetActive(false);
         //roomsCanvases.OptionsMenu.Hide();
-        if(roomsCanvases.CreateOrJoinRoomCanvas != null) {
+        if(roomsCanvases != null && roomsCanvases.CreateOrJoinRoomCanvas != null) {
             roomsCanvases.CreateOrJoinRoomCanvas.Show();
         } else {
             transform.parent.transform.parent.GetComponent<PlayerUI>().closeorOpenMenu();
