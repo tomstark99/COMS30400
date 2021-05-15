@@ -182,6 +182,7 @@ public class ItemInteraction : MonoBehaviourPun
                 if (interactable.GetComponent<PickUpable>().isPickedUp)
                 {
                     pickedUpItem = interactable;
+                    continue;
                 }
             }
             float tempDist = Vector3.Distance(interactable.transform.position, transform.position);
