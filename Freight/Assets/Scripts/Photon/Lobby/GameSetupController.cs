@@ -66,6 +66,8 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         cameraObject.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
         guardGameObject.SetActive(true);
         environmentGameObject.SetActive(true);
+        trainsGameObject.SetActive(true);
+        bagSpawnerGameObject.SetActive(true);
     }
 
     void SpawnPlayers()
@@ -80,8 +82,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         int z = Random.Range(294,303);
         PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna", new Vector3(254, 10, z), Quaternion.identity);
         Destroy(cameraObject);
-        bagSpawnerGameObject.SetActive(true);
-        trainsGameObject.SetActive(true);
+       
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)

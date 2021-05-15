@@ -25,7 +25,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("GuardAngle", 50);
             prop.Add("SpeedChasing", 4);
             prop.Add("SpeedPatrolling", 2);
-            prop.Add("SpotlightsActive", false);
+            prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", false);
             prop.Add("VoiceRangeMultiplier", 0.1f);
             prop.Add("BackPackIcon", true);
@@ -38,7 +38,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpeedChasing", 6);
             prop.Add("SpeedPatrolling", 3);
             prop.Add("SpotlightsActive", true);
-            prop.Add("SpotlightsRotating", false);
+            prop.Add("SpotlightsRotating", true);
             prop.Add("VoiceRangeMultiplier", 0.5f);
             prop.Add("BackPackIcon", true);
         }
