@@ -210,13 +210,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move = transform.up * l;
         }
         else if (PoseParser.GETGestureAsString().CompareTo("F") == 0) {
-            move = transform.forward * speed / 4;
+            move = transform.forward; 
         }
         else if (PoseParser.GETGestureAsString().CompareTo("I") == 0) {
-            move = transform.right * speed / 4 + transform.forward * speed / 4;
+            move = transform.right + transform.forward;
         }
         else if (PoseParser.GETGestureAsString().CompareTo("O") == 0) {
-            move = transform.right * (-speed / 4) + transform.forward * speed / 4;
+            move = transform.right * -1 + transform.forward;
         }
         else
         {
