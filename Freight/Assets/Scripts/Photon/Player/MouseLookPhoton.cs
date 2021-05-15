@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
+using UnityEngine.UI;
 public class MouseLookPhoton : MonoBehaviourPun
 {
     public float mouseSensitivity;
@@ -18,6 +19,7 @@ public class MouseLookPhoton : MonoBehaviourPun
     private Quaternion oldCameraRot;
     private bool freeCam;
 
+    public Slider RenderDistanceSlider;
     public bool onMenu;
     // Start is called before the first frame update
     void Start()
@@ -40,6 +42,12 @@ public class MouseLookPhoton : MonoBehaviourPun
        
     }
 
+    public void ChangeRenderDistance() {
+        virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.FarClipPlane = RenderDistanceSlider.value;
+        PlayerPrefs.SetFloat("RenderDistance", RenderDistanceSlider.value);
+        PlayerPrefs.Save();
+        
+    }
 
     // Update is called once per frame
     void Update()
