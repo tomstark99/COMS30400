@@ -17,6 +17,9 @@ public class GameSetupControllerSecond : MonoBehaviourPunCallbacks
 
     private GameTracker gameTracker;
 
+    [SerializeField]
+    private GameObject guardGameObject;
+
     void Start()
     {
         // https://forum.photonengine.com/discussion/7805/received-onserialization-for-view-id-xxxx-we-have-no-such-photon-view
@@ -43,7 +46,7 @@ public class GameSetupControllerSecond : MonoBehaviourPunCallbacks
 
     void SpawnPlayers()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient) 
             photonView.RPC(nameof(CreatePlayer), RpcTarget.AllBufferedViaServer);
     }
 
@@ -54,6 +57,8 @@ public class GameSetupControllerSecond : MonoBehaviourPunCallbacks
             PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna2", new Vector3(141f, 3.2f, 106f), Quaternion.identity);
         else
             PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerPruna2", new Vector3(141f, 3.2f, 115f), Quaternion.identity);
+
+        guardGameObject.SetActive(true);
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
