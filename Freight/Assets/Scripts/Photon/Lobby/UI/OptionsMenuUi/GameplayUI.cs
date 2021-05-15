@@ -27,11 +27,6 @@ public class GameplayUI : MonoBehaviour
         else
             mouseSensibilitySlider.value = 100f;
 
-        if (PlayerPrefs.HasKey("ProximityVoiceChat"))
-            ProximityVoiceChatSlider.value = PlayerPrefs.GetFloat("ProximityVoiceChat");
-        else
-            ProximityVoiceChatSlider.value = 50f;
-
         if (PlayerPrefs.HasKey("GameGraphics")) 
             GraphicsSlider.value = PlayerPrefs.GetFloat("GameGraphics");
         else
