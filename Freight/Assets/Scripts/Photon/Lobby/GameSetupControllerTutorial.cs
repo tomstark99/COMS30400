@@ -16,7 +16,7 @@ public class GameSetupControllerTutorial : MonoBehaviour
     }
     private void CreatePlayer()
     {
-        Debug.Log("Creating Player");
+        //Debug.Log("Creating Player");
         PhotonNetwork.Instantiate("PhotonPrefabs/PhotonPlayerTutorialOld", new Vector3(241, 3, 68), Quaternion.identity);
     }
 }

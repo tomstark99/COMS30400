@@ -28,7 +28,7 @@ public class RockHitGroundAlert : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (isGrounded == true && lastFrameValueOfIsGrounded == false)
         {
-            Debug.Log("Rock hit the ground alie");
+            //Debug.Log("Rock hit the ground alie");
             rockHitGround = true;
             if (RockHitGround != null)
                 RockHitGround();
