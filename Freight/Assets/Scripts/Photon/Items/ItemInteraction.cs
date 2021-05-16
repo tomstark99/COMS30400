@@ -88,7 +88,7 @@ public class ItemInteraction : MonoBehaviourPun
                 
             if (other.transform.parent.gameObject?.GetComponent<PickUpable>())
             {
-                if(!other.transform.parent.gameObject.GetComponent<PickUpable>().isPickedUp)
+                if(other.transform.parent.gameObject.GetComponent<PickUpable>().isPickedUp)
                     other.transform.parent.GetComponent<Outline>().enabled = false;
 
                 if (tooltip)
@@ -229,7 +229,11 @@ public class ItemInteraction : MonoBehaviourPun
 
 
         if (pickedUpItem != null)
+        {
+            pickedUpItem.GetComponent<Outline>().enabled = false;
             interactablesInRange.Remove(pickedUpItem);
+        }
+            
 
         return closestInteractable;
     }
