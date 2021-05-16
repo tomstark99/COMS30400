@@ -85,8 +85,12 @@ public class ItemInteraction : MonoBehaviourPun
         if (other.tag == "Outline")
         {
             other.transform.parent.GetComponent<Outline>().enabled = true;
+                
             if (other.transform.parent.gameObject?.GetComponent<PickUpable>())
             {
+                if(!other.transform.parent.gameObject.GetComponent<PickUpable>().isPickedUp)
+                    other.transform.parent.GetComponent<Outline>().enabled = false;
+
                 if (tooltip)
                 {
                     Quaternion objRot = transform.rotation;
