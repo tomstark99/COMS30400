@@ -76,7 +76,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Item.transform.parent = pickUpDestinationLocal;
         Item.transform.Rotate(0, 90, 0);
 
-        Item.SetItemPickupConditions();
+        Item.ItemPickedUp();
     }
 
     [PunRPC]
@@ -104,7 +104,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Item.transform.parent = pickUpDestination;
         Item.transform.Rotate(0, 90, 0);
 
-        Item.SetItemPickupConditions();
+        Item.ItemPickedUp();
     }
 
     public void OnOwnershipRequest(PhotonView targetView, Photon.Realtime.Player previousOwner)
@@ -133,6 +133,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             {
                 GetComponent<IkBehaviour>().ikActive = true;
                 GetComponent<IkBehaviour>().handObj = currentHeldItem.transform.GetChild(0).transform.GetChild(2);
+                actualCamera.transform.GetChild(0).gameObject.SetActive(true);
             }
 
         }
@@ -189,7 +190,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         GetComponent<IkBehaviour>().ikActive = false;
         currentHeldItem = null;
-        Item.ResetItemConditions(this);
+        Item.ItemDropped(this);
         actualCamera.transform.GetChild(0).gameObject.SetActive(false);
         photonView.RPC("ThrowRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
@@ -216,7 +217,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public void Drop(PickUpable Item)
     {
         currentHeldItem = null;
-        Item.ResetItemConditions(this);
+        Item.ItemDropped(this);
         GetComponent<IkBehaviour>().ikActive = false;
         if (Item.tag == "Gun")
         {
@@ -554,7 +555,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Item.transform.position = dragDestination.position;
         Item.transform.parent = dragDestination;
 
-        Item.SetItemPickupConditions();
+        Item.ItemPickedUp();
         //Item.transform.Rotate(90, 0, 0);
 
     }

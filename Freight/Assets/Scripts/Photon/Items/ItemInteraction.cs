@@ -235,8 +235,7 @@ public class ItemInteraction : MonoBehaviourPun
     {
         if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera != Camera.GetComponent<CinemachineVirtualCamera>())
             return;
-        // We can only interact with an item if the item is in reach and we are
-        // not currently holding an item.
+
         bool canInteract = (interactablesInRange.Count > 0) && !character.HasItem();
 
         foreach (var inte in interactablesInRange)
@@ -265,8 +264,6 @@ public class ItemInteraction : MonoBehaviourPun
             if (newInteractable != null)
             {
 
-                // If we are pressing mouse down then do the interaction
-                //Debug.Log("current interactable has a pick up script");
                 if (((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P") == 0)))
                 {
                     if (newInteractable.GetComponent<Breakable>() != null)
@@ -335,8 +332,7 @@ public class ItemInteraction : MonoBehaviourPun
 
             }
         }
-        // Otherwise if we cant interact with anything but we were previously
-        // interacting with something.
+        // if we are holding something, we are limited to the possible interactions
         else if (currentInteractable != null)
         {
             // check if there is a bag nearby as we can still pickup bags if we are holding an item
