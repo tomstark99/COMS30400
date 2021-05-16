@@ -41,7 +41,11 @@ public class SoundRipples : MonoBehaviourPun
         else
             decibelsMultiplier = 0f;
 
-        GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += DisableSoundRipples;
+        if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>())
+            GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += DisableSoundRipples;
+
+        if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>())
+            GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>().EndTheGameSecond += DisableSoundRipples;
     }
 
     void DisableSoundRipples()
