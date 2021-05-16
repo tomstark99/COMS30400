@@ -161,7 +161,7 @@ public class Objectives : MonoBehaviour
     {
         bagsPickedUp += 1;
 
-        Debug.Log("picked up bag");
+       // Debug.Log("picked up bag");
 
         findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/" + playerCount + ")";
 
@@ -189,7 +189,7 @@ public class Objectives : MonoBehaviour
 
     void SetEscapeToActive()
     {
-        Debug.Log("IS BACKPACKS ACTIVE? " + findBackpacksDesc.activeSelf);
+       // Debug.Log("IS BACKPACKS ACTIVE? " + findBackpacksDesc.activeSelf);
         if(!findBackpacksDesc.activeSelf && findBackpacks.activeSelf) 
         {
             findTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;

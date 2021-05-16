@@ -24,7 +24,7 @@ public class Openable : Interactable
     }
    public override void PrimaryInteraction(Character character)
     {
-        Debug.Log("is opened is" +  isOpened);
+        //Debug.Log("is opened is" +  isOpened);
         if(isMoving == true) 
             return;
         photonView.RPC(nameof(IsMoving),RpcTarget.All);

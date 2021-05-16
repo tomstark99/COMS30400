@@ -103,7 +103,7 @@ public class VoiceChatConnector : MonoBehaviourPun
     void OnIDUpdate(string ID)
     {
         _id = ID;
-        Debug.Log("got id in unity: " + ID);
+        //Debug.Log("got id in unity: " + ID);
 
         // send id to master
         if(!PhotonNetwork.IsMasterClient)

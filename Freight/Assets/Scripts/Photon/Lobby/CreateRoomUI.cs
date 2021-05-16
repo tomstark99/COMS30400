@@ -16,9 +16,9 @@ public class CreateRoomUI : MonoBehaviour
         transform.parent.parent.parent.GetComponent<AudioSource>().Play();
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
         //If your mouse hovers over the GameObject with the script attached, output this message
-        Debug.Log("Mouse is over GameObject.");
+        //Debug.Log("Mouse is over GameObject.");
         transform.GetComponent<Image>().enabled = true;
-        Debug.Log(TextMeshPros);
+       // Debug.Log(TextMeshPros);
         TextMeshPros.color = new Color32(0, 0, 0, 255);
     }
 
@@ -26,7 +26,7 @@ public class CreateRoomUI : MonoBehaviour
     public void OnMouseExit() {
         //The mouse is no longer hovering over the GameObject so output this message each frame
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
-        Debug.Log(TextMeshPros);
+       // Debug.Log(TextMeshPros);
         
 
         
@@ -38,6 +38,6 @@ public class CreateRoomUI : MonoBehaviour
         enterRoomNumber.SetActive(!enterRoomNumber.activeSelf);
          if(ScrollJoinRoom.activeSelf == true)
             ScrollJoinRoom.SetActive(false);
-        Debug.Log(enterRoomNumber);
+       // Debug.Log(enterRoomNumber);
     }
 }

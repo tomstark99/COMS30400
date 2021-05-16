@@ -23,6 +23,8 @@ public class GameSetupController : MonoBehaviourPunCallbacks
     private GameObject trainsGameObject;
     [SerializeField]
     private GameObject cameraObject;
+    [SerializeField]
+    private GameObject spotlightObjects;
 
     private bool spawnCalled = false;
 
@@ -36,10 +38,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
 
         // Start method will only be called once scene is loaded, thus each player sends an RPC to confirm that they have loaded the scene and are ready to be spawned in
         gameTracker.PlayerLoadedFirstLevel();
-        //Invoke(nameof(SpawnPlayers), 5f);
-        if(PhotonNetwork.CurrentRoom.PlayerCount <= 2) {
-            cameraObject.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
-        }
+
     }
 
     void Update()
@@ -51,8 +50,9 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         if (!spawnCalled && gameTracker.PlayerCountFirst >= PhotonNetwork.CurrentRoom.PlayerCount)
         {
             spawnCalled = true;
-            Invoke(nameof(StartCamera), 1f);
-            Invoke(nameof(SpawnPlayers), 45.5f);
+            Invoke(nameof(StartCamera), 5f);
+            Invoke(nameof(SpawnPlayers), 49.5f);
+            //Invoke(nameof(SpawnPlayers), 6.5f);
         }
     }
    
@@ -69,10 +69,11 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         cameraObject.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
         cameraObject.GetComponent<AudioSource>().enabled = true;
         cameraObject.GetComponent<IntroSubbtitles>().enabled = true;
-        guardGameObject.SetActive(true);
         environmentGameObject.SetActive(true);
+        guardGameObject.SetActive(true);
         trainsGameObject.SetActive(true);
         bagSpawnerGameObject.SetActive(true);
+        spotlightObjects.SetActive(true);
     }
 
     void SpawnPlayers()

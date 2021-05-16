@@ -84,7 +84,7 @@ public class GuardAnimation : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            Debug.Log("SPEED ANIM " + guard.speed);
+            //Debug.Log("SPEED ANIM " + guard.speed);
             bool isWalking = animator.GetBool(isWalkingHash);
             bool isChasing = animator.GetBool(isChasingHash);
             bool hasCaught = animator.GetBool(hasCaughtHash);
