@@ -293,7 +293,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             faceUI.SetActive(false);
             controller.height = 1.2f;
         }
-        else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C")!=0) && crouching)
+        else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("N") == 0) && crouching)
         {
             crouching = false;
             controller.height = 1.8f;
@@ -309,6 +309,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         if ((move.x != 0 || move.z != 0) && isGrounded && !onTrain)
         {
+            if (crouching)
+            {
+                steps.Stop();
+                run.Stop();
+                return;
+            }
+                
             if (!steps.isPlaying && speed == 4.0f)
             {
                 steps.Play();
