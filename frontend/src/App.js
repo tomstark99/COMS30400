@@ -48,11 +48,14 @@ const About = () => {
   return (
       <div>
           <ReactPlayer
-              url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              id="yt-vid" url="https://www.youtube.com/watch?v=B71klqwOPSQ"
+              config={{
+                youtube: {
+                  playerVars: { controls: false }
+                }
+              }}
           />
-      <p className="abstract"> Freight is a hide `n' fight game in which you and your partner must break into a train station, avoid (or fight) guards, retrieve a high value treasure and escape without being caught!</p>
-      <p className="abstract"> The game starts you and a partner around the outskirts of a train station, with the objective to find a way into the station itself. You and your friend must explore the edges of the train station, attempting to keep quiet and avoid the patrolling guards. As you both explore the edges you will come across a way to break in, a slightly broken fence that looks like you can pull it apart. A new objective pops up to both players, telling them to break open the fence so they can get inside of the station. Using the hinted pose the players can pull the fence open and complete the objective of `Breaking open the fence'.</p>
-    </div>
+     </div>
   )
 }
 
@@ -66,7 +69,7 @@ const Pose = () => {
       <SinglePose picture={"pull_apart"} pose_title={"Pull Apart"}/>
       <SinglePose picture={"open_door"} pose_title={"Open Door"}/>
       <SinglePose picture={"close_door"} pose_title={"Close Door"}/>
-      <SinglePose picture={"pick_up"} pose_title={"Pick Up"}/>
+      <SinglePose picture={"grab"} pose_title={"Pick Up"}/>
       <SinglePose picture={"throw"} pose_title={"Throw"}/>
       <SinglePose picture={"ladder_climb"} pose_title={"Ladder Climb"}/>
     </div>

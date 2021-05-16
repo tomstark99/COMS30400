@@ -7,7 +7,7 @@ const SinglePose = ({picture, pose_title}) => {
             <Navbar className={"navbar-change"} expand="lg">
                 <h1 className="pose_title_text">{pose_title}</h1>
             </Navbar>
-            <img src={picture + ".gif"} alt={"falo"}/>
+            <img className="gif-image" src={picture + ".gif"} alt={"falo"}/>
         </div>
     )
 }
