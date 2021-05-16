@@ -248,7 +248,7 @@ public class ItemInteraction : MonoBehaviourPun
 
         foreach (var inte in interactablesInRange)
         {
-            Debug.Log(inte);
+           // Debug.Log(inte);
         }
 
         interactableObject = GetClosestInteractable();
@@ -263,7 +263,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("Interactable is null");
+                //Debug.Log("Interactable is null");
             }
 
 
@@ -355,7 +355,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("rock is null");
+                //Debug.Log("rock is null");
             }
 
             try
@@ -364,7 +364,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("switch is null");
+               // Debug.Log("switch is null");
             }
 
             try
@@ -373,7 +373,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("switch is null");
+                //Debug.Log("switch is null");
             }
 
             try
@@ -382,7 +382,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("breakable is null");
+               // Debug.Log("breakable is null");
             }
 
             try
@@ -392,7 +392,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("Opanable is null");
+                //Debug.Log("Opanable is null");
             }
             if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P") == 0) && openableObject != null)
             {
@@ -446,7 +446,7 @@ public class ItemInteraction : MonoBehaviourPun
             // if item is shootable
             if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Shootable>() != null)
             {
-                Debug.Log(currentInteractable);
+               // Debug.Log(currentInteractable);
                 currentInteractable.GetComponent<Shootable>().ShootGun(character);
             }
         }

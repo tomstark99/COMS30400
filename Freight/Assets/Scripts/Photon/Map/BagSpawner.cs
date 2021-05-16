@@ -19,7 +19,7 @@ public class BagSpawner : MonoBehaviourPun
             if (PhotonNetwork.CurrentRoom.CustomProperties["BackPackIcon"] != null)
             {
                 icon = (bool)PhotonNetwork.CurrentRoom.CustomProperties["BackPackIcon"];
-                Debug.Log("ICON IS" + icon);
+              //  Debug.Log("ICON IS" + icon);
             }
             if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {

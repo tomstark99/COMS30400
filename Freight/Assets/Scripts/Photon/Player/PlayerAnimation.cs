@@ -186,7 +186,7 @@ public class PlayerAnimation : MonoBehaviourPun
             
         } else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("N") == 0) && crouching) {
             crouching = false;
-            Debug.Log("uncrouch");
+           // Debug.Log("uncrouch");
             animator.SetBool(isCrouchedHash, false);
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, false);

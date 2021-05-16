@@ -10,9 +10,9 @@ public class RectangleDissapear : MonoBehaviour
    public void OnMouseOver() {
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
         //If your mouse hovers over the GameObject with the script attached, output this message
-        Debug.Log("Mouse is over GameObject.");
+       // Debug.Log("Mouse is over GameObject.");
         transform.GetComponent<Image>().enabled = true;
-        Debug.Log(TextMeshPros);
+       // Debug.Log(TextMeshPros);
         TextMeshPros.color = new Color32(0, 0, 0, 255);
     }
 
@@ -20,7 +20,7 @@ public class RectangleDissapear : MonoBehaviour
     public void OnMouseExit() {
         //The mouse is no longer hovering over the GameObject so output this message each frame
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
-        Debug.Log(TextMeshPros);
+       // Debug.Log(TextMeshPros);
         
 
         
