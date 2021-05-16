@@ -44,7 +44,7 @@ public class GameTracker : MonoBehaviourPun
     [PunRPC]
     void PlayerLoadedFirstLevelRPC()
     {
-        Debug.Log("player loaded first scene");
+        //Debug.Log("player loaded first scene");
         playerCountFirst += 1;
     }
 
@@ -57,7 +57,7 @@ public class GameTracker : MonoBehaviourPun
     [PunRPC]
     void PlayerLoadedSecondLevelRPC()
     {
-        Debug.Log("player loaded second scene");
+        //Debug.Log("player loaded second scene");
         playerCountSecond += 1;
     }
 

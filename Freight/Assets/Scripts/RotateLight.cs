@@ -106,7 +106,7 @@ public class RotateLight : MonoBehaviour
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.Find("pCylinder3/Point Light").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("pCylinder3/Point Light").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
-                        Debug.Log("YE MANS GETTING DETECTED STIIIIIIIIIIIIIIIIIIIIIIIIIL");
+                       // Debug.Log("YE MANS GETTING DETECTED STIIIIIIIIIIIIIIIIIIIIIIIIIL");
                         transform.parent.GetComponent<SpotlightSounds>()?.PlayDetectedSound();
                         PlayerInLight();
                     }

@@ -35,7 +35,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     // when room is created, show the current room and hide previous menu
     public override void OnCreatedRoom()
     {
-        Debug.Log("Room created");
+        //Debug.Log("Room created");
         if (PhotonNetwork.CurrentRoom.IsVisible == false)
         {
             GameObject.FindGameObjectWithTag("GameSettings").GetComponent<GameSettings>().SetGameSettings();
@@ -45,7 +45,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.Log("1");
+            //Debug.Log("1");
             roomsCanvases.CurrentRoomCanvas.Show();
             roomsCanvases.CreateOrJoinRoomCanvas.Hide();
         }
@@ -54,6 +54,6 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     // debug log if room creation failed
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.Log("Room creation failed " + message);
+        //Debug.Log("Room creation failed " + message);
     }
 }

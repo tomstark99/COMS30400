@@ -53,7 +53,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
             Cursor.visible = true;
         } 
         PhotonNetwork.ConnectUsingSettings();
-        Debug.Log(PhotonNetwork.PhotonServerSettings);
+        //Debug.Log(PhotonNetwork.PhotonServerSettings);
     }
 
     private string GetRandomName()
@@ -72,10 +72,10 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         text.text = "Connected to " + PhotonNetwork.CloudRegion;
-        Debug.Log("We are connected to the " + PhotonNetwork.CloudRegion + " server");
+        //Debug.Log("We are connected to the " + PhotonNetwork.CloudRegion + " server");
         if (!PhotonNetwork.InLobby)
         {
-            Debug.Log(PhotonNetwork.CurrentRoom);
+           // Debug.Log(PhotonNetwork.CurrentRoom);
             if (PhotonNetwork.LocalPlayer.NickName == "")
                 PhotonNetwork.LocalPlayer.NickName = GetRandomName();
 
