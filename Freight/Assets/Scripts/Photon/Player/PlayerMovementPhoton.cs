@@ -427,7 +427,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             LeftHandUpUI.SetActive(false);
             RightHandUpUI.SetActive(false);
         }
-        else if (onTrain && other.gameObject.tag == "trainfloor")
+        if (other.gameObject.tag == "trainfloor")
         {
             //train = null;
             //photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
