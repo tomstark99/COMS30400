@@ -23,6 +23,8 @@ public class GameSetupController : MonoBehaviourPunCallbacks
     private GameObject trainsGameObject;
     [SerializeField]
     private GameObject cameraObject;
+    [SerializeField]
+    private GameObject spotlightObjects;
 
     private bool spawnCalled = false;
 
@@ -71,6 +73,7 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         environmentGameObject.SetActive(true);
         trainsGameObject.SetActive(true);
         bagSpawnerGameObject.SetActive(true);
+        spotlightObjects.SetActive(true);
     }
 
     void SpawnPlayers()
