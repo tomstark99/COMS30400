@@ -25,6 +25,8 @@ public class SoundRipples : MonoBehaviourPun
 
     private float decibelsMultiplier;
 
+    private bool stopSendingRPC = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,11 +40,25 @@ public class SoundRipples : MonoBehaviourPun
             decibelsMultiplier = (float)PhotonNetwork.CurrentRoom.CustomProperties["VoiceRangeMultiplier"];
         else
             decibelsMultiplier = 0f;
+
+        if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>())
+            GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += DisableSoundRipples;
+
+        if (GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>())
+            GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>().EndTheGameSecond += DisableSoundRipples;
+    }
+
+    void DisableSoundRipples()
+    {
+        stopSendingRPC = true;
     }
 
     private void UpdateRipples()
     {
         if (!photonView.IsMine) return;
+
+        if (stopSendingRPC)
+            return;
 
         int currentPosition = CustomMicrophone.GetPosition(_microphoneDevice);
 
