@@ -239,17 +239,22 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
 
         // get the guard's photon view
-        PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>();
-        GuardAIPhoton killedGuardObject = PhotonView.Find(guardId).GetComponent<GuardAIPhoton>();
-        killedGuardObject.CheckMusicOnGuardDeath();
-        Vector3 guardPos = killedGuard.transform.position;
-        Quaternion guardRot = killedGuard.transform.rotation;
-        guardPos.y += 0.5f;
+        PhotonView killedGuard = PhotonView.Find(guardId)?.GetComponent<PhotonView>();
+        Debug.Log(killedGuard);
+        if (killedGuard)
+        {
+            GuardAIPhoton killedGuardObject = PhotonView.Find(guardId).GetComponent<GuardAIPhoton>();
+            killedGuardObject.CheckMusicOnGuardDeath();
+            Vector3 guardPos = killedGuard.transform.position;
+            Quaternion guardRot = killedGuard.transform.rotation;
+            guardPos.y += 0.5f;
 
-        // remove the guard 
-        PhotonNetwork.Destroy(killedGuard);
-        // create a dead body that will be draggable (allow new guard model)
-        GameObject deadGuard = PhotonNetwork.Instantiate("PhotonPrefabs/dead_guard", guardPos, guardRot);
+            // remove the guard 
+            PhotonNetwork.Destroy(killedGuard);
+            // create a dead body that will be draggable (allow new guard model)
+            GameObject deadGuard = PhotonNetwork.Instantiate("PhotonPrefabs/dead_guard", guardPos, guardRot);
+        }
+
 
     }
     IEnumerator GunRecoil()

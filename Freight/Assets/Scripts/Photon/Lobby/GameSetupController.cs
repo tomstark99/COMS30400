@@ -49,7 +49,8 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         {
             spawnCalled = true;
             Invoke(nameof(StartCamera), 5f);
-            Invoke(nameof(SpawnPlayers), 49.5f);
+            //Invoke(nameof(SpawnPlayers), 49.5f);
+            Invoke(nameof(SpawnPlayers), 6.5f);
         }
     }
    
