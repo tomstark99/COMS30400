@@ -40,7 +40,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
         if (gameOver)
         {
             endScreen += Time.deltaTime;
-            Debug.Log("endScreen time: " + endScreen);
+            //Debug.Log("endScreen time: " + endScreen);
 
             if (endScreen > 6f)
             {
@@ -95,7 +95,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.tag);
+        //Debug.Log(other.gameObject.tag);
         if (PhotonNetwork.IsMasterClient)
         {
             if (other.gameObject.tag == "Player")

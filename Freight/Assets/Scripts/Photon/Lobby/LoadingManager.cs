@@ -32,7 +32,7 @@ public class LoadingManager : MonoBehaviourPun
     public void LoadLevel()
     {
         //StartCoroutine(LoadSceneAsync("Assets/Scenes/TrainStationPun.unity"));
-        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["levelToLoad"].ToString());
+        //Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["levelToLoad"].ToString());
         StartCoroutine(LoadSceneAsync(PhotonNetwork.CurrentRoom.CustomProperties["levelToLoad"].ToString()));
     }
 
@@ -44,7 +44,7 @@ public class LoadingManager : MonoBehaviourPun
         while (!op.isDone)
         {
             float progress = Mathf.Clamp01(op.progress / .9f);
-            Debug.Log(op.progress);
+           // Debug.Log(op.progress);
 
             loadingBar.value = op.progress;
             loadingText.text = 100f * op.progress + "%";
@@ -66,7 +66,7 @@ public class LoadingManager : MonoBehaviourPun
     [PunRPC]
     public void AddLoaded()
     {
-        Debug.Log("loaded player");
+       // Debug.Log("loaded player");
         loadedCount += 1;
     }
 }

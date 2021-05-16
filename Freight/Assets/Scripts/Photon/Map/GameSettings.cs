@@ -9,7 +9,7 @@ public class GameSettings : MonoBehaviour
 
     public void SetGameSettings()
     {
-        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
+       // Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
         string guardDifficultyVal;
         if (PhotonNetwork.CurrentRoom.CustomProperties["sliderValueDiff"] != null)
             guardDifficultyVal = PhotonNetwork.CurrentRoom.CustomProperties["sliderValueDiff"].ToString();

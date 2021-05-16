@@ -9,7 +9,7 @@ public class poseUI : MonoBehaviour
     public GameObject text;
     public GameObject TurnDownPose;
     public void OnMouseOver() {
-        Debug.Log("MOUSE OVER POSE");
+        //Debug.Log("MOUSE OVER POSE");
         transform.parent.parent.parent.GetComponent<AudioSource>().Play();
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
         transform.GetComponent<Image>().enabled = true;
@@ -25,7 +25,7 @@ public class poseUI : MonoBehaviour
     }
     public void onClick()
     {
-        Debug.Log("turn off pose");
+        //Debug.Log("turn off pose");
         PoseParser.turnOffPose();
     }
 }
