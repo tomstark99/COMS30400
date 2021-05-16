@@ -51,12 +51,8 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         {
             spawnCalled = true;
             Invoke(nameof(StartCamera), 5f);
-            //Invoke(nameof(SpawnPlayers), 49.5f);
-            #if (UNITY_EDITOR)
-            Invoke(nameof(SpawnPlayers), 6.5f);
-            #else
             Invoke(nameof(SpawnPlayers), 49.5f);
-            #endif
+            //Invoke(nameof(SpawnPlayers), 6.5f);
         }
     }
    
@@ -73,8 +69,8 @@ public class GameSetupController : MonoBehaviourPunCallbacks
         cameraObject.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
         cameraObject.GetComponent<AudioSource>().enabled = true;
         cameraObject.GetComponent<IntroSubbtitles>().enabled = true;
-        guardGameObject.SetActive(true);
         environmentGameObject.SetActive(true);
+        guardGameObject.SetActive(true);
         trainsGameObject.SetActive(true);
         bagSpawnerGameObject.SetActive(true);
         spotlightObjects.SetActive(true);

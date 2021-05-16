@@ -20,6 +20,8 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
     private bool gameOver;
     private float endScreen;
 
+    private List<PhotonView> playersInCollider = new List<PhotonView>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -101,8 +103,9 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
             if (other.gameObject.tag == "Player")
             {
                 // checks if player is ready to leave as this event is only subscribed to once both bags have been delivered, masterclient increments player ready to leave count
-                if (PlayerReadyToLeave != null)
+                if (PlayerReadyToLeave != null && !playersInCollider.Contains(other.gameObject.GetComponent<PhotonView>()))
                 {
+                    playersInCollider.Add(other.gameObject.GetComponent<PhotonView>());
                     photonView.RPC(nameof(CallPlayerReadyToLeave), other.gameObject.GetComponent<PhotonView>().Owner, other.gameObject.GetComponent<PhotonView>().ViewID);
                     //EndTheGame();
 
