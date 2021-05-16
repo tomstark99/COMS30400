@@ -148,13 +148,13 @@ public class PlayerAnimation : MonoBehaviourPun
         //     animator.SetBool(isCrouchedHash, false);
         // }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && (isWalking || z > 0.02f)) {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && (isWalking || z > 0.02f) && !crouching) {
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isCrouchedHash, false);
             animator.SetBool(isRunningHash, true);
             player.setSpeed(runningSpeed);
 
-        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning) {
+        } else if (Input.GetKeyUp(KeyCode.LeftShift) && isRunning && !crouching) {
             animator.SetBool(isWalkingHash, true);
             animator.SetBool(isRunningHash, false);
             player.setSpeed(walkingSpeed);
@@ -186,7 +186,7 @@ public class PlayerAnimation : MonoBehaviourPun
             
         } else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("N") == 0) && crouching) {
             crouching = false;
-            Debug.Log("uncrouch");
+           // Debug.Log("uncrouch");
             animator.SetBool(isCrouchedHash, false);
             animator.SetBool(isWalkingHash, false);
             animator.SetBool(isRunningHash, false);

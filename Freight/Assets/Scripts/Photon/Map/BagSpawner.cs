@@ -19,7 +19,7 @@ public class BagSpawner : MonoBehaviourPun
             if (PhotonNetwork.CurrentRoom.CustomProperties["BackPackIcon"] != null)
             {
                 icon = (bool)PhotonNetwork.CurrentRoom.CustomProperties["BackPackIcon"];
-                Debug.Log("ICON IS" + icon);
+              //  Debug.Log("ICON IS" + icon);
             }
             if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {
@@ -36,7 +36,7 @@ public class BagSpawner : MonoBehaviourPun
 
     void SpawnOneBag()
     {
-        int index = Random.Range(0, spawnPoints.Length-1);
+        int index = Random.Range(0, spawnPoints.Length);
         GameObject bag = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index].position, Quaternion.identity);
         bag.transform.GetChild(0).gameObject.SetActive(icon);
         bag.transform.parent = backpacks;

@@ -45,13 +45,13 @@ public class LobbyController : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log("Failed to join a room... creating room");
+        //Debug.Log("Failed to join a room... creating room");
         CreateRoom();
     }
 
     void CreateRoom()
     {
-        Debug.Log("Creating room now");
+        //Debug.Log("Creating room now");
         int randomRoomNumber = Random.Range(0, 10000);
         Photon.Realtime.RoomOptions roomOps = new Photon.Realtime.RoomOptions()
         {
@@ -60,13 +60,13 @@ public class LobbyController : MonoBehaviourPunCallbacks
             MaxPlayers = (byte)roomSize
         };
         PhotonNetwork.CreateRoom("Room" + randomRoomNumber, roomOps);
-        Debug.Log(randomRoomNumber);
+       // Debug.Log(randomRoomNumber);
     }
 
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.Log("Failed to create room... trying again");
+        //Debug.Log("Failed to create room... trying again");
         CreateRoom();
     }
 }

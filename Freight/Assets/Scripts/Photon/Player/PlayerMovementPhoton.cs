@@ -75,7 +75,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         PV = GetComponent<PhotonView>();
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
         {
-            Debug.Log(" DISABLE CONTROLER ");
+            //Debug.Log(" DISABLE CONTROLER ");
             GetComponent<PlayerMovementPhoton>().enabled = false;
         }
 
@@ -232,15 +232,15 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         //Sticks player to centreline of ladder
         if (climbing)
         {
-            Debug.Log(timerCountDown);
+            //Debug.Log(timerCountDown);
             timerCountDown -= Time.deltaTime;
             if (timerCountDown < 0)
             {
                 timerCountDown = 0;
             }
             //faceUI.SetActive(false);
-            Debug.Log(train);
-            Debug.Log(ladderCentreLine);
+            //Debug.Log(train);
+            //Debug.Log(ladderCentreLine);
             /*Vector3 ladderPos = train.transform.position + (train.transform.rotation * ladderCentreLine);
             ladderPos.y = transform.position.y;
             move += ladderPos - transform.position;*/
@@ -293,7 +293,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             faceUI.SetActive(false);
             controller.height = 1.2f;
         }
-        else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C")!=0) && crouching)
+        else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("N") == 0) && crouching)
         {
             crouching = false;
             controller.height = 1.8f;
@@ -309,6 +309,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         if ((move.x != 0 || move.z != 0) && isGrounded && !onTrain)
         {
+            if (crouching)
+            {
+                steps.Stop();
+                run.Stop();
+                return;
+            }
+                
             if (!steps.isPlaying && speed == 4.0f)
             {
                 steps.Play();
@@ -382,7 +389,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     void OnTriggerStay(Collider other) {
         if (other.gameObject.tag == "locomotive")
         {
-             Debug.Log("PLAYER is on the ladder");
+             //Debug.Log("PLAYER is on the ladder");
             if(timerCountDown <= 0)
             {
                LeftHandUpUI.SetActive(true);

@@ -40,7 +40,7 @@ public class GameSetupControllerSecond : MonoBehaviourPunCallbacks
         if (!spawnCalled && gameTracker.PlayerCountSecond >= PhotonNetwork.CurrentRoom.PlayerCount)
         {
             spawnCalled = true;
-            Invoke(nameof(SpawnPlayers), 3f);
+            Invoke(nameof(SpawnPlayers), 4f);
         }
     }
 

@@ -359,10 +359,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                     Destroy(pressClickToShoot);
                 }
             }
-            Debug.Log(GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length);
+            //Debug.Log(GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length);
             // once all guards have been found to be dead
             // its 325 because of all the transforms in the guard prefab
-            if (GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length == 325)
+            if (GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length == 329)
             {
                 // get a random number and set the guard to drag to be that random guard
                 int random = Random.Range(0, 4);

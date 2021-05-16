@@ -85,8 +85,12 @@ public class ItemInteraction : MonoBehaviourPun
         if (other.tag == "Outline")
         {
             other.transform.parent.GetComponent<Outline>().enabled = true;
+                
             if (other.transform.parent.gameObject?.GetComponent<PickUpable>())
             {
+                if(other.transform.parent.gameObject.GetComponent<PickUpable>().isPickedUp)
+                    other.transform.parent.GetComponent<Outline>().enabled = false;
+
                 if (tooltip)
                 {
                     Quaternion objRot = transform.rotation;
@@ -225,7 +229,11 @@ public class ItemInteraction : MonoBehaviourPun
 
 
         if (pickedUpItem != null)
+        {
+            pickedUpItem.GetComponent<Outline>().enabled = false;
             interactablesInRange.Remove(pickedUpItem);
+        }
+            
 
         return closestInteractable;
     }
@@ -235,13 +243,12 @@ public class ItemInteraction : MonoBehaviourPun
     {
         if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera != Camera.GetComponent<CinemachineVirtualCamera>())
             return;
-        // We can only interact with an item if the item is in reach and we are
-        // not currently holding an item.
+
         bool canInteract = (interactablesInRange.Count > 0) && !character.HasItem();
 
         foreach (var inte in interactablesInRange)
         {
-            Debug.Log(inte);
+           // Debug.Log(inte);
         }
 
         interactableObject = GetClosestInteractable();
@@ -256,7 +263,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("Interactable is null");
+                //Debug.Log("Interactable is null");
             }
 
 
@@ -265,8 +272,6 @@ public class ItemInteraction : MonoBehaviourPun
             if (newInteractable != null)
             {
 
-                // If we are pressing mouse down then do the interaction
-                //Debug.Log("current interactable has a pick up script");
                 if (((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P") == 0)))
                 {
                     if (newInteractable.GetComponent<Breakable>() != null)
@@ -335,8 +340,7 @@ public class ItemInteraction : MonoBehaviourPun
 
             }
         }
-        // Otherwise if we cant interact with anything but we were previously
-        // interacting with something.
+        // if we are holding something, we are limited to the possible interactions
         else if (currentInteractable != null)
         {
             // check if there is a bag nearby as we can still pickup bags if we are holding an item
@@ -351,7 +355,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("rock is null");
+                //Debug.Log("rock is null");
             }
 
             try
@@ -360,7 +364,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("switch is null");
+               // Debug.Log("switch is null");
             }
 
             try
@@ -369,7 +373,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("switch is null");
+                //Debug.Log("switch is null");
             }
 
             try
@@ -378,7 +382,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("breakable is null");
+               // Debug.Log("breakable is null");
             }
 
             try
@@ -388,7 +392,7 @@ public class ItemInteraction : MonoBehaviourPun
             }
             catch
             {
-                Debug.Log("Opanable is null");
+                //Debug.Log("Opanable is null");
             }
             if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P") == 0) && openableObject != null)
             {
@@ -442,7 +446,7 @@ public class ItemInteraction : MonoBehaviourPun
             // if item is shootable
             if (Input.GetMouseButtonDown(0) && currentInteractable.GetComponent<Shootable>() != null)
             {
-                Debug.Log(currentInteractable);
+               // Debug.Log(currentInteractable);
                 currentInteractable.GetComponent<Shootable>().ShootGun(character);
             }
         }
