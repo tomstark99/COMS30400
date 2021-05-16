@@ -40,7 +40,7 @@ public class LobbyController : MonoBehaviourPunCallbacks
             }
         }
         else
-            //Debug.Log("Not connected to server!");
+            Debug.Log("Not connected to server!");
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
