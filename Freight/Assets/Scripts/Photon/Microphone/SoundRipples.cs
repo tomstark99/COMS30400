@@ -27,6 +27,11 @@ public class SoundRipples : MonoBehaviourPun
 
     private bool stopSendingRPC = false;
 
+    [SerializeField]
+    private AudioSource running;
+    [SerializeField]
+    private AudioSource walking;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -86,6 +91,11 @@ public class SoundRipples : MonoBehaviourPun
                 newDecibelsValue = ComputeDB(data, _lastPosition, ref len);
                 _lastPosition = 0;
             }
+
+            if (walking.isPlaying)
+                newDecibelsValue += 5;
+            else if (running.isPlaying)
+                newDecibelsValue += 15;
 
             decibelsValue = decibelsMultiplier * newDecibelsValue;
 
