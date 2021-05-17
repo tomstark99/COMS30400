@@ -22,7 +22,7 @@ public class PlayerAudioClips : MonoBehaviour
     void Start()
     {
         if (GameObject.FindGameObjectWithTag("BrokenFence") != null)
-            GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += FindTheBags;
+            GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<Breakable>().FenceBroke += FindTheBags;
 
         StartCoroutine(IntroSequence());
     }

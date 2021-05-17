@@ -19,7 +19,7 @@ public class RoomController : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Joined Room. Multiplayer game has begun.");
+        //Debug.Log("Joined Room. Multiplayer game has begun.");
         StartGame();
     }
     private void StartGame()
@@ -27,7 +27,7 @@ public class RoomController : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.AutomaticallySyncScene = true;
-            Debug.Log("Starting Game");
+           // Debug.Log("Starting Game");
             PhotonNetwork.LoadLevel(multiplayerSceneIndex);
         }
     }

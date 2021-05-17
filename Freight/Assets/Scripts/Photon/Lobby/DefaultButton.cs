@@ -23,7 +23,7 @@ public class DefaultButton : MonoBehaviour
     {
         ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
 
-        props.Add("sliderValue", 200);
+        props.Add("sliderValue", 200f);
         props.Add("sliderValueDiff", "Hard");
 
         slider.value = 200;

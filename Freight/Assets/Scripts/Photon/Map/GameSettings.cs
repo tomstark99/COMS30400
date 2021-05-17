@@ -9,7 +9,7 @@ public class GameSettings : MonoBehaviour
 
     public void SetGameSettings()
     {
-        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
+       // Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
         string guardDifficultyVal;
         if (PhotonNetwork.CurrentRoom.CustomProperties["sliderValueDiff"] != null)
             guardDifficultyVal = PhotonNetwork.CurrentRoom.CustomProperties["sliderValueDiff"].ToString();
@@ -25,9 +25,10 @@ public class GameSettings : MonoBehaviour
             prop.Add("GuardAngle", 50);
             prop.Add("SpeedChasing", 4);
             prop.Add("SpeedPatrolling", 2);
-            prop.Add("SpotlightsActive", false);
+            prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", false);
             prop.Add("VoiceRangeMultiplier", 0.1f);
+            prop.Add("BackPackIcon", true);
         }
         // medium
         else if (guardDifficultyVal == "Medium")
@@ -37,8 +38,9 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpeedChasing", 6);
             prop.Add("SpeedPatrolling", 3);
             prop.Add("SpotlightsActive", true);
-            prop.Add("SpotlightsRotating", false);
+            prop.Add("SpotlightsRotating", true);
             prop.Add("VoiceRangeMultiplier", 0.5f);
+            prop.Add("BackPackIcon", true);
         }
         // hard
         else if (guardDifficultyVal == "Hard")
@@ -50,6 +52,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", true);
             prop.Add("VoiceRangeMultiplier", 1f);
+            prop.Add("BackPackIcon", false);
         }
         // impossible
         else if (guardDifficultyVal == "Impossible")
@@ -61,6 +64,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpotlightsActive", true);
             prop.Add("SpotlightsRotating", true);
             prop.Add("VoiceRangeMultiplier", 2f);
+            prop.Add("BackPackIcon", false);
         }
         // tutorial
         else if (guardDifficultyVal == "Tutorial")
@@ -72,6 +76,7 @@ public class GameSettings : MonoBehaviour
             prop.Add("SpotlightsActive", false);
             prop.Add("SpotlightsRotating", false);
             prop.Add("VoiceRangeMultiplier", 0f);
+            prop.Add("BackPackIcon", false);
         }
 
         if (PhotonNetwork.CurrentRoom.CustomProperties["sliderValue"] != null)

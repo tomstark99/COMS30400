@@ -32,7 +32,7 @@ public class MouseMovesScript : MonoBehaviour
             direction = direction * -1f;
         }
         transform.position = new Vector3(transform.position.x + 0.5f * direction, transform.position.y, transform.position.z);
-        if(onScreenTime > 10f) {
+        if(onScreenTime > 5f) {
             transform.parent.gameObject.SetActive(false);
         }
     }

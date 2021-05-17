@@ -8,7 +8,7 @@ using System;
 using UnityEngine.UI;
 
 // https://docs.unity3d.com/Manual/nav-AgentPatrol.html 
-public class GuardAIPhoton : MonoBehaviourPunCallbacks
+public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
 {
     public enum State
     {
@@ -90,7 +90,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             }
         }
 
-        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
+        //Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
 
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
         foreach (var light in lights)
@@ -146,6 +146,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     public override void OnDisable()
     {
+
         if (endGame != null)
             endGame.EndTheGame -= DisableGuards;
 
@@ -166,6 +167,16 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             rock.transform.GetChild(0).GetChild(0).gameObject.GetComponent<RockHitGroundAlert>().RockHitGround -= CheckForRock;
         }
 
+    }
+
+    public void CheckMusicOnGuardDeath()
+    {
+        guardState = State.Patroling;
+        bool changeMusicBack = CheckIfAllGuardsPatroling();
+        if (changeMusicBack)
+        {
+            photonView.RPC(nameof(ResetMusic), RpcTarget.All);
+        }
     }
 
     public void DisableGuards()
@@ -296,7 +307,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 float guardPlayerAngle = Vector3.Angle(transform.forward, dirToPlayer);
                 if (guardPlayerAngle < guardAngle / 2f)
                 {
-                    Debug.Log(Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, deadGuard.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask));
+                    //Debug.Log(Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, deadGuard.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask));
                     // checks if guard line of sight is blocked by an obstacle
                     // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
                     if (!Physics.Linecast(transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, deadGuard.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
@@ -479,8 +490,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         return true;
     }
 
+    [PunRPC]
     void ResetMusic()
     {
+        if (chaseMusic == null || normalMusic == null)
+            return;
+
         if (!normalMusic.isPlaying)
         {
             chaseMusic.Stop();
@@ -488,9 +503,35 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
+    void StartChaseMusic()
+    {
+        chaseMusic.Play();
+        normalMusic.Stop();
+    }
+
+    [PunRPC]
+    void SetPatienceBarToFalse()
+    {
+        patienceBar.gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    void SetPatienceBarToTrue()
+    {
+        patienceBar.gameObject.SetActive(true);
+    }
+
     // Update is called once per frame
     void Update()
     {
+
+        if (!walk.isPlaying && guardState != State.Chasing)
+        {
+            walk.Play();
+            run.Stop();
+        }
+
         if (!PhotonNetwork.IsMasterClient)
             return;
 
@@ -510,34 +551,13 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
             GetComponent<GuardAnimation>().setChasing(playerSpotted);
         }
 
-        //Vector3 rockPos; 
-
-        //if (reactsToRocks)
-        //{
-        //    rockPos = CheckForRock();
-        //}
-        //else
-        //{
-        //    rockPos = new Vector3(0f, 0f, 0f);
-        //}
 
         if (!chaseMusic.isPlaying && guardState != State.Patroling)
         {
-            chaseMusic.Play();
-            normalMusic.Stop();
-        }
-
-        if (!walk.isPlaying && guardState != State.Chasing)
-        {
-            walk.Play();
-            run.Stop();
+            photonView.RPC(nameof(StartChaseMusic), RpcTarget.All);
         }
             
 
-        //if (timeChasing > 8f)
-        //{
-        //    Debug.Log("You lose");
-        //}
         if (playerSpotted && timeChasing > 8f)
         {
             PlayerCaught();
@@ -565,7 +585,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 bool changeMusicBack = CheckIfAllGuardsPatroling();
                 if (changeMusicBack)
                 {
-                    ResetMusic();
+                    photonView.RPC(nameof(ResetMusic), RpcTarget.All);
                 }
             }
             else
@@ -590,7 +610,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
                 bool changeMusicBack = CheckIfAllGuardsPatroling();
                 if (changeMusicBack)
                 {
-                    ResetMusic();
+                    photonView.RPC(nameof(ResetMusic), RpcTarget.All);
                 }
             }
             else
@@ -602,15 +622,12 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         else if (!playerSpotted && guardState == State.Chasing)
         {
             patienceBar.value = 0;
-            patienceBar.gameObject.SetActive(false);
+            photonView.RPC(nameof(SetPatienceBarToFalse), RpcTarget.All);
             timeAlerted = 0;
             timeChasing = 0;
             guardState = State.Alerted;
         }
-        //else if (rockPos != new Vector3(0f, 0f, 0f))
-        //{
-        //    SetGuardsToAlertedItem(rockPos);
-        //}
+
         // If the player is not spotted and the guard has reached their destination, go to new point
         else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {
@@ -624,7 +641,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
         {
             if (patienceBar.gameObject.activeSelf == false)
             {
-                patienceBar.gameObject.SetActive(true);
+                photonView.RPC(nameof(SetPatienceBarToTrue), RpcTarget.All);
             }
             // sound
             if (guard.velocity != Vector3.zero)
@@ -660,5 +677,27 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks
 
     public bool getSpotted() {
         return this.playerSpotted;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(guardState);
+            if (patienceBar.gameObject.activeSelf)
+            {
+                stream.SendNext(timeChasing);
+            }
+            stream.SendNext(playerSpotted);
+        }
+        else if (stream.IsReading)
+        {
+            guardState = (State) stream.ReceiveNext();
+            if (patienceBar.gameObject.activeSelf)
+            {
+                patienceBar.value = (float) stream.ReceiveNext();
+            }
+            playerSpotted = (bool) stream.ReceiveNext();
+        }
     }
 }
