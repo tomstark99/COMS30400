@@ -46,53 +46,53 @@ public class Achievements : MonoBehaviourPun
             tempColor.a = 1f;
 
             // first row 
-            if (PlayerPrefs.HasKey("BabySteps"))
+            if (PlayerPrefs.HasKey("BabySteps1"))
             {
                 achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("LetTheHuntBegin"))
+            if (PlayerPrefs.HasKey("LetTheHuntBegin1"))
             {
                 achievementsTab.transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("PeaceTreaty"))
+            if (PlayerPrefs.HasKey("PeaceTreaty1"))
             {
                 achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("UseNature"))
+            if (PlayerPrefs.HasKey("UseNature1"))
             {
                 achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("Roadman"))
+            if (PlayerPrefs.HasKey("Roadman1"))
             {
                 achievementsTab.transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("TheCompletePicture"))
+            if (PlayerPrefs.HasKey("TheCompletePicture1"))
             {
                 achievementsTab.transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
             }
 
             // second row
-            if (PlayerPrefs.HasKey("LikeANinja"))
+            if (PlayerPrefs.HasKey("LikeANinja1"))
             {
                 achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("Hackerman"))
+            if (PlayerPrefs.HasKey("Hackerman1"))
             {
                 achievementsTab.transform.GetChild(1).GetChild(1).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("LearnTheHardWay"))
+            if (PlayerPrefs.HasKey("LearnTheHardWay1"))
             {
                 achievementsTab.transform.GetChild(1).GetChild(2).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("ChooChoo"))
+            if (PlayerPrefs.HasKey("ChooChoo1"))
             {
                 achievementsTab.transform.GetChild(1).GetChild(3).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("OnTheRun"))
+            if (PlayerPrefs.HasKey("OnTheRun1"))
             {
                 achievementsTab.transform.GetChild(1).GetChild(4).GetComponent<Image>().color = tempColor;
             }
-            if (PlayerPrefs.HasKey("Freight"))
+            if (PlayerPrefs.HasKey("Freight1"))
             {
                 achievementsTab.transform.GetChild(1).GetChild(5).GetComponent<Image>().color = tempColor;
             }
@@ -135,9 +135,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("BabySteps"))
+            if (!PlayerPrefs.HasKey("BabySteps1"))
             {
-                PlayerPrefs.SetInt("BabySteps", 1);
+                PlayerPrefs.SetInt("BabySteps1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -164,9 +164,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("LetTheHuntBegin"))
+            if (!PlayerPrefs.HasKey("LetTheHuntBegin1"))
             {
-                PlayerPrefs.SetInt("LetTheHuntBegin", 1);
+                PlayerPrefs.SetInt("LetTheHuntBegin1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(1).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -193,9 +193,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("PeaceTreaty"))
+            if (!PlayerPrefs.HasKey("PeaceTreaty1"))
             {
-                PlayerPrefs.SetInt("PeaceTreaty", 1);
+                PlayerPrefs.SetInt("PeaceTreaty1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(2).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -222,9 +222,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("UseNature"))
+            if (!PlayerPrefs.HasKey("UseNature1"))
             {
-                PlayerPrefs.SetInt("UseNature", 1);
+                PlayerPrefs.SetInt("UseNature1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(3).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -250,9 +250,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("Roadman"))
+            if (!PlayerPrefs.HasKey("Roadman1"))
             {
-                PlayerPrefs.SetInt("Roadman", 1);
+                PlayerPrefs.SetInt("Roadman1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(4).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -278,9 +278,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("TheCompletePicture"))
+            if (!PlayerPrefs.HasKey("TheCompletePicture1"))
             {
-                PlayerPrefs.SetInt("TheCompletePicture", 1);
+                PlayerPrefs.SetInt("TheCompletePicture1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(0).GetChild(5).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -306,9 +306,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("Hackerman"))
+            if (!PlayerPrefs.HasKey("Hackerman1"))
             {
-                PlayerPrefs.SetInt("Hackerman", 1);
+                PlayerPrefs.SetInt("Hackerman1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(1).GetChild(1).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -334,9 +334,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("LearnTheHardWay"))
+            if (!PlayerPrefs.HasKey("LearnTheHardWay1"))
             {
-                PlayerPrefs.SetInt("LearnTheHardWay", 1);
+                PlayerPrefs.SetInt("LearnTheHardWay1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(1).GetChild(2).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -362,9 +362,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("ChooChoo"))
+            if (!PlayerPrefs.HasKey("ChooChoo1"))
             {
-                PlayerPrefs.SetInt("ChooChoo", 1);
+                PlayerPrefs.SetInt("ChooChoo1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(1).GetChild(3).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -390,9 +390,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("OnTheRun"))
+            if (!PlayerPrefs.HasKey("OnTheRun1"))
             {
-                PlayerPrefs.SetInt("OnTheRun", 1);
+                PlayerPrefs.SetInt("OnTheRun1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(1).GetChild(4).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -418,9 +418,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("LikeANinja") && !wasDetectedOnce)
+            if (!PlayerPrefs.HasKey("LikeANinja1") && !wasDetectedOnce)
             {
-                PlayerPrefs.SetInt("LikeANinja", 1);
+                PlayerPrefs.SetInt("LikeANinja1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(1).GetChild(0).GetComponent<Image>().color;
                 tempColor.a = 1f;
@@ -446,9 +446,9 @@ public class Achievements : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (!PlayerPrefs.HasKey("Freight"))
+            if (!PlayerPrefs.HasKey("Freight1"))
             {
-                PlayerPrefs.SetInt("Freight", 1);
+                PlayerPrefs.SetInt("Freight1", 1);
                 PlayerPrefs.Save();
                 var tempColor = achievementsTab.transform.GetChild(1).GetChild(5).GetComponent<Image>().color;
                 tempColor.a = 1f;

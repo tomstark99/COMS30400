@@ -37,6 +37,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     private GameObject graduatedFreight;
 
     [Header("WASD")]
+
+    [SerializeField]
+    private GameObject shiftPressed;
+
     [SerializeField]
     private GameObject wSprite;
     [SerializeField]
@@ -134,8 +138,8 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         WallLifts2 = GameObject.Find("Room2").transform.GetChild(1).gameObject;
         WallLifts3 = GameObject.Find("Room3").transform.GetChild(1).gameObject;
         cageGuard = GameObject.Find("Guards").transform.GetChild(0).gameObject;
-        fenceToBreak = GameObject.Find("Fences").transform.GetChild(0).gameObject;
-        fenceToBreak.GetComponent<BreakFencePhoton>().FenceBroke += HandleBrokenFence;
+        fenceToBreak = GameObject.FindGameObjectWithTag("BrokenFence");
+        fenceToBreak.GetComponent<Breakable>().FenceBroke += HandleBrokenFence;
         
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
@@ -154,6 +158,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         // checks for when you press all of W A S D
         if (tutorialCounter == 0)
         {
+            shiftPressed.SetActive(true);
             unPressedKeys.SetActive(true);
             pressKeysText.SetActive(true);
             if(wasdMovementSound.activeSelf == false) {
@@ -189,7 +194,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
             {
                 if(wasdMovementSound.GetComponent<AudioSource>().isPlaying == false)
                     tutorialCounter++;
-
+                shiftPressed.SetActive(false);
                 wSprite.SetActive(false);
                 aSprite.SetActive(false);
                 sSprite.SetActive(false);
@@ -282,7 +287,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         else if (tutorialCounter == 4)
         {
             Debug.Log(camera.transform.GetChild(0).childCount);
-                if(camera.transform.GetChild(0).childCount != 0) {
+                if(camera.transform.GetChild(1).childCount != 0) {
                      throwRock.SetActive(false);
                      pressGtoThrow.SetActive(true);
                      //Destroy(throwRock);
@@ -354,10 +359,10 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                     Destroy(pressClickToShoot);
                 }
             }
-            Debug.Log(GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length);
+            //Debug.Log(GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length);
             // once all guards have been found to be dead
             // its 325 because of all the transforms in the guard prefab
-            if (GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length == 325)
+            if (GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length == 329)
             {
                 // get a random number and set the guard to drag to be that random guard
                 int random = Random.Range(0, 4);
@@ -446,7 +451,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         } 
         else if (tutorialCounter == 10) 
         {
-            if (transform.position.x > 305)
+            if (transform.position.x > 307)
             {
                 trainingOver.SetActive(true);
                 if (proceedToTheLadder.GetComponent<AudioSource>().isPlaying)

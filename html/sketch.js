@@ -34,7 +34,7 @@ function setup() {
 
     // init posenet
     var optionsPose = {
-        architecture: 'ResNet50',
+        architecture: 'MobileNetV1',
         imageScaleFactor: 1,
         outputStride: 16,
         // flipHorizontal: false,
@@ -43,8 +43,8 @@ function setup() {
         scoreThreshold: 0.2,
         nmsRadius: 1,
         // detectionType: 'single',
-        inputResolution: 257,
-        multiplier: 1.0,
+        inputResolution: 289,
+        multiplier: 1,
         quantBytes: 4,
     };
 
@@ -57,6 +57,7 @@ function setup() {
 
 function modelLoaded() {
     console.log('poseNet ready');
+    //posenet.singlePose(video);
 }
 
 // Checks for head position
@@ -65,6 +66,7 @@ function modelLoaded() {
 // |O|N|I|
 // |Q|C|W|
 function noseLabel() {
+  if (!poseOff) {
     // normalise nose position e.g. 0<x,y<1
     var normNosePos = createVector(pose1.nose.x / (2 * width), pose1.nose.y / (2 * height));
     if (normNosePos.x > 1 / 3 && normNosePos.x < 2 / 3 && normNosePos.y > 0.2 && normNosePos.y < 0.4) {
@@ -82,17 +84,19 @@ function noseLabel() {
     } else {
         return 'N';
     }
+  }
+  return 'N';
 }
 
 function handsLabel() {
+  if (!poseOff) {
     if (pose1.leftWrist.x < width * 2 && pose1.leftWrist.x > 0 && pose1.leftWrist.y < height * 2 && pose1.leftWrist.y > 0) {
-        //if(pose3.leftWrist.confidence>0.7 && pose3.rightWrist.confidence>0.7){
         // normalise wrist positions e.g. 0<x,y<1
         var normLeftWristVector = createVector((pose3.leftWrist.x - pose1.leftWrist.x) / (2 * width), (pose3.leftWrist.y - pose1.leftWrist.y) / (2 * height));
         var normRightWristVector = createVector((pose3.rightWrist.x - pose1.rightWrist.x) / (2 * width), (pose3.rightWrist.y - pose1.rightWrist.y) / (2 * width));
         var normLeftWristPos = createVector(pose1.leftWrist.x / (2 * width), pose1.leftWrist.y / (2 * height));
         if (normLeftWristVector.x < -0.1) {
-            // Pick up, both hands moving up
+            // Pick up, left hand moving left to right
             poseLag = 3;
             return "B";
         } else if ((normLeftWristVector.x > 0.07 && normRightWristVector.x < -0.07)) {
@@ -100,14 +104,16 @@ function handsLabel() {
             poseLag = 4;
             return 'P';
         } else if (normLeftWristVector.y > 0.07 && normRightWristVector.y > 0.07) {
-            // Pull up, both hands moving down
-            poseLag = 2;
+            // Close door pose, both hands moving down
+            poseLag = 4;
             return "U";
-
-            // }else if (normLeftWristPos.x>2/3 && normLeftWristPos.x<1 && normLeftWristPos.y>0.2 && normLeftWristPos.y<0.8) {
-            //     // Move forward, left hand up
-            //     return "F";
+        } else if (normLeftWristVector.y < -0.07 && normRightWristVector.y < -0.07) {
+            // Open door pose, both hands moving up
+            poseLag = 8;
+            return "D";
         } else if (normLeftWristVector.y > 0.4) {
+            // Throw rock pose
+            poseLag = 4;
             return "R";
         } else if ((normLeftWristVector.y > 0.1 && normRightWristVector.y < -0.1) || (normLeftWristVector.y < -0.1 && normRightWristVector.y > 0.1)) {
             // Ladder climb, hands moving in opposite directions
@@ -116,8 +122,8 @@ function handsLabel() {
         } else {
             return 'N';
         }
-        //}
     }
+  }
     return 'N';
 }
 
@@ -148,6 +154,9 @@ function gotResult() {
             case 'U':
                 poseSentence = "Pull Up";
                 break;
+            case 'D':
+                 poseSentence = "Open Door";
+                 break;
             case 'B':
                 poseSentence = "Pick Up";
                 break;
@@ -182,8 +191,6 @@ function gotResult() {
                 poseSentence = "";
         }
     }
-
-
 }
 
 // Callback from poseNet
@@ -229,33 +236,6 @@ function turnOffPose() {
         poseOff = true;
         remove();
     }
-    // remove();
-    // console.log("TURN OFF");
-    //
-    // const videoDoc = document.querySelector('video');
-    //
-    // // A video's MediaStream object is available through its srcObject attribute
-    // const mediaStream = videoDoc.srcObject;
-    //
-    // // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
-    // const tracks = mediaStream.getTracks();
-    //
-    // // Tracks are returned as an array, so if you know you only have one, you can stop it with:
-    // tracks[0].stop();
-    //
-    // // Or stop all like so:
-    // tracks.forEach(track => track.stop())
-    //
-    //
-    //
-    //
-    // poseNet.removeListener('pose', gotPoses);
-    // clearOverlay();
-    // video.remove();
-    // clear();
-    // canvas.remove();
-    // noLoop();
-    // poseOff = true;
 }
 
 let n = 30;
@@ -270,7 +250,7 @@ function draw() {
         image(video, 0, 0, video.width, video.height);
 
         if (pose) {
-            console.log(pose.leftWrist);
+            // console.log(pose.leftWrist);
             let eyeR = pose.rightEye;
             let eyeL = pose.leftEye;
             let d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
@@ -297,16 +277,6 @@ function draw() {
         }
         pop();
 
-        // |N|N|N|
-        // |O|N|I|
-        // |Q|C|W|
-
-        // fill(255, 0, 255);
-        // noStroke();
-        // textSize(256);
-        // textAlign(CENTER, CENTER);
-        // text(poseLabel, width / 2, height / 2);
-
         fill(255, 255, 255);
         rect(0, 0, canvas.width, textSiz);
 
@@ -316,14 +286,8 @@ function draw() {
         text(poseSentence, 0, 0);
 
         image(overlay, 0, 0, canvas.width, canvas.height);
-        // console.log(n);
-        // n--;
-        // if (n < 0) {
-        //   turnOffPose();
-        // }
     }
 }
-
 
 // Move canvas around on mouse click
 let onCanv = false;
@@ -354,7 +318,6 @@ function mouseDragged() {
         canvas.position(xCanvOrigin + (winMouseX - xOrigin), yCanvOrigin + (winMouseY - yOrigin))
     }
 }
-
 
 function mouseReleased() {
     onCanv = false;

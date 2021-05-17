@@ -10,7 +10,6 @@ public class VoiceChatConnector : MonoBehaviourPun
 {
     public AudioListener audioListener;
 
-    VoiceChat voiceChat;
     string _id = "";
     string _foreignID = "";
     private string _microphoneDevice;
@@ -23,10 +22,13 @@ public class VoiceChatConnector : MonoBehaviourPun
     private readonly int frequency = 44100;
     private readonly int samplesPerCall = 44100;
 
-    private void OnDestroy()
+    void OnDestroy()
     {
-        CustomMicrophone.End(_microphoneDevice);
-        voiceChat.EndCall();
+        if (!photonView.IsMine) return;
+
+        //unsubscribe to events
+        VoiceChat.Instance.OnStatusUpdate -= OnStatusupdate;
+        VoiceChat.Instance.OnIDUpdate -= OnIDUpdate;
     }
 
     void Start()
@@ -49,15 +51,12 @@ public class VoiceChatConnector : MonoBehaviourPun
         _microphoneDevice = CustomMicrophone.devices[0];
         audioClip = CustomMicrophone.Start(_microphoneDevice, true, lengthSec, frequency);
 
-        //get instance 
-        voiceChat = VoiceChat.Instance;
-        
         //subscribe to events
-        voiceChat.OnStatusUpdate += OnStatusupdate;
-        voiceChat.OnIDUpdate += OnIDUpdate;
+        VoiceChat.Instance.OnStatusUpdate += OnStatusupdate;
+        VoiceChat.Instance.OnIDUpdate += OnIDUpdate;
 
         //initialize peer object for this client
-        voiceChat.InitializePeer();
+        VoiceChat.Instance.InitializePeer();
     }
 
     void OnStatusupdate(string status)
@@ -70,7 +69,7 @@ public class VoiceChatConnector : MonoBehaviourPun
         {
             Debug.Log("disconnected from the peer");
             if (PhotonNetwork.IsMasterClient)
-                voiceChat.Connect(_foreignID);
+                VoiceChat.Instance.Connect(_foreignID);
         }
         else if (status == "destroyed")
         {
@@ -82,7 +81,7 @@ public class VoiceChatConnector : MonoBehaviourPun
     {
         _foreignID = ID;
 
-        voiceChat.Call(_foreignID);
+        VoiceChat.Instance.Call(_foreignID);
     }
 
     [PunRPC]
@@ -104,7 +103,7 @@ public class VoiceChatConnector : MonoBehaviourPun
     void OnIDUpdate(string ID)
     {
         _id = ID;
-        Debug.Log("got id in unity: " + ID);
+        //Debug.Log("got id in unity: " + ID);
 
         // send id to master
         if(!PhotonNetwork.IsMasterClient)

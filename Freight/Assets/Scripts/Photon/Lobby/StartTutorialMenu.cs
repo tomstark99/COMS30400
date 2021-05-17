@@ -6,6 +6,7 @@ using Photon.Realtime;
 
 public class StartTutorialMenu : MonoBehaviourPunCallbacks
 {
+    public GameObject optionsCanvas;
     public void OnClick_CreateTutorial()
     {
         if (!PhotonNetwork.IsConnected) return;
@@ -19,17 +20,18 @@ public class StartTutorialMenu : MonoBehaviourPunCallbacks
         options.IsVisible = false;
         options.MaxPlayers = 1;
         string roomName = "Tutorial" + PhotonNetwork.CountOfRooms;
+        optionsCanvas.SetActive(false);
         PhotonNetwork.JoinOrCreateRoom(roomName, options, TypedLobby.Default);
 
     }
 
     public void OnMouseOver() {
         //If your mouse hovers over the GameObject with the script attached, output this message
-        Debug.Log("Mouse is over GameObject.");
+       // Debug.Log("Mouse is over GameObject.");
     }
     public void OnMouseExit() {
         //The mouse is no longer hovering over the GameObject so output this message each frame
-        Debug.Log("Mouse is no longer on GameObject.");
+       // Debug.Log("Mouse is no longer on GameObject.");
     }
 
 }

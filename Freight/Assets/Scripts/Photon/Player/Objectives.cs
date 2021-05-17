@@ -78,8 +78,8 @@ public class Objectives : MonoBehaviour
     void Start()
     {
         bagsPickedUp = 0;
-        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence += SetBreakFenceToActive;
-        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().FenceBroke += SetFindBackpacksToActive;
+        GameObject.FindGameObjectWithTag("BrokenFence").transform.GetChild(4).GetComponent<BreakFencePhoton>().InRangeOfFence += SetBreakFenceToActive;
+        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<Breakable>().FenceBroke += SetFindBackpacksToActive;
 
         Invoke(nameof(SubscribeToBagEvents), 7f);
 
@@ -133,7 +133,7 @@ public class Objectives : MonoBehaviour
         breakFence.SetActive(true);
         breakFenceDesc.SetActive(true);
         breakFenceBackground.SetActive(true);
-        GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
+        GameObject.FindGameObjectWithTag("BrokenFence").transform.GetChild(4).GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
     }
 
     void SetFindBackpacksToActive()
@@ -161,7 +161,7 @@ public class Objectives : MonoBehaviour
     {
         bagsPickedUp += 1;
 
-        Debug.Log("picked up bag");
+       // Debug.Log("picked up bag");
 
         findBackpacks.GetComponent<TextMeshProUGUI>().text = "- Find the backpacks (" + bagsPickedUp + "/" + playerCount + ")";
 
@@ -189,7 +189,7 @@ public class Objectives : MonoBehaviour
 
     void SetEscapeToActive()
     {
-        Debug.Log("IS BACKPACKS ACTIVE? " + findBackpacksDesc.activeSelf);
+       // Debug.Log("IS BACKPACKS ACTIVE? " + findBackpacksDesc.activeSelf);
         if(!findBackpacksDesc.activeSelf && findBackpacks.activeSelf) 
         {
             findTrain.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;

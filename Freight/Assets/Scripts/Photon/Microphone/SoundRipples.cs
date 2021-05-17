@@ -25,6 +25,13 @@ public class SoundRipples : MonoBehaviourPun
 
     private float decibelsMultiplier;
 
+    private bool stopSendingRPC = false;
+
+    [SerializeField]
+    private AudioSource running;
+    [SerializeField]
+    private AudioSource walking;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,12 +41,29 @@ public class SoundRipples : MonoBehaviourPun
 
         InvokeRepeating(nameof(UpdateRipples), 0, _updateFrequency);
 
-        decibelsMultiplier = (float)PhotonNetwork.CurrentRoom.CustomProperties["VoiceRangeMultiplier"];
+        if (PhotonNetwork.CurrentRoom.CustomProperties["VoiceRangeMultiplier"] != null)
+            decibelsMultiplier = (float)PhotonNetwork.CurrentRoom.CustomProperties["VoiceRangeMultiplier"];
+        else
+            decibelsMultiplier = 0f;
+
+        if (GameObject.FindGameObjectWithTag("EndGame")?.GetComponent<EndGame>())
+            GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGame>().EndTheGame += DisableSoundRipples;
+
+        if (GameObject.FindGameObjectWithTag("EndGame")?.GetComponent<EndGameSecond>())
+            GameObject.FindGameObjectWithTag("EndGame").GetComponent<EndGameSecond>().EndTheGameSecond += DisableSoundRipples;
+    }
+
+    void DisableSoundRipples()
+    {
+        stopSendingRPC = true;
     }
 
     private void UpdateRipples()
     {
         if (!photonView.IsMine) return;
+
+        if (stopSendingRPC)
+            return;
 
         int currentPosition = CustomMicrophone.GetPosition(_microphoneDevice);
 
@@ -67,6 +91,11 @@ public class SoundRipples : MonoBehaviourPun
                 newDecibelsValue = ComputeDB(data, _lastPosition, ref len);
                 _lastPosition = 0;
             }
+
+            if (walking.isPlaying)
+                newDecibelsValue += 5;
+            else if (running.isPlaying)
+                newDecibelsValue += 15;
 
             decibelsValue = decibelsMultiplier * newDecibelsValue;
 

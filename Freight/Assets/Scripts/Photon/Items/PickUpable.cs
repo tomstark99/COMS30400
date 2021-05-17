@@ -25,48 +25,37 @@ public class PickUpable : Interactable
         }
     }
 
-    /// <summary> Checks if the item is in a pickup destination, if so it is
-    /// picked up.  </summary>
     public bool CanInteract(Character character)
     {
         return !isPickedUp && !character.HasItem();
     }
 
     [PunRPC]
-    public void SetItemPickupConditionsRPC()
+    public void ItemPickedUpRPC()
     {
         isPickedUp = true;
-        // Disable the box collider to prevent collisions whilst carrying item.
-        // Also turn off gravity on item and freeze its Rigidbody.
-       // GetComponent<SphereCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
         gameObject.transform.rotation = gameObject.transform.parent.rotation;
     }
 
-    public void SetItemPickupConditions()
+    public void ItemPickedUp()
     {
-        GetComponent<PhotonView>().RPC("SetItemPickupConditionsRPC", RpcTarget.All);
+        GetComponent<PhotonView>().RPC("ItemPickedUpRPC", RpcTarget.All);
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
 
     [PunRPC]
-    public void ResetItemConditionsRPC()
+    public void ItemDroppedRPC()
     {
         isPickedUp = false;
-       // GetComponent<SphereCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
     }
 
-    public void ResetItemConditions(Character character)
+    public void ItemDropped(Character character)
     {
-        GetComponent<PhotonView>().RPC("ResetItemConditionsRPC", RpcTarget.All);
+        GetComponent<PhotonView>().RPC("ItemDroppedRPC", RpcTarget.All);
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-      // Set velocity of box after it is putdown to the speed to the character moving it
     }
 
-    void Update() 
-    {
-
-    }
 }

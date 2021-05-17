@@ -10,10 +10,7 @@ using VoiceChatClass;
 
 public class ProximityVoice : MonoBehaviourPun
 {
-    public VoiceChatConnector voice;
-
     private GameObject otherPlayer = null;
-    private VoiceChat voiceChat;
 
     public float minDistance = 1f;
     public float maxDistance = 50f;
@@ -25,18 +22,21 @@ public class ProximityVoice : MonoBehaviourPun
 
     private readonly float updateFrequency = 0.1f;
 
+    void OnDestroy()
+    {
+        if (!photonView.IsMine) return;
+
+        VoiceChat.Instance.OnStatusUpdate -= OnStatusChanged;
+    }
+
     void Start()
     {
         if (!photonView.IsMine) return;
 
-         if (PlayerPrefs.HasKey("ProximityVoiceChat"))
-            maxDistance = PlayerPrefs.GetFloat("ProximityVoiceChat");
-        else
-            maxDistance = 50f;
+        maxDistance = 50f;
 
-        voiceChat = VoiceChat.Instance;
-        voiceChat.OnStatusUpdate += UpdateOtherPlayer;
-        //otherPlayerSource = voice.foreignAudioSource;
+        VoiceChat.Instance.OnStatusUpdate += OnStatusChanged;
+        OnStatusChanged(VoiceChat.Instance.Status);
 
         //b = (minVolume - maxVolume) / (1 / Mathf.Sqrt(maxDistance) - 1 / Mathf.Sqrt(minDistance));
         //a = maxVolume - b / Mathf.Sqrt(minDistance);
@@ -62,23 +62,38 @@ public class ProximityVoice : MonoBehaviourPun
         {
             var distance = Vector3.Distance(transform.position, otherPlayer.transform.position);
             var newVolume = VolumeValue(distance);
-            voiceChat.SetVolumeOfCall(newVolume);
+            if (0f <= newVolume && newVolume <= 1f) {
+                VoiceChat.Instance.SetVolumeOfCall(newVolume);
+            }
         }
     }
 
-    private void UpdateOtherPlayer(string status)
+    private void OnStatusChanged(string status)
     {
         if (status == "connected")
         {
-            var players = GameObject.FindGameObjectsWithTag("Player");
+            UpdateOtherPLayer();
+        }
+    }
+
+    private void UpdateOtherPLayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        if(players.Length > 1)
+        {
 
             foreach (GameObject player in players)
             {
-                if (!player.GetPhotonView().AmOwner)
+                if (!player.GetPhotonView().IsMine)
                 {
                     otherPlayer = player;
                 }
             }
+        }
+        else
+        {
+            Invoke(nameof(UpdateOtherPLayer), 1);
         }
     }
 }

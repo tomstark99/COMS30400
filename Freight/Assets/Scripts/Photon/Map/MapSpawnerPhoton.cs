@@ -51,7 +51,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
     {
 
         int clearTrack = UnityEngine.Random.Range(0, 5);
-        Debug.Log("skipped track: " + clearTrack);
+       // Debug.Log("skipped track: " + clearTrack);
 
         for (int j = 0; j < 5; j++)
         {
@@ -95,14 +95,14 @@ public class MapSpawnerPhoton : MonoBehaviourPun
                                 //trainGo.transform.Find("TrainNumber").gameObject.transform.GetChild(0).transform.GetComponent<TextMeshPro>().text = ("Train number " + j.ToString());
 
                             }
-                            Debug.Log("burst train");
+                            //Debug.Log("burst train");
                         }
                         else
                         {
-                            Debug.Log("got to the normal train");
+                            //Debug.Log("got to the normal train");
                             //trainGo = Instantiate(train, position, Quaternion.Euler(0f, 0f, 0f));
                             int ran = UnityEngine.Random.Range(0, 3);
-                            Debug.Log(ran);
+                           // Debug.Log(ran);
                             if (ran == 1)
                             {
                                 PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Trains/freight_train_stationary Variant 1", position, Quaternion.Euler(0f, 0f, 0f));
@@ -149,7 +149,7 @@ public class MapSpawnerPhoton : MonoBehaviourPun
 
         }
 
-        Debug.Log("Trains");
+        //Debug.Log("Trains");
     }
 
     bool inSkip(int i, int[] positions, int gaps)

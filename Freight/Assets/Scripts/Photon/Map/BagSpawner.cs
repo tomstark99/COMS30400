@@ -9,12 +9,18 @@ public class BagSpawner : MonoBehaviourPun
     private Transform[] spawnPoints;
 
     public Transform backpacks;
+    private bool icon;
 
     // Start is called before the first frame update
     void Start()
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            if (PhotonNetwork.CurrentRoom.CustomProperties["BackPackIcon"] != null)
+            {
+                icon = (bool)PhotonNetwork.CurrentRoom.CustomProperties["BackPackIcon"];
+              //  Debug.Log("ICON IS" + icon);
+            }
             if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {
                 SpawnOneBag();
@@ -23,14 +29,16 @@ public class BagSpawner : MonoBehaviourPun
             {
                 StartCoroutine(SpawnTwoBags());
             }
+
         }
 
     }
 
     void SpawnOneBag()
     {
-        int index = Random.Range(0, spawnPoints.Length-1);
+        int index = Random.Range(0, spawnPoints.Length);
         GameObject bag = PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/Backpack-20L_i", spawnPoints[index].position, Quaternion.identity);
+        bag.transform.GetChild(0).gameObject.SetActive(icon);
         bag.transform.parent = backpacks;
     }
 
@@ -40,13 +48,16 @@ public class BagSpawner : MonoBehaviourPun
         GameObject bag = PhotonView.Find(bagID).gameObject;
         GameObject bag2 = PhotonView.Find(bag2ID).gameObject;
 
+        bag.transform.GetChild(0).gameObject.SetActive(icon);
+        bag2.transform.GetChild(0).gameObject.SetActive(icon);
+
         bag.transform.parent = backpacks;
         bag2.transform.parent = backpacks;
     }
 
     IEnumerator SpawnTwoBags()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(5f);
         bool spawned = false;
         while (!spawned)
         {

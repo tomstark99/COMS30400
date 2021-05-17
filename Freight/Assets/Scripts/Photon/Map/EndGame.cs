@@ -20,6 +20,8 @@ public class EndGame : MonoBehaviourPunCallbacks
     private int totalOnTrain; 
     public CinemachineVirtualCamera vcam;
 
+    private bool trainsEnteredColliders;
+
     public HashSet<Collider> GetColliders() { return colliders; }
 
     void Start()
@@ -30,6 +32,7 @@ public class EndGame : MonoBehaviourPunCallbacks
         gameEnding = false;
         totalBags = 0;
         totalOnTrain = 0;
+        trainsEnteredColliders = false;
 
         Invoke(nameof(SubscribeToGuardEvent), 6f);
     }
@@ -53,8 +56,9 @@ public class EndGame : MonoBehaviourPunCallbacks
             //Debug.Log(other.gameObject);
             Debug.Log(colliders.Count);
             // 11 box colliders on the train so when all of them are in endgame, start endgame
-            if (colliders.Count == 11 && !gameEnding)
+            if (colliders.Count == 11 && !trainsEnteredColliders)
             {
+                trainsEnteredColliders = true;
                 StartEndGame();
             }
         }
