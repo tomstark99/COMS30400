@@ -28,7 +28,7 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
         // if UI is not the player's, disable it
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
         {
-            Debug.Log(" DISABLE CONTROLER ");
+            //Debug.Log(" DISABLE CONTROLER ");
             playerUI.SetActive(false);
             Destroy(playerMenu);
         }

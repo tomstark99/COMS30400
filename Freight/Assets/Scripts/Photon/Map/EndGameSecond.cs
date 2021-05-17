@@ -20,11 +20,13 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
     private bool gameOver;
     private float endScreen;
 
+    private List<PhotonView> playersInCollider = new List<PhotonView>();
+
     // Start is called before the first frame update
     void Start()
     {
         gameOver = false;
-        
+
         playersToLeave = 0;
 
         GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
@@ -40,12 +42,13 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
         if (gameOver)
         {
             endScreen += Time.deltaTime;
-            Debug.Log("endScreen time: " + endScreen);
+            //Debug.Log("endScreen time: " + endScreen);
 
             if (endScreen > 6f)
             {
                 ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
                 prop.Add("levelToLoad", "Assets/Scenes/MenuSceneNew.unity");
+                //Destroy(GameObject.FindGameObjectWithTag("GameTracker"));
                 PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
 
                 gameOver = false;
@@ -94,14 +97,15 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.tag);
+        //Debug.Log(other.gameObject.tag);
         if (PhotonNetwork.IsMasterClient)
         {
             if (other.gameObject.tag == "Player")
             {
                 // checks if player is ready to leave as this event is only subscribed to once both bags have been delivered, masterclient increments player ready to leave count
-                if (PlayerReadyToLeave != null)
+                if (PlayerReadyToLeave != null && !playersInCollider.Contains(other.gameObject.GetComponent<PhotonView>()))
                 {
+                    playersInCollider.Add(other.gameObject.GetComponent<PhotonView>());
                     photonView.RPC(nameof(CallPlayerReadyToLeave), other.gameObject.GetComponent<PhotonView>().Owner, other.gameObject.GetComponent<PhotonView>().ViewID);
                     //EndTheGame();
 
@@ -126,7 +130,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
                 player.GetComponent<PlayerMovementPhoton>().GameEnding();
 
             player.GetComponent<PlayerAudioClipsSecond>().GameFinished();
-            
+
             player.GetComponent<Achievements>().FreightCompleted();
         }
 
@@ -139,7 +143,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
         // winning UI text
         winningText.SetActive(true);
 
-        // starts moving the car 
+        // starts moving the car
         car.GetComponent<CarWheelAnimation>().IsSpinning = true;
         car.GetComponent<SplineWalker>().enabled = true;
         GetComponent<Outline>().enabled = false;
@@ -151,7 +155,7 @@ public class EndGameSecond : MonoBehaviourPunCallbacks
         EndTheGameSecond?.Invoke();
     }
 
-    // checks if both players have jumped on the back of the truck 
+    // checks if both players have jumped on the back of the truck
     [PunRPC]
     void CheckEndGameRPC()
     {

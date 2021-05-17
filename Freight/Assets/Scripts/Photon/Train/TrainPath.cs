@@ -34,7 +34,7 @@ public class TrainPath : MonoBehaviourPun
                 foreach (var c in carriages) {
                     // Debug.Log(((c.transform.position - iTween.PointOnPath(points, 0.0f)).sqrMagnitude < 0.01f));
                     if ((c.transform.position - iTween.PointOnPath(points, 0.0f)).sqrMagnitude < 0.1f && !carriageOnTrack[c]) {
-                        Debug.Log("ONTRACK");
+                        //Debug.Log("ONTRACK");
                         carriageOnTrack[c] = true;
                     } else if (carriageOnTrack[c]) {
                         float min = float.PositiveInfinity;
@@ -62,7 +62,7 @@ public class TrainPath : MonoBehaviourPun
             - iTween.EaseType.easeInOutSine
             - iTween.EaseType.linear
         */
-        Debug.Log("mans animating");
+        //Debug.Log("mans animating");
         left = true;
         iTween.MoveTo(train, iTween.Hash("path", points, 
                                         "speed", 7.0f, 

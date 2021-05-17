@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
+using UnityEngine.UI;
 public class MouseLookPhoton : MonoBehaviourPun
 {
     public float mouseSensitivity;
@@ -18,6 +19,7 @@ public class MouseLookPhoton : MonoBehaviourPun
     private Quaternion oldCameraRot;
     private bool freeCam;
 
+    public Slider RenderDistanceSlider;
     public bool onMenu;
     // Start is called before the first frame update
     void Start()
@@ -40,13 +42,19 @@ public class MouseLookPhoton : MonoBehaviourPun
        
     }
 
+    public void ChangeRenderDistance() {
+        virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.FarClipPlane = RenderDistanceSlider.value;
+        PlayerPrefs.SetFloat("RenderDistance", RenderDistanceSlider.value);
+        PlayerPrefs.Save();
+        
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (!photonView.IsMine) return;
 
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        /*if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             oldCameraRot = cameraTransform.localRotation;
             freeCam = true;
@@ -56,7 +64,7 @@ public class MouseLookPhoton : MonoBehaviourPun
             cameraTransform.localRotation = oldCameraRot;
             yRotation = 0f;
             freeCam = false;
-        } 
+        } */
 
         if(Input.GetKeyDown(KeyCode.Escape)) 
             oldCameraRot =  cameraTransform.localRotation;
@@ -70,17 +78,17 @@ public class MouseLookPhoton : MonoBehaviourPun
         
 
         if(!onMenu) {
-            if (!freeCam)
-            {
+            //if (!freeCam)
+            //{
                 cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
                 playerBody.Rotate(Vector3.up * mouseX);
-            }
-            else
-            {
-                yRotation += mouseX;
-                yRotation = Mathf.Clamp(yRotation, -150f, 130f);
-                cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-            }
+           // }
+            //else
+            //{
+               // yRotation += mouseX;
+                //yRotation = Mathf.Clamp(yRotation, -150f, 130f);
+               // cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+           // }
         } else {
             cameraTransform.localRotation = oldCameraRot;
         }

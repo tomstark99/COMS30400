@@ -13,6 +13,24 @@ public class NetworkController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        var voice = GameObject.Find("[PeerJS]VoiceChat");
+        if (voice != null)
+        {
+            Destroy(voice);
+        }
+
+        var microphone = GameObject.Find("[FG]Microphone");
+        if (microphone != null)
+        {
+            if(CustomMicrophone.IsRecording(CustomMicrophone.devices[0]))
+            {
+                CustomMicrophone.End(CustomMicrophone.devices[0]);
+            }
+            Destroy(microphone);
+        }
+
+
+
         // request microphone permissions at the start of the menu
         if (!CustomMicrophone.HasMicrophonePermission())
         {
@@ -24,6 +42,9 @@ public class NetworkController : MonoBehaviourPunCallbacks
         }
         //Debug.Log(CustomMicrophone.devices.Length + " microphone devices found");
 
+        // destroys game tracker from previous game 
+        if (GameObject.FindGameObjectWithTag("GameTracker") != null)
+            Destroy(GameObject.FindGameObjectWithTag("GameTracker"));
 
         if (PhotonNetwork.IsConnected)
         {
@@ -32,7 +53,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
             Cursor.visible = true;
         } 
         PhotonNetwork.ConnectUsingSettings();
-        Debug.Log(PhotonNetwork.PhotonServerSettings);
+        //Debug.Log(PhotonNetwork.PhotonServerSettings);
     }
 
     private string GetRandomName()
@@ -51,10 +72,10 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         text.text = "Connected to " + PhotonNetwork.CloudRegion;
-        Debug.Log("We are connected to the " + PhotonNetwork.CloudRegion + " server");
+        //Debug.Log("We are connected to the " + PhotonNetwork.CloudRegion + " server");
         if (!PhotonNetwork.InLobby)
         {
-            Debug.Log(PhotonNetwork.CurrentRoom);
+           // Debug.Log(PhotonNetwork.CurrentRoom);
             if (PhotonNetwork.LocalPlayer.NickName == "")
                 PhotonNetwork.LocalPlayer.NickName = GetRandomName();
 

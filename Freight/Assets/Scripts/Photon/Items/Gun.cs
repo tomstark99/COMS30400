@@ -31,7 +31,7 @@ public class Gun : MonoBehaviourPun
     public void EmptyGunShot()
     {
         photonView.RPC("PlayEmptyClip", RpcTarget.All);
-        Debug.Log(ammo);
+        //Debug.Log(ammo);
     }
 
     [PunRPC]

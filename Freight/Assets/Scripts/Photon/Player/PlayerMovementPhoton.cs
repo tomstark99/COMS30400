@@ -75,7 +75,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         PV = GetComponent<PhotonView>();
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
         {
-            Debug.Log(" DISABLE CONTROLER ");
+            //Debug.Log(" DISABLE CONTROLER ");
             GetComponent<PlayerMovementPhoton>().enabled = false;
         }
 
@@ -93,7 +93,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // achievement checker (deleting for testing purposes)
         //PlayerPrefs.DeleteKey("BabySteps");
 
-        if (PlayerPrefs.HasKey("BabySteps"))
+        if (PlayerPrefs.HasKey("BabySteps1"))
             babySteps = true;
         else
             babySteps = false;
@@ -123,13 +123,19 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         vcam.Priority = 100;
     }
 
-    void DisablePlayer()
+    [PunRPC]
+    void DisablePlayerRPC()
     {
         caughtByGuardsText.SetActive(true);
         gameObject.GetComponent<PlayerAnimation>().SetAllFalse();
         gameObject.GetComponent<PlayerAnimation>().enabled = false;
         gameObject.GetComponent<MouseLookPhoton>().enabled = false;
         gameObject.GetComponent<PlayerMovementPhoton>().enabled = false;
+    }
+
+    void DisablePlayer()
+    {
+        photonView.RPC(nameof(DisablePlayerRPC), RpcTarget.All);
     }
 
     IEnumerator SetFaceActive() {
@@ -210,13 +216,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move = transform.up * l;
         }
         else if (PoseParser.GETGestureAsString().CompareTo("F") == 0) {
-            move = transform.forward * speed / 4;
+            move = transform.forward; 
         }
         else if (PoseParser.GETGestureAsString().CompareTo("I") == 0) {
-            move = transform.right * speed / 4 + transform.forward * speed / 4;
+            move = transform.right + transform.forward;
         }
         else if (PoseParser.GETGestureAsString().CompareTo("O") == 0) {
-            move = transform.right * (-speed / 4) + transform.forward * speed / 4;
+            move = transform.right * -1 + transform.forward;
         }
         else
         {
@@ -226,15 +232,15 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         //Sticks player to centreline of ladder
         if (climbing)
         {
-            Debug.Log(timerCountDown);
+            //Debug.Log(timerCountDown);
             timerCountDown -= Time.deltaTime;
             if (timerCountDown < 0)
             {
                 timerCountDown = 0;
             }
             //faceUI.SetActive(false);
-            Debug.Log(train);
-            Debug.Log(ladderCentreLine);
+            //Debug.Log(train);
+            //Debug.Log(ladderCentreLine);
             /*Vector3 ladderPos = train.transform.position + (train.transform.rotation * ladderCentreLine);
             ladderPos.y = transform.position.y;
             move += ladderPos - transform.position;*/
@@ -287,7 +293,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             faceUI.SetActive(false);
             controller.height = 1.2f;
         }
-        else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C")!=0) && crouching)
+        else if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("N") == 0) && crouching)
         {
             crouching = false;
             controller.height = 1.8f;
@@ -303,6 +309,13 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
         if ((move.x != 0 || move.z != 0) && isGrounded && !onTrain)
         {
+            if (crouching)
+            {
+                steps.Stop();
+                run.Stop();
+                return;
+            }
+                
             if (!steps.isPlaying && speed == 4.0f)
             {
                 steps.Play();
@@ -376,7 +389,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     void OnTriggerStay(Collider other) {
         if (other.gameObject.tag == "locomotive")
         {
-             Debug.Log("PLAYER is on the ladder");
+             //Debug.Log("PLAYER is on the ladder");
             if(timerCountDown <= 0)
             {
                LeftHandUpUI.SetActive(true);
@@ -414,7 +427,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             LeftHandUpUI.SetActive(false);
             RightHandUpUI.SetActive(false);
         }
-        else if (onTrain && other.gameObject.tag == "trainfloor")
+        if (other.gameObject.tag == "trainfloor")
         {
             //train = null;
             //photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);

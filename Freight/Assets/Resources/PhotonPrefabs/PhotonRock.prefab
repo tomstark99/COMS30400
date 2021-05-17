@@ -30,6 +30,50 @@ Transform:
   m_Father: {fileID: 5537445409876015840}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3432723307110260115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 494301566998144179}
+  - component: {fileID: 3755343703866184806}
+  m_Layer: 24
+  m_Name: Outline
+  m_TagString: Outline
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &494301566998144179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3432723307110260115}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2362659519456846823}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3755343703866184806
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3432723307110260115}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 20, y: 20, z: 20}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3511192020149717325
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,7 +88,8 @@ GameObject:
   - component: {fileID: 8443216872760158713}
   - component: {fileID: -6891907066436117806}
   - component: {fileID: 8977393908703976010}
-  m_Layer: 0
+  - component: {fileID: 5041428495676479297}
+  m_Layer: 24
   m_Name: PhotonRock
   m_TagString: Rock
   m_Icon: {fileID: 0}
@@ -63,6 +108,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5537445409876015840}
+  - {fileID: 494301566998144179}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -440,6 +486,19 @@ MonoBehaviour:
     - {x: -0.0834172, y: -0.98483753, z: 0.15210691}
     - {x: -0.13229935, y: -0.97143227, z: 0.19701855}
     - {x: -0.09105191, y: -0.9731679, z: 0.21131471}
+--- !u!65 &5041428495676479297
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3511192020149717325}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6, y: 6, z: 6}
+  m_Center: {x: 0.41, y: 0.51, z: 0.33}
 --- !u!135 &408607371
 SphereCollider:
   m_ObjectHideFlags: 0

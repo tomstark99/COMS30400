@@ -15,7 +15,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public GameObject bulletPrefab;
 
     public MoveCrosshair crosshair;
-    
+
     public GameObject camera;
 
     private bool holdingTheBag;
@@ -27,6 +27,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     private GameObject ObjectToSeeTheLights;
 
     public GameObject actualCamera;
+
+    public LayerMask gunLayerMask;
+
     public bool HoldingTheBag
     {
         get { return holdingTheBag; }
@@ -42,7 +45,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         return currentHeldItem != null;
     }
 
-    void Start() 
+    void Start()
     {
         ObjectToSeeTheLights = GameObject.Find("CameraToSeeTheLights");
         if (ObjectToSeeTheLights)
@@ -57,22 +60,23 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
         if (!PlayerPrefs.HasKey("TheCompletePicture"))
         {
-            if(Item.GetComponent<Unachievable>() == null)
+            if (Item.GetComponent<Unachievable>() == null)
                 GetComponent<Achievements>()?.TheCompletePictureCompleted();
         }
-        
+
         Debug.Log("LOCAL");
         //PhotonView view = Item.GetComponent<PhotonView>();
         //view.TransferOwnership(PhotonNetwork.LocalPlayer);
         // Move to players pickup destination.
         Item.transform.position = pickUpDestinationLocal.position;
-
+        if (Item.GetComponent<Shootable>() != null)
+            Item.transform.Find("Canvas").gameObject.SetActive(true);
         // Set the parent of the object to the pickupDestination so that it moves
         // with the player.
         Item.transform.parent = pickUpDestinationLocal;
         Item.transform.Rotate(0, 90, 0);
 
-        Item.SetItemPickupConditions();
+        Item.ItemPickedUp();
     }
 
     [PunRPC]
@@ -100,7 +104,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Item.transform.parent = pickUpDestination;
         Item.transform.Rotate(0, 90, 0);
 
-        Item.SetItemPickupConditions();
+        Item.ItemPickedUp();
     }
 
     public void OnOwnershipRequest(PhotonView targetView, Photon.Realtime.Player previousOwner)
@@ -129,6 +133,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             {
                 GetComponent<IkBehaviour>().ikActive = true;
                 GetComponent<IkBehaviour>().handObj = currentHeldItem.transform.GetChild(0).transform.GetChild(2);
+                actualCamera.transform.GetChild(0).gameObject.SetActive(true);
             }
 
         }
@@ -141,7 +146,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, currentHeldItem.transform.GetComponent<PhotonView>().ViewID);
     }
 
-    public void PickUp(PickUpable Item) 
+    public void PickUp(PickUpable Item)
     {
         currentHeldItem = Item;
 
@@ -155,7 +160,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
                 GetComponent<IkBehaviour>().ikActive = true;
                 GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
-            } 
+            }
             else if (Item.tag == "Rock")
             {
                 GetComponent<IkBehaviour>().ikActive = true;
@@ -172,7 +177,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     [PunRPC]
     void ThrowRPC(int ItemID)
-    { 
+    {
         Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
         GetComponent<IkBehaviour>().ikActive = false;
         // Gesture aim
@@ -181,11 +186,11 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
-    public void Throw(Throwable Item) 
+    public void Throw(Throwable Item)
     {
         GetComponent<IkBehaviour>().ikActive = false;
         currentHeldItem = null;
-        Item.ResetItemConditions(this);
+        Item.ItemDropped(this);
         actualCamera.transform.GetChild(0).gameObject.SetActive(false);
         photonView.RPC("ThrowRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
     }
@@ -200,24 +205,26 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
             Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
+            Item.transform.Find("Canvas").gameObject.SetActive(false);
         }
         else
         {
             Item.transform.parent = GameObject.Find("/Environment/Interactables/DeadGuards").transform;
         }
-        
+
     }
 
-    public void Drop(PickUpable Item) 
+    public void Drop(PickUpable Item)
     {
         currentHeldItem = null;
-        Item.ResetItemConditions(this);
+        Item.ItemDropped(this);
         GetComponent<IkBehaviour>().ikActive = false;
         if (Item.tag == "Gun")
         {
             Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
             GetComponent<IkBehaviour>().ikActive = false;
         }
+        else actualCamera.transform.GetChild(0).gameObject.SetActive(false);
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
         //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
         photonView.RPC("DropRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
@@ -232,34 +239,79 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
 
         // get the guard's photon view
-        PhotonView killedGuard = PhotonView.Find(guardId).GetComponent<PhotonView>();
-        Vector3 guardPos = killedGuard.transform.position;
-        Quaternion guardRot = killedGuard.transform.rotation;
-        guardPos.y += 0.5f;
+        PhotonView killedGuard = PhotonView.Find(guardId)?.GetComponent<PhotonView>();
+        Debug.Log(killedGuard);
+        if (killedGuard != null)
+        {
+            GuardAIPhoton killedGuardObject = PhotonView.Find(guardId).GetComponent<GuardAIPhoton>();
+            killedGuardObject.CheckMusicOnGuardDeath();
+            Vector3 guardPos = killedGuard.transform.position;
+            Quaternion guardRot = killedGuard.transform.rotation;
+            guardPos.y += 0.5f;
 
-        // remove the guard 
-        PhotonNetwork.Destroy(killedGuard);
-        // create a dead body that will be draggable (allow new guard model)
-        GameObject deadGuard = PhotonNetwork.Instantiate("PhotonPrefabs/dead_guard", guardPos, guardRot);
-        
+            // remove the guard 
+            PhotonNetwork.Destroy(killedGuard);
+            // create a dead body that will be draggable (allow new guard model)
+            GameObject deadGuard = PhotonNetwork.Instantiate("PhotonPrefabs/dead_guard", guardPos, guardRot);
+        }
+
+
+    }
+    IEnumerator GunRecoil()
+    {
+        /*Debug.Log("omars haaard");
+        pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, 1.0f, Space.Self);
+        Debug.Log("initianl rotation" + pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z);
+        while(pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z > 340) 
+        {
+             Debug.Log("the while loop is haaard" + pickUpDestinationLocal.transform.GetChild(0).transform.localRotation.eulerAngles.z);
+            pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, 1.0f, Space.Self);
+            yield return null;
+        }
+
+        while(pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z <359) 
+        {
+             Debug.Log("the while loop is haaard" + pickUpDestinationLocal.transform.GetChild(0).transform.localRotation.eulerAngles.z);
+            pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, -1.0f, Space.Self);
+            yield return null;
+        }
+        pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, -1.0f, Space.Self);*/
+        while (pickUpDestinationLocal.transform.localPosition.z > 0.2f)
+        {
+            pickUpDestinationLocal.transform.localPosition = new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, pickUpDestinationLocal.transform.localPosition.z - 0.01f);
+            yield return null;
+        }
+
+        while (pickUpDestinationLocal.transform.localPosition.z < 0.26f)
+        {
+            pickUpDestinationLocal.transform.localPosition = new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, pickUpDestinationLocal.transform.localPosition.z + 0.01f);
+            yield return null;
+        }
+        pickUpDestinationLocal.transform.localPosition = new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, 0.26f);
+        yield break;
     }
 
     [PunRPC]
     void CreateBulletLocal()
     {
-
+        StartCoroutine("GunRecoil");
+        Debug.Log("don t think coroutine startedt stillll");
         // shoots out a raycast to see what the bullet hits
+
         Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
 
         if (!PlayerPrefs.HasKey("LetTheHuntBegin"))
         {
-            if(pickUpDestinationLocal.transform.GetChild(0).GetComponent<Unachievable>() ==  null)
+            if (pickUpDestinationLocal.transform.GetChild(0).GetComponent<Unachievable>() == null)
                 GetComponent<Achievements>()?.LetTheHuntBeginCompleted();
         }
 
         // if bullet collides with guard, tell masterclient to kill guard
-        if(hitInfo.collider != null)
-            if(hitInfo.collider.GetComponent<GuardAIPhoton>() != null) {
+        Debug.Log(hitInfo.collider);
+
+        if (hitInfo.collider != null)
+            if (hitInfo.collider.GetComponent<GuardAIPhoton>() != null)
+            {
                 Debug.Log("Guard was hit acc");
                 photonView.RPC("KillGuard", RpcTarget.MasterClient, hitInfo.collider.GetComponent<PhotonView>().ViewID);
             }
@@ -312,7 +364,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         bullet.GetComponent<Rigidbody>().isKinematic = false;
     }
 
-    public void Shoot(Shootable Item) 
+    public void Shoot(Shootable Item)
     {
         if (!gameObject.GetComponent<PlayerMovementPhoton>().onMenu)
         {
@@ -328,8 +380,178 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().EmptyGunShot();
             }
         }
-        
+
     }
+
+    IEnumerator DoorOpeningSmall(int breakableID)
+    {
+        PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+        while (breakable.transform.localPosition.y < 3.1f && breakable.transform.localScale.y > 0.34f)
+        {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.1f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.18f, breakable.transform.localScale.z);
+            yield return null;
+        }
+
+        while (breakable.transform.localPosition.y < 3.1f)
+        {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.1f, breakable.transform.localPosition.z);
+            yield return null;
+        }
+
+        while (breakable.transform.localScale.y > 0.34f)
+        {
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.18f, breakable.transform.localScale.z);
+            yield return null;
+        }
+
+        breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 30, breakable.GetComponent<BoxCollider>().size.y);
+        breakable.transform.GetChild(2).GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 200, breakable.GetComponent<BoxCollider>().size.y);
+        yield break;
+    }
+
+    IEnumerator DoorOpeningBig(int breakableID)
+    {
+        PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+        while (breakable.transform.localPosition.y < 3.16f && breakable.transform.localScale.y > 0.15f)
+        {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.09f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.05f, breakable.transform.localScale.z);
+            yield return null;
+        }
+        Debug.Log("it got here calm local Scale 2");
+        while (breakable.transform.localScale.y > 0.15f)
+        {
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y - 0.05f, breakable.transform.localScale.z);
+            yield return null;
+        }
+
+        while (breakable.transform.localPosition.y < 3.16f)
+        {
+            Debug.Log("it got here calm local Scale 2");
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y + 0.09f, breakable.transform.localPosition.z);
+            yield return null;
+        }
+
+        breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 50, breakable.GetComponent<BoxCollider>().size.y);
+        breakable.transform.GetChild(3).GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 40, breakable.GetComponent<BoxCollider>().size.y);
+        yield break;
+    }
+
+
+    [PunRPC]
+    void DestroyBreakable(int breakableID)
+    {
+        PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+
+        if (breakable.tag == "BrokenFence")
+        {
+            Vector3 spawnPosition = breakable.transform.position;
+            Quaternion rotation = breakable.transform.gameObject.transform.rotation;
+            PhotonNetwork.Destroy(breakable.transform.gameObject);
+            PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, rotation);
+        }
+
+
+    }
+    public void Break(Breakable Item)
+    {
+        photonView.RPC(nameof(DestroyBreakable), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
+    }
+
+    public void Open(Openable Item)
+    {
+        photonView.RPC(nameof(OpenRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+    }
+
+    [PunRPC]
+    public void OpenRPC(int openableID)
+    {
+        PhotonView openable = PhotonView.Find(openableID).GetComponent<PhotonView>();
+
+        if (openable.tag == "Door")
+        {
+            StartCoroutine(DoorOpeningSmall(openable.transform.GetComponent<PhotonView>().ViewID));
+        }
+        else
+        if (openable.tag == "DoorBig")
+        {
+            StartCoroutine(DoorOpeningBig(openable.transform.GetComponent<PhotonView>().ViewID));
+        }
+    }
+
+    IEnumerator DoorClosingSmall(int breakableID)
+    {
+        PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+        while (breakable.transform.localPosition.y > 0.91f && breakable.transform.localScale.y < 5.1f)
+        {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.1f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.18f, breakable.transform.localScale.z);
+            yield return null;
+        }
+        Debug.Log("Closing door got here position");
+        while (breakable.transform.localPosition.y > 0.91f)
+        {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.1f, breakable.transform.localPosition.z);
+            yield return null;
+        }
+        Debug.Log("Scale");
+        while (breakable.transform.localScale.y < 5.1f)
+        {
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.18f, breakable.transform.localScale.z);
+            yield return null;
+        }
+        breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 1, breakable.GetComponent<BoxCollider>().size.y);
+        breakable.transform.GetChild(2).GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 20, breakable.GetComponent<BoxCollider>().size.y);
+        yield break;
+    }
+
+    IEnumerator DoorClosingBig(int breakableID)
+    {
+        PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
+        while (breakable.transform.localPosition.y > 1.09f && breakable.transform.localScale.y < 1.0f)
+        {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.09f, breakable.transform.localPosition.z);
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.05f, breakable.transform.localScale.z);
+            yield return null;
+        }
+
+        while (breakable.transform.localScale.y < 1.0f)
+        {
+            breakable.transform.localScale = new Vector3(breakable.transform.localScale.x, breakable.transform.localScale.y + 0.05f, breakable.transform.localScale.z);
+            yield return null;
+        }
+
+        while (breakable.transform.localPosition.y > 1.09f)
+        {
+            breakable.transform.localPosition = new Vector3(breakable.transform.localPosition.x, breakable.transform.localPosition.y - 0.09f, breakable.transform.localPosition.z);
+            yield return null;
+        }
+
+        breakable.GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 6, breakable.GetComponent<BoxCollider>().size.y);
+        breakable.transform.GetChild(3).GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 20, breakable.GetComponent<BoxCollider>().size.y);
+        yield break;
+    }
+    public void Close(Openable Item)
+    {
+        photonView.RPC(nameof(CloseRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+    }
+
+    [PunRPC]
+    public void CloseRPC(int openableID)
+    {
+        PhotonView openable = PhotonView.Find(openableID).GetComponent<PhotonView>();
+        if (openable.tag == "Door")
+        {
+            StartCoroutine(DoorClosingSmall(openable.transform.GetComponent<PhotonView>().ViewID));
+        }
+        else
+        if (openable.tag == "DoorBig")
+        {
+            StartCoroutine(DoorClosingBig(openable.transform.GetComponent<PhotonView>().ViewID));
+        }
+    }
+
 
     [PunRPC]
     void DragRPC(int ItemID)
@@ -338,9 +560,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Item.transform.position = dragDestination.position;
         Item.transform.parent = dragDestination;
 
-        Item.SetItemPickupConditions();
+        Item.ItemPickedUp();
         //Item.transform.Rotate(90, 0, 0);
-       
+
     }
 
     public void Drag(Draggable Item)
@@ -357,12 +579,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void DestroyBackpack(int backPackId)
     {
         PhotonNetwork.Destroy(PhotonView.Find(backPackId));
-        
+
     }
     [PunRPC]
-    void ActivateBackPack() 
+    void ActivateBackPack()
     {
         backPackObject.SetActive(true);
+        backPackObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     public void Grab(Grabbable Item)
@@ -389,7 +612,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             lightsOff.SetActive(true);
             lightsOff.GetComponent<PlayerLightUI>().LightUITimer();
             lightsOn.SetActive(false);
-        } 
+        }
         else
         {
             lightsOn.SetActive(true);
@@ -397,9 +620,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             lightsOff.SetActive(false);
         }
     }
-    
+
     IEnumerator LightsCoroutine(Switchable Item)
     {
+
+        actualCamera.transform.GetChild(0).gameObject.SetActive(false);
+        pickUpDestinationLocal.gameObject.SetActive(false);
+
         GameObject[] spinningLights = GameObject.FindGameObjectsWithTag("SpinningLight");
         ObjectToSeeTheLights.SetActive(true);
         yield return new WaitForSeconds(3);
@@ -414,6 +641,14 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         yield return new WaitForSeconds(2);
         camera.transform.GetChild(1).gameObject.SetActive(false);
         //camera.transform.GetChild(0).GetComponent<CinemachineVirtualCamera>().MoveToTopOfPrioritySubqueue();
+
+        if (pickUpDestinationLocal.childCount > 0)
+        {
+            if (pickUpDestinationLocal.GetChild(0).GetComponent<Throwable>() != null)
+                actualCamera.transform.GetChild(0).gameObject.SetActive(true);
+        }
+        pickUpDestinationLocal.gameObject.SetActive(true);
+
         yield break;
     }
 
