@@ -23,9 +23,10 @@ public class TestGuards
         UnityEngine.Assertions.Assert.raiseExceptions = true;
         foreach (var g in guards) {
             // Debug.Assert(!g.activeSelf);
+            Debug.Log(g.activeSelf);
             Assert.IsTrue(!g.activeSelf);
             Assert.IsTrue(g.activeSelf);
-            Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState != GuardAIPhoton.State.Patroling);
+            // Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState != GuardAIPhoton.State.Patroling);
             Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState == GuardAIPhoton.State.Patroling);
         }
     }
