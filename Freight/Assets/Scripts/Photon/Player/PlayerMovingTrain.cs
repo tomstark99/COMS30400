@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//script attached to the player. It allow a character controller to move on a moving rigid body (in out case, the train) 
 public class PlayerMovingTrain : MonoBehaviour
 {
     public Transform activePlatform;
