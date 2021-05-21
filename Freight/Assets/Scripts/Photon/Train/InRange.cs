@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using Photon.Pun;
-
+//InRange is attached to the train that is about to leave. This script activates the train outline and it complets the objective 
+// (find a way out of here) when the player is close enough to the train
 public class InRange : MonoBehaviourPun
 {
     private GameObject[] players;
@@ -53,12 +54,6 @@ public class InRange : MonoBehaviourPun
                     photonView.RPC(nameof(InRangeOfTrainRPC), RpcTarget.All);
                 }
             } 
-            // else if(other.gameObject.GetComponent<Objectives>().FindTrain.activeSelf && !other.gameObject.GetComponent<Objectives>().FindTrainDesc.activeSelf) {
-            //     if (walkedInRangeOfTrain) {
-            //         foundTrain = true;
-            //         photonView.RPC(nameof(WalkedOutOfTrain), RpcTarget.All);
-            //     }
-            // }
         }
     }
 
@@ -71,12 +66,6 @@ public class InRange : MonoBehaviourPun
                 photonView.RPC(nameof(InRangeOfTrainRPC), RpcTarget.All);
             }
         } 
-        // else if (!foundTrain) {
-            
-        //     if (!walkedInRangeOfTrain && other.gameObject.tag == "Player" && foundTrain) {
-        //         photonView.RPC(nameof(InRangeOfTrainRPC), RpcTarget.All)
-        //     }
-        // }
     }
 
     void TrainOutlineOn()
