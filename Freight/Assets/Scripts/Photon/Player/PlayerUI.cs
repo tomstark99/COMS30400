@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Pun;
 
+//Attached on the Player prefab. Activates and deactivates the menu + sets the mouse sensitvity
 public class PlayerUI : MonoBehaviourPun
 {
 
@@ -18,15 +19,17 @@ public class PlayerUI : MonoBehaviourPun
 
     private bool menuOpened = false;
 
-    // https://titanwolf.org/Network/Articles/Article?AID=5698ab7c-fa2c-4dd3-997e-0512d22a64ba#gsc.tab=0
+    // Get the mouse sensitivity from cache
     private void Start()
     {
         if (PlayerPrefs.HasKey("MouseSensibility"))
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
         else
+        //if no mouse sensitivy options have been chosen set it to 100
             mouseSensibilitySlider.value = 100f;
     }
 
+    //Set mouse sensibilty in cache 
     public void SetMouseSensibility()
     {
         mouseLook.mouseSensitivity = mouseSensibilitySlider.value;
@@ -34,6 +37,7 @@ public class PlayerUI : MonoBehaviourPun
         PlayerPrefs.Save();
     }
 
+    //close or open the menu
     public void closeorOpenMenu() 
     {
             menuOpened = !menuOpened; 
@@ -44,11 +48,7 @@ public class PlayerUI : MonoBehaviourPun
 
     private void Update()
     {
-        //Debug.Log(mouseSensibilitySlider.value);
-        //if (!gameObject.transform.parent.GetComponent<PhotonView>().IsMine)
-        //{
-        //    return;
-        //}
+        //if esc is pressed close or open the mneu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             closeorOpenMenu();
@@ -73,6 +73,7 @@ public class PlayerUI : MonoBehaviourPun
         CloseOptionsInGame();
     }
 
+    //if menu activate is called, assign the value to the script that need it and cofig cursor
     public void MenuActive(bool value) {
         menuOpened = value;
         mouseLook.onMenu = menuOpened;
@@ -82,6 +83,7 @@ public class PlayerUI : MonoBehaviourPun
     }
 
 
+    //activate and deactivate the cursor
     private void ConfigCursor()
     {
         if (menuOpened)
@@ -96,11 +98,5 @@ public class PlayerUI : MonoBehaviourPun
         }
     }
 
-    /*public void QuitRoom()
-    /*public void QuitRoom()
-    {
-        NetworkManager.instance.LeaveRoom();
-        SceneManager.LoadScene("Menu");
-    }*/
     
 }
