@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+//Into Subbtittles displays subbtitles for the intro animation audio
 public class IntroSubbtitles : MonoBehaviour
 {
     public TextMeshProUGUI subb;

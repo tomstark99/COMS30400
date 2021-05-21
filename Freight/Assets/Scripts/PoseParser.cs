@@ -29,7 +29,7 @@ public class PoseParser : MonoBehaviour
         GETPoseArray();
     }
 
-    //[Client]
+    
     public static float[] GETPoseArray()
     {
         if (off)

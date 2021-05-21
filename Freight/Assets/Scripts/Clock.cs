@@ -6,6 +6,7 @@ using System;
 using TMPro;
 using Photon.Pun;
 
+//this script counts down the stopwatch. The stop watch represents the time until the train is leaving
 public class Clock : MonoBehaviour
 {
     public TextMeshProUGUI text;

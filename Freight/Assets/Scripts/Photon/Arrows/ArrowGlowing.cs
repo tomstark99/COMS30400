@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+
+//this script is placed on the player
+//it finds all the tutorial arrows and makes them glow when the player is near them
 public class ArrowGlowing : MonoBehaviourPun
 {
 

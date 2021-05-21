@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+//This script is placed on an empty game object inside the train station, just after the broken fence
+//when the player enters the collider the tutorial arrows objejcs are destroyed
 public class DestroyArrows : MonoBehaviourPun
 {
     public GameObject arrows;

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//this script is attached to an empty gameobject near the truck. When the player hits the collider next to the truck, a toolTip telling
+//the players to jump on the truck will appear. The tooltip follows the players camera direction, so it always faces the player
 public class ToolTipGetOnTheTruck : MonoBehaviour
 {
     public GameObject toolTipJumpInTheTruck;

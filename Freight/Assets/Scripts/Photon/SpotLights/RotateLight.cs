@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Photon.Pun;
-
+//Rotate Light is placed on the normal spotlights. It rotates the lights and sends an event to GuardAIPhoton if the player is inside the light. 
 public class RotateLight : MonoBehaviour
 {
     [SerializeField]
@@ -33,7 +33,7 @@ public class RotateLight : MonoBehaviour
 
     public bool lightsTurnedOff;
     private bool lightsRotating;
-    // Start is called before the first frame update
+
     void Start()
     {
         positiveRotation = true;
@@ -41,7 +41,7 @@ public class RotateLight : MonoBehaviour
         lightsTurnedOff = false;
         lightsRotating = (bool)PhotonNetwork.CurrentRoom.CustomProperties["SpotlightsRotating"];
 
-        //angleDifference =  Math.Max(0,transform.rotation.y - 360);
+        
 
     }
 
@@ -51,8 +51,10 @@ public class RotateLight : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient)
             return;
 
+        //players need to be found every frame in case one of the player disconnects
         players = GameObject.FindGameObjectsWithTag("Player");
 
+        //if lights hasnt been turned off using the laptop, rotate the lights
         if (!lightsTurnedOff && lightsRotating)
         {
             Rotate();
@@ -64,6 +66,7 @@ public class RotateLight : MonoBehaviour
         }
     }
 
+    //rotate the spotlights in between 2 angles
     void Rotate()
     {
         if (positiveRotation == true)
@@ -85,28 +88,29 @@ public class RotateLight : MonoBehaviour
         }
     }
 
+    //This function loops throught the player objects and checks if any of them are inside the lights
     void PlayerSpotted()
     {
         foreach (var player in players)
         {
-            //Debug.Log(Vector3.Distance(transform.Find("pCylinder3/Point Light").position, player.transform.position));
+            
             if (Vector3.Distance(transform.Find("pCylinder3/Point Light").position, player.transform.position) < sightRange)
             {
                 // vector from guard to player
                 Vector3 dirToPlayer = (player.transform.position - transform.Find("pCylinder3/Point Light").position).normalized;
-                //Debug.Log("dirToPlayer" + dirToPlayer);
-                // might have to change the -transform.Find("pCylinder3/Point Light").right
+            
                 float guardPlayerAngle = Vector3.Angle(-transform.Find("pCylinder3/Point Light").right, dirToPlayer);
-                //Debug.Log("guardPlayerAngle" + dirToPlayer);
-                // Debug.Log("lightAngle / 2f" + lightAngle / 2f);
+              
                 if (guardPlayerAngle < lightAngle / 2f)
                 {
 
-                    // checks if guard line of sight is blocked by an obstacle
-                    // because player.transform.position checks a line to the player's feet, i also added a check on the second child (cube) so it checks if it can see his feet and the bottom of the cube
+                    // checks if spotlight line of sight is blocked by an obstacle
+                    // because player.transform.position checks a line to the player's feet, i also added a check on the head 
                     if (!Physics.Linecast(transform.Find("pCylinder3/Point Light").transform.position, player.transform.Find("master/Reference/Hips/LeftUpLeg/LeftLeg/LeftFoot").transform.position, obstacleMask) || !Physics.Linecast(transform.Find("pCylinder3/Point Light").transform.position, player.transform.Find("master/Reference/Hips/Spine/Spine1/Spine2/Neck/Head").transform.position, obstacleMask))
                     {
                        // Debug.Log("YE MANS GETTING DETECTED STIIIIIIIIIIIIIIIIIIIIIIIIIL");
+
+                       //play detection sound and call event from guard ai
                         transform.parent.GetComponent<SpotlightSounds>()?.PlayDetectedSound();
                         PlayerInLight();
                     }
@@ -118,6 +122,7 @@ public class RotateLight : MonoBehaviour
         }
     }
 
+    //draw red line if gizmos are drew
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
