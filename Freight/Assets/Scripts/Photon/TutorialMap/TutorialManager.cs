@@ -128,7 +128,6 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject pickUpGuard;
 
-    public AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -141,7 +140,6 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         fenceToBreak = GameObject.FindGameObjectWithTag("BrokenFence");
         fenceToBreak.GetComponent<Breakable>().FenceBroke += HandleBrokenFence;
         
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
