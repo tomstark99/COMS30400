@@ -4578,7 +4578,6 @@ MonoBehaviour:
   pickUpTheGunAndKillTheGuards: {fileID: 0}
   trainingOver: {fileID: 0}
   pickUpGuard: {fileID: 0}
-  audioManager: {fileID: 0}
 --- !u!1 &933176383
 GameObject:
   m_ObjectHideFlags: 0
@@ -5467,7 +5466,7 @@ Transform:
   - {fileID: 412700376}
   - {fileID: 15482503}
   m_Father: {fileID: 0}
-  m_RootOrder: 30
+  m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1140590291
 PrefabInstance:
@@ -6452,7 +6451,7 @@ Transform:
   - {fileID: 668298417}
   - {fileID: 1763707533}
   m_Father: {fileID: 0}
-  m_RootOrder: 28
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1451297023
 GameObject:
@@ -6640,7 +6639,7 @@ Transform:
   - {fileID: 701058223}
   - {fileID: 12255280}
   m_Father: {fileID: 0}
-  m_RootOrder: 29
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1570447100
 GameObject:
@@ -6906,51 +6905,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1635971923}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1641738828
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1641738830}
-  - component: {fileID: 1641738829}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1641738829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1641738828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cabdbd3ec5ab48d47abedc79da701cc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentAudio: {fileID: 0}
-  helloWelcome: {fileID: 0}
---- !u!4 &1641738830
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1641738828}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 794, y: 304, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 26
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1656183923
 GameObject:
   m_ObjectHideFlags: 0
@@ -7543,7 +7497,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1763707532
 PrefabInstance:

@@ -582,18 +582,19 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
         playerSpotted = PlayerSpotted();
         deadGuardSpotted = DeadGuardSpotted();
 
+        // if old state different to new state, change chasing state on PlayerAnimation
         if(old != playerSpotted) 
         {
             GetComponent<GuardAnimation>().setChasing(playerSpotted);
         }
 
-
+        // if chase music is not playing and the guard is in another state other than patroling, send RPC to all players to play chase music
         if (!chaseMusic.isPlaying && guardState != State.Patroling)
         {
             photonView.RPC(nameof(StartChaseMusic), RpcTarget.All);
         }
             
-
+        // if the player has been spotted for over 8 seconds, the game is over and we enable the cinemachine camera of the closest player to show they were the ones caught to the other player
         if (playerSpotted && timeChasing > 8f)
         {
             PlayerCaught();
@@ -602,19 +603,21 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             return;
         }
 
+        // if a dead guard has been spotted, we set all guards in the level to be alerted
         if (deadGuardSpotted)
         {
             SetAllGuardsToAlerted();
         }
 
+        // logic for when a player is not spotted but they are alerted due to a dead guard being spotted
         if (!playerSpotted && guardState == State.DeadGuardAlerted)
         {
             timeAlerted += Time.deltaTime;
+            // if they have been alerted in this state for over 15 seconds, they can go back to patroling
             if (timeAlerted > 15f)
             {
                 guardState = State.Patroling;
                 guard.ResetPath();
-                //GotoNextPoint();
                 guard.destination = points[destPoint].position;
                 ChangeToYellow();
                 timeAlerted = 0f;
@@ -626,6 +629,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             }
             else
             {
+                // if the time is less than 15, go to the nearest player
                 GoToPlayer();
                 ChangeToOrange();
             }
@@ -655,6 +659,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
                 ChangeToOrange();
             }
         }
+        // if player is not spotted but the most recent guard state was chasing, reset patience bar and set the guard to be alerted
         else if (!playerSpotted && guardState == State.Chasing)
         {
             patienceBar.value = 0;
@@ -663,7 +668,6 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             timeChasing = 0;
             guardState = State.Alerted;
         }
-
         // If the player is not spotted and the guard has reached their destination, go to new point
         else if (!playerSpotted && guard.remainingDistance < 1.0f)
         {
@@ -675,6 +679,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
         // If player is spotted, guard will chase player and set guards in the same group as him to spotted
         else if (playerSpotted)
         {
+            // sets patience bar to true for all players
             if (patienceBar.gameObject.activeSelf == false)
             {
                 photonView.RPC(nameof(SetPatienceBarToTrue), RpcTarget.All);
@@ -694,6 +699,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             }
             timeChasing += Time.deltaTime;
             patienceBar.value = timeChasing;
+            // if guard chases a player for more than 2 seconds, alert all guards in the same GameObject to be alerted as well
             if (timeChasing > 2f)
             {
                 SetGuardsToAlerted();
@@ -705,6 +711,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
 
     }
 
+    // used for debugging in Unity Editor, draws red lines that represent the guard's sight range
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -715,8 +722,10 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
         return this.playerSpotted;
     }
 
+    // this function is called several times per second, the master client writes to the stream while the other client reads the data the master client wrote several times a second
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        // master client sends the guard's state, the time chasing if the patience bar is active and if the player has been spotted
         if (stream.IsWriting)
         {
             stream.SendNext(guardState);
@@ -726,6 +735,7 @@ public class GuardAIPhoton : MonoBehaviourPunCallbacks, IPunObservable
             }
             stream.SendNext(playerSpotted);
         }
+        // other client recieves the guard's state, the time chasing if the patience bar is active and if the player has been spotted
         else if (stream.IsReading)
         {
             guardState = (State) stream.ReceiveNext();
