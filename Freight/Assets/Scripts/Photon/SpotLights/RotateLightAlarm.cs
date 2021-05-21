@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
+using Photon.Pun; 
+
+
+//script attached to the red alarm spotlights
 public class RotateLightAlarm : MonoBehaviourPun
 {
     [SerializeField]
@@ -26,13 +29,15 @@ public class RotateLightAlarm : MonoBehaviourPun
     
     public bool hasSpinned;
     public bool isSpinning;
-    // Start is called before the first frame update
+    
     void Start()
     {
         hasSpinned = false;
         positiveRotation = true;
         isSpinning = false;
 
+        //find spinning lights 
+        //if playerInLight is called on light, call SetToSpinning
         GameObject[] lights = GameObject.FindGameObjectsWithTag("SpinningLight");
 
         foreach (var light in lights)
@@ -52,6 +57,7 @@ public class RotateLightAlarm : MonoBehaviourPun
         }
     }
 
+    //rotate SpotLIghts
     void Rotate()
     {
         if (positiveRotation == true)
@@ -73,6 +79,7 @@ public class RotateLightAlarm : MonoBehaviourPun
         }
     }
 
+    //Set alarm light to be spinning on both clients
     void SetToSpinning()
     {
         if(!transform.GetComponent<AudioSource>().isPlaying)
@@ -94,6 +101,8 @@ public class RotateLightAlarm : MonoBehaviourPun
         StartCoroutine(StopLight());
     }
     IEnumerator StopLight() {
+        
+        //spot the lights sound clip and light after 20 seconds
         yield return new WaitForSeconds(20);
         transform.GetComponent<AudioSource>().Stop();
         isSpinning = false;
