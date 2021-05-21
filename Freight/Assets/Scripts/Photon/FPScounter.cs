@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
+//this script calculates the player's client fps and displays an LOW CLIENT FPS icon if the fps is less then 25
 public class FPScounter : MonoBehaviour
 {
     // Start is called before the first frame update

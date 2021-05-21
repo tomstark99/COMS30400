@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//this script is placed on every achievment
+//its job is to make the achievment scale bigger and smaller when hovered over with the mouse
 public class AchievementBadge : MonoBehaviour
 {
     // Start is called before the first frame update
