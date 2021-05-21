@@ -51,7 +51,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (ObjectToSeeTheLights)
             ObjectToSeeTheLights.SetActive(false);
 
-        Debug.Log(ObjectToSeeTheLights);
+        //Debug.Log(ObjectToSeeTheLights);
     }
 
     [PunRPC]
