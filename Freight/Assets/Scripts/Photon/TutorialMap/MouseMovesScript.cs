@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//this scipt is attached to the mouse image on the tutorial scene.
+//it moves the mouse left and right 
+//TODO: refactor the mouse movement into an animator controller
 public class MouseMovesScript : MonoBehaviour
 {
     Vector3 aPos;
