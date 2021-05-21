@@ -43,10 +43,16 @@ public class TestGuards : TestClass
             Assert.IsNotNull(script.guard);
             Assert.IsNotNull(script.spotlight);
             Assert.IsNotNull(script.sounds);
-    private static void testGuardsActive(GameObject[] guards) {
+        }
+        yield return null;
+    }
+
+    private static void testGuardsActive(GameObject[] guards)
+    {
         Assert.raiseExceptions = true;
         UnityEngine.Assertions.Assert.raiseExceptions = true;
-        foreach (var g in guards) {
+        foreach (var g in guards)
+        {
             // Debug.Assert(!g.activeSelf);
             Debug.Log(g.activeSelf);
             Assert.IsTrue(!g.activeSelf);
@@ -54,10 +60,9 @@ public class TestGuards : TestClass
             // Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState != GuardAIPhoton.State.Patroling);
             Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState == GuardAIPhoton.State.Patroling);
         }
-        yield return null;
     }
 
-    [Test]
+        [Test]
     public IEnumerator TestGuardsActive() {
         foreach (var g in guards) {
             Assert.IsTrue(g.activeSelf);
