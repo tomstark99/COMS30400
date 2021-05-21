@@ -37,7 +37,7 @@ public class BreakFencePhoton : MonoBehaviourPun
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("is this even called");
+        // Debug.Log("is this even called");
         if (!walkedInRangeOfFence && other.tag == "Player")
         {
             photonView.RPC(nameof(InRangeOfFenceRPC), RpcTarget.All);
