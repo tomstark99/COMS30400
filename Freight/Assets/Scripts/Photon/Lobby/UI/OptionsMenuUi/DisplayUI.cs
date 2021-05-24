@@ -12,6 +12,8 @@ public class DisplayUI : MonoBehaviour
     public GameObject ControlsTab;
     public GameObject AudioTab;
     public GameObject DisplayTab;
+
+    
     // Start is called before the first frame update
     public void OnMouseOver() {
         transform.parent.parent.GetComponent<AudioSource>().Play();
