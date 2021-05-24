@@ -80,8 +80,11 @@ public class GuardAnimation : MonoBehaviourPun, IPunObservable
         this.chasingPlayer = val;
     }
 
+    // this function is called several times per second, the master client writes to the stream while the other client reads the data the master client wrote several times a second
+    // once each player has sent or recieved the data, they run the logic of the guard animation themselves
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        // master client sends whether the guard animation is chasing, walking and the guard's current velocity
         if (stream.IsWriting)
         {
             //Debug.Log("SPEED ANIM " + guard.speed);
@@ -125,6 +128,7 @@ public class GuardAnimation : MonoBehaviourPun, IPunObservable
                 animator.SetBool(hasCaughtHash, true);
             }
         }
+        // other client sends whether the guard animation is chasing, walking and the guard's current velocity
         else if (stream.IsReading)
         {
             Vector3 velocity = (Vector3) stream.ReceiveNext();

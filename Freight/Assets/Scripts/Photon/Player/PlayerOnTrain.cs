@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// script attached to the player. Returns if the player is on the train
 public class PlayerOnTrain : MonoBehaviour
 {
     [SerializeField]

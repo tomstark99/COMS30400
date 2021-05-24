@@ -47,7 +47,22 @@ public class TestGuards : TestClass
         yield return null;
     }
 
-    [Test]
+    private static void testGuardsActive(GameObject[] guards)
+    {
+        Assert.raiseExceptions = true;
+        UnityEngine.Assertions.Assert.raiseExceptions = true;
+        foreach (var g in guards)
+        {
+            // Debug.Assert(!g.activeSelf);
+            Debug.Log(g.activeSelf);
+            Assert.IsTrue(!g.activeSelf);
+            Assert.IsTrue(g.activeSelf);
+            // Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState != GuardAIPhoton.State.Patroling);
+            Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState == GuardAIPhoton.State.Patroling);
+        }
+    }
+
+        [Test]
     public IEnumerator TestGuardsActive() {
         foreach (var g in guards) {
             Assert.IsTrue(g.activeSelf);

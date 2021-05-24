@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+//This is the main script the runs the tutorial 
 public class TutorialManager : MonoBehaviourPunCallbacks
 {
 
@@ -128,20 +129,23 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject pickUpGuard;
 
-    public AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
     {
+        //tutorial counter represents the stage the player is in completing the tutorial
         tutorialCounter = -1;
         keysPressed = 0;
+
+        //find the walls that need to be lifted if a player complets one room of the tutorial
         WallLifts1 = GameObject.Find("Room1").transform.GetChild(2).gameObject;
         WallLifts2 = GameObject.Find("Room2").transform.GetChild(1).gameObject;
         WallLifts3 = GameObject.Find("Room3").transform.GetChild(1).gameObject;
         cageGuard = GameObject.Find("Guards").transform.GetChild(0).gameObject;
+
+        //subscribe the fence broke event 
         fenceToBreak = GameObject.FindGameObjectWithTag("BrokenFence");
         fenceToBreak.GetComponent<Breakable>().FenceBroke += HandleBrokenFence;
         
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -149,6 +153,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
     {
         if(tutorialCounter == -1)
         {
+            //play welcome audioSource
             if (helloWelcome.activeSelf == false)
                 helloWelcome.SetActive(true);
 
@@ -189,6 +194,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 keysPressed++;
                 dSprite.SetActive(true);
             }
+
             // once 4 keys are pressed, we destory the tooltip form the UI and move onto the next tutorial part
             if (keysPressed == 4)
             {
@@ -340,7 +346,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                 if(pickUpTheGunAndKillTheGuards != null)
                     pickUpTheGunAndKillTheGuards.SetActive(true);
                     
-                     //Destroy(throwRock);
+                     
             } else {
                 if (pleaseWalkUpToTheGunAndPickItUp.GetComponent<AudioSource>().isPlaying)
                 {
@@ -359,9 +365,9 @@ public class TutorialManager : MonoBehaviourPunCallbacks
                     Destroy(pressClickToShoot);
                 }
             }
-            //Debug.Log(GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length);
+          
             // once all guards have been found to be dead
-            // its 325 because of all the transforms in the guard prefab
+            // its 329 because of all the transforms in the guard prefab
             if (GameObject.Find("Environment/Interactables/DeadGuards").GetComponentsInChildren<Transform>().Length == 329)
             {
                 // get a random number and set the guard to drag to be that random guard
@@ -476,6 +482,7 @@ public class TutorialManager : MonoBehaviourPunCallbacks
         //Debug.Log(tutorialCounter);
     }
 
+    //if the fence is broken play sound 
     void HandleBrokenFence()
     {
         tutorialCounter++;
