@@ -23,11 +23,12 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsConnected) return;
        
-
+        // create room settings, setting the max players to 2 
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 2;
+
+        // we create the room however if there is a room of the same name, we instead join it
         PhotonNetwork.JoinOrCreateRoom(roomName.text, options, TypedLobby.Default);
-        //PhotonNetwork.CreateRoom(roomName.text, options, TypedLobby.Default);
         
         roomsCanvases.CurrentRoomCanvas.SetRoomName(roomName.text);
     }
@@ -35,7 +36,7 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
     // when room is created, show the current room and hide previous menu
     public override void OnCreatedRoom()
     {
-        //Debug.Log("Room created");
+        // if the initial room state is that it is invisible, we know that it is a tutorial room so we just instantly load the player into the tutorial level
         if (PhotonNetwork.CurrentRoom.IsVisible == false)
         {
             GameObject.FindGameObjectWithTag("GameSettings").GetComponent<GameSettings>().SetGameSettings();
@@ -43,9 +44,9 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
             roomsCanvases.CurrentRoomCanvas.Hide();
             roomsCanvases.CreateOrJoinRoomCanvas.Hide();
         }
+        // otherwise it is just a normal room so we show the current room canvas and disable the old canvas
         else
         {
-            //Debug.Log("1");
             roomsCanvases.CurrentRoomCanvas.Show();
             roomsCanvases.CreateOrJoinRoomCanvas.Hide();
         }

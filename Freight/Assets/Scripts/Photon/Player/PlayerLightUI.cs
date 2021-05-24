@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+    This class disables the text that says lights have been either turned on or off after a certain amount of time
+*/
 public class PlayerLightUI : MonoBehaviour
 {
     private float timeToDisable;
@@ -17,7 +20,7 @@ public class PlayerLightUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(timeToDisable);
+        // if the text is active, increase time and once it has hit 3 seconds, disable the text
         if (isOn)
         {
             timeToDisable += Time.deltaTime;

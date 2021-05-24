@@ -4,6 +4,9 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 
+/*
+    Class that applies canvas and gunshot sound
+*/
 public class Gun : MonoBehaviourPun
 {
     [SerializeField]
@@ -25,15 +28,16 @@ public class Gun : MonoBehaviourPun
 
     void Start()
     {
+        // sets the UI ammo text
         ammoUI.text = "Ammo: " + ammo.ToString();
     }
 
     public void EmptyGunShot()
     {
-        photonView.RPC("PlayEmptyClip", RpcTarget.All);
-        //Debug.Log(ammo);
+        photonView.RPC(nameof(PlayEmptyClip), RpcTarget.All);
     }
 
+    // RPC call to tell all players to play empty gunshot sound 
     [PunRPC]
     void PlayEmptyClip()
     {
@@ -42,12 +46,14 @@ public class Gun : MonoBehaviourPun
 
     public void GunShot()
     {
-        photonView.RPC("PlayGunShot", RpcTarget.All);
+        photonView.RPC(nameof(PlayGunShot), RpcTarget.All);
     }
 
+    // RPC call to tell all players to play gunshot sound 
     [PunRPC]
     void PlayGunShot()
     {
+        // plays gunshot sound and updates ammo count with decreased ammo
         gunShot.PlayOneShot(gunShot.clip);
         ammo -= 1;
         ammoUI.text = "Ammo: " + ammo.ToString();
