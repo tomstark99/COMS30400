@@ -11,12 +11,6 @@ public class Minimap : MonoBehaviour
 
     void Start() {
         player = transform.parent;
-        // players = GameObject.FindGameObjectsWithTag("Player");
-        // bags = GameObject.FindGameObjectsWithTag("Bag");
-        // foreach (var bag in bags)
-        // {
-            // bag.GetComponent<Grabbable>().BagPickedUp += RemoveBagFromMinimap;
-        // }
     }
     // Start is called before the first frame update
     void Update() {
@@ -26,10 +20,5 @@ public class Minimap : MonoBehaviour
         transform.rotation = Quaternion.Euler(90f, player.eulerAngles.y, 0.0f);
     }
 
-    // private void RemoveBagFromMinimap() {
-    //     foreach (var player in players)
-    //     {
-    //         // if(player.)
-    //     }
-    // }
+   
 }

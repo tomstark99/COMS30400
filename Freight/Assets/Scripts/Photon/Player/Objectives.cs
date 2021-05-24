@@ -203,7 +203,7 @@ public class Objectives : MonoBehaviour
             escapeOnTrain.SetActive(true);
             escapeOnTrainDesc.SetActive(true);
             escapeOnTrainBackground.SetActive(true);
-            //GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<BreakFencePhoton>().InRangeOfFence -= SetBreakFenceToActive;
+            
         }
     }//escape train desc + 15 //escape train + 20
 
