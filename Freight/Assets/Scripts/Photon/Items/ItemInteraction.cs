@@ -427,7 +427,7 @@ public class ItemInteraction : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.G))
             {
                 // we drop/throw item and turn off its outline
-                currentInteractable.PrimaryInteractionOff(character);
+                currentInteractable.SecondaryInteraction(character);
                 currentInteractable.GetComponent<Outline>().enabled = true;
                 SetPressEToActive();
                 interactablesInRange.Add(currentInteractable.gameObject);
