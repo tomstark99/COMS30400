@@ -38,7 +38,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
     private bool onTrain;
     private bool check = false;
     private Transform prev;
-    private PhotonView PV;
+
     private AudioSource steps;
     private AudioSource run;
 
@@ -66,32 +66,32 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // activates player's camera if its theirs and disables all others
         if (photonView.IsMine)
         {
-            // transform.Find("Camera").gameObject.SetActive(true);
             transform.Find("Camera/Camera").gameObject.SetActive(true);
             transform.Find("MinimapCamera").gameObject.SetActive(true);
-
         }
 
-        PV = GetComponent<PhotonView>();
         if (!photonView.IsMine && GetComponent<PlayerMovementPhoton>() != null)
         {
-            //Debug.Log(" DISABLE CONTROLER ");
             GetComponent<PlayerMovementPhoton>().enabled = false;
         }
 
         GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
+
+
+        //for all the guards in the scene, subscribe to the event PlayerCaught
+        //when a player is caugh DisablePlayer is called which deactivates players movement
 
         foreach (var guard in guards)
         {
             guard.GetComponent<GuardAIPhoton>().PlayerCaught += DisablePlayer;
         }
 
+        //get the stepts and the rund sound effects
         onMenu = false;
         steps = groundCheck.GetChild(0).GetComponent<AudioSource>();
         run = groundCheck.GetChild(1).GetComponent<AudioSource>();
 
-        // achievement checker (deleting for testing purposes)
-        //PlayerPrefs.DeleteKey("BabySteps");
+        //if player got the achievement babySteps, set baby stepts to true
 
         if (PlayerPrefs.HasKey("BabySteps1"))
             babySteps = true;
@@ -101,21 +101,20 @@ public class PlayerMovementPhoton : MonoBehaviourPun
 
     void Update()
     {
-        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+        if (!photonView.IsMine)
         {
             return;
         }
 
-        // movement function
-        if (photonView.IsMine) {
-            Movement();
-        }
+        Movement();
     }
 
+    //enable a virtual camera
     public void EnableVirtualCamera()
     {
         photonView.RPC(nameof(EnableVirtualCameraRPC), RpcTarget.All);
     }
+
 
     [PunRPC]
     void EnableVirtualCameraRPC()
@@ -123,6 +122,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         vcam.Priority = 100;
     }
 
+    //called when the player is caught by the guards
     [PunRPC]
     void DisablePlayerRPC()
     {
@@ -138,7 +138,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         photonView.RPC(nameof(DisablePlayerRPC), RpcTarget.All);
     }
 
-    IEnumerator SetFaceActive() {
+    /*IEnumerator SetFaceActive() {
         if (check == false) {
             faceUI.SetActive(true);
         }
@@ -147,11 +147,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             faceUI.SetActive(false);
             check = true;
         }
-    }
-
-    void DistanceToTrain() {
-        // float distance
-    }
+    }*/
 
     public void GameEnding()
     {
@@ -164,7 +160,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         yield return new WaitForSeconds(1f);
         this.enabled = false;
     }
-
+    
+    //function that handles all players movement
     void Movement()
     {
         if (onMenu && !onTrain)
@@ -185,6 +182,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             velocity.y = -3f;
         }
 
+        //this handels game ending on the last level. When the player gets on the truck, it doenst take into account movement anymore, just gravity
         if (gameEnding)
         {
             velocity.y += gravity * Time.deltaTime;
@@ -192,10 +190,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             return;
         }
 
+        //get axis
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         float l = Input.GetAxis("Ladder");
 
+        //if the player move for the first time get the achievement baby steps
         if (!babySteps) 
         { 
             if (x > 0f || z > 0f)
@@ -208,6 +208,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         // instantiates move with null so that it can be set depending on climb
         Vector3 move;
 
+        //if pose is climbing, add the upwards velocity
         if ((climbingBuilding || climbing) && PoseParser.GETGestureAsString().CompareTo("L") == 0)
         {
             move = transform.up * 0.4f;
@@ -215,12 +216,18 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         {
             move = transform.up * l;
         }
+
+        //if the pose is move forwards, move forward
         else if (PoseParser.GETGestureAsString().CompareTo("F") == 0) {
             move = transform.forward; 
         }
+
+        //if pose is move diagonal right, move diagonal right
         else if (PoseParser.GETGestureAsString().CompareTo("I") == 0) {
             move = transform.right + transform.forward;
         }
+
+        //if pose is move diagonal left, move diagonal left
         else if (PoseParser.GETGestureAsString().CompareTo("O") == 0) {
             move = transform.right * -1 + transform.forward;
         }
@@ -229,54 +236,20 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             move = transform.right * x + transform.forward * z;
         }
 
-        //Sticks player to centreline of ladder
-        if (climbing)
+        //if climbing, translate the player up
+        if (climbing || climbingBuilding)
         {
-            //Debug.Log(timerCountDown);
             timerCountDown -= Time.deltaTime;
             if (timerCountDown < 0)
             {
                 timerCountDown = 0;
             }
-            //faceUI.SetActive(false);
-            //Debug.Log(train);
-            //Debug.Log(ladderCentreLine);
-            /*Vector3 ladderPos = train.transform.position + (train.transform.rotation * ladderCentreLine);
-            ladderPos.y = transform.position.y;
-            move += ladderPos - transform.position;*/
+           
             transform.Translate(Vector3.up * Input.GetAxis("Vertical") * 2 * Time.deltaTime);
-        } else if (climbingBuilding)
-        {
-            timerCountDown -= Time.deltaTime;
-            if (timerCountDown < 0)
-            {
-                timerCountDown = 0;
-            }
-             transform.Translate(Vector3.up * Input.GetAxis("Vertical") * 2 * Time.deltaTime);
-        }
-        // if forwards velocity is greater than 0 and inside the climbing collider, add to the vertical height instead of the forward height
-        // else if (climbingBuilding && z > 0f)
-        // {
-        //     move += transform.right * x + transform.up * z;
-        // }
-        // else
-        // {
-        //     move = transform.right * x + transform.forward * z;
-        // }
+        } 
 
-        // sticks the player onto the train
-        //if (onTrain)
-        //{
-        //    //StartCoroutine(SetFaceActive());
-        //    Vector3 trainMove = Vector3.MoveTowards(gameObject.transform.position, train.transform.position, Time.deltaTime) - train.transform.position;
-        //    trainMove.x = -trainMove.x;
-        //    trainMove.y = 0f;
-        //    trainMove.z = -trainMove.z;
-        //    move += trainMove;
-        //}
 
-        //Debug.Log(speed);
-
+        //move the player according to the controller
         controller.Move(move * speed * Time.deltaTime);
 
         // Checks if jump button is pressed and allows user to jump if they are on the ground
@@ -287,6 +260,7 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
+        //Toggle crouch animation if alt
         if ((Input.GetKeyDown(KeyCode.LeftControl) || PoseParser.GETGestureAsString().CompareTo("C") == 0) && !crouching)
         {
             crouching = true;
@@ -307,6 +281,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             controller.Move(velocity * Time.deltaTime);
         }
 
+
+        //if player is on the train
         if ((move.x != 0 || move.z != 0) && isGrounded && !onTrain)
         {
             if (crouching)
@@ -386,6 +362,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         } 
     }
 
+    //to accomodate for the hands ui. Sometimes the hands animation would flicked as the player would enter and exit the collider
+    //now the player needs to be on the ladder for 0.2 seconds before the animation appears
     void OnTriggerStay(Collider other) {
         if (other.gameObject.tag == "locomotive")
         {
@@ -407,12 +385,12 @@ public class PlayerMovementPhoton : MonoBehaviourPun
             }
         } 
     }
+
     void OnTriggerExit(Collider other)
     {
         if (climbing && other.gameObject.tag == "locomotive")
         {
             timerCountDown = 0.2f;
-            // Debug.Log("player stopped climbing");
             climbing = false;
             GetComponent<PlayerAnimation>().setClimbing(false);
             LeftHandUpUI.SetActive(false);
@@ -421,7 +399,6 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         else if (climbingBuilding && other.gameObject.tag == "ladder")
         {
             timerCountDown = 0.2f;
-            // Debug.Log("EXIT LADDER");
             climbingBuilding = false;
             GetComponent<PlayerAnimation>().setClimbing(false);
             LeftHandUpUI.SetActive(false);
@@ -429,11 +406,8 @@ public class PlayerMovementPhoton : MonoBehaviourPun
         }
         if (other.gameObject.tag == "trainfloor")
         {
-            //train = null;
-            //photonView.RPC(nameof(ChangeOnTrainToFalse), RpcTarget.All);
             onTrain = false;
             GetComponent<PlayerOnTrain>().OnTrain = false;
-            //Debug.Log("stef is NOT aiiiir");
         }
     }
 

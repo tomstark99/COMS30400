@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
+//this script manages the achievements icons color on the main menu
 public class AchievementsMenu : MonoBehaviour
 {
     // Start is called before the first frame update
