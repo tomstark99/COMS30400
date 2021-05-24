@@ -13,12 +13,14 @@ public class DefaultButton : MonoBehaviour
 
     void Start()
     {
+        // sets the default button to not be interactable if player is not master client
         if (!PhotonNetwork.IsMasterClient)
         {
             gameObject.transform.GetChild(0).GetComponent<Button>().interactable = false;
         }
     }
 
+    // this is called on button press, sets the properties of the room to go back to default (the values on room creation)
     public void SetSettingsToDefault()
     {
         ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
