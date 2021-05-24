@@ -7,14 +7,11 @@ using Photon.Realtime;
 public class StartTutorialMenu : MonoBehaviourPunCallbacks
 {
     public GameObject optionsCanvas;
+
+    //start the tutorial scene
     public void OnClick_CreateTutorial()
     {
         if (!PhotonNetwork.IsConnected) return;
-
-        //ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
-        //prop.Add("sliderValueDiff", "Tutorial");
-        //if (PhotonNetwork.NetworkClientState != Photon.Realtime.ClientState.Leaving)
-        //    PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
 
         RoomOptions options = new RoomOptions();
         options.IsVisible = false;
