@@ -20,7 +20,7 @@ public class GameplayUI : MonoBehaviour
     public Slider RenderDistance;
     private void Start()
     {
-        //Debug.Log("game settings is haarad" + PlayerPrefs.GetFloat("GameGraphics"));
+        
         if (PlayerPrefs.HasKey("MouseSensibility"))
             mouseSensibilitySlider.value = PlayerPrefs.GetFloat("MouseSensibility");
         else
@@ -41,26 +41,20 @@ public class GameplayUI : MonoBehaviour
     public void OnMouseOver() {
         transform.parent.parent.GetComponent<AudioSource>().Play();
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
-        //If your mouse hovers over the GameObject with the script attached, output this message
-       // Debug.Log("Mouse is over GameObject.");
+        
         transform.GetComponent<Image>().enabled = true;
-        //Debug.Log(TextMeshPros);
+       
         TextMeshPros.color  = new Color32(0, 0, 0, 255);
     }
 
     // Update is called once per frame
     public void OnMouseExit() {
-        //The mouse is no longer hovering over the GameObject so output this message each frame
         TextMeshProUGUI TextMeshPros = text.GetComponent<TextMeshProUGUI>();
-        //Debug.Log(TextMeshPros);
-        
-
-        
-        
         TextMeshPros.color = new Color32(151, 158, 169, 255);
         transform.GetComponent<Image>().enabled = false;
     }
 
+    //set the mouse sentitibity value in cache
     public void SetMouseSensibility()
     {
         //needs changing
@@ -70,6 +64,7 @@ public class GameplayUI : MonoBehaviour
        
     }
 
+    //if click on one of the tabs on the menu, deactivate the others
     public void OnMouseClick() {
         GameplayTab.SetActive(!GameplayTab.activeSelf);
         ControlsTab.SetActive(false);
@@ -77,6 +72,7 @@ public class GameplayUI : MonoBehaviour
         DisplayTab.SetActive(false);
     }
     
+    //change games graphics quality
     public void ChangeGameGraphics() {
         
         if(GraphicsSlider.value >=0 && GraphicsSlider.value<=6)
@@ -85,6 +81,7 @@ public class GameplayUI : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    //Save the render the distance in cache. Gonna be updated in game in mouselookPhoton in Start
     public void ChangeRenderDistance() {
         PlayerPrefs.SetFloat("RenderDistance", RenderDistance.value);
         PlayerPrefs.Save();
