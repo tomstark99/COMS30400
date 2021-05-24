@@ -96,6 +96,8 @@ public class Achievements : MonoBehaviourPun
             {
                 achievementsTab.transform.GetChild(1).GetChild(5).GetComponent<Image>().color = tempColor;
             }
+
+            // initialise all variables
             babySteps = achievements.transform.GetChild(0).gameObject;
             letTheHuntBegin = achievements.transform.GetChild(1).gameObject;
             peaceTreaty = achievements.transform.GetChild(2).gameObject;
@@ -110,6 +112,7 @@ public class Achievements : MonoBehaviourPun
             onTheRun = achievements.transform.GetChild(10).gameObject;
             freight = achievements.transform.GetChild(11).gameObject;
 
+            // start achievement queue coroutine
             StartCoroutine(CoroutineCoordinator());
         }
     }

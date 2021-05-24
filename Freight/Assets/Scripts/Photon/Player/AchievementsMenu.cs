@@ -64,11 +64,14 @@ public class AchievementsMenu : MonoBehaviour
         }
     }
 
+    // on button click resets all achievements to unachieved
     public void ResetAchievements()
     {
         var tempColor = transform.GetChild(0).GetChild(0).GetComponent<Image>().color;
+        // sets the alpha of the colour to be low to make the achievement appear to be greyed out
         tempColor.a = 0.11764705882f;
 
+        // delete all the achievements
         PlayerPrefs.DeleteKey("BabySteps1");
         PlayerPrefs.DeleteKey("LetTheHuntBegin1");
         PlayerPrefs.DeleteKey("PeaceTreaty1");
@@ -83,6 +86,7 @@ public class AchievementsMenu : MonoBehaviour
         PlayerPrefs.DeleteKey("OnTheRun1");
         PlayerPrefs.DeleteKey("Freight1");
 
+        // loops through all achievements and sets them to have lower alpha
         for (int i = 0; i < 2; i++)
         {
             for (int j = 0; j < 6; j++)
@@ -90,20 +94,6 @@ public class AchievementsMenu : MonoBehaviour
                 transform.GetChild(i).GetChild(j).GetComponent<Image>().color = tempColor;
             }
         }
-
-        //transform.GetChild(0).GetChild(0).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(0).GetChild(1).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(0).GetChild(2).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(0).GetChild(3).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(0).GetChild(4).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(0).GetChild(5).GetComponent<Image>().color = tempColor;
-
-        //transform.GetChild(1).GetChild(0).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(1).GetChild(1).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(1).GetChild(2).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(1).GetChild(3).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(1).GetChild(4).GetComponent<Image>().color = tempColor;
-        //transform.GetChild(1).GetChild(5).GetComponent<Image>().color = tempColor;
     }
 
 

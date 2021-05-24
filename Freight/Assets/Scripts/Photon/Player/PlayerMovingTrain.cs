@@ -56,7 +56,7 @@ public class PlayerMovingTrain : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        // Make sure we are really standing on a straight platform *NEW*
+        // Make sure we are really standing on a straight platform 
         // Not on the underside of one and not falling down from it either!
         if (hit.moveDirection.y < -0.9 && hit.normal.y > 0.41 && hit.gameObject.tag == "locomotive")
         {

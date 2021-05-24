@@ -46,6 +46,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
         if (GameObject.FindGameObjectWithTag("GameTracker") != null)
             Destroy(GameObject.FindGameObjectWithTag("GameTracker"));
 
+        // disconnects the player if they were already connected 
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.Disconnect();
@@ -58,6 +59,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     private string GetRandomName()
     {
+        // makes the player feel like theyre playing the game as one of the MAIN DEVS :D
         string name = "stefan";
         string name2 = "omar";
         int random = Random.Range(1,10);
