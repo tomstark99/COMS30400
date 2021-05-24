@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Throwable : PickUpable
 {
-    public override void PrimaryInteractionOff(Character character)
+    public override void SecondaryInteraction(Character character)
     {
         if (isPickedUp)
         {

@@ -1,13 +1,17 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+/*
+     Grabbable class applied to the bags you can pickup on the first level
+*/
 public class Grabbable : PickUpable
 {
     public event Action BagPickedUp;
 
+    // RPC call to all players to call event
     [PunRPC]
     void BagPickedUpRPC()
     {
@@ -23,7 +27,8 @@ public class Grabbable : PickUpable
         }
     }
 
-    public override void PrimaryInteractionOff(Character character)
+    // empty function to override Pickupable
+    public override void SecondaryInteraction(Character character)
     {
 
     }

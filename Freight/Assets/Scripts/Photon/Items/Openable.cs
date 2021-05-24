@@ -7,32 +7,40 @@ public class Openable : Interactable
    public bool isOpened = false;
    public bool isMoving = false;
     
-    void Awake() {
+    void Awake() 
+    {
         isOpened = false;
     }
     
+    // RPC call to tell all players door is in process of moving
     [PunRPC]
-    public void IsMoving() {
+    public void IsMoving() 
+    {
         StartCoroutine(Moving());
     }
 
-    IEnumerator Moving() {
+    // coroutine to prevent people from spam opening and closing the doors
+    IEnumerator Moving() 
+    {
         isMoving = true;
         yield return new WaitForSeconds(2);
         isMoving = false;
         isOpened = !isOpened;
     }
-   public override void PrimaryInteraction(Character character)
+
+    public override void PrimaryInteraction(Character character)
     {
-        //Debug.Log("is opened is" +  isOpened);
+        // return early if door is animating
         if(isMoving == true) 
             return;
+
         photonView.RPC(nameof(IsMoving),RpcTarget.All);
 
-        if(isOpened == false)
+        // open or close the door depending on its current state
+        if(!isOpened)
             character.Open(this);
-
-        else character.Close(this);
+        else 
+            character.Close(this);
         
          
     }
