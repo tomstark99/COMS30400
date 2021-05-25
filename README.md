@@ -20,7 +20,7 @@ Download the zip file from the [release](https://github.com/tomstark99/COMS30400
 
 ## Run the game:
 
-1. Open your unity project folder (`Freight/` or `FreightZip`) in unity `2019.4.18f1`
+1. Open your unity project folder (`Freight/` or `FreightZip/`) in unity `2019.4.18f1`
 2. Go to Window ⇾ Package Manager ⇾ and install `cinemachine`
 3. Go to `Assets/Scenes/` and open `MenuSceneNew`
 4. Run the game in the unity editor by pressing play
