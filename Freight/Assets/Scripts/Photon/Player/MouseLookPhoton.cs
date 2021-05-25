@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
 using UnityEngine.UI;
+
+//MouseLookPhoton is attached to the player. It manages the mouse movement in game
 public class MouseLookPhoton : MonoBehaviourPun
 {
     public float mouseSensitivity;
@@ -21,7 +23,7 @@ public class MouseLookPhoton : MonoBehaviourPun
 
     public Slider RenderDistanceSlider;
     public bool onMenu;
-    // Start is called before the first frame update
+   
     void Start()
     {
         if (photonView.IsMine)
@@ -29,10 +31,14 @@ public class MouseLookPhoton : MonoBehaviourPun
             cameraTransform = virtualCamera.GetComponent<Transform>();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            //if player has mouse sensitivity set as an option, set the mouse sensitivity to that
             if (PlayerPrefs.HasKey("MouseSensibility"))
                 mouseSensitivity = PlayerPrefs.GetFloat("MouseSensibility");
             else
                 mouseSensitivity = 2f;
+
+            //if player has Render Distance set as an option, set the Render Distance to that
             if(PlayerPrefs.HasKey("RenderDistance")) 
                 virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.FarClipPlane = PlayerPrefs.GetFloat("RenderDistance");
             else 
@@ -54,17 +60,7 @@ public class MouseLookPhoton : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        /*if (Input.GetKeyDown(KeyCode.LeftAlt))
-        {
-            oldCameraRot = cameraTransform.localRotation;
-            freeCam = true;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftAlt))
-        {
-            cameraTransform.localRotation = oldCameraRot;
-            yRotation = 0f;
-            freeCam = false;
-        } */
+        //if escape is pressed, save the cameras position
 
         if(Input.GetKeyDown(KeyCode.Escape)) 
             oldCameraRot =  cameraTransform.localRotation;
@@ -76,20 +72,13 @@ public class MouseLookPhoton : MonoBehaviourPun
         xRotation = Mathf.Clamp(xRotation, -90f, 70f);
 
         
-
+        //if not on the menu, rotate the camera acording to the mouse movement
         if(!onMenu) {
-            //if (!freeCam)
-            //{
                 cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
                 playerBody.Rotate(Vector3.up * mouseX);
-           // }
-            //else
-            //{
-               // yRotation += mouseX;
-                //yRotation = Mathf.Clamp(yRotation, -150f, 130f);
-               // cameraTransform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-           // }
+       
         } else {
+            //set the camera position to the position before the player pressed the menu button
             cameraTransform.localRotation = oldCameraRot;
         }
         

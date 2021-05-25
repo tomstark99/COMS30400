@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 
+/*
+    This class is responsible for playing the voiceovers during the level and displaying the subtitles 
+*/
 public class PlayerAudioClips : MonoBehaviour
 {
     [SerializeField]
@@ -21,9 +24,11 @@ public class PlayerAudioClips : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // if there is a broken fence in the level, we subscribe to the fence breaking event
         if (GameObject.FindGameObjectWithTag("BrokenFence") != null)
             GameObject.FindGameObjectWithTag("BrokenFence").GetComponent<Breakable>().FenceBroke += FindTheBags;
 
+        // start coroutine to play initial voiceover
         StartCoroutine(IntroSequence());
     }
 

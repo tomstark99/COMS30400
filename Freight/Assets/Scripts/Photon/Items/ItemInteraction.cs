@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
 
+//Attached on the player prefab. Manages the behaviour of the interactables with the player
 public class ItemInteraction : MonoBehaviourPun
 {
     public GameObject Camera;
@@ -44,21 +45,30 @@ public class ItemInteraction : MonoBehaviourPun
         character = GetComponent<Character>();
         tooltip = true;
     }
-
+    
+    //on trigger enter with the player
     void OnTriggerEnter(Collider other)
     {
+        //try to get interacatable component for the collision if any
         Interactable collision = other.gameObject?.GetComponent<Interactable>();
 
+        //try to get component pickabalbe
         if (other.gameObject?.GetComponent<PickUpable>())
         {
+
+            //if there is a component pickable and the object has been picked up, return
             if (other.gameObject.GetComponent<PickUpable>().isPickedUp)
                 return;
         }
 
+        //if collision is an object with an interable component on it
         if (collision != null)
         {
+
+            //if the gameObject is droppable
             if (collision.gameObject.GetComponent<Droppable>() != null)
             {
+                //if the object is not dropped off
                 if (!collision.gameObject.GetComponent<Droppable>().isDroppedOff)
                 {
                     SetPressDropToActive();
@@ -79,9 +89,12 @@ public class ItemInteraction : MonoBehaviourPun
                 if (other.gameObject.GetComponent<Breakable>() != null)
                     SetBreakHandsActive();
             }
-
+            
+            //add gameObject to list of interables in range
             interactablesInRange.Add(collision.gameObject);
         }
+
+        //handle the outline component (there is a second bigger collider on all interable object with the tab outline)
         if (other.tag == "Outline")
         {
             other.transform.parent.GetComponent<Outline>().enabled = true;
@@ -91,6 +104,7 @@ public class ItemInteraction : MonoBehaviourPun
                 if(other.transform.parent.gameObject.GetComponent<PickUpable>().isPickedUp)
                     other.transform.parent.GetComponent<Outline>().enabled = false;
 
+                //show a tooltip on the first interactable object you encounter
                 if (tooltip)
                 {
                     Quaternion objRot = transform.rotation;
@@ -103,8 +117,10 @@ public class ItemInteraction : MonoBehaviourPun
         }
     }
 
+    //on trigger exit 
     void OnTriggerExit(Collider other)
     {
+        //if component interacble is different then null
         Interactable collision = other.gameObject?.GetComponent<Interactable>();
         if (collision != null)
         {
@@ -123,39 +139,41 @@ public class ItemInteraction : MonoBehaviourPun
                     SetBreakHandsInactive();
             }
 
-
+            //remove interactable from list of interactables in range
             interactablesInRange.Remove(collision.gameObject);
         }
+        //deactivate the outline
         if (other.tag == "Outline")
         {
             other.transform.parent.GetComponent<Outline>().enabled = false;
         }
     }
 
+    //activate press E to pick up object on canvas
     void SetPressEToActive()
     {
         text.SetActive(true);
     }
 
-    //[PunRPC]
+    //deactivate press E to pick up object on canvas
     void SetPressEToNotActive()
     {
         text.SetActive(false);
     }
 
-    //[PunRPC]
+    //activate press E to drop object on canvas
     void SetPressDropToActive()
     {
         textDrop.SetActive(true);
     }
 
-    //[PunRPC]
+   //deactivate press E to drop object on canvas
     void SetPressDropToNotActive()
     {
         textDrop.SetActive(false);
     }
 
-    //[PunRPC]
+    //set the hands UI active for fence breaking
     void SetBreakHandsActive()
     {
         if (!handsActive)
@@ -169,7 +187,7 @@ public class ItemInteraction : MonoBehaviourPun
 
     }
 
-    //[PunRPC]
+    //set the hands UI inactive for fence breaking
     void SetBreakHandsInactive()
     {
         if (handsActive)
@@ -184,6 +202,7 @@ public class ItemInteraction : MonoBehaviourPun
         }
     }
 
+    //returns the closest interactable from the interactables in range list
     GameObject GetClosestInteractable()
     {
         GameObject closestInteractable = null;
@@ -193,6 +212,8 @@ public class ItemInteraction : MonoBehaviourPun
 
         GameObject pickedUpItem = null;
 
+        //loop trought the interactables
+
         foreach (var interactable in interactablesInRange)
         {
             // if object was destroyed
@@ -201,6 +222,8 @@ public class ItemInteraction : MonoBehaviourPun
                 nullFound = true;
                 continue;
             }
+
+            //if component has pickable component and the item is pickedUp. Set pickedUpitem to the interactable (eg. some rock in hand)
             if (interactable?.GetComponent<PickUpable>())
             {
                 if (interactable.GetComponent<PickUpable>().isPickedUp)
@@ -209,6 +232,8 @@ public class ItemInteraction : MonoBehaviourPun
                     continue;
                 }
             }
+
+            //calculate the distance from interactable to the player
             float tempDist = Vector3.Distance(interactable.transform.position, transform.position);
 
             if (closestInteractable == null || tempDist < lastDistance)
@@ -219,7 +244,7 @@ public class ItemInteraction : MonoBehaviourPun
 
         }
 
-        // fence broken
+        // fence broken 
         if (nullFound)
         {
             interactablesInRange.RemoveAll(item => item == null);
@@ -241,15 +266,11 @@ public class ItemInteraction : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+        //if the camera is not on the main virtual camera it means it is on an animation, so return 
         if (cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera != Camera.GetComponent<CinemachineVirtualCamera>())
             return;
 
         bool canInteract = (interactablesInRange.Count > 0) && !character.HasItem();
-
-        foreach (var inte in interactablesInRange)
-        {
-           // Debug.Log(inte);
-        }
 
         interactableObject = GetClosestInteractable();
 
@@ -267,10 +288,12 @@ public class ItemInteraction : MonoBehaviourPun
             }
 
 
-            //currentInteractable = newInteractable;
+            //if the interactable object has an interactable component
 
             if (newInteractable != null)
             {
+                //if E is pressed or P from the pose parser
+                //if the object is breakable
 
                 if (((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P") == 0)))
                 {
@@ -285,7 +308,7 @@ public class ItemInteraction : MonoBehaviourPun
                 }
                 //d is for opening 
                 //u is closing
-
+                //if E is pressed close or open the door
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     if (newInteractable.GetComponent<Openable>() != null)
@@ -295,6 +318,7 @@ public class ItemInteraction : MonoBehaviourPun
                     }
                 }
 
+                //if doing a opening pose - open
                 if (PoseParser.GETGestureAsString().CompareTo("D") == 0)
                 {
                     if (newInteractable.GetComponent<Openable>() != null && newInteractable.GetComponent<Openable>().isOpened == false)
@@ -303,7 +327,8 @@ public class ItemInteraction : MonoBehaviourPun
                         return;
                     }
                 }
-
+                
+                //if doing a closing pose - close
                 if (PoseParser.GETGestureAsString().CompareTo("U") == 0)
                 {
                     if (newInteractable.GetComponent<Openable>() != null && newInteractable.GetComponent<Openable>().isOpened == true)
@@ -313,6 +338,7 @@ public class ItemInteraction : MonoBehaviourPun
                     }
                 }
 
+                // if e or b on the pose
                 if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("B") == 0) && newInteractable.GetComponent<Breakable>() == null && newInteractable.GetComponent<Openable>() == null)
                 {
                     if (newInteractable.GetComponent<Switchable>() != null)
@@ -394,6 +420,8 @@ public class ItemInteraction : MonoBehaviourPun
             {
                 //Debug.Log("Opanable is null");
             }
+
+            
             if ((Input.GetKeyDown(KeyCode.E) || PoseParser.GETGestureAsString().CompareTo("P") == 0) && openableObject != null)
             {
                 openableObject.PrimaryInteraction(character);
@@ -427,7 +455,7 @@ public class ItemInteraction : MonoBehaviourPun
             if (Input.GetKeyDown(KeyCode.G))
             {
                 // we drop/throw item and turn off its outline
-                currentInteractable.PrimaryInteractionOff(character);
+                currentInteractable.SecondaryInteraction(character);
                 currentInteractable.GetComponent<Outline>().enabled = true;
                 SetPressEToActive();
                 interactablesInRange.Add(currentInteractable.gameObject);

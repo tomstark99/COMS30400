@@ -51,13 +51,17 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            // creates the game tracker object
             PhotonNetwork.Instantiate("PhotonPrefabs/GameTracker", new Vector3(0,0,0), Quaternion.identity);
-
+            
+            // sets the start game button to inactive so players can't accidentaly press button twice, causing freezing issues
             gameObject.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
-           // Debug.Log("Starting Game");
+
+            // makes the room invisible and unable to be joined
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
+            // sets the level to load to be the first level
             ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
             prop.Add("levelToLoad", "Assets/Scenes/TrainStationPun.unity");
             //prop.Add("levelToLoad", "Assets/Scenes/TrainStationArrive.unity");
@@ -67,9 +71,10 @@ public class CurrentRoomCanvas : MonoBehaviourPunCallbacks
 
     public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        // loads scene once properties have changed
+        // loads scene once properties have changed and the property that changed was the level to load
         if (propertiesThatChanged.ContainsKey("levelToLoad"))
         {
+            // we set the next level to load to be the loading screen as we will load the actual level from the loading screen
             if (PhotonNetwork.IsMasterClient)
                 PhotonNetwork.LoadLevel("Scenes/LoadingScreen");
         }

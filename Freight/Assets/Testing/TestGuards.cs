@@ -4,45 +4,81 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
 using Photon.Pun;
+using Smooth;
 
-public class TestGuards
+public class TestGuards : TestClass
 {
+
+    GameObject[] guards;
+
+    public override IEnumerator InitializeTests() {
+        ModuleName = "TestGuards";
+        yield return new WaitForSeconds(10f); 
+        guards = GameObject.FindGameObjectsWithTag("Guard");
+    }
     
-    public static void Test() {
-        GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard");
-        Assert.raiseExceptions = true;
-        UnityEngine.Assertions.Assert.raiseExceptions = true;
-        testGuardsActive(guards);
-        testGuardNavMesh(guards);
-        testGuardLobbySettings(guards);
-        Debug.Log("Test Guards: 3 tests passed");
+    [Test]
+    public IEnumerator TestGuardsHaveRightComponents()
+    {
+        foreach (var g in guards)
+        {
+            Assert.IsNotNull(g.GetComponent<GuardAIPhoton>());
+            Assert.IsNotNull(g.GetComponent<NavMeshAgent>());
+            Assert.IsNotNull(g.GetComponent<GuardAnimation>());
+            Assert.IsNotNull(g.GetComponent<PhotonView>());
+            Assert.IsNotNull(g.GetComponent<SmoothSyncPUN2>());
+            Assert.IsNotNull(g.GetComponent<PhotonAnimatorView>());
+            Assert.IsNotNull(g.GetComponent<Animator>());
+            Assert.IsNotNull(g.GetComponent<CapsuleCollider>());
+        }
+        yield return null;
     }
 
-    private static void testGuardsActive(GameObject[] guards) {
+    [Test]
+    public IEnumerator TestGuardAIPhotonScriptHasRightFields()
+    {
+        foreach (var g in guards)
+        {
+            GuardAIPhoton script = g.GetComponent<GuardAIPhoton>();
+            Assert.IsNotNull(script.guard);
+            Assert.IsNotNull(script.spotlight);
+            Assert.IsNotNull(script.sounds);
+        }
+        yield return null;
+    }
+
+    private static void testGuardsActive(GameObject[] guards)
+    {
         Assert.raiseExceptions = true;
         UnityEngine.Assertions.Assert.raiseExceptions = true;
-        foreach (var g in guards) {
+        foreach (var g in guards)
+        {
             // Debug.Assert(!g.activeSelf);
+            Debug.Log(g.activeSelf);
             Assert.IsTrue(!g.activeSelf);
             Assert.IsTrue(g.activeSelf);
-            Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState != GuardAIPhoton.State.Patroling);
+            // Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState != GuardAIPhoton.State.Patroling);
             Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState == GuardAIPhoton.State.Patroling);
         }
     }
 
-    private static void testGuardNavMesh(GameObject[] guards) {
+        [Test]
+    public IEnumerator TestGuardsActive() {
         foreach (var g in guards) {
-            Assert.IsTrue(g.GetComponent<GuardAIPhoton>().guard == null);
-            Assert.IsTrue(g.GetComponent<GuardAIPhoton>().guard.remainingDistance != null);
+            Assert.IsTrue(g.activeSelf);
+            Assert.IsTrue(g.GetComponent<GuardAIPhoton>().GuardState == GuardAIPhoton.State.Patroling);
         }
+        yield return null;
     }
-
-    private static void testGuardLobbySettings(GameObject[] guards) {
+   
+    [Test]
+    public IEnumerator TestGuardLobbySettings() {
         foreach (var g in guards) {
             Assert.IsTrue(g.GetComponent<GuardAIPhoton>().sightRange == (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardSightRange"]);
             Assert.IsTrue(g.GetComponent<GuardAIPhoton>().guardAngle == (int)PhotonNetwork.CurrentRoom.CustomProperties["GuardAngle"]);
             Assert.IsTrue(g.GetComponent<GuardAIPhoton>().speedChasing == (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedChasing"]);
             Assert.IsTrue(g.GetComponent<GuardAIPhoton>().speedPatrolling == (int)PhotonNetwork.CurrentRoom.CustomProperties["SpeedPatrolling"]);
         }
+        yield return null;
     }
 }
