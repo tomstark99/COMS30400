@@ -28,7 +28,6 @@ public class CreateOrJoinRoomCanvas : MonoBehaviourPunCallbacks
         createRoomMenu.Initialise(canvases);
         roomListingsMenu.Initalise(canvases);
         optionsMenu.Initialise(canvases);
-
     }
 
     // sets the create or join room canvas to active

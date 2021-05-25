@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-
-[DisallowMultipleComponent]
-[RequireComponent(typeof(PhotonView))]
 public abstract class Interactable : MonoBehaviourPun
 {
     protected PhotonView view;
-    public virtual void PrimaryInteractionOff(Character character) {}
+    
+    // interaction that makes you stop interacting with the object
+    public virtual void SecondaryInteraction(Character character) {}
 
+    // interaction that makes you interact with the object
     public virtual void PrimaryInteraction(Character character) {}
     
     public virtual void Start() 

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+/*
+    This class is placed on the dead guard  
+*/
 public class DeadGuard : MonoBehaviourPun
 {
+    // this RPC is used to tell all the players to make the guard the child of the DeadGuards game object
     [PunRPC]
     void Spawn()
     {

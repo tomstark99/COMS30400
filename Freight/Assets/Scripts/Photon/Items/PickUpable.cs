@@ -17,7 +17,7 @@ public class PickUpable : Interactable
         }
     }
 
-    public override void PrimaryInteractionOff(Character character)
+    public override void SecondaryInteraction(Character character)
     {
         if (isPickedUp)
         {

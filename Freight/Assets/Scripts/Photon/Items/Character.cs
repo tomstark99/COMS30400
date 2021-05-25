@@ -51,60 +51,59 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (ObjectToSeeTheLights)
             ObjectToSeeTheLights.SetActive(false);
 
-        Debug.Log(ObjectToSeeTheLights);
+        //Debug.Log(ObjectToSeeTheLights);
     }
 
+    // RPC sent to the local player telling them to pickup an object
     [PunRPC]
-    void PickUpRPCLocal(int ItemID)
+    void PickUpRPCLocal(int itemID)
     {
-        PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
+        // get component by using the item's photon view
+        PickUpable item = PhotonView.Find(itemID).GetComponent<PickUpable>();
+        
+        // checks if the player has achievement
         if (!PlayerPrefs.HasKey("TheCompletePicture"))
         {
-            if (Item.GetComponent<Unachievable>() == null)
+            // the Unachievable class was placed on the tutorial gun and rock outside the station so players could not get the achievement for picking up those objects
+            if (item.GetComponent<Unachievable>() == null)
                 GetComponent<Achievements>()?.TheCompletePictureCompleted();
         }
 
-        Debug.Log("LOCAL");
-        //PhotonView view = Item.GetComponent<PhotonView>();
-        //view.TransferOwnership(PhotonNetwork.LocalPlayer);
-        // Move to players pickup destination.
-        Item.transform.position = pickUpDestinationLocal.position;
-        if (Item.GetComponent<Shootable>() != null)
-            Item.transform.Find("Canvas").gameObject.SetActive(true);
-        // Set the parent of the object to the pickupDestination so that it moves
-        // with the player.
-        Item.transform.parent = pickUpDestinationLocal;
-        Item.transform.Rotate(0, 90, 0);
+        // we make the item's position be the same as the pickup destination on the local player
+        item.transform.position = pickUpDestinationLocal.position;
+        // if the item is a shootable, we set the canvas to active as we want to see the ammo count
+        if (item.GetComponent<Shootable>() != null)
+            item.transform.Find("Canvas").gameObject.SetActive(true);
+        // set item to be a child of the pickup destination
+        item.transform.parent = pickUpDestinationLocal;
+        item.transform.Rotate(0, 90, 0);
 
-        Item.ItemPickedUp();
+        item.ItemPickedUp();
     }
 
     [PunRPC]
-    void PickUpRPC(int ItemID)
+    void PickUpRPC(int itemID)
     {
-        PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
-        Debug.Log("drill");
-        //PhotonView view = Item.GetComponent<PhotonView>();
-        //view.TransferOwnership(PhotonNetwork.LocalPlayer);
-        // Move to players pickup destination.
-        //Item.transform.position = pickUpDestination.position;
+        PickUpable item = PhotonView.Find(itemID).GetComponent<PickUpable>();
 
-        // Set the parent of the object to the pickupDestination so that it moves
-        // with the player.
-        if (Item.tag == "Gun")
+        // check if the item is a gun or a rock
+        // we set ikActive to true to let the player look as if they are holding the item
+        // we set the handObj to be an empty game object on the item which indicates where the player should appear to be holding the item
+        if (item.tag == "Gun")
         {
             GetComponent<IkBehaviour>().ikActive = true;
-            GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
+            GetComponent<IkBehaviour>().handObj = item.transform.GetChild(18);
         }
-        else if (Item.tag == "Rock")
+        else if (item.tag == "Rock")
         {
             GetComponent<IkBehaviour>().ikActive = true;
-            GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(0).transform.GetChild(2);
+            GetComponent<IkBehaviour>().handObj = item.transform.GetChild(0).transform.GetChild(2);
         }
-        Item.transform.parent = pickUpDestination;
-        Item.transform.Rotate(0, 90, 0);
+        // set item to be a child of the pickup destination
+        item.transform.parent = pickUpDestination;
+        item.transform.Rotate(0, 90, 0);
 
-        Item.ItemPickedUp();
+        item.ItemPickedUp();
     }
 
     public void OnOwnershipRequest(PhotonView targetView, Photon.Realtime.Player previousOwner)
@@ -121,6 +120,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             return;
         }
 
+        // this does the same logic as the pickup function however it is only called when the player is picking up an object that the player was not an owner of
         if (currentHeldItem != null)
         {
             if (currentHeldItem.tag == "Gun")
@@ -146,93 +146,110 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, currentHeldItem.transform.GetComponent<PhotonView>().ViewID);
     }
 
-    public void PickUp(PickUpable Item)
+    public void PickUp(PickUpable item)
     {
-        currentHeldItem = Item;
+        currentHeldItem = item;
 
-        PhotonView view = Item.GetComponent<PhotonView>();
+        PhotonView view = item.GetComponent<PhotonView>();
+        // transfer ownership to the player if they were not already the owner
         if (!view.IsMine)
             view.TransferOwnership(PhotonNetwork.LocalPlayer);
         else
         {
-            if (Item.tag == "Gun")
+            // check if the item is a gun or a rock
+            // we set ikActive to true to let the player look as if they are holding the item
+            // we set the handObj to be an empty game object on the item which indicates where the player should appear to be holding the item
+            if (item.tag == "Gun")
             {
-                Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
+                item.transform.GetChild(17).GetChild(0).gameObject.SetActive(true);
                 GetComponent<IkBehaviour>().ikActive = true;
-                GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(18);
+                GetComponent<IkBehaviour>().handObj = item.transform.GetChild(18);
             }
-            else if (Item.tag == "Rock")
+            else if (item.tag == "Rock")
             {
                 GetComponent<IkBehaviour>().ikActive = true;
-                GetComponent<IkBehaviour>().handObj = Item.transform.GetChild(0).transform.GetChild(2);
+                GetComponent<IkBehaviour>().handObj = item.transform.GetChild(0).transform.GetChild(2);
+                // sets a fake rock to active so the player can see a rock on their screen to let them know they are holding a rock
                 actualCamera.transform.GetChild(0).gameObject.SetActive(true);
             }
 
-            photonView.RPC("PickUpRPC", RpcTarget.Others, Item.transform.GetComponent<PhotonView>().ViewID);
-            photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, Item.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC("PickUpRPC", RpcTarget.Others, item.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC("PickUpRPCLocal", PhotonNetwork.LocalPlayer, item.transform.GetComponent<PhotonView>().ViewID);
         }
 
 
     }
 
     [PunRPC]
-    void ThrowRPC(int ItemID)
+    void ThrowRPC(int itemID)
     {
-        Throwable Item = PhotonView.Find(ItemID).GetComponent<Throwable>();
+        Throwable item = PhotonView.Find(itemID).GetComponent<Throwable>();
+        // sets the Inverse Kinematics to false so the player's hand can be reset to normal
         GetComponent<IkBehaviour>().ikActive = false;
+
         // Gesture aim
-        // Debug.Log("CAMERA POSITION"+ (camera.transform.forward + (camera.transform.rotation * MoveCrosshair.GETCrosshairOffsetFromCentre())));
-        Item.GetComponent<Rigidbody>().AddForce((actualCamera.transform.forward + (actualCamera.transform.rotation * crosshair.GETCrosshairOffsetFromCentre()) * 0.002f).normalized * 1000);
-        Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
+        item.GetComponent<Rigidbody>().AddForce((actualCamera.transform.forward + (actualCamera.transform.rotation * crosshair.GETCrosshairOffsetFromCentre()) * 0.002f).normalized * 1000);
+        item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
     }
 
-    public void Throw(Throwable Item)
+    public void Throw(Throwable item)
     {
+        // sets the Inverse Kinematics to false so the player's hand can be reset to normal
         GetComponent<IkBehaviour>().ikActive = false;
+        // player no longer holding any item
         currentHeldItem = null;
-        Item.ItemDropped(this);
+        // resets the item's conditions as it is no longer picked up
+        item.ItemDropped(this);
+        // disables fake rock
         actualCamera.transform.GetChild(0).gameObject.SetActive(false);
-        photonView.RPC("ThrowRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC("ThrowRPC", RpcTarget.All, item.transform.GetComponent<PhotonView>().ViewID);
     }
 
     [PunRPC]
-    void DropRPC(int ItemID)
+    void DropRPC(int itemID)
     {
-        PickUpable Item = PhotonView.Find(ItemID).GetComponent<PickUpable>();
-        Item.transform.Rotate(50, 50, 0);
+        PickUpable item = PhotonView.Find(itemID).GetComponent<PickUpable>();
+        item.transform.Rotate(50, 50, 0);
+        // sets the Inverse Kinematics to false so the player's hand can be reset to normal
         GetComponent<IkBehaviour>().ikActive = false;
-        if (Item.GetComponent<Shootable>() != null)
+        if (item.GetComponent<Shootable>() != null)
         {
-            Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
-            Item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
-            Item.transform.Find("Canvas").gameObject.SetActive(false);
+            item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
+            item.transform.parent = GameObject.Find("/Environment/Interactables/Guns").transform;
+            item.transform.Find("Canvas").gameObject.SetActive(false);
         }
         else
         {
-            Item.transform.parent = GameObject.Find("/Environment/Interactables/DeadGuards").transform;
+            item.transform.parent = GameObject.Find("/Environment/Interactables/DeadGuards").transform;
         }
 
     }
 
-    public void Drop(PickUpable Item)
+    public void Drop(PickUpable item)
     {
         currentHeldItem = null;
-        Item.ItemDropped(this);
+        // resets the item's conditions as it is no longer picked up
+        item.ItemDropped(this);
+        // sets the Inverse Kinematics to false so the player's hand can be reset to normal
         GetComponent<IkBehaviour>().ikActive = false;
-        if (Item.tag == "Gun")
+        // if item is a gun, disable the canvas
+        if (item.tag == "Gun")
         {
-            Item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
-            GetComponent<IkBehaviour>().ikActive = false;
+            item.transform.GetChild(17).GetChild(0).gameObject.SetActive(false);
         }
+        // otherwise disable fake rock
         else actualCamera.transform.GetChild(0).gameObject.SetActive(false);
+
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 4f;
-        //Item.transform.parent = GameObject.Find("/Environment/Interactables/Rocks").transform;
-        photonView.RPC("DropRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+
+        photonView.RPC("DropRPC", RpcTarget.All, item.transform.GetComponent<PhotonView>().ViewID);
     }
 
+    // RPC called when you shoot a guard and the raycast collides with a guard
     [PunRPC]
     void KillGuard(int guardId)
     {
+        // if achievement not unlocked
         if (!PlayerPrefs.HasKey("Roadman"))
         {
             GetComponent<Achievements>()?.Roadman();
@@ -240,13 +257,18 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         // get the guard's photon view
         PhotonView killedGuard = PhotonView.Find(guardId)?.GetComponent<PhotonView>();
-        Debug.Log(killedGuard);
+        
+        // this check is added due to the laggy nature of RPCs, if the master client had high ping and the other client shot at the guard several times before they died, multiple dead bodies would
+        // appear as the guard dying would have a slight delay
         if (killedGuard != null)
         {
             GuardAIPhoton killedGuardObject = PhotonView.Find(guardId).GetComponent<GuardAIPhoton>();
+            // checks if the music should be reset to normal
             killedGuardObject.CheckMusicOnGuardDeath();
+            // gets the position of the guard before they died so they can be spawned in the same position
             Vector3 guardPos = killedGuard.transform.position;
             Quaternion guardRot = killedGuard.transform.rotation;
+            // spawns dead guard slightly above so they don't clip through the floor
             guardPos.y += 0.5f;
 
             // remove the guard 
@@ -260,22 +282,8 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     IEnumerator GunRecoil()
     {
         /*Debug.Log("omars haaard");
-        pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, 1.0f, Space.Self);
-        Debug.Log("initianl rotation" + pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z);
-        while(pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z > 340) 
-        {
-             Debug.Log("the while loop is haaard" + pickUpDestinationLocal.transform.GetChild(0).transform.localRotation.eulerAngles.z);
-            pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, 1.0f, Space.Self);
-            yield return null;
-        }
+        */
 
-        while(pickUpDestinationLocal.transform.GetChild(0).transform.eulerAngles.z <359) 
-        {
-             Debug.Log("the while loop is haaard" + pickUpDestinationLocal.transform.GetChild(0).transform.localRotation.eulerAngles.z);
-            pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, -1.0f, Space.Self);
-            yield return null;
-        }
-        pickUpDestinationLocal.transform.GetChild(0).Rotate(0.0f, 0.0f, -1.0f, Space.Self);*/
         while (pickUpDestinationLocal.transform.localPosition.z > 0.2f)
         {
             pickUpDestinationLocal.transform.localPosition = new Vector3(pickUpDestinationLocal.transform.localPosition.x, pickUpDestinationLocal.transform.localPosition.y, pickUpDestinationLocal.transform.localPosition.z - 0.01f);
@@ -291,32 +299,36 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         yield break;
     }
 
+    // RPC call for the local player to check if they hit a guard when shooting the gun
     [PunRPC]
     void CreateBulletLocal()
     {
-        StartCoroutine("GunRecoil");
-        Debug.Log("don t think coroutine startedt stillll");
-        // shoots out a raycast to see what the bullet hits
+        // coroutine for gun recoil
+        StartCoroutine(GunRecoil());
 
+        // shoots out a raycast to see what the bullet hits
         Physics.Raycast(actualCamera.transform.position, actualCamera.transform.forward, out RaycastHit hitInfo);
 
+        // checks for achievement
         if (!PlayerPrefs.HasKey("LetTheHuntBegin"))
         {
+            // the Unachievable class was placed on the tutorial gun outside the station so players could not get the achievement for shooting this gun
             if (pickUpDestinationLocal.transform.GetChild(0).GetComponent<Unachievable>() == null)
                 GetComponent<Achievements>()?.LetTheHuntBeginCompleted();
         }
 
         // if bullet collides with guard, tell masterclient to kill guard
-        Debug.Log(hitInfo.collider);
-
         if (hitInfo.collider != null)
             if (hitInfo.collider.GetComponent<GuardAIPhoton>() != null)
             {
                 Debug.Log("Guard was hit acc");
+                // send RPC to master client to destroy guard object as only master client can destroy and spawn objects in the game
                 photonView.RPC("KillGuard", RpcTarget.MasterClient, hitInfo.collider.GetComponent<PhotonView>().ViewID);
             }
+
         // instantiate the bullet locally
         GameObject bullet = Instantiate(bulletPrefab, pickUpDestinationLocal.transform.GetChild(0).transform.GetChild(14).position, pickUpDestinationLocal.transform.GetChild(0).rotation);
+        // play the gun shot sound
         pickUpDestinationLocal.transform.GetChild(0).GetComponent<Gun>().GunShot();
 
         // if it hits something, have the bullet point at that thing and add a force based on bullet forward facing transform
@@ -332,10 +344,12 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             bullet.GetComponent<Rigidbody>().AddForce(actualCamera.transform.forward * 1400);
         }
+
         // so bullet moves
         bullet.GetComponent<Rigidbody>().isKinematic = false;
     }
 
+    // RPC call for other player to create bullet
     [PunRPC]
     void CreateBullet()
     {
@@ -364,8 +378,9 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         bullet.GetComponent<Rigidbody>().isKinematic = false;
     }
 
-    public void Shoot(Shootable Item)
+    public void Shoot(Shootable item)
     {
+        // can only shoot if you are not on the menu
         if (!gameObject.GetComponent<PlayerMovementPhoton>().onMenu)
         {
             // send an RPC to shoot a bullet on the local client and on all other clients
@@ -383,6 +398,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     }
 
+    // animation for small doors opening and going up
     IEnumerator DoorOpeningSmall(int breakableID)
     {
         PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
@@ -410,6 +426,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         yield break;
     }
 
+    // animation for big doors opening and going up
     IEnumerator DoorOpeningBig(int breakableID)
     {
         PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
@@ -438,7 +455,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         yield break;
     }
 
-
+    // RPC to destroy the fence and place the broken fence prefab in its place
     [PunRPC]
     void DestroyBreakable(int breakableID)
     {
@@ -451,19 +468,20 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             PhotonNetwork.Destroy(breakable.transform.gameObject);
             PhotonNetwork.Instantiate("PhotonPrefabs/fence_simple_broken_open Variant 1", spawnPosition, rotation);
         }
-
-
     }
-    public void Break(Breakable Item)
+    // sends RPC to master client to break fence
+    public void Break(Breakable item)
     {
-        photonView.RPC(nameof(DestroyBreakable), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(DestroyBreakable), RpcTarget.MasterClient, item.transform.GetComponent<PhotonView>().ViewID);
     }
 
-    public void Open(Openable Item)
+    // sends RPC to all clients to open door and do the animation
+    public void Open(Openable item)
     {
-        photonView.RPC(nameof(OpenRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(OpenRPC), RpcTarget.All, item.transform.GetComponent<PhotonView>().ViewID);
     }
 
+    // RPC call that opens the door 
     [PunRPC]
     public void OpenRPC(int openableID)
     {
@@ -480,6 +498,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
     }
 
+    // animation for doors closing and going down
     IEnumerator DoorClosingSmall(int breakableID)
     {
         PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
@@ -506,6 +525,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         yield break;
     }
 
+    // animation for big doors closing and going down
     IEnumerator DoorClosingBig(int breakableID)
     {
         PhotonView breakable = PhotonView.Find(breakableID).GetComponent<PhotonView>();
@@ -532,11 +552,14 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         breakable.transform.GetChild(3).GetComponent<BoxCollider>().size = new Vector3(breakable.GetComponent<BoxCollider>().size.x, 20, breakable.GetComponent<BoxCollider>().size.y);
         yield break;
     }
-    public void Close(Openable Item)
+
+    // sends RPC to all clients to close door and do the animation
+    public void Close(Openable item)
     {
-        photonView.RPC(nameof(CloseRPC), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(CloseRPC), RpcTarget.All, item.transform.GetComponent<PhotonView>().ViewID);
     }
 
+    // RPC call that closes the door 
     [PunRPC]
     public void CloseRPC(int openableID)
     {
@@ -552,35 +575,38 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
     }
 
-
+    // RPC call that allows player to drag guard
     [PunRPC]
-    void DragRPC(int ItemID)
+    void DragRPC(int itemID)
     {
-        Draggable Item = PhotonView.Find(ItemID).GetComponent<Draggable>();
-        Item.transform.position = dragDestination.position;
-        Item.transform.parent = dragDestination;
+        Draggable item = PhotonView.Find(itemID).GetComponent<Draggable>();
+        item.transform.position = dragDestination.position;
+        item.transform.parent = dragDestination;
 
-        Item.ItemPickedUp();
+        item.ItemPickedUp();
         //Item.transform.Rotate(90, 0, 0);
 
     }
 
-    public void Drag(Draggable Item)
+    public void Drag(Draggable item)
     {
-        currentHeldItem = Item;
+        currentHeldItem = item;
 
-        PhotonView view = Item.GetComponent<PhotonView>();
+        PhotonView view = item.GetComponent<PhotonView>();
         view.TransferOwnership(PhotonNetwork.LocalPlayer);
         gameObject.transform.GetComponent<PlayerMovementPhoton>().Speed = 3f;
-        photonView.RPC("DragRPC", RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC("DragRPC", RpcTarget.All, item.transform.GetComponent<PhotonView>().ViewID);
     }
 
+    // RPC call that destroys the backpack available to be picked up
     [PunRPC]
     void DestroyBackpack(int backPackId)
     {
         PhotonNetwork.Destroy(PhotonView.Find(backPackId));
 
     }
+    
+    // RPC call that activates the backpack on the player's back
     [PunRPC]
     void ActivateBackPack()
     {
@@ -588,12 +614,13 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         backPackObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
-    public void Grab(Grabbable Item)
+    // sends RPCs to destroy the backpack and place it on the player's back
+    public void Grab(Grabbable item)
     {
         holdingTheBag = true;
 
         Debug.Log(backPackObject);
-        photonView.RPC(nameof(DestroyBackpack), RpcTarget.MasterClient, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(DestroyBackpack), RpcTarget.MasterClient, item.transform.GetComponent<PhotonView>().ViewID);
         photonView.RPC(nameof(ActivateBackPack), RpcTarget.All);
 
     }
@@ -621,7 +648,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         }
     }
 
-    IEnumerator LightsCoroutine(Switchable Item)
+    IEnumerator LightsCoroutine(Switchable item)
     {
 
         actualCamera.transform.GetChild(0).gameObject.SetActive(false);
@@ -632,7 +659,7 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         yield return new WaitForSeconds(3);
         foreach (var light in spinningLights)
         {
-            photonView.RPC(nameof(TurnOffLight), RpcTarget.All, light.transform.GetComponent<PhotonView>().ViewID, Item.transform.GetComponent<PhotonView>().ViewID);
+            photonView.RPC(nameof(TurnOffLight), RpcTarget.All, light.transform.GetComponent<PhotonView>().ViewID, item.transform.GetComponent<PhotonView>().ViewID);
         }
         yield return new WaitForSeconds(1);
         ObjectToSeeTheLights.SetActive(false);
@@ -652,13 +679,14 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         yield break;
     }
 
-    public void SwitchOff(Switchable Item)
+    // used to turn off lights
+    public void SwitchOff(Switchable item)
     {
         if (!PlayerPrefs.HasKey("Hackerman"))
         {
             GetComponent<Achievements>()?.HackermanCompleted();
         }
-        StartCoroutine(LightsCoroutine(Item));
+        StartCoroutine(LightsCoroutine(item));
     }
 
     [PunRPC]
@@ -668,17 +696,19 @@ public class Character : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         drop.transform.GetChild(0).gameObject.SetActive(true);
     }
 
+    // RPC in second level to disable the backpack on player's back
     [PunRPC]
     void DeactivateBackpack()
     {
         backPackObject.SetActive(false);
     }
 
-    public void DropOff(Droppable Item)
+    // used in second level to drop off the backpack on the dropoff spot
+    public void DropOff(Droppable item)
     {
         bagDroppedOff = true;
 
-        photonView.RPC(nameof(ActivateDropOffBackpack), RpcTarget.All, Item.transform.GetComponent<PhotonView>().ViewID);
+        photonView.RPC(nameof(ActivateDropOffBackpack), RpcTarget.All, item.transform.GetComponent<PhotonView>().ViewID);
         photonView.RPC(nameof(DeactivateBackpack), RpcTarget.All);
     }
 }

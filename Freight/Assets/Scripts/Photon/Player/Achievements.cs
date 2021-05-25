@@ -34,7 +34,7 @@ public class Achievements : MonoBehaviourPun
 
     private Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
 
-    // this is a checker 
+    // this is a checker to see if the player has been detected by the guards at least once
     public bool wasDetectedOnce = false;
 
     // Start is called before the first frame update
@@ -96,6 +96,8 @@ public class Achievements : MonoBehaviourPun
             {
                 achievementsTab.transform.GetChild(1).GetChild(5).GetComponent<Image>().color = tempColor;
             }
+
+            // initialise all variables
             babySteps = achievements.transform.GetChild(0).gameObject;
             letTheHuntBegin = achievements.transform.GetChild(1).gameObject;
             peaceTreaty = achievements.transform.GetChild(2).gameObject;
@@ -110,6 +112,7 @@ public class Achievements : MonoBehaviourPun
             onTheRun = achievements.transform.GetChild(10).gameObject;
             freight = achievements.transform.GetChild(11).gameObject;
 
+            // start achievement queue coroutine
             StartCoroutine(CoroutineCoordinator());
         }
     }

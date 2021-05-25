@@ -53,10 +53,4 @@ public class PhotonPlayer : MonoBehaviourPunCallbacks
         //Debug.Log(gesture);
     }
 
-    // checks if the player is pressing P
-    public bool IsPressingP()
-    {
-         return Input.GetKeyDown(KeyCode.P);
-    }
-
 }
